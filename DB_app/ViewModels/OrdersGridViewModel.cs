@@ -4,32 +4,21 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 using DB_app.Contracts.ViewModels;
 using DB_app.Core.Contracts.Services;
-using DB_app.Core.Models;
+using DB_app.Models;
 
 namespace DB_app.ViewModels;
 
 public class OrdersGridViewModel : ObservableRecipient, INavigationAware
 {
-    private readonly ISampleDataService _sampleDataService;
-
-    public ObservableCollection<SampleOrder> Source { get; } = new ObservableCollection<SampleOrder>();
-
-    public OrdersGridViewModel(ISampleDataService sampleDataService)
+    
+    public OrdersGridViewModel(IDataAccessService sampleDataService)
     {
-        _sampleDataService = sampleDataService;
+       
     }
 
     public async void OnNavigatedTo(object parameter)
     {
-        Source.Clear();
-
-        // TODO: Replace with real data.
-        var data = await _sampleDataService.GetGridDataAsync();
-
-        foreach (var item in data)
-        {
-            Source.Add(item);
-        }
+        
     }
 
     public void OnNavigatedFrom()
