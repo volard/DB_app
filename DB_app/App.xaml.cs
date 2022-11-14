@@ -14,7 +14,7 @@ using Microsoft.UI.Xaml;
 
 namespace DB_app;
 
-// To learn more about WinUI 3, see https://docs.microsoft.com/windows/apps/winui/winui3/.
+
 public partial class App : Application
 {
     // The .NET Generic Host provides dependency injection, configuration, logging, and other services.
@@ -53,6 +53,7 @@ public partial class App : Application
             services.AddTransient<ActivationHandler<LaunchActivatedEventArgs>, DefaultActivationHandler>();
 
             // Other Activation Handlers
+            // ...
 
             // Services
             services.AddSingleton<ILocalSettingsService, LocalSettingsService>();
@@ -70,22 +71,31 @@ public partial class App : Application
             // Views and ViewModels
             services.AddTransient<SettingsViewModel>();
             services.AddTransient<SettingsPage>();
+
             services.AddTransient<HospitalReportGridViewModel>();
             services.AddTransient<HospitalReportGridPage>();
+
             services.AddTransient<PharmacyReportGridViewModel>();
             services.AddTransient<PharmacyReportGridPage>();
+
             services.AddTransient<ProductsGridViewModel>();
             services.AddTransient<ProductsGridPage>();
+
             services.AddTransient<PharmaciesGridViewModel>();
             services.AddTransient<PharmaciesGridPage>();
+
             services.AddTransient<OrdersGridViewModel>();
             services.AddTransient<OrdersGridPage>();
+
             services.AddTransient<MedicinesGridViewModel>();
             services.AddTransient<MedicinesGridPage>();
+
             services.AddTransient<HospitalsGridViewModel>();
             services.AddTransient<HospitalsGridPage>();
+
             services.AddTransient<GreetingViewModel>();
             services.AddTransient<GreetingPage>();
+
             services.AddTransient<ShellPage>();
             services.AddTransient<ShellViewModel>();
 

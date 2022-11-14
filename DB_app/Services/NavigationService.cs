@@ -9,8 +9,9 @@ using Microsoft.UI.Xaml.Navigation;
 
 namespace DB_app.Services;
 
-// For more information on navigation between pages see
-// https://github.com/microsoft/TemplateStudio/blob/main/docs/WinUI/navigation.md
+/**
+ * It is in charge of handling the navigation between app pages
+ */
 public class NavigationService : INavigationService
 {
     private readonly IPageService _pageService;

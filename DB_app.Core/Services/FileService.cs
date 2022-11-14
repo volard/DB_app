@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 
 namespace DB_app.Core.Services;
 
+// NOTE used with LocalSettingsService
 public class FileService : IFileService
 {
     public T Read<T>(string folderPath, string fileName)
