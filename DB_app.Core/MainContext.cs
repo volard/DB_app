@@ -1,22 +1,24 @@
-﻿using DB_app.Core.Contracts.Services;
-using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using DB_app.Models;
-using DB_app.Repository;
+using Microsoft.EntityFrameworkCore;
 
-namespace DB_app.Core.Services;
+namespace DB_app.Repository;
 
 /// <summary>
 /// Entity Framework Core DbContext for Contoso.
 /// </summary>
-public class DataAccessService : DbContext, IDataAccessService
+internal class MainContext : DbContext
 {
     /// <summary>
     /// Creates a new Main DbContext.
     /// </summary>
-    public DataAccessService(DbContextOptions<DataAccessService> options) : base(options)
+    public MainContext(DbContextOptions<MainContext> options) : base(options)
     {
     }
-
 
     /// <summary>
     /// Gets the hospital DbSet.
@@ -57,6 +59,4 @@ public class DataAccessService : DbContext, IDataAccessService
     {
         get; set;
     }
-
-
 }

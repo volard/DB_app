@@ -8,12 +8,6 @@ namespace DB_app.Models;
 public class Medicine
 {
     public int id_medicine { get; set; }
-    public int Name
-    {
-        get; set;
-    }
-    public int Type
-    {
-        get; set;
-    }
+    public int Name { get; set; }
+    public int Type { get; set; }
 }

@@ -12,17 +12,23 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
+using Windows.Services.Maps;
 
 namespace DB_app;
 
-
+/// <summary>
+/// Provides application-specific behavior to supplement the default Application class.
+/// </summary>
 public partial class App : Application
 {
-    public IHost Host
-    {
-        get;
-    }
+    /// <summary>
+    /// The .NET Generic Host provides dependency injection, configuration, logging, and other services.
+    /// </summary>
+    public IHost Host { get; }
 
+    /// <summary>
+    /// Get registered service othervise throws an ArgumentException.
+    /// </summary>
     public static T GetService<T>()
         where T : class
     {
@@ -34,8 +40,17 @@ public partial class App : Application
         return service;
     }
 
+    /// <summary>
+    /// Gets main App Window
+    /// </summary>
     public static WindowEx MainWindow { get; } = new MainWindow();
 
+    public static IDataAccessService? DataAccessServiceObject;
+
+    /// <summary>
+    /// Initializes the singleton application object.  This is the first line of authored code
+    /// executed, and as such is the logical equivalent of main() or WinMain().
+    /// </summary>
     public App()
     {
         InitializeComponent();
@@ -43,16 +58,19 @@ public partial class App : Application
         var Builder = Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder();
 
         Host = Builder.UseContentRoot(AppContext.BaseDirectory).
-            // Action<HostBuilderContext, IServiceCollection>
+        // Action<HostBuilderContext, IServiceCollection>
         ConfigureServices((context, services) =>
         {
+            // --------------------------------
             // Default Activation Handler
+            // --------------------------------
             services.AddTransient<ActivationHandler<LaunchActivatedEventArgs>, DefaultActivationHandler>();
 
-            // Other Activation Handlers
-            // ...
 
+            // --------------------------------
             // Services
+            // --------------------------------
+            //register a class as the interface in the DI IServiceCollection container
             services.AddSingleton<ILocalSettingsService, LocalSettingsService>();
             services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
             services.AddTransient<INavigationViewService, NavigationViewService>();
@@ -61,11 +79,19 @@ public partial class App : Application
             services.AddSingleton<IPageService, PageService>();
             services.AddSingleton<INavigationService, NavigationService>();
 
-            // Core Services
-            services.AddSingleton<IDataAccessService, DataAccessService>();
+
+            // --------------------------------
+            // Repository Services
+            // --------------------------------
+
+
+
             services.AddSingleton<IFileService, FileService>();
 
+
+            // --------------------------------
             // Views and ViewModels
+            // --------------------------------
             services.AddTransient<SettingsViewModel>();
             services.AddTransient<SettingsPage>();
 
@@ -96,11 +122,19 @@ public partial class App : Application
             services.AddTransient<ShellPage>();
             services.AddTransient<ShellViewModel>();
 
+
+            // --------------------------------
             // Configuration
+            // --------------------------------
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
 
             var connectionString = context.Configuration.GetValue<string>("ConnectionStrings:Default");
-            
+
+            var optionsBuilder = new DbContextOptionsBuilder<DataAccessService>();
+
+            var options = optionsBuilder.UseNpgsql(connectionString).Options;
+
+            services.AddSingleton<IDataAccessService>(new DataAccessService(options));
         }).
         Build();
 
@@ -113,6 +147,9 @@ public partial class App : Application
         // https://docs.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.application.unhandledexception.
     }
 
+    /// <summary>
+    /// Invoked when the application is launched normally by the end user.
+    /// </summary>
     protected async override void OnLaunched(LaunchActivatedEventArgs args)
     {
         base.OnLaunched(args);

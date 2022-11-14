@@ -129,6 +129,9 @@
   <data name="Settings_AboutDescription.Text" xml:space="preserve">
     <value>Учебное приложение, которое старается быть максимально enterprise</value>
   </data>
+  <data name="Settings_Personalization.Text" xml:space="preserve">
+    <value>Персонализация</value>
+  </data>
   <data name="Settings_Theme.Text" xml:space="preserve">
     <value>Тема</value>
   </data>
@@ -136,7 +139,7 @@
     <value>Темная</value>
   </data>
   <data name="Settings_Theme_Default.Content" xml:space="preserve">
-    <value>Стандартная</value>
+    <value>Системная</value>
   </data>
   <data name="Settings_Theme_Light.Content" xml:space="preserve">
     <value>Светлая</value>

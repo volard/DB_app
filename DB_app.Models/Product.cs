@@ -9,28 +9,17 @@ namespace DB_app.Models;
 public class Product
 {
     [Required]
-    public int id_product
-    {
-        get; set; 
-    }
+    public int id_product { get; set; }
+
     [Required]
-    public int id_medicine
-    {
-        get; set; 
-    }
+    public int id_medicine { get; set; }
+
     [Required]
-    public int id_pharmacy
-    {
-        get; set;
-    }
+    public int id_pharmacy { get; set; }
+
     [Required]
-    public double Price
-    {
-        get; set;
-    }
+    public double Price { get; set; }
+
     [Required]
-    public int Amount
-    {
-        get; set;
-    }
+    public int Amount { get; set; }
 }

@@ -8,12 +8,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DB_app", "DB_app\DB_app.csp
 		{B1CE6863-23F1-4804-A32B-E1EAD24D266F} = {B1CE6863-23F1-4804-A32B-E1EAD24D266F}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DB_app.Core", "DB_app.Core\DB_app.Core.csproj", "{6C7B2B0A-A011-46BA-B5E8-2F61498BEB20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DB_app.Repository", "DB_app.Core\DB_app.Repository.csproj", "{6C7B2B0A-A011-46BA-B5E8-2F61498BEB20}"
 	ProjectSection(ProjectDependencies) = postProject
 		{B1CE6863-23F1-4804-A32B-E1EAD24D266F} = {B1CE6863-23F1-4804-A32B-E1EAD24D266F}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DB_app.Models", "DB_app.Models\DB_app.Models.csproj", "{B1CE6863-23F1-4804-A32B-E1EAD24D266F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DB_app.Models", "DB_app.Models\DB_app.Models.csproj", "{B1CE6863-23F1-4804-A32B-E1EAD24D266F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
