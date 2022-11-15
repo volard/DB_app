@@ -12,7 +12,7 @@ public class MedicinesGridViewModel : ObservableRecipient, INavigationAware
 {
     
 
-    public MedicinesGridViewModel(IDataAccessService sampleDataService)
+    public MedicinesGridViewModel(IRepositoryControllerService sampleDataService)
     {
         
     }

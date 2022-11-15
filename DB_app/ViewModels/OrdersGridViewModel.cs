@@ -11,7 +11,7 @@ namespace DB_app.ViewModels;
 public class OrdersGridViewModel : ObservableRecipient, INavigationAware
 {
     
-    public OrdersGridViewModel(IDataAccessService sampleDataService)
+    public OrdersGridViewModel(IRepositoryControllerService sampleDataService)
     {
        
     }

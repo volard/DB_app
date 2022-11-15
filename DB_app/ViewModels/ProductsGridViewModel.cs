@@ -12,7 +12,7 @@ public class ProductsGridViewModel : ObservableRecipient, INavigationAware
 {
    
 
-    public ProductsGridViewModel(IDataAccessService sampleDataService)
+    public ProductsGridViewModel(IRepositoryControllerService sampleDataService)
     {
        
     }

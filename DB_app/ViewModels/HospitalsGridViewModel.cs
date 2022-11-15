@@ -10,13 +10,13 @@ namespace DB_app.ViewModels;
 
 public class HospitalsGridViewModel : ObservableRecipient, INavigationAware
 {
-    private readonly IDataAccessService _sampleDataService;
+    private readonly IRepositoryControllerService _sampleDataService;
 
     //public ObservableCollection<SampleOrder> Source { get; } = new ObservableCollection<SampleOrder>();
 
     public HospitalsGridViewModel()
     {
-        _sampleDataService = App.GetService<IDataAccessService>();
+        _sampleDataService = App.GetService<IRepositoryControllerService>();
     }
 
     //public async void OnNavigatedTo(object parameter)

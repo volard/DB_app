@@ -4,6 +4,7 @@ using DB_app.Core.Contracts.Services;
 using DB_app.Core.Services;
 using DB_app.Helpers;
 using DB_app.Models;
+using DB_app.Repository.Services;
 using DB_app.Services;
 using DB_app.ViewModels;
 using DB_app.Views;
@@ -12,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
+using DB_app.Repository.PosgresMain;
 using Windows.Services.Maps;
 
 namespace DB_app;
@@ -45,7 +47,7 @@ public partial class App : Application
     /// </summary>
     public static WindowEx MainWindow { get; } = new MainWindow();
 
-    public static IDataAccessService? DataAccessServiceObject;
+    public static IRepositoryControllerService? DataAccessServiceObject;
 
     /// <summary>
     /// Initializes the singleton application object.  This is the first line of authored code
@@ -83,8 +85,6 @@ public partial class App : Application
             // --------------------------------
             // Repository Services
             // --------------------------------
-
-
 
             services.AddSingleton<IFileService, FileService>();
 
@@ -128,13 +128,14 @@ public partial class App : Application
             // --------------------------------
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
 
+
             var connectionString = context.Configuration.GetValue<string>("ConnectionStrings:Default");
 
-            var optionsBuilder = new DbContextOptionsBuilder<DataAccessService>();
+            var optionsBuilder = new DbContextOptionsBuilder<PostgresContext>();
 
             var options = optionsBuilder.UseNpgsql(connectionString).Options;
 
-            services.AddSingleton<IDataAccessService>(new DataAccessService(options));
+            services.AddSingleton<IRepositoryControllerService>(new PostgresMainControllerService(options));
         }).
         Build();
 

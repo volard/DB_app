@@ -1,4 +1,4 @@
-﻿namespace DB_app.Core.Contracts.Services;
+﻿namespace DB_app.Contracts.Services;
 
 public interface IFileService
 {

@@ -5,6 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace DB_app.Repository;
-internal interface IHospitalRepository
+public interface IHospitalRepository
 {
 }

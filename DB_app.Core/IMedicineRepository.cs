@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DB_app.Repository;
-public interface IOrderRepository
+namespace DB_app.Repository
 {
+    public interface IMedicineRepository
+    {
+    }
 }

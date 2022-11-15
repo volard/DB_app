@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-using DB_app.Core.Contracts.Services;
+using DB_app.Contracts.Services;
 
 using Newtonsoft.Json;
 
