@@ -12,11 +12,16 @@ public class HospitalsGridViewModel : ObservableRecipient, INavigationAware
 {
     private readonly IRepositoryControllerService _sampleDataService;
 
+    public var somevar;
+
+    // TODO: here is the spot where I've stuck
+
     //public ObservableCollection<SampleOrder> Source { get; } = new ObservableCollection<SampleOrder>();
 
     public HospitalsGridViewModel()
     {
         _sampleDataService = App.GetService<IRepositoryControllerService>();
+
     }
 
     //public async void OnNavigatedTo(object parameter)

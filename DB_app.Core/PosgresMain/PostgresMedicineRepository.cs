@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DB_app.Models;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,5 +21,9 @@ namespace DB_app.Repository.PosgresMain
             _db = db;
         }
 
+        public async Task<IEnumerable<Medicine>> GetAsync()
+        {
+            return await _db.Medicines.AsNoTracking().ToListAsync();
+        }
     }
 }

@@ -42,7 +42,7 @@
 
                 <NavigationViewItem x:Uid="Shell_Greeting" helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.GreetingViewModel">
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;" />
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe80f;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="Shell_HospitalsGrid" helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.HospitalsGridViewModel">
@@ -52,7 +52,7 @@
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="Shell_MedicinesGrid" helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.MedicinesGridViewModel">
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe80a;" />
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe912;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="Shell_OrdersGrid" helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.OrdersGridViewModel">

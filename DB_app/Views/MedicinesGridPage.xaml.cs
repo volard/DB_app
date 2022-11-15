@@ -7,10 +7,7 @@ namespace DB_app.Views;
 
 public sealed partial class MedicinesGridPage : Page
 {
-    public MedicinesGridViewModel ViewModel
-    {
-        get;
-    }
+    public MedicinesGridViewModel ViewModel{ get; }
 
     public MedicinesGridPage()
     {
