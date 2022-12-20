@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 using DB_app.Contracts.ViewModels;
 using DB_app.Core.Contracts.Services;
+using DB_app.Models;
 using DB_app.Repository;
 
 namespace DB_app.ViewModels;
@@ -14,19 +15,25 @@ public class MedicinesGridViewModel : ObservableRecipient, INavigationAware
 
 
 
-    public ObservableCollection<> Source { get; }
+    public ObservableCollection<Medicine> Source { get; } = new ObservableCollection<Medicine>();
 
 
     public MedicinesGridViewModel()
     {
         _repositoryControllerService = App.GetService<IRepositoryControllerService>();
-        Source = new ObservableCollection<_repositoryControllerService.Medicines>();
         
     }
 
-    public void OnNavigatedTo(object parameter)
+    public async void OnNavigatedTo(object parameter)
     {
-        
+        Source.Clear();
+        var data = await _repositoryControllerService.Medicines.GetAsync();
+
+        foreach (var item in data)
+        {
+            Source.Add(item);
+        }
+
     }
 
     public void OnNavigatedFrom()

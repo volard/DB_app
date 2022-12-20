@@ -9,6 +9,7 @@ namespace DB_app.Models;
 public class Pharmacy
 {
     [Required]
+    [Key]
     public int id_pharmacy { get; set; }
 
     [Required]

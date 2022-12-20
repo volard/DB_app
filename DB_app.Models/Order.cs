@@ -9,7 +9,8 @@ namespace DB_app.Models;
 public class Order
 {
     [Required]
-    public int id_order { get; set; }
+    [Key]
+    public int id_order     { get; set; }
 
     [Required]
     public int id_hospital { get; set; }

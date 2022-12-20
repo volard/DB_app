@@ -14,40 +14,14 @@ namespace DB_app.Repository.PosgresMain
     public class PostgresContext : DbContext
     {
 
-        /// <summary>
-        /// Creates a new Main Postgres DbContext.
-        /// </summary>
         public PostgresContext(DbContextOptions<PostgresContext> options) : base(options)
         { }
 
-        /// <summary>
-        /// Gets the hospital DbSet.
-        /// </summary>
-        public DbSet<Hospital> Hospitals { get; set; }
-
-        /// <summary>
-        /// Gets the orders DbSet.
-        /// </summary>
-        public DbSet<Order> Orders { get; set; }
-
-        /// <summary>
-        /// Gets the products DbSet.
-        /// </summary>
-        public DbSet<Product> Products { get; set; }
-
-        /// <summary>
-        /// Gets the Pharmacy items DbSet.
-        /// </summary>
-        public DbSet<Pharmacy> Pharmacies { get; set; }
-
-        /// <summary>
-        /// Gets the Address items DbSet.
-        /// </summary>
-        public DbSet<Address> Addresses { get; set; }
-
-        /// <summary>
-        /// Gets the products DbSet.
-        /// </summary>
-        public DbSet<Medicine> Medicines { get; set; }
+        public DbSet<Hospital> Hospitals    { get; set; }
+        public DbSet<Order>    Orders       { get; set; }
+        public DbSet<Product>  Products     { get; set; }
+        public DbSet<Pharmacy> Pharmacies   { get; set; }
+        public DbSet<Address>  Addresses    { get; set; }
+        public DbSet<Medicine> Medicines    { get; set; }
     }
 }

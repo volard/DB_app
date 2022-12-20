@@ -4,6 +4,7 @@ namespace DB_app.Models;
 public class Hospital
 {
     [Required]
+    [Key]
     public int id_hospital { get; set; }
 
     [Required]

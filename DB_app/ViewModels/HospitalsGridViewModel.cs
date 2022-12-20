@@ -12,11 +12,10 @@ public class HospitalsGridViewModel : ObservableRecipient, INavigationAware
 {
     private readonly IRepositoryControllerService _sampleDataService;
 
-    public var somevar;
 
     // TODO: here is the spot where I've stuck
 
-    //public ObservableCollection<SampleOrder> Source { get; } = new ObservableCollection<SampleOrder>();
+    public ObservableCollection<Hospital> Source { get; } = new ObservableCollection<Hospital>();
 
     public HospitalsGridViewModel()
     {
@@ -27,10 +26,10 @@ public class HospitalsGridViewModel : ObservableRecipient, INavigationAware
     //public async void OnNavigatedTo(object parameter)
     public void OnNavigatedTo(object parameter)
     {
-        //Source.Clear();
+        Source.Clear();
 
         // TODO: Replace with real data.
-        //var data = await _sampleDataService.GetGridDataAsync();
+        //var data = await _sampleDataService.Hospitals.;
 
         //foreach (var item in data)
         //{

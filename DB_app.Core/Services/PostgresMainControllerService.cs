@@ -6,38 +6,29 @@ using DB_app.Repository.PosgresMain;
 
 namespace DB_app.Repository.Services;
 
-/// <summary>
-/// Entity Framework Core DbContext for Contoso.
-/// </summary>
+
 public class PostgresMainControllerService : IRepositoryControllerService
 {
-    private readonly DbContextOptions<PostgresContext> _dbOptions;
+    private readonly PostgresContext _db;
 
-    /// <summary>
-    /// Creates a new Main DbContext.
-    /// </summary>
+    public IHospitalRepository  Hospitals   { get; private set; }
+    public IOrderRepository     Orders      { get; private set; }
+    public IProductRepository   Products    { get; private set; }
+    public IAddressRepository   Addresses   { get; private set; }
+    public IPharmacyRepository  Pharmacies  { get; private set; }
+    public IMedicineRepository  Medicines   { get; private set; }
+
+
     public PostgresMainControllerService(DbContextOptions<PostgresContext> options)
     {
-        _dbOptions = options;
+        _db = new PostgresContext(options);
+        _db.Database.EnsureCreated();
+
+        Hospitals   = new PostgresHospitalRepository(_db);
+        Orders      = new PostgresOrderRepository(_db);
+        Products    = new PostgresProductRepository(_db);
+        Addresses   = new PostgresAddressRepository(_db);
+        Pharmacies  = new PostgresPharmacyRepository(_db);
+        Medicines   = new PostgresMedicineRepository(_db);
     }
-
-
-    public IHospitalRepository Hospitals => new PostgresHospitalRepository(
-        new PostgresContext(_dbOptions));
-
-    public IOrderRepository Orders => new PostgresOrderRepository(
-        new PostgresContext(_dbOptions));
-
-    public IProductRepository Products => new PostgresProductRepository(
-        new PostgresContext(_dbOptions));
-
-    public IAddressRepository Addresses => new PostgresAddressRepository(
-        new PostgresContext(_dbOptions));
-
-    public IPharmacyRepository Pharmacies => new PostgresPharmacyRepository(
-        new PostgresContext(_dbOptions));
-
-    public IMedicineRepository Medicines => new PostgresMedicineRepository(
-        new PostgresContext(_dbOptions));
-
 }

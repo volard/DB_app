@@ -11,7 +11,10 @@
     <Grid x:Name="ContentArea">
 
 
-        <controls:DataGrid AutoGenerateColumns="False" GridLinesVisibility="Horizontal">
+        <controls:DataGrid 
+            AutoGenerateColumns="False" 
+            GridLinesVisibility="Horizontal"
+            ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}">
             <controls:DataGrid.Resources>
                 <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
             </controls:DataGrid.Resources>

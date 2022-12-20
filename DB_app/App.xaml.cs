@@ -15,6 +15,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
 using DB_app.Repository.PosgresMain;
 using Windows.Services.Maps;
+using Windows.ApplicationModel;
+using Windows.Storage;
 
 namespace DB_app;
 
@@ -133,7 +135,15 @@ public partial class App : Application
 
             var optionsBuilder = new DbContextOptionsBuilder<PostgresContext>();
 
-            var options = optionsBuilder.UseNpgsql(connectionString).Options;
+            string demoDatabasePath = Package.Current.InstalledLocation.Path   + @"\Assets\SQLiteDatabase.db";
+            string databasePath     = ApplicationData.Current.LocalFolder.Path + @"\SQLiteDatabase.db";
+            if (!File.Exists(databasePath))
+            {
+                File.Copy(demoDatabasePath, databasePath);
+            }
+
+            //var options = optionsBuilder.UseNpgsql(connectionString).Options;
+            var options = optionsBuilder.UseSqlite("Data Source=" + databasePath).Options;
 
             services.AddSingleton<IRepositoryControllerService>(new PostgresMainControllerService(options));
         }).
