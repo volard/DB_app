@@ -9,7 +9,20 @@
                 <ResourceDictionary Source="/Styles/FontSizes.xaml" />
                 <ResourceDictionary Source="/Styles/Thickness.xaml" />
                 <ResourceDictionary Source="/Styles/TextBlock.xaml" />
+                <ResourceDictionary>
+                    <Style
+                        x:Key="PageTitleTextBlockStyle"
+                        BasedOn="{StaticResource TitleTextBlockStyle}"
+                        TargetType="TextBlock">
+                        <Setter Property="FontSize" Value="28" />
+                        <Setter Property="TextWrapping" Value="NoWrap" />
+                        <Setter Property="HorizontalAlignment" Value="Left" />
+                        <Setter Property="VerticalAlignment" Value="Top" />
+                        <Setter Property="Margin" Value="0,4,0,0" />
+                    </Style>
+                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
+
     </Application.Resources>
 </Application>
