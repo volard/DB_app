@@ -124,7 +124,7 @@
     <value>Образовательный проект, посвященный разработке простых, но современных Windows-приложений с использованием WinUI 3.0 и Windows App SDK</value>
   </data>
   <data name="Shell_Greeting.Content" xml:space="preserve">
-    <value>Greetings my friend!1</value>
+    <value>Main</value>
   </data>
   <data name="Shell_HospitalsGrid.Content" xml:space="preserve">
     <value>Hospitals</value>

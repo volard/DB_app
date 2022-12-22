@@ -33,21 +33,27 @@
             Canvas.ZIndex="0"
             DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
             ExpandedModeThresholdWidth="1280"
-            Header="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}"
             IsBackButtonVisible="Visible"
             IsBackEnabled="{x:Bind ViewModel.IsBackEnabled, Mode=OneWay}"
             IsSettingsVisible="True"
             SelectedItem="{x:Bind ViewModel.Selected, Mode=OneWay}">
             <NavigationView.MenuItems>
 
+
+
                 <NavigationViewItem x:Uid="Shell_Greeting" helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.GreetingViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe80f;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
+
+                <NavigationViewItemSeparator />
+
+                <NavigationViewItemHeader Content="Data" />
+
                 <NavigationViewItem x:Uid="Shell_HospitalsGrid" helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.HospitalsGridViewModel">
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe80a;" />
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xec07;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="Shell_MedicinesGrid" helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.MedicinesGridViewModel">
@@ -57,30 +63,40 @@
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="Shell_OrdersGrid" helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.OrdersGridViewModel">
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe80a;" />
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7bf;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="Shell_PharmaciesGrid" helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.PharmaciesGridViewModel">
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe80a;" />
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xec0b;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="Shell_ProductsGrid" helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.ProductsGridViewModel">
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe80a;" />
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7b8;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
+
+                <NavigationViewItemSeparator />
+
+                <NavigationViewItemHeader Content="Reports" />
+
                 <NavigationViewItem x:Uid="Shell_PharmacyReportGrid" helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.PharmacyReportGridViewModel">
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe80a;" />
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
+
+
                 <NavigationViewItem x:Uid="Shell_HospitalReportGrid" helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.HospitalReportGridViewModel">
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe80a;" />
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
+
             </NavigationView.MenuItems>
+
+
             <NavigationView.HeaderTemplate>
                 <DataTemplate>
                     <Grid>
@@ -93,13 +109,15 @@
                 <behaviors:NavigationViewHeaderBehavior DefaultHeader="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}">
                     <behaviors:NavigationViewHeaderBehavior.DefaultHeaderTemplate>
                         <DataTemplate>
-                            <Grid x:Name="ShellHeaderTitle">
+                            <Grid Name="FrameTitle">
                                 <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="{Binding}" />
                             </Grid>
                         </DataTemplate>
                     </behaviors:NavigationViewHeaderBehavior.DefaultHeaderTemplate>
                 </behaviors:NavigationViewHeaderBehavior>
             </i:Interaction.Behaviors>
+
+
 
             <Grid Margin="{StaticResource NavigationViewPageContentMargin}">
                 <Frame x:Name="NavigationFrame" />
