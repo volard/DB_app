@@ -6,12 +6,12 @@
     xmlns:behaviors="using:DB_app.Behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:viewModels="using:DB_app.ViewModels"
+    xmlns:viewModel="using:DB_app.ViewModels"
     mc:Ignorable="d">
 
 
     <behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
-        <DataTemplate x:DataType="viewModels:MedicineDetailsPageViewModel">
+        <DataTemplate x:DataType="viewModel:MedicineDetailsPageViewModel">
             <CommandBar
                 HorizontalAlignment="Stretch"
                 Background="Transparent"
@@ -20,9 +20,11 @@
                     <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="Add new" />
                 </CommandBar.Content>
 
-                <AppBarButton Icon="Save" Label="Save" />
                 <AppBarButton
-                    Click="{x:Bind ViewModel.CancelEditsAsync}"
+                    Icon="Save"
+                    Label="Save" />
+                <AppBarButton
+                    Click="AddNewCustomerCanceled"
                     Icon="Cancel"
                     Label="Cancel" />
                 <AppBarSeparator />
@@ -42,28 +44,20 @@
 
         <RelativePanel Margin="8,0,0,12">
             <TextBox
-                x:Name="FirstName"
+                x:Name="Name"
                 MinWidth="300"
                 Margin="10,20,16,8"
-                Header="First name"
+                Header="Name"
                 RelativePanel.AlignLeftWithPanel="True"
-                Text="FirstName" />
+                Text="Name" />
             <TextBox
-                x:Name="CompanyText"
+                x:Name="Type"
                 MinWidth="300"
                 Margin="10,20,16,8"
-                Header="Company name"
+                Header="Type"
                 RelativePanel.AlignLeftWithPanel="True"
-                RelativePanel.Below="FirstName"
-                Text="Company" />
-            <TextBox
-                x:Name="PhoneNumber"
-                MinWidth="300"
-                Margin="10,20,16,8"
-                Header="Primary phone"
-                InputScope="TelephoneNumber"
-                RelativePanel.Below="CompanyText"
-                Text="Phone" />
+                RelativePanel.Below="Name"
+                Text="Type" />
         </RelativePanel>
 
     </ScrollViewer>

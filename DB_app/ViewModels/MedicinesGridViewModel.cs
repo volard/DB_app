@@ -13,12 +13,10 @@ public class MedicinesGridViewModel : ObservableRecipient, INavigationAware
 {
     private readonly IRepositoryControllerService _repositoryControllerService;
 
-
-
     public ObservableCollection<Medicine> Source { get; } = new ObservableCollection<Medicine>();
 
 
-    public MedicinesGridViewModel()
+    public MedicinesGridViewModel(IRepositoryControllerService sampleDataService)
     {
         _repositoryControllerService = App.GetService<IRepositoryControllerService>();
         

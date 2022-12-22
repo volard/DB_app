@@ -67,20 +67,10 @@
                 </controls:DataGrid.Resources>
                 <controls:DataGrid.Columns>
 
-                    <controls:DataGridTextColumn Binding="{Binding OrderID}" Header="OrderID" />
-                    <controls:DataGridTextColumn Binding="{Binding OrderDate}" Header="OrderDate" />
+                    <controls:DataGridTextColumn Binding="{Binding MedicineID}" Header="ID" />
+                    <controls:DataGridTextColumn Binding="{Binding MedicineName}" Header="Name" />
+                    <controls:DataGridTextColumn Binding="{Binding MedicineType}" Header="Type" />
 
-                    <controls:DataGridTemplateColumn Header="Symbol">
-                        <controls:DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <FontIcon
-                                    HorizontalAlignment="Left"
-                                    AutomationProperties.Name="{Binding SymbolName}"
-                                    FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                    Glyph="{Binding Symbol}" />
-                            </DataTemplate>
-                        </controls:DataGridTemplateColumn.CellTemplate>
-                    </controls:DataGridTemplateColumn>
                 </controls:DataGrid.Columns>
             </controls:DataGrid>
         </Grid>

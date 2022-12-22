@@ -14,66 +14,52 @@ using System.ComponentModel;
 
 namespace DB_app.ViewModels;
 
-public class MedicineDetailsPageViewModel : BindableBase, INavigationAware, IEditableObject
+public class MedicineDetailsPageViewModel : BindableBase
 {
     public bool IsModified { get; set; }
 
+    //private readonly IRepositoryControllerService _repositoryControllerService;
+
     private bool _isNewCustomer;
+
+    MedicineDetailsPageViewModel()
+    {
+        //_repositoryControllerService = App.GetService<IRepositoryControllerService>();
+    }
 
     /// <summary>
     /// Gets or sets a value that indicates whether this is a new customer.
     /// </summary>
-    public bool IsNewCustomer
-    {
-        get => _isNewCustomer;
-        set => Set(ref _isNewCustomer, value);
-    }
-
-    /// <summary>
-    /// Raised when the user cancels the changes they've made to the customer data.
-    /// </summary>
-    public event EventHandler AddNewCustomerCanceled;
+    //public bool IsNewCustomer
+    //{
+    //    get => _isNewCustomer;
+    //    set => Set(ref _isNewCustomer, value);
+    //}
 
     /// <summary>
     /// Cancels any in progress edits.
     /// </summary>
-    public CancelEditsAsync()
-    {
-        if (IsNewCustomer)
-        {
-            AddNewCustomerCanceled?.Invoke(this, EventArgs.Empty);
-        }
-        else
-        {
-            IsModified = false;
-        }
-    }
 
 
 
-    public void OnNavigatedFrom()
-    {
-        Console.WriteLine("padf");
-    }
+    //public void OnNavigatedFrom()
+    //{
+    //    Console.WriteLine("padf");
+    //}
 
-    public void OnNavigatedTo(object parameter)
-    {
-        Console.WriteLine("sasdfasdf");
-    }
+    //public void OnNavigatedTo(object parameter)
+    //{
+    //    Console.WriteLine("sasdfasdf");
+    //}
 
-    public void BeginEdit()
-    {
-        throw new NotImplementedException();
-    }
+    /// <summary>
+    /// Saves customer data that has been edited.
+    /// </summary>
+    //public  void SaveAsync()
+    //{
+        //await _repositoryControllerService.Medicines.upsertAsync();
+    //    Console.WriteLine("Im motherfucker to myself. Im selffucker");
+    //}
 
-    public void CancelEdit()
-    {
-        throw new NotImplementedException();
-    }
-
-    public void EndEdit()
-    {
-        throw new NotImplementedException();
-    }
 }
 

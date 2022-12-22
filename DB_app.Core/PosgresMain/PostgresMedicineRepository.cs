@@ -25,5 +25,17 @@ namespace DB_app.Repository.PosgresMain
         {
             return await _db.Medicines.AsNoTracking().ToListAsync();
         }
+
+        public async Task<IEnumerable<Medicine>> UpsertAsync()
+        {
+            return await _db.Medicines.AsNoTracking().ToListAsync();
+        }
+
+        public async void upsertAsync(Medicine medicine)
+        {
+            _db.Medicines.Add(medicine);
+            await _db.SaveChangesAsync();
+
+        }
     }
 }

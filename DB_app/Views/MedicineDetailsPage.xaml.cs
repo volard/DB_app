@@ -25,14 +25,14 @@ namespace DB_app.Views
 
         public MedicineDetailsPage()
         {
-            ViewModel = App.GetService<MedicineDetailsPageViewModel>();
+            //ViewModel = App.GetService<MedicineDetailsPageViewModel>();
             InitializeComponent();
         }
 
         /// <summary>
-        /// Navigate to the previous page when the user cancels the creation of a new customer record.
+        /// Navigate to the previous page when the user cancels the creation of a new record.
         /// </summary>
-        private void AddNewCustomerCanceled(object sender, EventArgs e) => Frame.GoBack();
+        private void AddNewCustomerCanceled(object sender, RoutedEventArgs e) => Frame.GoBack();
 
 
     }

@@ -13,5 +13,10 @@ namespace DB_app.Repository
         /// Returns all medicines. 
         /// </summary>
         Task<IEnumerable<Medicine>> GetAsync();
+
+        /// <summary>
+        /// Upserts new medicine
+        /// </summary>
+        public void upsertAsync(Medicine medicine);
     }
 }
