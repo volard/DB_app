@@ -24,8 +24,8 @@ namespace DB_app.Views
         public MedicineDetailsPageViewModel ViewModel { get; }
 
         public MedicineDetailsPage()
-        {
-            //ViewModel = App.GetService<MedicineDetailsPageViewModel>();
+        { 
+            ViewModel = App.GetService<MedicineDetailsPageViewModel>();
             InitializeComponent();
         }
 
@@ -34,6 +34,6 @@ namespace DB_app.Views
         /// </summary>
         private void AddNewCustomerCanceled(object sender, RoutedEventArgs e) => Frame.GoBack();
 
-
+        
     }
 }

@@ -25,6 +25,7 @@
 
 
                 <AppBarButton
+                    x:Name="CommandBarAddButton"
                     Click="AddNewMedicine_Click"
                     Icon="Add"
                     Label="Add new"

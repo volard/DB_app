@@ -21,6 +21,7 @@
                 </CommandBar.Content>
 
                 <AppBarButton
+                    Click="ViewModel.SayFuckYou"
                     Icon="Save"
                     Label="Save" />
                 <AppBarButton
