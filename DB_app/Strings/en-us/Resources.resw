@@ -121,7 +121,7 @@
     <value>MMS - Medicine management system</value>
   </data>
   <data name="AppDescription" xml:space="preserve">
-    <value>Образовательный проект, посвященный разработке простых, но современных Windows-приложений с использованием WinUI 3.0 и Windows App SDK</value>
+    <value>Educational project dedicated to developing simple yet modern Windows applications using WinUI 3.0 and Windows App SDK</value>
   </data>
   <data name="Shell_Greeting.Content" xml:space="preserve">
     <value>Main</value>

@@ -17,6 +17,7 @@ using DB_app.Repository.PosgresMain;
 using Windows.Services.Maps;
 using Windows.ApplicationModel;
 using Windows.Storage;
+using System.Diagnostics;
 
 namespace DB_app;
 
@@ -140,7 +141,11 @@ public partial class App : Application
 
             string demoDatabasePath = Package.Current.InstalledLocation.Path   + @"\Assets\SQLiteDatabase.db";
             string databasePath     = ApplicationData.Current.LocalFolder.Path + @"\SQLiteDatabase.db";
-            if (!File.Exists(databasePath))
+            
+            Debug.WriteLine("The db's file is located in " + databasePath);
+            // C:\Users\volard\AppData\Local\Packages\143B4C51-0F44-4D70-BB38-F638E2F61F1B_7fv57v02n40z6\LocalState
+
+            if (!File.Exists(databasePath) && File.Exists(demoDatabasePath))
             {
                 File.Copy(demoDatabasePath, databasePath);
             }

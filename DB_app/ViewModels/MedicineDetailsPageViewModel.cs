@@ -12,56 +12,69 @@ using System.Threading.Tasks;
 using Microsoft.UI.Xaml.Navigation;
 using System.ComponentModel;
 using Microsoft.UI.Xaml;
+using System.Diagnostics;
+using Microsoft.UI.Xaml.Controls;
 
 namespace DB_app.ViewModels;
 
-public class MedicineDetailsPageViewModel : ObservableRecipient, INavigationAware
+public class MedicineDetailsPageViewModel : INavigationAware
 {
-    public bool IsModified { get; set; }
-
     private readonly IRepositoryControllerService _repositoryControllerService;
-
-    private bool _isNewCustomer;
+    public bool isInEdit;
 
     public MedicineDetailsPageViewModel()
     {
         _repositoryControllerService = App.GetService<IRepositoryControllerService>();
     }
 
-    public void SayFuckYou(object sender, RoutedEventArgs e) => Console.WriteLine("fuck u dude");
-
-    /// <summary>
-    /// Gets or sets a value that indicates whether this is a new customer.
-    /// </summary>
-    //public bool IsNewCustomer
-    //{
-    //    get => _isNewCustomer;
-    //    set => Set(ref _isNewCustomer, value);
-    //}
-
-    /// <summary>
-    /// Cancels any in progress edits.
-    /// </summary>
-
 
 
     public void OnNavigatedFrom()
     {
-        Console.WriteLine("padf");
+        Debug.WriteLine("Medicine Details Page was closed");
     }
 
     public void OnNavigatedTo(object parameter)
     {
-        Console.WriteLine("sasdfasdf");
+        Debug.WriteLine("Medicine Details Page was opened");
     }
 
     /// <summary>
     /// Saves customer data that has been edited.
     /// </summary>
-    public void SaveAsync()
+    public void SaveAsync(object sender, RoutedEventArgs e)
     {
         //await _repositoryControllerService.Medicines.upsertAsync();
-        Console.WriteLine("Im motherfucker to myself. Im selffucker");
+
+        Random rnd = new();
+
+        List<string> names = new()
+        {
+            "Philipp",
+            "Eric",
+            "Steven",
+            "Peter",
+            "Alex",
+            "Meg"
+        };
+
+        List<string> types = new()
+        {
+            "Box", 
+            "Spray",
+            "Shit",
+            "Funny Stuff",
+            "Idiotizm"
+        };
+
+        Medicine test = new()
+        {
+            Name = names.ElementAt(rnd.Next(names.Count)),
+            Type = types.ElementAt(rnd.Next(types.Count))
+        };
+
+        _repositoryControllerService.Medicines.upsertAsync(test);
+
     }
 
 }

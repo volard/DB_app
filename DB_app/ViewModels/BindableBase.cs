@@ -13,7 +13,7 @@ namespace DB_app.ViewModels
         /// <summary> 
         /// Occurs when a property value changes.
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         /// <summary>
         /// Notifies listeners that a property value has changed.
@@ -21,7 +21,7 @@ namespace DB_app.ViewModels
         /// <param name="propertyName">Name of the property used to notify listeners. This
         /// value is optional and can be provided automatically when invoked from compilers
         /// that support <see cref="CallerMemberNameAttribute"/>.</param>
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null) => 
+        protected void OnPropertyChanged([CallerMemberName] string? propertyName = null) => 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
         /// <summary>
@@ -36,8 +36,8 @@ namespace DB_app.ViewModels
         /// support CallerMemberName.</param>
         /// <returns>True if the value was changed, false if the existing value matched the
         /// desired value.</returns>
-        protected bool Set<T>(ref T storage, T value,
-            [CallerMemberName] String propertyName = null)
+        protected bool Set<T>(ref T? storage, T value,
+            [CallerMemberName] String? propertyName = null)
         {
             if (Equals(storage, value))
             {

@@ -10,6 +10,10 @@ public class Medicine
 {
     [Key]
     public int id_medicine  { get; set; }
-    public int Name         { get; set; }
-    public int Type         { get; set; }
+
+    [Required]
+    public String Name         { get; set; }
+
+    [Required]
+    public String Type         { get; set; }
 }

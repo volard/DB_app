@@ -23,12 +23,11 @@ public class HospitalsGridViewModel : ObservableRecipient, INavigationAware
 
     }
 
-    //public async void OnNavigatedTo(object parameter)
+    //public async void OnNavigatedTo(object parameter)t
     public void OnNavigatedTo(object parameter)
     {
         Source.Clear();
 
-        // TODO: Replace with real data.
         //var data = await _sampleDataService.Hospitals.;
 
         //foreach (var item in data)
