@@ -17,38 +17,39 @@
                 HorizontalAlignment="Stretch"
                 Background="Transparent"
                 DefaultLabelPosition="Right">
+
                 <CommandBar.Content>
-
-                    <!--  Get MainPageTitle.Text from localized resources  -->
-
-                    <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="{Binding}" />
+                    <!--  TODO get localized resourses  -->
+                    <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="Medicines" />
                 </CommandBar.Content>
-
 
                 <AppBarButton
                     x:Name="CommandBarAddButton"
-                    Click="ViewModel.test"
+                    Click="AddNewMedicine_Click"
                     Icon="Add"
                     Label="Add new"
                     ToolTipService.ToolTip="Add new" />
 
                 <AppBarButton
                     x:Name="CommandBarEditButton"
+                    Click="AddNewMedicine_Click"
                     Icon="Edit"
-                    IsEnabled="{x:Bind Path=isGridItemSelected, Mode=OneWay}"
+                    IsEnabled="{Binding IsGridItemSelected, Mode=OneWay}"
                     Label="Edit"
                     ToolTipService.ToolTip="Edit" />
 
                 <AppBarButton
                     x:Name="CommandBarDeleteButton"
+                    Click="ViewModel.deleteItem_Click"
                     Icon="Delete"
-                    IsEnabled="false"
+                    IsEnabled="{Binding IsGridItemSelected, Mode=OneWay}"
                     Label="Delete"
-                    ToolTipService.ToolTip="Delete" /> 
+                    ToolTipService.ToolTip="Delete" />
 
             </CommandBar>
         </DataTemplate>
     </behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
+
 
 
 
@@ -63,10 +64,11 @@
             RelativePanel.AlignRightWithPanel="True">
 
 
-
             <controls:DataGrid
                 AutoGenerateColumns="False"
-                GridLinesVisibility="Horizontal"
+                CanUserReorderColumns="False"
+                GridLinesVisibility="All"
+                IsReadOnly="True"
                 ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
                 SelectedItem="{x:Bind ViewModel.SelectedMedicine, Mode=TwoWay}"
                 SelectionMode="Single">
@@ -78,6 +80,7 @@
 
                 <controls:DataGrid.Columns>
 
+                    <!--  As I got it, DataGrid doesn't support x:Bind  -->
                     <controls:DataGridTextColumn Binding="{Binding Name}" Header="Name" />
                     <controls:DataGridTextColumn Binding="{Binding Type}" Header="Type" />
 

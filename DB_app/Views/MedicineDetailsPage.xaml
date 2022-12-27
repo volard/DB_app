@@ -25,11 +25,13 @@
                     Icon="Save"
                     Label="Save" />
                 <AppBarButton
-                    Click="AddNewCustomerCanceled"
+                    Click="AddNewMedicineCanceled"
                     Icon="Cancel"
                     Label="Cancel" />
                 <AppBarSeparator />
-                <AppBarButton Icon="Edit" Label="Edit" />
+                <AppBarButton
+                    Icon="Edit"
+                    Label="Edit" />
             </CommandBar>
         </DataTemplate>
     </behaviors:NavigationViewHeaderBehavior.HeaderTemplate>

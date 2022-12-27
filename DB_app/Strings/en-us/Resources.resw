@@ -174,4 +174,7 @@
   <data name="SettingsPage_PrivacyTermsLink.NavigateUri" xml:space="preserve">
     <value>https://google.com?/</value>
   </data>
+  <data name="DB_app.ViewModels.MedicinesGridViewModel" xml:space="preserve">
+    <value>Medicines</value>
+  </data>
 </root>

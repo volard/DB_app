@@ -128,6 +128,8 @@ public partial class App : Application
             services.AddTransient<ShellPage>();
             services.AddTransient<ShellViewModel>();
 
+            services.AddTransient<MedicineViewModel>();
+
 
             // --------------------------------
             // Configuration

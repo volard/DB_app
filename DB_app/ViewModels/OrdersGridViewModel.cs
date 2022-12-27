@@ -10,7 +10,9 @@ namespace DB_app.ViewModels;
 
 public class OrdersGridViewModel : ObservableRecipient, INavigationAware
 {
-    
+    /// <summary>
+    /// Creates a new <see cref="OrdersGridViewModel"/> instance.
+    /// </summary>
     public OrdersGridViewModel(IRepositoryControllerService sampleDataService)
     {
        

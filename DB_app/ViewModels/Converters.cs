@@ -15,13 +15,13 @@ namespace DB_app.ViewModels
         /// <summary>
         /// Returns true if the specified value is not null; otherwise, returns false.
         /// </summary>
-        public static bool IsNotNull(object value)
+        public static bool IsNotNull(object? value)
         {
             if (value == null)
             {
-                return true;
+                return false;
             }
-            return false;
+            return true;
         }
 
 
