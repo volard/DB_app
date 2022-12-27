@@ -37,5 +37,15 @@ namespace DB_app.Repository.PosgresMain
             await _db.SaveChangesAsync();
 
         }
+
+        public async Task DeleteAsync(int id)
+        {
+            var foundMedicine = await _db.Medicines.FirstOrDefaultAsync(_medicine => _medicine.id_medicine == id);
+            if (null != foundMedicine)
+            {
+                _db.Medicines.Remove(foundMedicine);
+                await _db.SaveChangesAsync();
+            }
+        }
     }
 }

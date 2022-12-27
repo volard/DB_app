@@ -9,6 +9,12 @@ namespace DB_app.Repository
 {
     public interface IMedicineRepository
     {
+
+        /// <summary>
+        /// Deletes specified medicine
+        /// </summary>
+        public Task DeleteAsync(int id);
+
         /// <summary>
         /// Returns all medicines. 
         /// </summary>
