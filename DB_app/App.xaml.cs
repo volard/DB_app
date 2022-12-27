@@ -50,8 +50,6 @@ public partial class App : Application
     /// </summary>
     public static WindowEx MainWindow { get; } = new MainWindow();
 
-    public static IRepositoryControllerService? DataAccessServiceObject;
-
     /// <summary>
     /// Initializes the singleton application object.  This is the first line of authored code
     /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -63,7 +61,6 @@ public partial class App : Application
         var Builder = Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder();
 
         Host = Builder.UseContentRoot(AppContext.BaseDirectory).
-        // Action<HostBuilderContext, IServiceCollection>
         ConfigureServices((context, services) =>
         {
             // --------------------------------

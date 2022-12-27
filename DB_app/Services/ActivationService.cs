@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Reflection.Metadata;
 using DB_app.Activation;
@@ -7,6 +9,8 @@ using DB_app.Views;
 
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Documents;
+using static ABI.System.Windows.Input.ICommand_Delegates;
 
 namespace DB_app.Services;
 
@@ -17,8 +21,10 @@ public class ActivationService : IActivationService
     private readonly IThemeSelectorService _themeSelectorService;
     private UIElement? _shell = null;
 
-    public ActivationService(ActivationHandler<LaunchActivatedEventArgs> defaultHandler, 
-        IEnumerable<IActivationHandler> activationHandlers, IThemeSelectorService themeSelectorService)
+    public ActivationService(
+        ActivationHandler<LaunchActivatedEventArgs> defaultHandler, 
+        IEnumerable<IActivationHandler> activationHandlers, 
+        IThemeSelectorService themeSelectorService)
     {
         _defaultHandler = defaultHandler;
         _activationHandlers = activationHandlers;
@@ -68,22 +74,28 @@ public class ActivationService : IActivationService
             await _defaultHandler.HandleAsync(activationArgs);
         }
     }
-    
-    /**
-     * Contains services initialization for services that are going to be used as ActivationHandler.
-     * This method is called before the window is activated. Only code that needs to be executed before app 
-     * activation should be placed here, as the splash screen is shown while this code is executed.
-     */
+
+
+
+    /// <summary>
+    /// Contains services initialization for services that are going to be used as ActivationHandler.
+    /// This method is called before the window is activated.Only code that needs to be executed before app
+    /// activation should be placed here, as the splash screen is shown while this code is executed.
+    /// </summary>
+    /// <returns></returns>
     private async Task InitializeAsync()
     {
         await _themeSelectorService.InitializeAsync().ConfigureAwait(false);
         await Task.CompletedTask;
     }
 
-    /**
-     * Contains initializations of other classes that do not need to happen before app activation 
-     * and starts processes that will be run after the Window is activated.
-     */
+
+
+    /// <summary>
+    /// Contains initializations of other classes that do not need to happen before app activation 
+    /// and starts processes that will be run after the Window is activated.
+    /// </summary>
+    /// <returns></returns>
     private async Task StartupAsync()
     {
         await _themeSelectorService.SetRequestedThemeAsync();

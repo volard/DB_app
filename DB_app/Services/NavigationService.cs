@@ -9,9 +9,9 @@ using Microsoft.UI.Xaml.Navigation;
 
 namespace DB_app.Services;
 
-/**
- * It is in charge of handling the navigation between app pages
- */
+/// <summary>
+/// It is in charge of handling the navigation between app pages
+/// </summary>
 public class NavigationService : INavigationService
 {
     private readonly IPageService _pageService;
