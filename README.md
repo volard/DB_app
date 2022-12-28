@@ -2,7 +2,7 @@
 Dumb-ass native application for Windows to control turnover of medicines on a market.
 
 ## ✨ Features
-- Loosely-coupled classes (not fully supported yet)
+- Loosely-coupled classes
 - Multilanguage support (approptiate setting is not implemented)
 - Dark / Light theme
 
