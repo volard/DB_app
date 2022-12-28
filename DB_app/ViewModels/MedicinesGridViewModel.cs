@@ -1,44 +1,37 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using CommunityToolkit.Mvvm.ComponentModel;
-
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using DB_app.Contracts.ViewModels;
 using DB_app.Core.Contracts.Services;
 using DB_app.Models;
-using DB_app.Repository;
+using DB_app.ViewModels.ObjectWrappers;
 using Microsoft.UI.Xaml;
-using Microsoft.Windows.AppNotifications;
-using Microsoft.Windows.AppNotifications.Builder;
-using Windows.Web.AtomPub;
+using System.Collections.ObjectModel;
 
 namespace DB_app.ViewModels;
 
-public partial class MedicinesGridViewModel : ObservableRecipient, INavigationAware
+public partial class MedicinesGridViewModel : ObservableObject, INavigationAware
 {
-    private readonly IRepositoryControllerService _repositoryControllerService;
-    public ObservableCollection<Medicine> Source { get; set; } = new ObservableCollection<Medicine>();
+    private readonly IRepositoryControllerService _repositoryControllerService
+        = App.GetService<IRepositoryControllerService>();
+    public ObservableCollection<MedicineWrapper> Source { get; set; } = new ObservableCollection<MedicineWrapper>();
 
-    private Medicine _model;
-
-
+    private MedicineWrapper _model;
+    
 
     /// <summary>
     /// Creates a new <see cref="MedicinesGridViewModel"/> instance.
     /// </summary>
-    public MedicinesGridViewModel(Medicine model)
+    public MedicinesGridViewModel(MedicineWrapper model)
     {
-        _repositoryControllerService = App.GetService<IRepositoryControllerService>();
         _model = model;
         _isGridItemSelected = false;
     }
 
-
+    /// <summary>
+    /// Creates a new <see cref="MedicinesGridViewModel"/> instance with new <see cref="MedicineWrapper"/>
+    /// </summary>
     public MedicinesGridViewModel()
     {
-        _repositoryControllerService = App.GetService<IRepositoryControllerService>();
-        _model = new Medicine();
+        _model = new MedicineWrapper();
     }
 
 
@@ -46,10 +39,6 @@ public partial class MedicinesGridViewModel : ObservableRecipient, INavigationAw
 
 
     #region IsGridItemSelected property
-
-    // NOTE for some reason code generators and NavigationViewHeaderBehavior
-    // (https://github.com/microsoft/TemplateStudio/blob/main/docs/UWP/projectTypes/navigationpane.md)
-    // can't work toghether in proper way so I have to write everything by hand
 
     /// <summary>
     /// Indicates whether user selected Medicine item in the grid
@@ -69,14 +58,13 @@ public partial class MedicinesGridViewModel : ObservableRecipient, INavigationAw
 
     #region SelectedMedicine property
 
-    private Medicine? _selectedMedicine;
-    public Medicine? SelectedMedicine
+    private MedicineWrapper? _selectedMedicine;
+    public MedicineWrapper? SelectedMedicine
     {
         get => _selectedMedicine;
         set
         {
             SetProperty(ref _selectedMedicine, value);
-            Debug.WriteLine("hui sosi syka");
             IsGridItemSelected = Converters.IsNotNull(value);
         }
     }
@@ -89,7 +77,7 @@ public partial class MedicinesGridViewModel : ObservableRecipient, INavigationAw
     /// <summary>
     /// Represents current Medicine object
     /// </summary>
-    public Medicine Model
+    public MedicineWrapper Model
     {
         get => _model;
         set
@@ -115,7 +103,7 @@ public partial class MedicinesGridViewModel : ObservableRecipient, INavigationAw
     {
         if (_selectedMedicine != null)
         {
-            int id = _selectedMedicine.id_medicine;
+            int id = _selectedMedicine.MedicineData.id_medicine;
             await _repositoryControllerService.Medicines.DeleteAsync(id);
             Source.Remove(_selectedMedicine);
         }
@@ -126,14 +114,14 @@ public partial class MedicinesGridViewModel : ObservableRecipient, INavigationAw
 
     public async void OnNavigatedTo(object parameter)
     {
-        if (Source.Count < 1) 
+        if (Source.Count < 1)
         {
             Source.Clear();
             var data = await _repositoryControllerService.Medicines.GetAsync();
 
             foreach (var item in data)
             {
-                Source.Add(item);
+                Source.Add(new MedicineWrapper(item));
             }
         }
     }

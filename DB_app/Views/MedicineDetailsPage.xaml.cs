@@ -2,32 +2,21 @@
 using DB_app.Behaviors;
 using DB_app.Models;
 using DB_app.ViewModels;
+using DB_app.ViewModels.ObjectWrappers;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 namespace DB_app.Views
 {
 
     public sealed partial class MedicineDetailsPage : Page
     {
-        public MedicineDetailsPageViewModel ViewModel { get; }
+        public MedicineDetailsViewModel ViewModel { get; }
 
         public MedicineDetailsPage()
         {
-            ViewModel = App.GetService<MedicineDetailsPageViewModel>();
+            ViewModel = App.GetService<MedicineDetailsViewModel>();
             InitializeComponent();
             SetBinding(NavigationViewHeaderBehavior.HeaderContextProperty, new Binding
             {
@@ -39,8 +28,40 @@ namespace DB_app.Views
         /// <summary>
         /// Navigate to the previous page when the user cancels the creation of a new record.
         /// </summary>
-        private void AddNewMedicineCanceled(object sender, RoutedEventArgs e) => Frame.GoBack();
+        private void AddNewMedicineCanceled(object sender, RoutedEventArgs e)
+            => Frame.GoBack();
 
+        /// <summary>
+        /// Check whether there are unsaved changes and warn the user.
+        /// </summary>
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            // TODO implement this
+        }
 
+        /// <summary>
+        /// Loads selected MedicineWrapper object or creates a new order.
+        /// </summary>
+        /// <param name="e">Info about the event.</param>
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            var selectedMedicine = (MedicineWrapper)e.Parameter;
+            if (selectedMedicine != null)
+            {
+                ViewModel.CurrentMedicine = selectedMedicine;
+            }
+
+            base.OnNavigatedTo(e);
+        }
+
+        private void NameText_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ViewModel.Name = Name.Text;
+        }
+
+        private void TypeText_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ViewModel.Type = Type.Text;
+        }
     }
 }

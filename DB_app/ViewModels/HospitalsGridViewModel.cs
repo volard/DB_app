@@ -10,30 +10,20 @@ namespace DB_app.ViewModels;
 
 public class HospitalsGridViewModel : ObservableRecipient, INavigationAware
 {
-    private readonly IRepositoryControllerService _sampleDataService;
+    private readonly IRepositoryControllerService _sampleDataService
+        = App.GetService<IRepositoryControllerService>();
 
-
-    // TODO: here is the spot where I've stuck
 
     public ObservableCollection<Hospital> Source { get; } = new ObservableCollection<Hospital>();
 
     public HospitalsGridViewModel()
     {
-        _sampleDataService = App.GetService<IRepositoryControllerService>();
 
     }
 
-    //public async void OnNavigatedTo(object parameter)t
     public void OnNavigatedTo(object parameter)
     {
-        Source.Clear();
 
-        //var data = await _sampleDataService.Hospitals.;
-
-        //foreach (var item in data)
-        //{
-        //    Source.Add(item);
-        //}
     }
 
     public void OnNavigatedFrom()

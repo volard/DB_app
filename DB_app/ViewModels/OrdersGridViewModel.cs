@@ -13,12 +13,12 @@ public class OrdersGridViewModel : ObservableRecipient, INavigationAware
     /// <summary>
     /// Creates a new <see cref="OrdersGridViewModel"/> instance.
     /// </summary>
-    public OrdersGridViewModel(IRepositoryControllerService sampleDataService)
+    public OrdersGridViewModel()
     {
        
     }
 
-    public async void OnNavigatedTo(object parameter)
+    public void OnNavigatedTo(object parameter)
     {
         
     }

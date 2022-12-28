@@ -11,7 +11,7 @@ namespace DB_app.ViewModels;
 public class PharmacyReportGridViewModel : ObservableRecipient, INavigationAware
 {
 
-    public PharmacyReportGridViewModel(IRepositoryControllerService sampleDataService)
+    public PharmacyReportGridViewModel()
     {
       
     }

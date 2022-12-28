@@ -11,7 +11,7 @@
 
 
     <behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
-        <DataTemplate x:DataType="viewModel:MedicineDetailsPageViewModel">
+        <DataTemplate x:DataType="viewModel:MedicineDetailsViewModel">
             <CommandBar
                 HorizontalAlignment="Stretch"
                 Background="Transparent"
@@ -29,9 +29,7 @@
                     Icon="Cancel"
                     Label="Cancel" />
                 <AppBarSeparator />
-                <AppBarButton
-                    Icon="Edit"
-                    Label="Edit" />
+                <AppBarButton Icon="Edit" Label="Edit" />
             </CommandBar>
         </DataTemplate>
     </behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
@@ -52,7 +50,8 @@
                 Margin="10,20,16,8"
                 Header="Name"
                 RelativePanel.AlignLeftWithPanel="True"
-                Text="Name" />
+                Text="{x:Bind ViewModel.Name, Mode=TwoWay}"
+                TextChanged="NameText_TextChanged" />
             <TextBox
                 x:Name="Type"
                 MinWidth="300"
@@ -60,7 +59,8 @@
                 Header="Type"
                 RelativePanel.AlignLeftWithPanel="True"
                 RelativePanel.Below="Name"
-                Text="Type" />
+                Text="{x:Bind ViewModel.Type, Mode=TwoWay}"
+                TextChanged="TypeText_TextChanged" />
         </RelativePanel>
 
     </ScrollViewer>

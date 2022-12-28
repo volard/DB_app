@@ -1,4 +1,5 @@
-﻿using DB_app.Core.Contracts.Services;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using DB_app.Core.Contracts.Services;
 using DB_app.Models;
 using System;
 using System.Collections.Generic;
@@ -8,15 +9,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DB_app.ViewModels
+namespace DB_app.ViewModels.ObjectWrappers
 {
-    public class MedicineViewModel : IEditableObject
+    /// <summary>
+    /// Provides wrapper for the Order model class, encapsulating various services for access by the UI.
+    /// </summary>
+    public class MedicineWrapper : ObservableObject, IEditableObject
     {
-        private readonly IRepositoryControllerService _repositoryControllerService;
-        public MedicineViewModel(Medicine medicine) 
+        private readonly IRepositoryControllerService _repositoryControllerService 
+            = App.GetService<IRepositoryControllerService>();
+
+        public MedicineWrapper(Medicine medicine)
         {
-            _repositoryControllerService = App.GetService<IRepositoryControllerService>();
             _medicineData = medicine;
+        }
+
+        public MedicineWrapper()
+        {
+            _medicineData = new Medicine();
         }
 
 
@@ -38,9 +48,16 @@ namespace DB_app.ViewModels
         }
 
 
-        private Medicine? customizedData;
-        private Medicine? backupedData;
-        private bool inTxn = false;
+        //private Medicine? customizedData;
+        //private Medicine? backupedData;
+
+        private bool isModified = false;
+
+        public bool IsModified
+        {
+            get => isModified;
+            set => isModified = value;
+        }
 
 
         #region IEditable implementation
@@ -48,11 +65,13 @@ namespace DB_app.ViewModels
         public void BeginEdit()
         {
             Debug.WriteLine("Look at me! Im soooo lazy to implement BeginEdit");
+            isModified= true;
         }
 
         public void CancelEdit()
         {
             Debug.WriteLine("Look at me! Im soooo lazy to implement CancelEdit");
+            isModified= false;
         }
 
         public void EndEdit()

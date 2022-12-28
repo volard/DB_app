@@ -29,22 +29,9 @@ public sealed partial class MedicinesGridPage : Page
     private void AddNewMedicine_Click(object sender, RoutedEventArgs e) =>
             Frame.Navigate(typeof(MedicineDetailsPage), null, new DrillInNavigationTransitionInfo());
 
-    public void testNoutification(object sender, RoutedEventArgs e)
-    {
-        var builder = new AppNotificationBuilder()
-            .SetAppLogoOverride(new Uri("ms-appx:///images/reminder.png"))
-            .AddArgument("conversationId", "9813") 
-            .AddText("Some text")
-
-            .SetAudioUri(new Uri("ms-appx:///Sound.mp3"));
-
-        AppNotificationManager.Default.Show(builder.BuildNotification());
-    }
-
-    private void EditExistingMedicine(object sender, RoutedEventArgs e)
+    private void EditExistingMedicine_Click(object sender, RoutedEventArgs e)
     {
         Frame.Navigate(typeof(MedicineDetailsPage), ViewModel.SelectedMedicine);
-        //Frame.Navigate(typeof(MedicineDetailsPage), ViewModel.SelectedMedicine, new DrillInNavigationTransitionInfo());
     }
 
 

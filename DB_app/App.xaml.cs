@@ -95,7 +95,7 @@ public partial class App : Application
             services.AddTransient<SettingsViewModel>();
             services.AddTransient<SettingsPage>();
 
-            services.AddTransient<MedicineDetailsPageViewModel>();
+            services.AddTransient<MedicineDetailsViewModel>();
             services.AddTransient<MedicineDetailsPage>();
 
             services.AddTransient<HospitalReportGridViewModel>();
@@ -124,8 +124,6 @@ public partial class App : Application
 
             services.AddTransient<ShellPage>();
             services.AddTransient<ShellViewModel>();
-
-            services.AddTransient<MedicineViewModel>();
 
 
             // --------------------------------
@@ -163,6 +161,7 @@ public partial class App : Application
     {
         // TODO: Log and handle exceptions as appropriate.
         // https://docs.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.application.unhandledexception.
+        Debug.Write(e.Message);
     }
 
     /// <summary>

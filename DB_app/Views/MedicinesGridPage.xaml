@@ -32,7 +32,7 @@
 
                 <AppBarButton
                     x:Name="CommandBarEditButton"
-                    Click="AddNewMedicine_Click"
+                    Click="EditExistingMedicine_Click"
                     Icon="Edit"
                     IsEnabled="{Binding IsGridItemSelected, Mode=OneWay}"
                     Label="Edit"
