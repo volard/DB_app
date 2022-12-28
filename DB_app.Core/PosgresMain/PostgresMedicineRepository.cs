@@ -63,7 +63,10 @@ namespace DB_app.Repository.PosgresMain
                 await _db.SaveChangesAsync();
                 Debug.WriteLine("DeleteAsync: " + foundMedicine.Name + "was succesfully deleted from the Database");
             }
-            Debug.WriteLine("DeleteAsync: No medicine under specified id was found in the Database");
+            else
+            {
+                Debug.WriteLine("DeleteAsync: No medicine under specified id was found in the Database");
+            }    
         }
     }
 }

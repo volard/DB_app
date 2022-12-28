@@ -75,8 +75,6 @@ public partial class MedicineDetailsViewModel : ObservableObject
     public async void SaveAsync(object sender, RoutedEventArgs e)
     {
 
-        var builder = new AppNotificationBuilder();
-
         if (IsEditDisabled) // Create new medicine
         {
             Medicine newMedicine = new()
@@ -86,11 +84,6 @@ public partial class MedicineDetailsViewModel : ObservableObject
             };
             await _repositoryControllerService.Medicines.InsertAsync(newMedicine);
 
-            builder
-                .SetAppLogoOverride(new Uri("ms-appx:///images/reminder.png"), AppNotificationImageCrop.Circle)
-                .AddArgument("conversationId", "9813")
-                .AddText($"Medicine under name '{this.name}' and type '{this.type}' was created")
-                .SetAudioUri(new Uri("ms-appx:///Sound.mp3"));
         }
         else // Update existing medicine
         {
@@ -101,19 +94,11 @@ public partial class MedicineDetailsViewModel : ObservableObject
                 _currentMedicine.IsModified = true;
 
                 await _repositoryControllerService.Medicines.UpdateAsync(_currentMedicine.MedicineData);
-
-
-                builder
-                    .SetAppLogoOverride(new Uri("ms-appx:///images/reminder.png"), AppNotificationImageCrop.Circle)
-                    .AddArgument("conversationId", "9813")
-                    .AddText($"Medicine under name '{this.name}' and type '{this.type}' was updated")
-                    .SetAudioUri(new Uri("ms-appx:///Sound.mp3"));
             }
 
            
         }
-        
-        AppNotificationManager.Default.Show(builder.BuildNotification());
+
     }
 }
 

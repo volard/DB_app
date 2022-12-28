@@ -4,9 +4,6 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Media.Animation;
-using Microsoft.Windows.AppNotifications.Builder;
-using Microsoft.Windows.AppNotifications;
-using System.Diagnostics;
 using Microsoft.UI.Xaml.Navigation;
 using DB_app.ViewModels.ObjectWrappers;
 
@@ -35,17 +32,13 @@ public sealed partial class MedicinesGridPage : Page
         {
             ViewModel.SyncDataGridWithModified(modifiedMedicine);
         }
-
         base.OnNavigatedTo(e);
     }
 
     private void AddNewMedicine_Click(object sender, RoutedEventArgs e) =>
         Frame.Navigate(typeof(MedicineDetailsPage), null, new DrillInNavigationTransitionInfo());
 
-    private void EditExistingMedicine_Click(object sender, RoutedEventArgs e)
-    {
-        Frame.Navigate(typeof(MedicineDetailsPage), ViewModel.SelectedMedicine);
-    }
-
+    private void EditExistingMedicine_Click(object sender, RoutedEventArgs e) =>
+        Frame.Navigate(typeof(MedicineDetailsPage), ViewModel.SelectedMedicine, new DrillInNavigationTransitionInfo());
 
 }
