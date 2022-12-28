@@ -21,8 +21,13 @@ namespace DB_app.Repository
         Task<IEnumerable<Medicine>> GetAsync();
 
         /// <summary>
-        /// Upserts new medicine
+        /// Inserts new medicine
         /// </summary>
-        public void upsertAsync(Medicine medicine);
+        public void InsertAsync(Medicine medicine);
+
+        /// <summary>
+        /// Updates existing medicine
+        /// </summary>
+        public void UpdateAsync(Medicine medicine);
     }
 }
