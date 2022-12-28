@@ -14,17 +14,17 @@ public partial class MedicinesGridViewModel : ObservableObject, INavigationAware
         = App.GetService<IRepositoryControllerService>();
     public ObservableCollection<MedicineWrapper> Source { get; set; } = new ObservableCollection<MedicineWrapper>();
 
-    private MedicineWrapper _model;
+    
     
 
     /// <summary>
     /// Creates a new <see cref="MedicinesGridViewModel"/> instance.
     /// </summary>
-    public MedicinesGridViewModel(MedicineWrapper model)
-    {
-        _model = model;
-        _isGridItemSelected = false;
-    }
+    //public MedicinesGridViewModel(MedicineWrapper model)
+    //{
+    //    _model = model;
+    //    _isGridItemSelected = false;
+    //}
 
     /// <summary>
     /// Creates a new <see cref="MedicinesGridViewModel"/> instance with new <see cref="MedicineWrapper"/>
@@ -74,6 +74,8 @@ public partial class MedicinesGridViewModel : ObservableObject, INavigationAware
 
     #region Model property
 
+    private MedicineWrapper _model;
+
     /// <summary>
     /// Represents current Medicine object
     /// </summary>
@@ -107,6 +109,19 @@ public partial class MedicinesGridViewModel : ObservableObject, INavigationAware
             await _repositoryControllerService.Medicines.DeleteAsync(id);
             Source.Remove(_selectedMedicine);
         }
+    }
+
+
+    /// <summary>
+    /// Saves any modified MedicineWrappers and reloads the MedicineWrapper list from the database.
+    /// </summary>
+    public void SyncDataGridWithModified(MedicineWrapper modifiedMedicineWrapper) // TODO WTF brah
+    {
+        // TODO rename it or something IDK it's just looks terrible imo
+        var foundInSource = Source.First(wrapper => wrapper.MedicineData.id_medicine == modifiedMedicineWrapper.MedicineData.id_medicine);
+        modifiedMedicineWrapper.IsModified = false; // TODO why do we even store this??
+        int index = Source.IndexOf(foundInSource);
+        Source[index] = modifiedMedicineWrapper;
     }
 
 

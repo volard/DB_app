@@ -16,4 +16,6 @@ public class Medicine
 
     [Required]
     public String Type         { get; set; }
+
+    public override string ToString() => $"Medicine '{Name}' under '{Type}' type";
 }

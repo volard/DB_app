@@ -13,22 +13,12 @@ public partial class MedicineDetailsViewModel : ObservableObject
     private readonly IRepositoryControllerService _repositoryControllerService
          = App.GetService<IRepositoryControllerService>();
 
-
+    [ObservableProperty]
     private bool _isEditDisabled;
 
-    public bool IsEditDisabled
-    {
-        get => _isEditDisabled;
-        set => _isEditDisabled = value;
-    }
-
+    [ObservableProperty]
     private bool _isEditEnabled;
 
-    public bool IsEditEnabled
-    {
-        get => _isEditEnabled;
-        set => _isEditEnabled = value;
-    }
 
 
     public MedicineDetailsViewModel()
@@ -82,19 +72,19 @@ public partial class MedicineDetailsViewModel : ObservableObject
     /// <summary>
     /// Saves customer data that has been edited.
     /// </summary>
-    public void SaveAsync(object sender, RoutedEventArgs e)
+    public async void SaveAsync(object sender, RoutedEventArgs e)
     {
 
-        Medicine newMedicine = new()
-        {
-            Name = this.name,
-            Type = this.type
-        };
         var builder = new AppNotificationBuilder();
 
-        if (IsEditDisabled)
+        if (IsEditDisabled) // Create new medicine
         {
-            _repositoryControllerService.Medicines.InsertAsync(newMedicine);
+            Medicine newMedicine = new()
+            {
+                Name = this.name,
+                Type = this.type
+            };
+            await _repositoryControllerService.Medicines.InsertAsync(newMedicine);
 
             builder
                 .SetAppLogoOverride(new Uri("ms-appx:///images/reminder.png"), AppNotificationImageCrop.Circle)
@@ -102,20 +92,27 @@ public partial class MedicineDetailsViewModel : ObservableObject
                 .AddText($"Medicine under name '{this.name}' and type '{this.type}' was created")
                 .SetAudioUri(new Uri("ms-appx:///Sound.mp3"));
         }
-        else
+        else // Update existing medicine
         {
-            _repositoryControllerService.Medicines.UpdateAsync(newMedicine);
-            
-            
+            if (_currentMedicine != null) // TODO WTF is happening here - its redundant but I can't remove it 
+            {
+                _currentMedicine.Name = this.name;
+                _currentMedicine.Type = this.name;
+                _currentMedicine.IsModified = true;
 
-            builder
-                .SetAppLogoOverride(new Uri("ms-appx:///images/reminder.png"), AppNotificationImageCrop.Circle)
-                .AddArgument("conversationId", "9813")
-                .AddText($"Medicine under name '{this.name}' and type '{this.type}' was updated")
-                .SetAudioUri(new Uri("ms-appx:///Sound.mp3"));
+                await _repositoryControllerService.Medicines.UpdateAsync(_currentMedicine.MedicineData);
+
+
+                builder
+                    .SetAppLogoOverride(new Uri("ms-appx:///images/reminder.png"), AppNotificationImageCrop.Circle)
+                    .AddArgument("conversationId", "9813")
+                    .AddText($"Medicine under name '{this.name}' and type '{this.type}' was updated")
+                    .SetAudioUri(new Uri("ms-appx:///Sound.mp3"));
+            }
+
+           
         }
         
-
         AppNotificationManager.Default.Show(builder.BuildNotification());
     }
 }

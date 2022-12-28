@@ -68,7 +68,7 @@
                 AutoGenerateColumns="False"
                 CanUserReorderColumns="False"
                 GridLinesVisibility="All"
-                IsReadOnly="True"
+                IsReadOnly="False"
                 ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
                 SelectedItem="{x:Bind ViewModel.SelectedMedicine, Mode=TwoWay}"
                 SelectionMode="Single">

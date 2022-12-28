@@ -25,6 +25,21 @@ namespace DB_app.Views
             });
         }
 
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ViewModel.CurrentMedicine != null) 
+            {
+                if (ViewModel.CurrentMedicine.IsModified)
+                {
+                    Frame.Navigate(typeof(MedicinesGridPage), ViewModel.CurrentMedicine);
+                }
+                
+            }
+            
+        }
+
+
         /// <summary>
         /// Navigate to the previous page when the user cancels the creation of a new record.
         /// </summary>

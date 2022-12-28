@@ -7,6 +7,8 @@ using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.Windows.AppNotifications.Builder;
 using Microsoft.Windows.AppNotifications;
 using System.Diagnostics;
+using Microsoft.UI.Xaml.Navigation;
+using DB_app.ViewModels.ObjectWrappers;
 
 namespace DB_app.Views;
 
@@ -26,8 +28,19 @@ public sealed partial class MedicinesGridPage : Page
         });
     }
 
+    protected override void OnNavigatedTo(NavigationEventArgs e)
+    {
+        var modifiedMedicine = (MedicineWrapper)e.Parameter;
+        if (modifiedMedicine != null)
+        {
+            ViewModel.SyncDataGridWithModified(modifiedMedicine);
+        }
+
+        base.OnNavigatedTo(e);
+    }
+
     private void AddNewMedicine_Click(object sender, RoutedEventArgs e) =>
-            Frame.Navigate(typeof(MedicineDetailsPage), null, new DrillInNavigationTransitionInfo());
+        Frame.Navigate(typeof(MedicineDetailsPage), null, new DrillInNavigationTransitionInfo());
 
     private void EditExistingMedicine_Click(object sender, RoutedEventArgs e)
     {

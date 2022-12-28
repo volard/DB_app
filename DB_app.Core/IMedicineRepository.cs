@@ -23,11 +23,11 @@ namespace DB_app.Repository
         /// <summary>
         /// Inserts new medicine
         /// </summary>
-        public void InsertAsync(Medicine medicine);
+        public Task InsertAsync(Medicine medicine);
 
         /// <summary>
         /// Updates existing medicine
         /// </summary>
-        public void UpdateAsync(Medicine medicine);
+        public Task UpdateAsync(Medicine medicine);
     }
 }
