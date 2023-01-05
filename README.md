@@ -28,11 +28,19 @@ For now everything works in connection with SQLite automatically, but previously
 ## 🌍 References
 
 ### Docs
-- [XAML Brewer blog, by Diederik Krols](https://xamlbrewer.wordpress.com)
+
+
 - [Template Studio docs for WinUI 3 apps](https://github.com/microsoft/TemplateStudio/blob/main/docs/WinUI/readme.md)
 - [Guidance about building desktop apps for Windows 10/11](https://learn.microsoft.com/en-us/windows/apps/desktop/)
 - [Windows Community Toolkit Documentation](https://learn.microsoft.com/en-us/windows/communitytoolkit/)
 - [Universal Windows Platform docs](https://learn.microsoft.com/en-us/windows/uwp/get-started/)
+- [XAML Behaviors docs](https://github.com/Microsoft/XamlBehaviors/wiki)
+
+---
+
+- [XAML Brewer blog, by Diederik Krols (this man is really cool)](https://xamlbrewer.wordpress.com)
+- [Nick's .NET Travels blog](https://nicksnettravels.builttoroam.com)
+
 
 
 ### Samples
@@ -40,7 +48,7 @@ For now everything works in connection with SQLite automatically, but previously
 - [Categorized Windows App SDK Samples](https://learn.microsoft.com/en-us/windows/apps/get-started/samples)
 - [Customers-orders-database](https://github.com/Microsoft/Windows-appsample-customers-orders-database)
 - [Universal Windows Platform (UWP) app samples](https://github.com/microsoft/Windows-universal-samples)
-
+- [Input validation sample](https://github.com/XamlBrewer/UWP-MVVM-Toolkit-Validation-Sample)
 
 
 

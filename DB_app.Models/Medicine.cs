@@ -9,13 +9,13 @@ namespace DB_app.Models;
 public class Medicine
 {
     [Key]
-    public int id_medicine  { get; set; }
+    public int id_medicine  { get; private set; }
 
     [Required]
-    public String Name         { get; set; }
+    public string Name         { get; set; }
 
     [Required]
-    public String Type         { get; set; }
+    public string Type         { get; set; }
 
-    public override string ToString() => $"Medicine '{Name}' under '{Type}' type";
+    public override string ToString() => $"Medicine '{Name}' under '{Type}' type with '{id_medicine}' id";
 }

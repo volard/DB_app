@@ -3,7 +3,6 @@
 using DB_app.Contracts.Services;
 using DB_app.ViewModels;
 using DB_app.Views;
-
 using Microsoft.UI.Xaml.Controls;
 using System.Collections.Generic;
 
@@ -35,6 +34,10 @@ public class PageService : IPageService
         Configure<MedicinesGridViewModel, MedicinesGridPage>();
         Configure<MedicineDetailsViewModel, MedicineDetailsPage>();
 
+        // Addresses
+        Configure<AddressesGridViewModel, AddressesGridPage>();
+        Configure<AddressDetailsViewModel, AddressDetailsPage>();
+
         
         Configure<OrdersGridViewModel, OrdersGridPage>();
         Configure<PharmaciesGridViewModel, PharmaciesGridPage>();
@@ -53,10 +56,10 @@ public class PageService : IPageService
     }
 
     /// <summary>
-    /// Gets the page type under the specified key
+    /// Gets the page newType under the specified key
     /// </summary>
-    /// <param name="key">The key corresponds to the Page's ViewModel FullName</param>
-    /// <returns>Page type</returns>
+    /// <param newName="key">The key corresponds to the Page's ViewModel FullName</param>
+    /// <returns>Page newType</returns>
     /// <exception cref="ArgumentException"> is thrown if no page specified under the given key</exception>
     public Type GetPageType(string key)
     {
@@ -75,12 +78,12 @@ public class PageService : IPageService
     /// <summary>
     /// Associate ViewModel with page
     /// </summary>
-    /// <typeparam name="VM">ViewModel class</typeparam>
-    /// <typeparam name="V">View class</typeparam>
+    /// <typeparam newName="VM">ViewModel class</typeparam>
+    /// <typeparam newName="V">View class</typeparam>
     /// <exception cref="ArgumentException"> throws if
-    ///     <list type="bullet">
-    ///         <item>ViewName's name already was associated with some Page's type</item>
-    ///         <item>Page type was already associated with some ViewModel's name</item>
+    ///     <list newType="bullet">
+    ///         <item>ViewName's newName already was associated with some Page's newType</item>
+    ///         <item>Page newType was already associated with some ViewModel's newName</item>
     ///     </list>
     /// </exception>
     private void Configure<VM, V>()

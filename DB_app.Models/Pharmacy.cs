@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 namespace DB_app.Models;
 public class Pharmacy
 {
+
     [Required]
     [Key]
     public int id_pharmacy { get; set; }
@@ -21,5 +23,8 @@ public class Pharmacy
     [Required]
     public int OGRN {get; set;}
 
-    public List<Address> Addresses { get; set; } = new List<Address>();
+    [Required]
+    public List<Address> Addresses { get; set; }
+
+    public override string ToString() => $"Pharmacy '{Name}' with '{INN}' INN and {OGRN} OGRN";
 }

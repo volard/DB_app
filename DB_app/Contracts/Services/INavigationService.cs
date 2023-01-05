@@ -24,10 +24,10 @@ public interface INavigationService
     /// Method to navigate between pages. For more information, please visit 
     /// <see href="https://github.com/microsoft/TemplateStudio/blob/main/docs/WinUI/navigation.md">GitHub page</see>
     /// </summary>
-    /// <param name="pageKey"></param>
-    /// <param name="parameter"> It's a page key. These page keys are registered in the <see cref="DB_app.Contracts.Services.IPageService"/> 
+    /// <param newName="pageKey"></param>
+    /// <param newName="parameter"> It's a page key. These page keys are registered in the <see cref="DB_app.Contracts.Services.IPageService"/> 
     /// constructor and correspond to the Page's ViewModel FullName.</param>
-    /// <param name="clearNavigation"></param>
+    /// <param newName="clearNavigation"></param>
     /// <returns></returns>
     bool NavigateTo(string pageKey, object? parameter = null, bool clearNavigation = false);
 

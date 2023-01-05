@@ -177,4 +177,7 @@
   <data name="DB_app.ViewModels.MedicinesGridViewModel" xml:space="preserve">
     <value>Medicines</value>
   </data>
+  <data name="Shell_AddressesGrid.Content" xml:space="preserve">
+    <value>Addresses</value>
+  </data>
 </root>

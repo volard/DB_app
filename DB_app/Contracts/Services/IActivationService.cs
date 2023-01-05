@@ -11,7 +11,7 @@ public interface IActivationService
     /// <summary>
     /// The entry point for the application lifecycle event `OnLaunched`
     /// </summary>
-    /// <param name="activationArgs"></param>
+    /// <param newName="activationArgs"></param>
     /// <returns></returns>
     Task ActivateAsync(object activationArgs);
 }

@@ -92,32 +92,54 @@ public partial class App : Application
             // --------------------------------
             // Views and ViewModels
             // --------------------------------
-            services.AddTransient<SettingsViewModel>();
-            services.AddTransient<SettingsPage>();
 
-            services.AddTransient<MedicineDetailsViewModel>();
+            // === Address
+            services.AddTransient<AddressDetailsViewModel>();
+
+
+            // === Medicine
             services.AddTransient<MedicineDetailsPage>();
+            services.AddTransient<MedicinesGridViewModel>();
+            services.AddTransient<MedicinesGridPage>();
+            services.AddTransient<MedicineDetailsViewModel>();
 
-            services.AddTransient<HospitalReportGridViewModel>();
-            services.AddTransient<HospitalReportGridPage>();
 
-            services.AddTransient<PharmacyReportGridViewModel>();
-            services.AddTransient<PharmacyReportGridPage>();
-
-            services.AddTransient<ProductsGridViewModel>();
-            services.AddTransient<ProductsGridPage>();
-
-            services.AddTransient<PharmaciesGridViewModel>();
-            services.AddTransient<PharmaciesGridPage>();
-
+            // === Order
             services.AddTransient<OrdersGridViewModel>();
             services.AddTransient<OrdersGridPage>();
 
-            services.AddTransient<MedicinesGridViewModel>();
-            services.AddTransient<MedicinesGridPage>();
+
+            // === Pharmacy
+            services.AddTransient<PharmacyReportGridViewModel>();
+            services.AddTransient<PharmacyReportGridPage>();
+
+
+            // === Product
+            services.AddTransient<ProductsGridViewModel>();
+            services.AddTransient<ProductsGridPage>();
+            services.AddTransient<PharmaciesGridViewModel>();
+            services.AddTransient<PharmaciesGridPage>();
+
+
+            // === Address
+            services.AddTransient<AddressesGridViewModel>();
+            services.AddTransient<AddressesGridPage>();
+
+            services.AddTransient<AddressDetailsViewModel>();
+            services.AddTransient<AddressDetailsPage>();
+
+
+            // === Hospital
+            services.AddTransient<HospitalReportGridViewModel>();
+            services.AddTransient<HospitalReportGridPage>();
 
             services.AddTransient<HospitalsGridViewModel>();
             services.AddTransient<HospitalsGridPage>();
+
+
+            // === Misc
+            services.AddTransient<SettingsViewModel>();
+            services.AddTransient<SettingsPage>(); 
 
             services.AddTransient<GreetingViewModel>();
             services.AddTransient<GreetingPage>();
@@ -134,7 +156,7 @@ public partial class App : Application
 
             var connectionString = context.Configuration.GetValue<string>("ConnectionStrings:Default");
 
-            var optionsBuilder = new DbContextOptionsBuilder<PostgresContext>();
+            var optionsBuilder = new DbContextOptionsBuilder<SQLContext>();
 
             string demoDatabasePath = Package.Current.InstalledLocation.Path   + @"\Assets\SQLiteDatabase.db";
             string databasePath     = ApplicationData.Current.LocalFolder.Path + @"\SQLiteDatabase.db";
@@ -150,11 +172,11 @@ public partial class App : Application
             //var options = optionsBuilder.UseNpgsql(connectionString).Options;
             var options = optionsBuilder.UseSqlite("Data Source=" + databasePath).Options;
 
-            services.AddSingleton<IRepositoryControllerService>(new PostgresMainControllerService(options));
+            services.AddSingleton<IRepositoryControllerService>(new SQLControllerService(options));
         }).
         Build();
 
-        UnhandledException += App_UnhandledException;
+        //UnhandledException += App_UnhandledException;
     }
 
     private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)

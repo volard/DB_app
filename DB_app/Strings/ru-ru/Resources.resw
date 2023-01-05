@@ -144,6 +144,9 @@
   <data name="Settings_Theme_Light.Content" xml:space="preserve">
     <value>Светлая</value>
   </data>
+  <data name="Shell_AddressesGrid.Content" xml:space="preserve">
+    <value>Адреса</value>
+  </data>
   <data name="Shell_Greeting.Content" xml:space="preserve">
     <value>Мои поздравления, вы на месте</value>
   </data>

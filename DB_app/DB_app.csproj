@@ -15,6 +15,8 @@
     <EnableMsixTooling>true</EnableMsixTooling>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="AddressesGridPage.xaml" />
+    <None Remove="Views\Address\AddressDetailsPage.xaml" />
     <None Remove="Views\MedicineDetailsPage.xaml" />
   </ItemGroup>
   <ItemGroup>
@@ -42,9 +44,15 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Views\SaveChangesDialog.xaml">
+    <Page Update="AddressesGridPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <None Update="Views\Components\SaveChangesDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
+    <Page Update="Views\Address\AddressDetailsPage.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
     <Page Update="Views\MedicineDetailsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -52,6 +60,14 @@
 
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <ProjectCapability Include="Msix" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Medicine\" />
+    <Folder Include="Views\Hospital\" />
+    <Folder Include="Views\Order\" />
+    <Folder Include="Views\Product\" />
+    <Folder Include="Views\Pharmacy\" />
   </ItemGroup>
   
   <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
