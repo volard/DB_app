@@ -14,14 +14,14 @@ public partial class AddressWrapper : ObservableValidator, IEditableObject, IEqu
 {
     public AddressWrapper(Address address)
     {
-        addressData = address;
+        AddressData = address;
         ErrorsChanged += Suspect_ErrorsChanged;
         NotifyAboutProperties();
     }
 
     public AddressWrapper()
     {
-        addressData = new();
+        AddressData = new();
         ErrorsChanged += Suspect_ErrorsChanged;
         NotifyAboutProperties();
     }
@@ -50,19 +50,19 @@ public partial class AddressWrapper : ObservableValidator, IEditableObject, IEqu
         = App.GetService<IRepositoryControllerService>();
 
 
-    public Address addressData { get; set; }
+    public Address AddressData { get; set; }
 
     [Required(ErrorMessage = "City is Required")]
     public string City
     {
-        get => addressData.City;
+        get => AddressData.City;
         set
         {
             ValidateProperty(value);
             Debug.WriteLine($"I've just validated the name and got this errors: {Errors}");
             if (!GetErrors(nameof(City)).Any())
             {
-                addressData.City = value;
+                AddressData.City = value;
                 OnPropertyChanged();
             }
             Debug.WriteLine($"\nfor name property especially: {GetErrors(nameof(City))}");
@@ -73,14 +73,14 @@ public partial class AddressWrapper : ObservableValidator, IEditableObject, IEqu
     [Required(ErrorMessage = "Street is Required")]
     public string Street
     {
-        get => addressData.Street;
+        get => AddressData.Street;
         set
         {
             ValidateProperty(value);
             Debug.WriteLine($"I've just validated the type and got this errors: {Errors}");
             if (!GetErrors(nameof(Street)).Any())
             {
-                addressData.Street = value;
+                AddressData.Street = value;
                 OnPropertyChanged();
             }
             Debug.WriteLine($"\nfor type property especially: {GetErrors(nameof(Street))}");
@@ -90,14 +90,14 @@ public partial class AddressWrapper : ObservableValidator, IEditableObject, IEqu
     [Required(ErrorMessage = "Building is Required")]
     public string Building
     {
-        get => addressData.Building;
+        get => AddressData.Building;
         set
         {
             ValidateProperty(value);
             Debug.WriteLine($"I've just validated the type and got this errors: {Errors}");
             if (!GetErrors(nameof(Building)).Any())
             {
-                addressData.Building = value;
+                AddressData.Building = value;
                 OnPropertyChanged();
             }
             Debug.WriteLine($"\nfor type property especially: {GetErrors(nameof(Building))}");
@@ -130,7 +130,7 @@ public partial class AddressWrapper : ObservableValidator, IEditableObject, IEqu
     public bool AreNoErrors 
         => !HasErrors;
 
-    public int Id { get => addressData.id_address; }
+    public int Id { get => AddressData.id_address; }
 
     // TODO implement cancel button on notification popup
     public string? BackupedCity;
@@ -156,9 +156,9 @@ public partial class AddressWrapper : ObservableValidator, IEditableObject, IEqu
 
     public void BuckupData()
     {
-        BackupedCity = addressData.City;
-        BackupedStreet = addressData.Street;
-        BackupedBuilding = addressData.Building;
+        BackupedCity = AddressData.City;
+        BackupedStreet = AddressData.Street;
+        BackupedBuilding = AddressData.Building;
     }
 
     public void ApplyChanges() => isModified = true;
@@ -198,8 +198,8 @@ public partial class AddressWrapper : ObservableValidator, IEditableObject, IEqu
 
     public async void EndEdit()
     {
-        Debug.WriteLine($"EndEdit : For now the editable addressWrapper = {addressData}");
-        await _repositoryControllerService.Addresses.UpdateAsync(addressData);
+        Debug.WriteLine($"EndEdit : For now the editable addressWrapper = {AddressData}");
+        await _repositoryControllerService.Addresses.UpdateAsync(AddressData);
     }
 
     public bool Equals(AddressWrapper? other) =>
