@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 using DB_app.Core.Contracts.Services;
 using DB_app.Models;
 using System.ComponentModel;
@@ -15,16 +16,19 @@ namespace DB_app.ViewModels;
 public partial class MedicineWrapper : ObservableValidator, IEditableObject, IEquatable<MedicineWrapper>
 {
     
+    
     public MedicineWrapper(Medicine medicine)
     {
         MedicineData = medicine;
         ErrorsChanged += Suspect_ErrorsChanged;
+        NotifyAboutProperties();
     }
 
     public MedicineWrapper()
     {
         MedicineData = new();
         ErrorsChanged += Suspect_ErrorsChanged;
+        NotifyAboutProperties();
     }
 
     private void Suspect_ErrorsChanged(object sender, DataErrorsChangedEventArgs e)
@@ -81,6 +85,12 @@ public partial class MedicineWrapper : ObservableValidator, IEditableObject, IEq
             }
             Debug.WriteLine($"\nfor type property especially: {GetErrors(nameof(Name))}");
         }
+    }
+
+    public void NotifyAboutProperties()
+    {
+        OnPropertyChanged(nameof(Name));
+        OnPropertyChanged(nameof(Type));
     }
 
 

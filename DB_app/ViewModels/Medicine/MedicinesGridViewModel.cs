@@ -1,14 +1,17 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
 using DB_app.Contracts.ViewModels;
 using DB_app.Core.Contracts.Services;
+using DB_app.Services.Messages;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace DB_app.ViewModels;
 
-public partial class MedicinesGridViewModel : ObservableObject, INavigationAware
+public partial class MedicinesGridViewModel : ObservableRecipient, INavigationAware, IRecipient<AddMedicineMessage>
 {
     private readonly IRepositoryControllerService _repositoryControllerService
         = App.GetService<IRepositoryControllerService>();
@@ -26,6 +29,7 @@ public partial class MedicinesGridViewModel : ObservableObject, INavigationAware
     public MedicinesGridViewModel()
     {
         _model = new MedicineWrapper();
+        WeakReferenceMessenger.Default.Register(this);
     }
 
     /// <summary>
@@ -88,17 +92,18 @@ public partial class MedicinesGridViewModel : ObservableObject, INavigationAware
 
 
 
-    public async void deleteItem_Click(object sender, RoutedEventArgs e)
+    public  void deleteItem_Click(object sender, RoutedEventArgs e)
     {
         if (_selectedItem != null)
         {
             int id = _selectedItem.MedicineData.id_medicine;
-            await _repositoryControllerService.Medicines.DeleteAsync(id);
-            Source.Remove(_selectedItem);
+            //await _repositoryControllerService.Medicines.DeleteAsync(id);
+            //Source.Remove(_selectedItem);
 
-            _infoBarMessage = "Medicine was deleted";
-            _infoBarSeverity = Microsoft.UI.Xaml.Controls.InfoBarSeverity.Success;
-            _isInfoBarOpened = true;
+            InfoBarMessage = "Medicine was deleted";
+            InfoBarSeverity = Microsoft.UI.Xaml.Controls.InfoBarSeverity.Success;
+            IsInfoBarOpened = true;
+
         }
         else
         {
@@ -114,6 +119,11 @@ public partial class MedicinesGridViewModel : ObservableObject, INavigationAware
         selectedGridIndex = 0;
     }
 
+    public void SendPrikol()
+    {
+        WeakReferenceMessenger.Default.Send(new ShowMedicineDetailsMessage(_selectedItem));
+    }
+
 
     /// <summary>
     /// Saves any modified MedicineWrappers and reloads the MedicineWrapper list from the database.
@@ -121,16 +131,18 @@ public partial class MedicinesGridViewModel : ObservableObject, INavigationAware
     public void UpdateGridWithEditedWrapper(MedicineWrapper givenMedicineWrapper)
     {
         // TODO rename it or something IDK it's just looks terrible imo
-        var foundInSource = Source.FirstOrDefault(wrapper => wrapper.MedicineData.id_medicine == givenMedicineWrapper.MedicineData.id_medicine);
-        if (foundInSource != null)
-        {
-            givenMedicineWrapper.IsModified = false;
-            int index = Source.IndexOf(foundInSource);
-            Source[index] = givenMedicineWrapper;
+        //var foundInSource = Source.FirstOrDefault(wrapper => wrapper.MedicineData.id_medicine == givenMedicineWrapper.MedicineData.id_medicine);
+        //if (foundInSource != null)
+        //{
+        //    givenMedicineWrapper.IsModified = false;
+        //    int index = Source.IndexOf(foundInSource);
+        //    Source[index] = givenMedicineWrapper;
 
-            Debug.WriteLine($"so index = {index} and wrapper is {givenMedicineWrapper}");
-            selectedGridIndex = index;
-        }
+        //    Debug.WriteLine($"so index = {index} and wrapper is {givenMedicineWrapper}");
+        //    selectedGridIndex = index;
+        //}
+        SelectedItem = givenMedicineWrapper;
+        OnPropertyChanged("SelectedItem");
     }
 
 
@@ -151,5 +163,18 @@ public partial class MedicinesGridViewModel : ObservableObject, INavigationAware
 
     public void OnNavigatedFrom()
     {
+    }
+
+    public void Receive(AddMedicineMessage message)
+    {
+        var givenMedicineWrapper = message.Value;
+        if (givenMedicineWrapper.isNew)
+        {
+            InsertToGridNewWrapper(givenMedicineWrapper);
+        }
+        else
+        {
+            UpdateGridWithEditedWrapper(givenMedicineWrapper);
+        }
     }
 }

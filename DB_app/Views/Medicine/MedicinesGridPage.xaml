@@ -39,7 +39,6 @@
 
                 <AppBarButton
                     x:Name="CommandBarDeleteButton"
-                    Click="ViewModel.deleteItem_Click"
                     Icon="Delete"
                     IsEnabled="{Binding IsGridItemSelected, Mode=OneWay}"
                     Label="Delete"
@@ -66,7 +65,8 @@
                 SelectedIndex="{x:Bind ViewModel.SelectedGridIndex, Mode=OneWay}"
                 SelectedItem="{x:Bind ViewModel.SelectedItem, Mode=TwoWay}"
                 SelectionMode="Single"
-                VerticalScrollBarVisibility="Auto">
+                VerticalScrollBarVisibility="Auto"
+                VirtualizingStackPanel.VirtualizationMode="Recycling">
 
 
                 <controls:DataGrid.Resources>
@@ -89,7 +89,7 @@
             </controls:DataGrid>
         </Grid>
 
-        <!--<RelativePanel HorizontalAlignment="Stretch">
+        <RelativePanel HorizontalAlignment="Stretch">
             <InfoBar
                 Title="{x:Bind ViewModel.InfoBarSeverity, Mode=OneWay}"
                 IsOpen="{x:Bind ViewModel.IsInfoBarOpened, Mode=OneWay}"
@@ -97,17 +97,8 @@
                 RelativePanel.AlignBottomWithPanel="True"
                 RelativePanel.AlignHorizontalCenterWithPanel="True"
                 Severity="{x:Bind ViewModel.InfoBarSeverity, Mode=OneWay}" />
-        </RelativePanel>-->
-
-        <RelativePanel HorizontalAlignment="Stretch">
-            <InfoBar
-                Title="{x:Bind ViewModel.InfoBarSeverity}"
-                IsOpen="{x:Bind ViewModel.IsInfoBarOpened}"
-                Message="{x:Bind ViewModel.InfoBarMessage}"
-                RelativePanel.AlignBottomWithPanel="True"
-                RelativePanel.AlignHorizontalCenterWithPanel="True"
-                Severity="{x:Bind ViewModel.InfoBarSeverity}" />
         </RelativePanel>
+
 
 
     </Grid>

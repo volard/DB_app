@@ -18,6 +18,7 @@ using Windows.Services.Maps;
 using Windows.ApplicationModel;
 using Windows.Storage;
 using System.Diagnostics;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace DB_app;
 
@@ -80,6 +81,8 @@ public partial class App : Application
             services.AddSingleton<IActivationService, ActivationService>();
             services.AddSingleton<IPageService, PageService>();
             services.AddSingleton<INavigationService, NavigationService>();
+
+            services.AddSingleton<IMessenger>(WeakReferenceMessenger.Default);
 
 
             // --------------------------------

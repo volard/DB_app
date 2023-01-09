@@ -39,12 +39,15 @@ public sealed partial class MedicinesGridPage : Page
             }
         }
         base.OnNavigatedTo(e);
+        
     }
 
     private void AddNewMedicine_Click(object sender, RoutedEventArgs e) =>
         Frame.Navigate(typeof(MedicineDetailsPage), null, new DrillInNavigationTransitionInfo());
 
-    private void EditExistingMedicine_Click(object sender, RoutedEventArgs e) =>
-        Frame.Navigate(typeof(MedicineDetailsPage), ViewModel.SelectedItem, new DrillInNavigationTransitionInfo());
-
+    private void EditExistingMedicine_Click(object sender, RoutedEventArgs e)
+    {
+        Frame.Navigate(typeof(MedicineDetailsPage), null, new DrillInNavigationTransitionInfo());
+        ViewModel.SendPrikol();
+    }
 }

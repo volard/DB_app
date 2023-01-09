@@ -103,12 +103,12 @@
 
         <RelativePanel HorizontalAlignment="Stretch">
             <InfoBar
-                Title="{x:Bind ViewModel.InfoBarSeverity}"
-                IsOpen="{x:Bind ViewModel.IsInfoBarOpened}"
+                Title="{x:Bind ViewModel.InfoBarSeverity, Mode=OneWay}"
                 Message="{x:Bind ViewModel.InfoBarMessage}"
                 RelativePanel.AlignBottomWithPanel="True"
                 RelativePanel.AlignHorizontalCenterWithPanel="True"
-                Severity="{x:Bind ViewModel.InfoBarSeverity}" />
+                Severity="{x:Bind ViewModel.InfoBarSeverity}"
+                Visibility="{x:Bind ViewModel.IsInfoBarOpened, Mode=OneWay}" />
         </RelativePanel>
 
 
