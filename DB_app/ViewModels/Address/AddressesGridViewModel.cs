@@ -1,172 +1,185 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
 using DB_app.Contracts.ViewModels;
 using DB_app.Core.Contracts.Services;
-using DB_app.ViewModels;
-using Microsoft.UI.Xaml.Controls;
+using DB_app.Services.Messages;
 using Microsoft.UI.Xaml;
-using System;
-using System.Collections.Generic;
+using Microsoft.UI.Xaml.Controls;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
-namespace DB_app.ViewModels
+namespace DB_app.ViewModels;
+
+public partial class AddressesGridViewModel : ObservableRecipient, INavigationAware, IRecipient<AddAddressMessage>
 {
-    public partial class AddressesGridViewModel: ObservableObject, INavigationAware
+    private readonly IRepositoryControllerService _repositoryControllerService
+        = App.GetService<IRepositoryControllerService>();
+
+    /// <summary>
+    /// DataGrid's data collection
+    /// </summary>
+    public ObservableCollection<AddressWrapper> Source { get; set; }
+        = new ObservableCollection<AddressWrapper>();
+
+
+    /// <summary>
+    /// Creates a new <see cref="MedicinesGridViewModel"/> instance with new <see cref="AddressWrapper"/>
+    /// </summary>
+    public AddressesGridViewModel()
     {
-        private readonly IRepositoryControllerService _repositoryControllerService
-    = App.GetService<IRepositoryControllerService>();
+        _model = new AddressWrapper();
+        WeakReferenceMessenger.Default.Register(this);
+    }
 
-        /// <summary>
-        /// DataGrid's data collection
-        /// </summary>
-        public ObservableCollection<AddressWrapper> Source { get; set; }
-            = new ObservableCollection<AddressWrapper>();
+    /// <summary>
+    /// Indicates whether user selected Medicine item in the grid
+    /// </summary>
+    [ObservableProperty]
+    private bool _isGridItemSelected = false;
+
+    [ObservableProperty]
+    private bool _isInfoBarOpened = false;
+
+    [ObservableProperty]
+    private int selectedGridIndex;
+
+    // TODO this shit isn't working See this to solve - https://xamlbrewer.wordpress.com/2021/01/04/introducing-the-winui-infobar-control/
+    [ObservableProperty]
+    private InfoBarSeverity _infoBarSeverity = InfoBarSeverity.Informational;
+    // Error
+    // Informational
+    // Warning
+    // Success
+
+    [ObservableProperty]
+    private string _infoBarMessage = "";
 
 
-        /// <summary>
-        /// Creates a new <see cref="AddressesGridViewModel"/> instance with new <see cref="AddressWrapper"/>
-        /// </summary>
-        public AddressesGridViewModel()
+    /// <summary>
+    /// Represents selected by user AddressWrapper object
+    /// </summary>
+    private AddressWrapper? _selectedItem;
+    public AddressWrapper? SelectedItem
+    {
+        get => _selectedItem;
+        set
         {
-            _model = new AddressWrapper();
+            SetProperty(ref _selectedItem, value);
+            IsGridItemSelected = Converters.IsNotNull(value);
         }
+    }
 
-        /// <summary>
-        /// Returns true if the specified value is not null; otherwise, returns false.
-        /// </summary>
-        public static bool IsNotNull(object? value)
+
+    #region Required for DataGrid
+
+    /// <summary>
+    /// Represents current AddressWrapper object
+    /// </summary>
+    public AddressWrapper _model { get; set; }
+
+    /// <summary>
+    /// City of the current AddressWrapper's data object
+    /// </summary>
+    public string City { get => _model.City; }
+
+    /// <summary>
+    /// Street of the current AddressWrapper's data object
+    /// </summary>
+    public string Street { get => _model.Street; }
+
+    /// <summary>
+    /// Building of the current AddressWrapper's data object
+    /// </summary>
+    public string Building { get => _model.Building; }
+
+    #endregion
+
+
+
+    public void deleteItem_Click(object sender, RoutedEventArgs e)
+    {
+        if (_selectedItem != null)
         {
-            if (value == null)
-            {
-                return false;
-            }
-            return true;
+            int id = _selectedItem.AddressData.id_address;
+            //await _repositoryControllerService.Medicines.DeleteAsync(id);
+            //Source.Remove(_selectedItem);
+
+            InfoBarMessage = "Medicine was deleted";
+            InfoBarSeverity = Microsoft.UI.Xaml.Controls.InfoBarSeverity.Success;
+            IsInfoBarOpened = true;
+
         }
-
-        /// <summary>
-        /// Indicates whether user selected Medicine item in the grid
-        /// </summary>
-        // TODO this shit isn't working See this to solve - https://xamlbrewer.wordpress.com/2021/01/04/introducing-the-winui-infobar-control/
-        [ObservableProperty]
-        private bool _isGridItemSelected = false;
-
-        [ObservableProperty]
-        private bool _isInfoBarOpened = false;
-
-        [ObservableProperty]
-        private InfoBarSeverity _infoBarSeverity = InfoBarSeverity.Informational;
-        // Error
-        // Informational
-        // Warning
-        // Success
-
-        [ObservableProperty]
-        private string _infoBarMessage = "";
-
-
-        /// <summary>
-        /// Represents selected by user AddressWrapper object
-        /// </summary>
-        private AddressWrapper? _selectedItem;
-        public AddressWrapper? SelectedItem
+        else
         {
-            get => _selectedItem;
-            set
-            {
-                SetProperty(ref _selectedItem, value);
-                IsGridItemSelected = Converters.IsNotNull(value);
-            }
+            Debug.WriteLine(new ArgumentNullException(nameof(_selectedItem)).Message);
         }
+    }
+
+    public void InsertToGridNewWrapper(AddressWrapper givenAddressWrapper)
+    {
+        givenAddressWrapper.isNew = false;
+        Source.Insert(0, givenAddressWrapper);
+        Debug.WriteLine($"so new wrapper is {givenAddressWrapper}");
+        selectedGridIndex = 0;
+    }
+
+    public void SendPrikol()
+    {
+        WeakReferenceMessenger.Default.Send(new ShowAddressDetailsMessage(_selectedItem));
+    }
 
 
-        #region Required for DataGrid
+    /// <summary>
+    /// Saves any modified AddressWrappers and reloads the AddressWrapper list from the database.
+    /// </summary>
+    public void UpdateGridWithEditedWrapper(AddressWrapper givenAddressWrapper)
+    {
+        // TODO rename it or something IDK it's just looks terrible imo
+        //var foundInSource = Source.FirstOrDefault(wrapper => wrapper.MedicineData.id_medicine == givenAddressWrapper.MedicineData.id_medicine);
+        //if (foundInSource != null)
+        //{
+        //    givenAddressWrapper.IsModified = false;
+        //    int index = Source.IndexOf(foundInSource);
+        //    Source[index] = givenAddressWrapper;
 
-        /// <summary>
-        /// Represents current AddressWrapper object
-        /// </summary>
-        public AddressWrapper _model { get; set; }
-
-        /// <summary>
-        /// Name of the current AddressWrapper's data object
-        /// </summary>
-        public string City { get => _model.City; }
-
-        /// <summary>
-        /// Name of the current AddressWrapper's data object
-        /// </summary>
-        public string Building { get => _model.Building; }
-
-        /// <summary>
-        /// Type of the current AddressWrapper's data object
-        /// </summary>
-        public string Street { get => _model.Street; }
-
-        #endregion
+        //    Debug.WriteLine($"so index = {index} and wrapper is {givenAddressWrapper}");
+        //    selectedGridIndex = index;
+        //}
+        SelectedItem = givenAddressWrapper;
+        OnPropertyChanged("SelectedItem");
+    }
 
 
 
-        public async void deleteItem_Click(object sender, RoutedEventArgs e)
+    public async void OnNavigatedTo(object parameter)
+    {
+        if (Source.Count < 1)
         {
-            if (_selectedItem != null)
+            Source.Clear();
+            var data = await _repositoryControllerService.Addresses.GetAsync();
+
+            foreach (var item in data)
             {
-                int id = _selectedItem.AddressData.id_address;
-                await _repositoryControllerService.Medicines.DeleteAsync(id);
-                Source.Remove(_selectedItem);
-
-                _infoBarMessage = "Medicine was deleted";
-                _infoBarSeverity = Microsoft.UI.Xaml.Controls.InfoBarSeverity.Success;
-                _isInfoBarOpened = true;
-            }
-            else
-            {
-                Debug.WriteLine(new ArgumentNullException(nameof(_selectedItem)).Message);
-            }
-        }
-
-        /// <summary>
-        /// Saves any modified MedicineWrappers and reloads the MedicineWrapper list from the database.
-        /// </summary>
-        // TODO add script when new wrapper given
-        public void SyncGridWithGivenAddressWrapper(AddressWrapper addressWrapper)
-        {
-            if (addressWrapper.IsModified)
-            {
-                // TODO rename it or something IDK it's just looks terrible imo
-                var foundInSource = Source.First(wrapper => wrapper.AddressData.id_address == addressWrapper.AddressData.id_address);
-                if (foundInSource != null)
-                {
-                    addressWrapper.IsModified = false;
-                    int index = Source.IndexOf(foundInSource);
-                    Source[index] = addressWrapper;
-                }
-            }
-            else
-            {
-                Source.Add(addressWrapper);
-            }
-        }
-
-
-
-        public async void OnNavigatedTo(object parameter)
-        {
-            if (Source.Count < 1)
-            {
-                Source.Clear();
-                var data = await _repositoryControllerService.Addresses.GetAsync();
-
-                foreach (var item in data)
-                {
-                    Source.Add(new AddressWrapper(item));
-                }
+                Source.Add(new AddressWrapper(item));
             }
         }
+    }
 
-        public void OnNavigatedFrom()
+    public void OnNavigatedFrom()
+    {
+    }
+
+    public void Receive(AddAddressMessage message)
+    {
+        var givenAddressWrapper = message.Value;
+        if (givenAddressWrapper.isNew)
         {
+            InsertToGridNewWrapper(givenAddressWrapper);
+        }
+        else
+        {
+            UpdateGridWithEditedWrapper(givenAddressWrapper);
         }
     }
 }
