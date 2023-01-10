@@ -8,6 +8,7 @@ using Microsoft.UI.Xaml.Navigation;
 
 namespace DB_app.Views;
 
+
 public sealed partial class AddressesGridPage : Page
 {
     public AddressesGridViewModel ViewModel { get; }
@@ -23,23 +24,30 @@ public sealed partial class AddressesGridPage : Page
         });
     }
 
-
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         var givenAddress = (AddressWrapper)e.Parameter;
         if (givenAddress != null)
         {
-            ViewModel.SyncGridWithGivenAddressWrapper(givenAddress);
-
+            if (givenAddress.isNew)
+            {
+                ViewModel.InsertToGridNewWrapper(givenAddress);
+            }
+            else if (givenAddress.IsModified)
+            {
+                ViewModel.UpdateGridWithEditedWrapper(givenAddress);
+            }
         }
         base.OnNavigatedTo(e);
+
     }
 
-    private void AddNewAddress_Click(object sender, RoutedEventArgs e) =>
+    private void AddNewMedicine_Click(object sender, RoutedEventArgs e) =>
         Frame.Navigate(typeof(AddressDetailsPage), null, new DrillInNavigationTransitionInfo());
 
-    private void EditExistingAddress_Click(object sender, RoutedEventArgs e) =>
-        Frame.Navigate(typeof(AddressDetailsPage), ViewModel.SelectedItem, new DrillInNavigationTransitionInfo());
-
-
+    private void EditExistingMedicine_Click(object sender, RoutedEventArgs e)
+    {
+        Frame.Navigate(typeof(AddressDetailsPage), null, new DrillInNavigationTransitionInfo());
+        ViewModel.SendPrikol();
+    }
 }

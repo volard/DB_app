@@ -24,14 +24,14 @@
 
                 <AppBarButton
                     x:Name="CommandBarAddButton"
-                    Click="AddNewAddress_Click"
+                    Click="AddNewMedicine_Click"
                     Icon="Add"
                     Label="Add new"
                     ToolTipService.ToolTip="Add new" />
 
                 <AppBarButton
                     x:Name="CommandBarEditButton"
-                    Click="EditExistingAddress_Click"
+                    Click="EditExistingMedicine_Click"
                     Icon="Edit"
                     IsEnabled="{Binding IsGridItemSelected, Mode=OneWay}"
                     Label="Edit"
@@ -39,7 +39,6 @@
 
                 <AppBarButton
                     x:Name="CommandBarDeleteButton"
-                    Click="ViewModel.deleteItem_Click"
                     Icon="Delete"
                     IsEnabled="{Binding IsGridItemSelected, Mode=OneWay}"
                     Label="Delete"
@@ -57,14 +56,17 @@
         <Grid Padding="0,0,0,50">
 
             <controls:DataGrid
+                x:Name="AddressGrid"
                 AutoGenerateColumns="False"
                 CanUserReorderColumns="False"
                 GridLinesVisibility="All"
-                IsReadOnly="False"
+                IsReadOnly="True"
                 ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
+                SelectedIndex="{x:Bind ViewModel.SelectedGridIndex, Mode=OneWay}"
                 SelectedItem="{x:Bind ViewModel.SelectedItem, Mode=TwoWay}"
                 SelectionMode="Single"
-                VerticalScrollBarVisibility="Auto">
+                VerticalScrollBarVisibility="Auto"
+                VirtualizingStackPanel.VirtualizationMode="Recycling">
 
 
                 <controls:DataGrid.Resources>
@@ -77,21 +79,21 @@
                     <controls:DataGridTextColumn
                         Width="30*"
                         Binding="{Binding City}"
-                        Header="City" />
+                        Header="Name" />
                     <controls:DataGridTextColumn
                         Width="30*"
                         Binding="{Binding Street}"
-                        Header="Street" />
+                        Header="Type" />
                     <controls:DataGridTextColumn
                         Width="30*"
                         Binding="{Binding Building}"
-                        Header="Building" />
+                        Header="Type" />
 
                 </controls:DataGrid.Columns>
             </controls:DataGrid>
         </Grid>
 
-        <!--<RelativePanel HorizontalAlignment="Stretch">
+        <RelativePanel HorizontalAlignment="Stretch">
             <InfoBar
                 Title="{x:Bind ViewModel.InfoBarSeverity, Mode=OneWay}"
                 IsOpen="{x:Bind ViewModel.IsInfoBarOpened, Mode=OneWay}"
@@ -99,17 +101,8 @@
                 RelativePanel.AlignBottomWithPanel="True"
                 RelativePanel.AlignHorizontalCenterWithPanel="True"
                 Severity="{x:Bind ViewModel.InfoBarSeverity, Mode=OneWay}" />
-        </RelativePanel>-->
-
-        <RelativePanel HorizontalAlignment="Stretch">
-            <InfoBar
-                Title="{x:Bind ViewModel.InfoBarSeverity, Mode=OneWay}"
-                Message="{x:Bind ViewModel.InfoBarMessage}"
-                RelativePanel.AlignBottomWithPanel="True"
-                RelativePanel.AlignHorizontalCenterWithPanel="True"
-                Severity="{x:Bind ViewModel.InfoBarSeverity}"
-                Visibility="{x:Bind ViewModel.IsInfoBarOpened, Mode=OneWay}" />
         </RelativePanel>
+
 
 
     </Grid>
