@@ -24,14 +24,14 @@
 
                 <AppBarButton
                     x:Name="CommandBarAddButton"
-                    Click="AddNewMedicine_Click"
+                    Click="AddNewAddress_Click"
                     Icon="Add"
                     Label="Add new"
                     ToolTipService.ToolTip="Add new" />
 
                 <AppBarButton
                     x:Name="CommandBarEditButton"
-                    Click="EditExistingMedicine_Click"
+                    Click="EditExistingAddress_Click"
                     Icon="Edit"
                     IsEnabled="{Binding IsGridItemSelected, Mode=OneWay}"
                     Label="Edit"
@@ -79,15 +79,15 @@
                     <controls:DataGridTextColumn
                         Width="30*"
                         Binding="{Binding City}"
-                        Header="Name" />
+                        Header="City" />
                     <controls:DataGridTextColumn
                         Width="30*"
                         Binding="{Binding Street}"
-                        Header="Type" />
+                        Header="Street" />
                     <controls:DataGridTextColumn
                         Width="30*"
                         Binding="{Binding Building}"
-                        Header="Type" />
+                        Header="Building" />
 
                 </controls:DataGrid.Columns>
             </controls:DataGrid>
