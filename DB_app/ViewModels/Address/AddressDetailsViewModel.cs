@@ -1,107 +1,63 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
 using DB_app.Core.Contracts.Services;
 using DB_app.Models;
+using DB_app.Services.Messages;
 using Microsoft.UI.Xaml;
+using System.Diagnostics;
 
 namespace DB_app.ViewModels;
 
-public partial class AddressDetailsViewModel : ObservableObject
+public partial class AddressDetailsViewModel : ObservableRecipient, IRecipient<ShowAddressDetailsMessage>
 {
     private readonly IRepositoryControllerService _repositoryControllerService
          = App.GetService<IRepositoryControllerService>();
 
-    [ObservableProperty]
-    private bool _isEditDisabled;
-
-    [ObservableProperty]
-    private bool _isEditEnabled;
-
     public AddressDetailsViewModel()
     {
-        IsEditDisabled = true;
-        IsEditEnabled = false;
-        city = "";
-        street = "";
-        building = "";
-    }
-
-    public void StartEdit_Click(object sender, RoutedEventArgs e)
-    {
-        IsEditDisabled = false;
-        IsEditEnabled = true;
-    }
-
-    private AddressWrapper? _currentAddress;
-
-    public AddressWrapper? CurrentAddress
-    {
-        get => _currentAddress;
-        set
+        CurrentAddress = new()
         {
-            _currentAddress = value;
-            if (_currentAddress != null)
-            {
-                _isEditEnabled = true;
-                _isEditDisabled = false;
-                City = _currentAddress.AddressData.City;
-                Street = _currentAddress.AddressData.Street;
-                Building = _currentAddress.AddressData.Building;
-            }
-            else
-            {
-                _isEditEnabled = false;
-                _isEditDisabled = true;
-                City = "";
-                Street = "";
-                Building = "";
-            }
-
-        }
+            isNew = true
+        };
+        WeakReferenceMessenger.Default.Register(this);
     }
 
-    [ObservableProperty]
-    public string city;
+    public void Receive(ShowAddressDetailsMessage message)
+    {
+        Debug.WriteLine("________________");
+        Debug.WriteLine($"You know, I'm standing here with the {message.Value} item so peacfully");
+        Debug.WriteLine("________________");
+        CurrentAddress = message.Value;
+        CurrentAddress.NotifyAboutProperties();
+    }
 
-    [ObservableProperty]
-    public string street;
+    public AddressDetailsViewModel(AddressWrapper AddressWrapper)
+    {
+        CurrentAddress = AddressWrapper;
+        WeakReferenceMessenger.Default.Register(this);
+    }
 
-    [ObservableProperty]
-    public string building;
-
+    /// <summary>
+    /// Current AddressWrapper to edit
+    /// </summary>
+    public AddressWrapper CurrentAddress { get; set; }
 
 
     /// <summary>
-    /// Saves customer data that has been edited.
+    /// Saves customer data that was edited.
     /// </summary>
-    public async void SaveAsync(object sender, RoutedEventArgs e)
+    public async Task SaveAsync()
     {
-
-        if (IsEditDisabled) // Create new medicine
+        if (CurrentAddress.isNew) // Create new Address
         {
-            Address newAddress = new()
-            {
-                City = city,
-                Street = street,
-                Building = building
-            };
-            await _repositoryControllerService.Addresses.InsertAsync(newAddress);
-
+            await _repositoryControllerService.Addresses.InsertAsync(CurrentAddress.AddressData);
         }
-        else // Update existing medicine
+        else // Update existing Address
         {
-            if (_currentAddress != null) // TODO WTF is happening here - its redundant but I can't remove it 
-            {
-                _currentAddress.City = this.city;
-                _currentAddress.Street = this.street;
-                _currentAddress.Building = this.building;
-                _currentAddress.IsModified = true;
-
-                await _repositoryControllerService.Addresses.UpdateAsync(_currentAddress.AddressData);
-            }
-
-           
+            await _repositoryControllerService.Addresses.UpdateAsync(CurrentAddress.AddressData);
         }
-
     }
+
+    public void NotifyGridAboutChange() => WeakReferenceMessenger.Default.Send(new AddAddressMessage(CurrentAddress));
 }
 
