@@ -187,7 +187,7 @@ public partial class AddressWrapper : ObservableValidator, IEditableObject, IEqu
     {
         isModified = true;
         BuckupData();
-        Debug.WriteLine($"BeginEdit : For now the editable addressWrapper = {addressData}");
+        Debug.WriteLine($"BeginEdit : For now the editable addressWrapper = {AddressData}");
     }
 
     public void CancelEdit()
