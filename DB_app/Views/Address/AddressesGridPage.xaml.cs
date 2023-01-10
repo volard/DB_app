@@ -42,10 +42,10 @@ public sealed partial class AddressesGridPage : Page
 
     }
 
-    private void AddNewMedicine_Click(object sender, RoutedEventArgs e) =>
+    private void AddNewAddress_Click(object sender, RoutedEventArgs e) =>
         Frame.Navigate(typeof(AddressDetailsPage), null, new DrillInNavigationTransitionInfo());
 
-    private void EditExistingMedicine_Click(object sender, RoutedEventArgs e)
+    private void EditExistingAddress_Click(object sender, RoutedEventArgs e)
     {
         Frame.Navigate(typeof(AddressDetailsPage), null, new DrillInNavigationTransitionInfo());
         ViewModel.SendPrikol();
