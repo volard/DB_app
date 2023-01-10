@@ -3,24 +3,46 @@
 namespace DB_app.Models;
 public class Hospital
 {
+    public Hospital(
+        string surename_main_doctor, 
+        string name_main_doctor, 
+        string middlename_main_doctor,
+        int inn,
+        int ogrn)
+    {
+        Surename_main_doctor = surename_main_doctor;
+        Name_main_doctor= name_main_doctor;
+        Middlename_main_doctor = middlename_main_doctor;
+        INN = inn;
+        OGRN= ogrn;
+    }
+
+    public Hospital() { }
+
     [Required]
     [Key]
-    public int id_hospital { get; set; }
+    public int id_hospital                  { get; set; }
 
     [Required]
-    public string Surename_main_doctor{get; set;}
+    public string Surename_main_doctor      { get; set; }
 
     [Required]
-    public string Name_main_doctor { get; set;}
+    public string Name_main_doctor          { get; set; }
 
     [Required]
-    public string Middlename_main_doctor{ get; set;}
+    public string Middlename_main_doctor    { get; set; }
 
     [Required]
-    public int INN { get; set; }
+    public int INN                          { get; set; }
 
     [Required]
-    public int OGRN{get; set;}
+    public int OGRN                         { get; set; }
 
-    public List<Address> Addresses { get; set; } = new List<Address>();
+    public List<Address> Addresses          { get; set; } = new List<Address>();
+
+    public override string ToString() 
+        => $"Hospital : '{Surename_main_doctor} {Name_main_doctor} {Middlename_main_doctor}'  maindoctor, " +
+        $"'{INN}' INN,  " +
+        $"'{OGRN}' OGRN. " +
+        $"Its located at {Addresses.Count} different addresses";
 }
