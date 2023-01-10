@@ -7,14 +7,14 @@ public class Hospital
         string surename_main_doctor, 
         string name_main_doctor, 
         string middlename_main_doctor,
-        int inn,
-        int ogrn)
+        string inn,
+        string ogrn)
     {
-        Surename_main_doctor = surename_main_doctor;
-        Name_main_doctor= name_main_doctor;
-        Middlename_main_doctor = middlename_main_doctor;
-        INN = inn;
-        OGRN= ogrn;
+        Surename_main_doctor    = surename_main_doctor;
+        Name_main_doctor        = name_main_doctor;
+        Middlename_main_doctor  = middlename_main_doctor;
+        INN                     = inn;
+        OGRN                    = ogrn;
     }
 
     public Hospital() { }
@@ -33,10 +33,10 @@ public class Hospital
     public string Middlename_main_doctor    { get; set; }
 
     [Required]
-    public int INN                          { get; set; }
+    public string INN                       { get; set; }
 
     [Required]
-    public int OGRN                         { get; set; }
+    public string OGRN                      { get; set; }
 
     public List<Address> Addresses          { get; set; } = new List<Address>();
 

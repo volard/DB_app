@@ -139,6 +139,9 @@ public partial class App : Application
             services.AddTransient<HospitalsGridViewModel>();
             services.AddTransient<HospitalsGridPage>();
 
+            services.AddTransient<HospitalDetailsViewModel>();
+            services.AddTransient<HospitalDetailsPage>();
+
 
             // === Misc
             services.AddTransient<SettingsViewModel>();
