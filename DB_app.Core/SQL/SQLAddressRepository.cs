@@ -25,14 +25,13 @@ public class SQLAddressRepository : IAddressRepository
     /// <inheritdoc/>
     public async Task<IEnumerable<Address>> GetAsync()
     {
-        return await _db.Addresses.AsNoTracking().ToListAsync();
+        return await _db.Addresses.ToListAsync();
     }
 
     /// <inheritdoc/>
     public async Task<Address> GetAsync(int id)
     {
         return await _db.Addresses
-           .AsNoTracking()
            .FirstOrDefaultAsync(address => address.id_address == id);
     }
 
@@ -48,7 +47,7 @@ public class SQLAddressRepository : IAddressRepository
     public async Task UpdateAsync(Address address)
     {
         Address foundAddress = await _db.Addresses
-                .FirstOrDefaultAsync(existAddress => address.id_address == address.id_address);
+                .FirstOrDefaultAsync(existAddress => existAddress.id_address == address.id_address);
 
         if (foundAddress != null)
         {

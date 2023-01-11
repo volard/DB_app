@@ -20,6 +20,11 @@ public interface IHospitalRepository
     Task<IEnumerable<Hospital>> GetAsync();
 
     /// <summary>
+    /// Returns specific hospital. 
+    /// </summary>
+    public Task<Hospital> GetAsync(int id);
+
+    /// <summary>
     /// Inserts new hospital
     /// </summary>
     public Task InsertAsync(Hospital hospital);

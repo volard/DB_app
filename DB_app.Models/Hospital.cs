@@ -41,8 +41,5 @@ public class Hospital
     public List<Address> Addresses          { get; set; } = new List<Address>();
 
     public override string ToString() 
-        => $"Hospital : '{Surename_main_doctor} {Name_main_doctor} {Middlename_main_doctor}'  maindoctor, " +
-        $"'{INN}' INN,  " +
-        $"'{OGRN}' OGRN. " +
-        $"Its located at {Addresses.Count} different addresses";
+        => $"Hospital managed by {Surename_main_doctor} {Name_main_doctor} {Middlename_main_doctor} maindoctor";
 }

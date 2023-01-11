@@ -26,14 +26,13 @@ public class SQLHospitalRepository : IHospitalRepository
     /// <inheritdoc/>
     public async Task<IEnumerable<Hospital>> GetAsync()
     {
-        return await _db.Hospitals.AsNoTracking().ToListAsync();
+        return await _db.Hospitals.ToListAsync();
     }
 
     /// <inheritdoc/>
     public async Task<Hospital> GetAsync(int id)
     {
         return await _db.Hospitals
-           .AsNoTracking()
            .FirstOrDefaultAsync(hospital => hospital.id_hospital == id);
     }
 
@@ -55,9 +54,13 @@ public class SQLHospitalRepository : IHospitalRepository
         {
             _db.Entry(foundHospital).CurrentValues.SetValues(hospital);
             await _db.SaveChangesAsync();
-            Debug.WriteLine("UpdateAsync - Hospital : " + foundHospital.id_hospital + "was succesfully updated in the Database");
+            Debug.WriteLine("UpdateAsync - Hospital : " + foundHospital.id_hospital + " was succesfully updated in the Database");
         }
-        Debug.WriteLine("UpdateAsync - Hospital : attempt to update hospital failed - no hospital found to update");
+        else
+        {
+            Debug.WriteLine("UpdateAsync - Hospital : attempt to update hospital failed - no hospital found to update");
+        }
+        
     }
 
     /// <inheritdoc/>

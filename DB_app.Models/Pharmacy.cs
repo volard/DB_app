@@ -12,19 +12,19 @@ public class Pharmacy
 
     [Required]
     [Key]
-    public int id_pharmacy { get; set; }
+    public int id_pharmacy          { get; set; }
 
     [Required]
-    public string Name { get; set; }
+    public string Name              { get; set; }
 
     [Required]
-    public int INN { get; set;}
+    public int INN                  { get; set;}
 
     [Required]
-    public int OGRN {get; set;}
+    public int OGRN                 { get; set; }
 
     [Required]
-    public List<Address> Addresses { get; set; }
+    public List<Address> Addresses  { get; set; }
 
     public override string ToString() => $"Pharmacy '{Name}' with '{INN}' INN and {OGRN} OGRN";
 }

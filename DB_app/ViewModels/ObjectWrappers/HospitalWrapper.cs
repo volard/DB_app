@@ -9,22 +9,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace DB_app.ViewModels;
 
 public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEquatable<HospitalWrapper>
 {
-    /* 
-     * Name_main_doctor
-     * Surename_main_doctor
-     * Middlename_main_doctor
-     * INN
-     * OGRN
-     * 
-     * Addresses
-     * 
-     */
-
 
     public HospitalWrapper(Hospital hospital)
     {
@@ -40,9 +30,21 @@ public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEq
         NotifyAboutProperties();
     }
 
+    public void NotifyAboutProperties()
+    {
+        OnPropertyChanged(nameof(Name_main_doctor));
+        OnPropertyChanged(nameof(Surename_main_doctor));
+        OnPropertyChanged(nameof(Middlename_main_doctor));
+        OnPropertyChanged(nameof(INN));
+        OnPropertyChanged(nameof(OGRN));
+        OnPropertyChanged(nameof(ObservableAddresses));
+    }
+
+    public void NotifyAboutAddressesChanged() =>
+        OnPropertyChanged(nameof(ObservableAddresses));
+
     private void Suspect_ErrorsChanged(object sender, DataErrorsChangedEventArgs e)
     {
-        // TODO this looks weird imo
         OnPropertyChanged(nameof(Errors));
         OnPropertyChanged(nameof(Name_main_doctorErrors));
         OnPropertyChanged(nameof(Surename_main_doctorErrors));
@@ -68,6 +70,8 @@ public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEq
     public override string ToString() 
         => $"HospitalWrapper with HospitalData - [ {HospitalData} ]";
 
+
+
     #region Properties
 
     private readonly IRepositoryControllerService _repositoryControllerService
@@ -75,6 +79,7 @@ public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEq
 
 
     public Hospital HospitalData { get; set; }
+
 
     [Required(ErrorMessage = "Maindoctor's name is Required")]
     public string Name_main_doctor
@@ -111,6 +116,7 @@ public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEq
         }
     }
 
+
     [Required(ErrorMessage = "Maindoctor's middlename is Required")]
     public string Middlename_main_doctor
     {
@@ -127,6 +133,7 @@ public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEq
             Debug.WriteLine($"\nfor type property especially: {GetErrors(nameof(Middlename_main_doctor))}");
         }
     }
+
 
     [Required(ErrorMessage = "INN is Required")]
     [RegularExpression("([0-9]+)", ErrorMessage = "Please enter a Number")]
@@ -146,6 +153,7 @@ public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEq
         }
     }
 
+
     [Required(ErrorMessage = "OGRN is Required")]
     [RegularExpression("([0-9]+)", ErrorMessage = "Please enter a Number")]
     public string OGRN
@@ -164,14 +172,20 @@ public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEq
         }
     }
 
-    public void NotifyAboutProperties()
+
+    public ObservableCollection<Address> ObservableAddresses
     {
-        OnPropertyChanged(nameof(Name_main_doctor));
-        OnPropertyChanged(nameof(Surename_main_doctor));
-        OnPropertyChanged(nameof(Middlename_main_doctor));
-        OnPropertyChanged(nameof(INN));
-        OnPropertyChanged(nameof(OGRN));
+        get => new(HospitalData.Addresses);
+        set
+        {
+            HospitalData.Addresses = value.ToList();
+            IsModified = true;
+            OnPropertyChanged();
+        }
     }
+
+
+    public int Id { get => HospitalData.id_hospital; }
 
 
     // TODO that looks disgusting. I wonder if functions in xaml bindings works properly for me
@@ -188,6 +202,7 @@ public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEq
     public string OGRNErrors
         => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(nameof(OGRN)) select e.ErrorMessage);
 
+
     public bool HasName_main_doctorErrors
         => GetErrors(nameof(Name_main_doctor)).Any();
     public bool HasSurename_main_doctorErrors
@@ -201,7 +216,6 @@ public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEq
     public bool AreNoErrors
         => !HasErrors;
 
-    public int Id { get => HospitalData.id_hospital; }
 
     // TODO implement cancel button on notification popup
     // TODO maybe it will be better to create another Hospital object instead of 
@@ -220,7 +234,7 @@ public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEq
     private bool isModified = false;
 
     /// <summary>
-    /// indicates whether its a new object
+    /// Indicates whether its a new object
     /// </summary>
     public bool isNew = false;
 
@@ -242,12 +256,13 @@ public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEq
 
     public void UndoChanges()
     {
-        if (BackupedName_main_doctor        != null &&
-            BackupedSurename_main_doctor    != null &&
-            BackupedMiddlename_main_doctor  != null &&
-            BackupedINN                     != null &&
-            BackupedOGRN                    != null
-            )
+        if (
+                BackupedName_main_doctor        != null &&
+                BackupedSurename_main_doctor    != null &&
+                BackupedMiddlename_main_doctor  != null &&
+                BackupedINN                     != null &&
+                BackupedOGRN                    != null
+           )
         {
             Name_main_doctor        = BackupedName_main_doctor;
             Surename_main_doctor    = BackupedSurename_main_doctor;
@@ -260,6 +275,7 @@ public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEq
         Debug.WriteLine("Impossible to undo changes - backuped data is empty");
     }
 
+
     #endregion
 
 
@@ -269,7 +285,7 @@ public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEq
     {
         isModified = true;
         BuckupData();
-        Debug.WriteLine($"BeginEdit : For now the editable HospitalWrapper = {HospitalData}");
+        Debug.WriteLine($"BeginEdit : For now the editable HospitalWrapper = {this}");
     }
 
     public void CancelEdit()
@@ -280,7 +296,7 @@ public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEq
 
     public async void EndEdit()
     {
-        Debug.WriteLine($"EndEdit : For now the editable HospitalWrapper = {HospitalData}");
+        Debug.WriteLine($"EndEdit : For now the editable HospitalWrapper = {this}");
         await _repositoryControllerService.Hospitals.UpdateAsync(HospitalData);
     }
 

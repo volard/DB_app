@@ -27,6 +27,6 @@ public class Address
     [Required]
     public string Building  { get; set; }
 
-    public override string ToString() => $"Address : '{City}' city, '{Street}' streen,  {Building} building";
+    public override string ToString() => $"{City}; {Street}; {Building}";
 }
 

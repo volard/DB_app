@@ -6,11 +6,9 @@
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:viewModel="using:DB_app.ViewModels"
     mc:Ignorable="d">
-
-
-
 
 
     <behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
@@ -20,7 +18,7 @@
                 Background="Transparent"
                 DefaultLabelPosition="Right">
                 <CommandBar.Content>
-                    <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="New hospital" />
+                    <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="{x:Bind PageTitle}" />
                 </CommandBar.Content>
 
                 <AppBarButton
@@ -32,136 +30,292 @@
                     Click="CancelEdit_Click"
                     Icon="Cancel"
                     Label="Cancel" />
-                <AppBarSeparator />
-                <AppBarButton Icon="Edit" Label="Edit" />
             </CommandBar>
         </DataTemplate>
     </behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
 
 
-    <ScrollViewer
-        x:Name="DetailPanel"
-        RelativePanel.AlignLeftWithPanel="True"
-        RelativePanel.AlignRightWithPanel="True"
-        RelativePanel.Below="MainCommandBar"
-        VerticalScrollBarVisibility="Auto"
-        VerticalScrollMode="Auto">
 
-        <RelativePanel Margin="8,0,0,12">
+    <RelativePanel>
 
+        <ScrollViewer
+            x:Name="DetailPanel"
+            RelativePanel.AlignLeftWithPanel="True"
+            RelativePanel.AlignRightWithPanel="True"
+            VerticalScrollBarVisibility="Auto"
+            VerticalScrollMode="Auto">
 
-            <TextBox
-                x:Name="Surename_main_doctor"
-                MinWidth="300"
-                Margin="10,20,16,8"
-                Header="Maindoctor's surename"
-                RelativePanel.AlignLeftWithPanel="True"
-                Text="{x:Bind ViewModel.CurrentHospital.Surename_main_doctor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                TextChanged="Surename_main_doctorText_TextChanged" />
+            <StackPanel>
 
-            <SymbolIcon
-                Margin="0,35,0,0"
-                Foreground="OrangeRed"
-                RelativePanel.AlignVerticalCenterWith="Surename_main_doctor"
-                RelativePanel.RightOf="Surename_main_doctor"
-                Symbol="ReportHacked"
-                Visibility="{x:Bind ViewModel.CurrentHospital.HasSurename_main_doctorErrors, Mode=OneWay}">
-                <ToolTipService.ToolTip>
-                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentHospital.Surename_main_doctorErrors, Mode=OneWay}" />
-                </ToolTipService.ToolTip>
-            </SymbolIcon>
+                <StackPanel.Resources>
+                    <Style TargetType="muxc:Expander">
+                        <Setter Property="HorizontalAlignment" Value="Stretch" />
+                        <Setter Property="HorizontalContentAlignment" Value="Left" />
+                        <Setter Property="Margin" Value="0,10,0,0" />
+                    </Style>
+                </StackPanel.Resources>
 
 
-            <TextBox
-                x:Name="Name_main_doctor"
-                MinWidth="300"
-                Margin="10,20,16,8"
-                Header="Maindoctor's name"
-                RelativePanel.AlignLeftWithPanel="True"
-                RelativePanel.Below="Surename_main_doctor"
-                Text="{x:Bind ViewModel.CurrentHospital.Name_main_doctor, Mode=TwoWay}"
-                TextChanged="Name_main_doctorText_TextChanged" />
-            <SymbolIcon
-                Margin="0,35,0,0"
-                Foreground="OrangeRed"
-                RelativePanel.AlignVerticalCenterWith="Name_main_doctor"
-                RelativePanel.RightOf="Name_main_doctor"
-                Symbol="ReportHacked"
-                Visibility="{x:Bind ViewModel.CurrentHospital.HasName_main_doctorErrors, Mode=OneWay}">
-                <ToolTipService.ToolTip>
-                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentHospital.Name_main_doctorErrors, Mode=OneWay}" />
-                </ToolTipService.ToolTip>
-            </SymbolIcon>
+                <muxc:Expander
+                    x:Name="ExpanderFullName"
+                    ExpandDirection="Down"
+                    IsExpanded="True">
 
-            <TextBox
-                x:Name="Middlename_main_doctor"
-                MinWidth="300"
-                Margin="10,20,16,8"
-                Header="Maindoctor's middlename"
-                RelativePanel.AlignLeftWithPanel="True"
-                RelativePanel.Below="Name_main_doctor"
-                Text="{x:Bind ViewModel.CurrentHospital.Middlename_main_doctor, Mode=TwoWay}"
-                TextChanged="Middlename_main_doctorText_TextChanged" />
-            <SymbolIcon
-                Margin="0,35,0,0"
-                Foreground="OrangeRed"
-                RelativePanel.AlignVerticalCenterWith="Middlename_main_doctor"
-                RelativePanel.RightOf="Middlename_main_doctor"
-                Symbol="ReportHacked"
-                Visibility="{x:Bind ViewModel.CurrentHospital.HasMiddlename_main_doctorErrors, Mode=OneWay}">
-                <ToolTipService.ToolTip>
-                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentHospital.Middlename_main_doctorErrors, Mode=OneWay}" />
-                </ToolTipService.ToolTip>
-            </SymbolIcon>
+                    <muxc:Expander.Header>
+                        <Grid>
+                            <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="FullName" />
+                            <TextBlock
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Text="{x:Bind ViewModel.CurrentHospital.Surename_main_doctor, Mode=OneWay}" />
+                        </Grid>
+                    </muxc:Expander.Header>
 
-            <TextBox
-                x:Name="INN"
-                MinWidth="300"
-                Margin="10,20,16,8"
-                Header="Hospital's INN"
-                RelativePanel.AlignLeftWithPanel="True"
-                RelativePanel.Below="Middlename_main_doctor"
-                Text="{x:Bind ViewModel.CurrentHospital.INN, Mode=TwoWay}"
-                TextChanged="INNText_TextChanged" />
-            <SymbolIcon
-                Margin="0,35,0,0"
-                Foreground="OrangeRed"
-                RelativePanel.AlignVerticalCenterWith="INN"
-                RelativePanel.RightOf="INN"
-                Symbol="ReportHacked"
-                Visibility="{x:Bind ViewModel.CurrentHospital.HasINNErrors, Mode=OneWay}">
-                <ToolTipService.ToolTip>
-                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentHospital.INNErrors, Mode=OneWay}" />
-                </ToolTipService.ToolTip>
-            </SymbolIcon>
+                    <muxc:Expander.Content>
+
+                        <RelativePanel>
+
+                            <TextBox
+                                x:Name="Surename_main_doctor"
+                                MinWidth="300"
+                                Margin="10,20,16,8"
+                                Header="Maindoctor's surename"
+                                RelativePanel.AlignLeftWithPanel="True"
+                                Text="{x:Bind ViewModel.CurrentHospital.Surename_main_doctor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                TextChanged="Surename_main_doctorText_TextChanged" />
+
+                            <SymbolIcon
+                                Margin="0,35,0,0"
+                                Foreground="OrangeRed"
+                                RelativePanel.AlignVerticalCenterWith="Surename_main_doctor"
+                                RelativePanel.RightOf="Surename_main_doctor"
+                                Symbol="ReportHacked"
+                                Visibility="{x:Bind ViewModel.CurrentHospital.HasSurename_main_doctorErrors, Mode=OneWay}">
+                                <ToolTipService.ToolTip>
+                                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentHospital.Surename_main_doctorErrors, Mode=OneWay}" />
+                                </ToolTipService.ToolTip>
+                            </SymbolIcon>
 
 
-            <TextBox
-                x:Name="OGRN"
-                MinWidth="300"
-                Margin="10,20,16,8"
-                Header="Hospital's OGRN"
-                RelativePanel.AlignLeftWithPanel="True"
-                RelativePanel.Below="INN"
-                Text="{x:Bind ViewModel.CurrentHospital.OGRN, Mode=TwoWay}"
-                TextChanged="OGRNText_TextChanged" />
-            <SymbolIcon
-                Margin="0,35,0,0"
-                Foreground="OrangeRed"
-                RelativePanel.AlignVerticalCenterWith="OGRN"
-                RelativePanel.RightOf="OGRN"
-                Symbol="ReportHacked"
-                Visibility="{x:Bind ViewModel.CurrentHospital.HasOGRNErrors, Mode=OneWay}">
-                <ToolTipService.ToolTip>
-                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentHospital.OGRNErrors, Mode=OneWay}" />
-                </ToolTipService.ToolTip>
-            </SymbolIcon>
+                            <TextBox
+                                x:Name="Name_main_doctor"
+                                MinWidth="300"
+                                Margin="10,20,16,8"
+                                Header="Maindoctor's name"
+                                RelativePanel.AlignLeftWithPanel="True"
+                                RelativePanel.Below="Surename_main_doctor"
+                                Text="{x:Bind ViewModel.CurrentHospital.Name_main_doctor, Mode=TwoWay}"
+                                TextChanged="Name_main_doctorText_TextChanged" />
+                            <SymbolIcon
+                                Margin="0,35,0,0"
+                                Foreground="OrangeRed"
+                                RelativePanel.AlignVerticalCenterWith="Name_main_doctor"
+                                RelativePanel.RightOf="Name_main_doctor"
+                                Symbol="ReportHacked"
+                                Visibility="{x:Bind ViewModel.CurrentHospital.HasName_main_doctorErrors, Mode=OneWay}">
+                                <ToolTipService.ToolTip>
+                                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentHospital.Name_main_doctorErrors, Mode=OneWay}" />
+                                </ToolTipService.ToolTip>
+                            </SymbolIcon>
+
+                            <TextBox
+                                x:Name="Middlename_main_doctor"
+                                MinWidth="300"
+                                Margin="10,20,16,8"
+                                Header="Maindoctor's middlename"
+                                RelativePanel.AlignLeftWithPanel="True"
+                                RelativePanel.Below="Name_main_doctor"
+                                Text="{x:Bind ViewModel.CurrentHospital.Middlename_main_doctor, Mode=TwoWay}"
+                                TextChanged="Middlename_main_doctorText_TextChanged" />
+                            <SymbolIcon
+                                Margin="0,35,0,0"
+                                Foreground="OrangeRed"
+                                RelativePanel.AlignVerticalCenterWith="Middlename_main_doctor"
+                                RelativePanel.RightOf="Middlename_main_doctor"
+                                Symbol="ReportHacked"
+                                Visibility="{x:Bind ViewModel.CurrentHospital.HasMiddlename_main_doctorErrors, Mode=OneWay}">
+                                <ToolTipService.ToolTip>
+                                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentHospital.Middlename_main_doctorErrors, Mode=OneWay}" />
+                                </ToolTipService.ToolTip>
+                            </SymbolIcon>
+                        </RelativePanel>
+
+                    </muxc:Expander.Content>
 
 
-        </RelativePanel>
+                </muxc:Expander>
+
+                <muxc:Expander
+                    x:Name="ExpanderOrganization"
+                    ExpandDirection="Down"
+                    IsExpanded="True">
+
+                    <muxc:Expander.Header>
+                        <Grid>
+                            <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="Organization" />
+                            <TextBlock
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Text="{x:Bind ViewModel.CurrentHospital.INN, Mode=OneWay}" />
+                        </Grid>
+                    </muxc:Expander.Header>
+
+                    <muxc:Expander.Content>
+
+                        <RelativePanel>
+                            <TextBox
+                                x:Name="INN"
+                                MinWidth="300"
+                                Margin="10,20,16,8"
+                                Header="Hospital's INN"
+                                RelativePanel.AlignLeftWithPanel="True"
+                                Text="{x:Bind ViewModel.CurrentHospital.INN, Mode=TwoWay}"
+                                TextChanged="INNText_TextChanged" />
+                            <SymbolIcon
+                                Margin="0,35,0,0"
+                                Foreground="OrangeRed"
+                                RelativePanel.AlignVerticalCenterWith="INN"
+                                RelativePanel.RightOf="INN"
+                                Symbol="ReportHacked"
+                                Visibility="{x:Bind ViewModel.CurrentHospital.HasINNErrors, Mode=OneWay}">
+                                <ToolTipService.ToolTip>
+                                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentHospital.INNErrors, Mode=OneWay}" />
+                                </ToolTipService.ToolTip>
+                            </SymbolIcon>
 
 
+                            <TextBox
+                                x:Name="OGRN"
+                                MinWidth="300"
+                                Margin="10,20,16,8"
+                                Header="Hospital's OGRN"
+                                RelativePanel.AlignLeftWithPanel="True"
+                                RelativePanel.Below="INN"
+                                Text="{x:Bind ViewModel.CurrentHospital.OGRN, Mode=TwoWay}"
+                                TextChanged="OGRNText_TextChanged" />
+                            <SymbolIcon
+                                Margin="0,35,0,0"
+                                Foreground="OrangeRed"
+                                RelativePanel.AlignVerticalCenterWith="OGRN"
+                                RelativePanel.RightOf="OGRN"
+                                Symbol="ReportHacked"
+                                Visibility="{x:Bind ViewModel.CurrentHospital.HasOGRNErrors, Mode=OneWay}">
+                                <ToolTipService.ToolTip>
+                                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentHospital.OGRNErrors, Mode=OneWay}" />
+                                </ToolTipService.ToolTip>
+                            </SymbolIcon>
+                        </RelativePanel>
 
-    </ScrollViewer>
+
+                    </muxc:Expander.Content>
+
+                </muxc:Expander>
+
+                <muxc:Expander
+                    x:Name="ExpanderAddresses"
+                    ExpandDirection="Down"
+                    IsExpanded="True">
+
+                    <muxc:Expander.Header>
+                        <Grid>
+                            <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="Addresses" />
+                            <TextBlock
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Text="not done yet" />
+                        </Grid>
+                    </muxc:Expander.Header>
+
+                    <muxc:Expander.Content>
+
+                        <RelativePanel>
+
+                            <CommandBar
+                                x:Name="AddressCommandBar"
+                                Margin="0,30,0,0"
+                                HorizontalAlignment="Stretch"
+                                VerticalContentAlignment="Center"
+                                Background="Transparent"
+                                DefaultLabelPosition="Right"
+                                RelativePanel.AlignRightWithPanel="True">
+
+
+                                <CommandBar.Content>
+
+                                    <ComboBox
+                                        Width="380"
+                                        VerticalAlignment="Stretch"
+                                        ItemsSource="{x:Bind ViewModel.AvailableAddresses}"
+                                        PlaceholderText="Select new address"
+                                        SelectedItem="{x:Bind ViewModel.SelectedAddress, Mode=TwoWay}" />
+
+                                </CommandBar.Content>
+
+                                <AppBarButton
+                                    x:Name="AddressCommandBarAddButton"
+                                    Click="{x:Bind ViewModel.AddSelectedButton_Clicked}"
+                                    Icon="Add"
+                                    Label="Add selected"
+                                    ToolTipService.ToolTip="Add selected" />
+
+                                <AppBarButton
+                                    x:Name="AddressCommandBarDeleteButton"
+                                    Click="{x:Bind ViewModel.DeleteSelectedButton_Clicked}"
+                                    Icon="Delete"
+                                    Label="Delete"
+                                    ToolTipService.ToolTip="Delete" />
+
+                            </CommandBar>
+
+                            <controls:DataGrid
+                                x:Name="AddressGrid"
+                                Margin="0,20,0,0"
+                                AutoGenerateColumns="False"
+                                CanUserReorderColumns="False"
+                                GridLinesVisibility="All"
+                                IsReadOnly="True"
+                                SelectedItem="{x:Bind ViewModel.SelectedExistingAddress, Mode=TwoWay}"
+                                ItemsSource="{x:Bind ViewModel.CurrentHospital.ObservableAddresses, Mode=OneWay}"
+                                RelativePanel.Below="AddressCommandBar"
+                                SelectionMode="Single"
+                                VerticalScrollBarVisibility="Auto"
+                                VirtualizingStackPanel.VirtualizationMode="Recycling">
+
+                                <controls:DataGrid.Resources>
+                                    <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
+                                </controls:DataGrid.Resources>
+
+                                <controls:DataGrid.Columns>
+
+                                    <!--  As I got it, DataGrid doesn't support x:Bind  -->
+                                    <controls:DataGridTextColumn
+                                        Width="30*"
+                                        Binding="{Binding City}"
+                                        Header="City" />
+                                    <controls:DataGridTextColumn
+                                        Width="30*"
+                                        Binding="{Binding Street}"
+                                        Header="Street" />
+                                    <controls:DataGridTextColumn
+                                        Width="30*"
+                                        Binding="{Binding Building}"
+                                        Header="Building" />
+                                </controls:DataGrid.Columns>
+
+                            </controls:DataGrid>
+
+                        </RelativePanel>
+
+                    </muxc:Expander.Content>
+
+                </muxc:Expander>
+
+
+            </StackPanel>
+
+        </ScrollViewer>
+
+    </RelativePanel>
+
 
 </Page>

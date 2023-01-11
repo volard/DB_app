@@ -176,13 +176,14 @@ public partial class App : Application
             }
 
             //var options = optionsBuilder.UseNpgsql(connectionString).Options;
-            var options = optionsBuilder.UseSqlite("Data Source=" + databasePath).Options;
+            //optionsBuilder.EnableSensitiveDataLogging();
+            var options = optionsBuilder.EnableSensitiveDataLogging().UseSqlite("Data Source=" + databasePath).Options;
 
             services.AddSingleton<IRepositoryControllerService>(new SQLControllerService(options));
         }).
         Build();
 
-        //UnhandledException += App_UnhandledException;
+        UnhandledException += App_UnhandledException;
     }
 
     private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)

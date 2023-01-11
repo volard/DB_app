@@ -35,7 +35,7 @@ public class PageService : IPageService
         Configure<MedicinesGridViewModel, MedicinesGridPage>();
         Configure<MedicineDetailsViewModel, MedicineDetailsPage>();
 
-        // Addresses
+        // HospitalAddresses
         Configure<AddressesGridViewModel, AddressesGridPage>();
         Configure<AddressDetailsViewModel, AddressDetailsPage>();
 
