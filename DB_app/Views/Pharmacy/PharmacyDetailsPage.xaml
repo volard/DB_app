@@ -57,13 +57,13 @@
 
 
                 <muxc:Expander
-                    x:Name="ExpanderFullName"
+                    x:Name="ExpanderName"
                     ExpandDirection="Down"
                     IsExpanded="True">
 
                     <muxc:Expander.Header>
                         <Grid>
-                            <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="FullName" />
+                            <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="Name" />
                             <TextBlock
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
@@ -79,7 +79,7 @@
                                 x:Name="Name"
                                 MinWidth="300"
                                 Margin="10,20,16,8"
-                                Header="Maindoctor's surename"
+                                Header="Name"
                                 RelativePanel.AlignLeftWithPanel="True"
                                 Text="{x:Bind ViewModel.CurrentPharmacy.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 TextChanged="NameText_TextChanged" />

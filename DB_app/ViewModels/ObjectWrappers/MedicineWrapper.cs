@@ -101,7 +101,7 @@ public partial class MedicineWrapper : ObservableValidator, IEditableObject, IEq
     public bool HasTypeErrors => GetErrors(nameof(Type)).Any();
     public bool AreNoErrors => !HasErrors;
 
-    public int Id { get => MedicineData.id_medicine; }
+    public int Id { get => MedicineData.Id; }
 
     // TODO implement cancel button on notification popup
     public string? BackupedName;

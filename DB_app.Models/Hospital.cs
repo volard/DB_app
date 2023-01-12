@@ -21,7 +21,7 @@ public class Hospital
 
     [Required]
     [Key]
-    public int id_hospital                  { get; set; }
+    public int Id                  { get; set; }
 
     [Required]
     public string Surename_main_doctor      { get; set; }

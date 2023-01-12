@@ -10,17 +10,17 @@ public class Product
 {
     [Required]
     [Key]
-    public int id_product   { get; set; }
+    public int Id   { get; set; }
 
     [Required]
-    public int id_medicine  { get; set; }
+    public Medicine ContainingMedicine  { get; set; }
 
     [Required]
-    public int id_pharmacy  { get; set; }
+    public Pharmacy SellingPharmacy     { get; set; }
 
     [Required]
-    public double Price     { get; set; }
+    public double Price                { get; set; }
 
     [Required]
-    public int Amount       { get; set; }
+    public int Quantity { get; set; } = 1;
 }

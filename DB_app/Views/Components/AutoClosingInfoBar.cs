@@ -18,7 +18,7 @@ public class AutoClosingInfoBar : Microsoft.UI.Xaml.Controls.InfoBar
     /// <summary>
     /// Gets or sets the auto-close interval, in milliseconds.
     /// </summary>
-    public int AutoCloseInterval { get; set; } = 5000;
+    public int AutoCloseInterval { get; set; } = 3000;
 
     private void AutoClosingInfoBar_Loaded(object sender, RoutedEventArgs e)
     {

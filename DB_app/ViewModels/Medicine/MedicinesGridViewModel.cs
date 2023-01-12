@@ -96,7 +96,7 @@ public partial class MedicinesGridViewModel : ObservableRecipient, INavigationAw
     {
         if (_selectedItem != null)
         {
-            int id = _selectedItem.MedicineData.id_medicine;
+            int id = _selectedItem.MedicineData.Id;
             //await _repositoryControllerService.Medicines.DeleteAsync(id);
             //Source.Remove(_selectedItem);
 
@@ -131,7 +131,7 @@ public partial class MedicinesGridViewModel : ObservableRecipient, INavigationAw
     public void UpdateGridWithEditedWrapper(MedicineWrapper givenMedicineWrapper)
     {
         // TODO rename it or something IDK it's just looks terrible imo
-        //var foundInSource = Source.FirstOrDefault(wrapper => wrapper.MedicineData.id_medicine == givenMedicineWrapper.MedicineData.id_medicine);
+        //var foundInSource = Source.FirstOrDefault(wrapper => wrapper.MedicineData.Id == givenMedicineWrapper.MedicineData.Id);
         //if (foundInSource != null)
         //{
         //    givenMedicineWrapper.IsModified = false;

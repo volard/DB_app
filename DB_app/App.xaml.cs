@@ -13,7 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
-using DB_app.Repository.PosgresMain;
+using DB_app.Repository.SQL;
 using Windows.Services.Maps;
 using Windows.ApplicationModel;
 using Windows.Storage;
@@ -119,12 +119,16 @@ public partial class App : Application
             services.AddTransient<PharmacyDetailsViewModel>();
             services.AddTransient<PharmacyDetailsPage>();
 
+            services.AddTransient<PharmaciesGridViewModel>();
+            services.AddTransient<PharmaciesGridPage>();
+
 
             // === Product
             services.AddTransient<ProductsGridViewModel>();
             services.AddTransient<ProductsGridPage>();
-            services.AddTransient<PharmaciesGridViewModel>();
-            services.AddTransient<PharmaciesGridPage>();
+            
+            services.AddTransient<ProductDetailsPage>();
+            services.AddTransient<ProductDetailsViewModel>();
 
 
             // === Address

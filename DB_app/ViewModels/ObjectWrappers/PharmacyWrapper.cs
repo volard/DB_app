@@ -107,7 +107,7 @@ public partial class PharmacyWrapper : ObservableValidator, IEditableObject, IEq
     }
 
 
-    public int Id { get => PharmacyData.id_pharmacy; }
+    public int Id { get => PharmacyData.Id; }
 
 
     // TODO that looks disgusting. I wonder if functions in xaml bindings works properly for me

@@ -1,23 +1,23 @@
 using DB_app.Behaviors;
+using DB_app.Models;
 using DB_app.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
 using System.Diagnostics;
 using WinUIEx.Messaging;
 
 namespace DB_app.Views;
 
-// TODO change "New Address" page header to dynamic one
-public sealed partial class AddressDetailsPage : Page
+// TODO change "New Product" page header to dynamic one
+public sealed partial class ProductDetailsPage : Page
 {
-    public AddressDetailsViewModel ViewModel { get; }
+    public ProductDetailsViewModel ViewModel { get; }
 
-    public AddressDetailsPage()
+    public ProductDetailsPage()
     {
-        ViewModel = App.GetService<AddressDetailsViewModel>();
+        ViewModel = App.GetService<ProductDetailsViewModel>();
         InitializeComponent();
         SetBinding(NavigationViewHeaderBehavior.HeaderContextProperty, new Binding
         {
@@ -31,9 +31,9 @@ public sealed partial class AddressDetailsPage : Page
     {
         await ViewModel.SaveAsync();
         ViewModel.NotifyGridAboutChange();
-        Debug.WriteLine($"So boiii the ViewModel.CurrentAddress now is {ViewModel.CurrentAddress}");
+        Debug.WriteLine($"So boiii the ViewModel.CurrentProduct now is {ViewModel.CurrentProduct}");
 
-        Frame.Navigate(typeof(AddressesGridPage), null);
+        Frame.Navigate(typeof(ProductsGridPage), null);
     }
 
     /// <summary>
@@ -49,28 +49,27 @@ public sealed partial class AddressDetailsPage : Page
         // TODO implement this
     }
 
-    
-
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
-        ViewModel.CurrentAddress.BuckupData();
-        ViewModel.CurrentAddress.NotifyAboutProperties();
+        ViewModel.CurrentProduct.BuckupData();
+        ViewModel.CurrentProduct.NotifyAboutProperties();
         base.OnNavigatedTo(e);
     }
 
-    private void CityText_TextChanged(object sender, TextChangedEventArgs e)
+
+    private void PriceValue_ValueChanged(object sender, NumberBoxValueChangedEventArgs e)
     {
-        ViewModel.CurrentAddress.City = City.Text;
+        ViewModel.CurrentProduct.Price = Price.Value is double.NaN ? 1 : Price.Value;
+        Debug.WriteLine("Got from e.newvalue: " + e.NewValue);
+
+        ViewModel.CurrentProduct.IsModified = true;
     }
 
-    private void StreetText_TextChanged(object sender, TextChangedEventArgs e)
+    private void QuantityValue_ValueChanged(object sender, NumberBoxValueChangedEventArgs e)
     {
-        ViewModel.CurrentAddress.Street = Street.Text;
+        ViewModel.CurrentProduct.Quantity = Quantity.Value is double.NaN ? 1 : (int)Quantity.Value;
+        ViewModel.CurrentProduct.IsModified = true;
     }
 
-    private void BuildingText_TextChanged(object sender, TextChangedEventArgs e)
-    {
-        ViewModel.CurrentAddress.Building = Building.Text;
-    }
 }

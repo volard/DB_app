@@ -130,7 +130,7 @@ public partial class AddressWrapper : ObservableValidator, IEditableObject, IEqu
     public bool AreNoErrors 
         => !HasErrors;
 
-    public int Id { get => AddressData.id_address; }
+    public int Id { get => AddressData.Id; }
 
     // TODO implement cancel button on notification popup
     public string? BackupedCity;

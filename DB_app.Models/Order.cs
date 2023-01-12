@@ -10,13 +10,13 @@ public class Order
 {
     [Required]
     [Key]
-    public int id_order     { get; set; }
+    public int Id     { get; set; }
 
     [Required]
-    public int id_hospital { get; set; }
+    public Hospital BuyingHospital { get; set; }
 
     [Required]
-    public int id_pharmacy { get; set; }
+    public Pharmacy SellingPharmacy { get; set; }
 
-    public List<Product> Products { get; set; } = new List<Product>();
+    public List<OrderItem> Items { get; set; } = new();
 }

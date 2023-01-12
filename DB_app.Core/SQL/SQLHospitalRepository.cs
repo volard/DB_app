@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DB_app.Repository.PosgresMain;
+namespace DB_app.Repository.SQL;
 
 /// <summary>
 /// Contains methods for interacting with the hospitals backend using 
@@ -33,7 +33,7 @@ public class SQLHospitalRepository : IHospitalRepository
     public async Task<Hospital> GetAsync(int id)
     {
         return await _db.Hospitals
-           .FirstOrDefaultAsync(hospital => hospital.id_hospital == id);
+           .FirstOrDefaultAsync(hospital => hospital.Id == id);
     }
 
     /// <inheritdoc/>
@@ -41,20 +41,20 @@ public class SQLHospitalRepository : IHospitalRepository
     {
         _db.Hospitals.Add(hospital);
         await _db.SaveChangesAsync();
-        Debug.WriteLine("InsertAsync - Hospital : " + hospital.id_hospital + "was succesfully inserted in the Database");
+        Debug.WriteLine("InsertAsync - Hospital : " + hospital.Id + "was succesfully inserted in the Database");
     }
 
     /// <inheritdoc/>
     public async Task UpdateAsync(Hospital hospital)
     {
         Hospital foundHospital = await _db.Hospitals
-                .FirstOrDefaultAsync(existHospital => existHospital.id_hospital == hospital.id_hospital);
+                .FirstOrDefaultAsync(existHospital => existHospital.Id == hospital.Id);
 
         if (foundHospital != null)
         {
             _db.Entry(foundHospital).CurrentValues.SetValues(hospital);
             await _db.SaveChangesAsync();
-            Debug.WriteLine("UpdateAsync - Hospital : " + foundHospital.id_hospital + " was succesfully updated in the Database");
+            Debug.WriteLine("UpdateAsync - Hospital : " + foundHospital.Id + " was succesfully updated in the Database");
         }
         else
         {
@@ -66,7 +66,7 @@ public class SQLHospitalRepository : IHospitalRepository
     /// <inheritdoc/>
     public async Task DeleteAsync(int id)
     {
-        var foundHospital = await _db.Hospitals.FirstOrDefaultAsync(_hospital => _hospital.id_hospital == id);
+        var foundHospital = await _db.Hospitals.FirstOrDefaultAsync(_hospital => _hospital.Id == id);
         if (null != foundHospital)
         {
             _db.Hospitals.Remove(foundHospital);

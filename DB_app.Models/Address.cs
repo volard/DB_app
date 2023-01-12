@@ -16,7 +16,7 @@ public class Address
 
     [Required]
     [Key]
-    public int id_address   { get; set; }
+    public int Id   { get; set; }
 
     [Required]
     public string City      { get; set; }

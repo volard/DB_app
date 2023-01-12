@@ -1,6 +1,6 @@
 ﻿using DB_app.Core.Contracts.Services;
 using Microsoft.EntityFrameworkCore;
-using DB_app.Repository.PosgresMain;
+using DB_app.Repository.SQL;
 
 namespace DB_app.Repository.Services;
 

@@ -9,7 +9,7 @@ namespace DB_app.Models;
 public class Medicine
 {
     [Key]
-    public int id_medicine  { get; private set; }
+    public int Id  { get; private set; }
 
     [Required]
     public string Name         { get; set; }

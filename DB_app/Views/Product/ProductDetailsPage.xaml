@@ -1,0 +1,144 @@
+<Page
+    x:Class="DB_app.Views.ProductDetailsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="using:DB_app.Behaviors"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModel="using:DB_app.ViewModels"
+    mc:Ignorable="d">
+
+
+    <behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
+        <DataTemplate x:DataType="viewModel:ProductDetailsViewModel">
+            <CommandBar
+                HorizontalAlignment="Stretch"
+                Background="Transparent"
+                DefaultLabelPosition="Right">
+                <CommandBar.Content>
+                    <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="New Product" />
+                </CommandBar.Content>
+
+                <AppBarButton
+                    Click="SaveButton_Click"
+                    Icon="Save"
+                    IsEnabled="{Binding CurrentProduct.CanSave}"
+                    Label="Save" />
+                <AppBarButton
+                    Click="CancelEdit_Click"
+                    Icon="Cancel"
+                    Label="Cancel" />
+                <AppBarSeparator />
+            </CommandBar>
+        </DataTemplate>
+    </behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
+
+
+    <ScrollViewer
+        x:Name="DetailPanel"
+        RelativePanel.AlignLeftWithPanel="True"
+        RelativePanel.AlignRightWithPanel="True"
+        RelativePanel.Below="MainCommandBar"
+        VerticalScrollBarVisibility="Auto"
+        VerticalScrollMode="Auto">
+
+        <RelativePanel>
+            <ComboBox
+                x:Name="PharmacyComboBox"
+                Width="380"
+                Margin="0,20,16,8"
+                VerticalAlignment="Stretch"
+                ItemsSource="{x:Bind ViewModel.AvailablePharmacies, Mode=TwoWay}"
+                PlaceholderText="Select pharmacy"
+                SelectedItem="{x:Bind ViewModel.CurrentProduct.SellingPharmacy, Mode=OneWay}" />
+
+            <SymbolIcon
+                Margin="0,35,0,0"
+                Foreground="OrangeRed"
+                RelativePanel.AlignVerticalCenterWith="PharmacyComboBox"
+                RelativePanel.RightOf="PharmacyComboBox"
+                Symbol="ReportHacked"
+                Visibility="{x:Bind ViewModel.CurrentProduct.HasSellingPharmacyErrors, Mode=OneWay}">
+                <ToolTipService.ToolTip>
+                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentProduct.SellingPharmacyErrors, Mode=OneWay}" />
+                </ToolTipService.ToolTip>
+            </SymbolIcon>
+
+            <ComboBox
+                x:Name="MedicineComboBox"
+                Width="380"
+                Margin="0,20,16,8"
+                VerticalAlignment="Stretch"
+                ItemsSource="{x:Bind ViewModel.AvailableMedicines, Mode=TwoWay}"
+                PlaceholderText="Select medicine"
+                RelativePanel.Below="PharmacyComboBox"
+                SelectedItem="{x:Bind ViewModel.CurrentProduct.ContainingMedicine, Mode=TwoWay}" />
+
+            <SymbolIcon
+                Margin="0,35,0,0"
+                Foreground="OrangeRed"
+                RelativePanel.AlignVerticalCenterWith="MedicineComboBox"
+                RelativePanel.RightOf="MedicineComboBox"
+                Symbol="ReportHacked"
+                Visibility="{x:Bind ViewModel.CurrentProduct.HasContainingMedicineErrors, Mode=OneWay}">
+                <ToolTipService.ToolTip>
+                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentProduct.ContainingMedicineErrors, Mode=OneWay}" />
+                </ToolTipService.ToolTip>
+            </SymbolIcon>
+
+            <NumberBox
+                x:Name="Price"
+                MinWidth="300"
+                Margin="0,20,16,8"
+                Header="Price"
+                Minimum="1"
+                RelativePanel.AlignLeftWithPanel="True"
+                RelativePanel.Below="MedicineComboBox"
+                ValueChanged="PriceValue_ValueChanged"
+                Value="{x:Bind ViewModel.CurrentProduct.Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            <SymbolIcon
+                Margin="0,35,0,0"
+                Foreground="OrangeRed"
+                RelativePanel.AlignVerticalCenterWith="Price"
+                RelativePanel.RightOf="Price"
+                Symbol="ReportHacked"
+                Visibility="{x:Bind ViewModel.CurrentProduct.HasPriceErrors, Mode=OneWay}">
+                <ToolTipService.ToolTip>
+                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentProduct.PriceErrors, Mode=OneWay}" />
+                </ToolTipService.ToolTip>
+            </SymbolIcon>
+
+
+            <NumberBox
+                x:Name="Quantity"
+                MinWidth="300"
+                Margin="0,20,16,8"
+                Header="Quantity"
+                Minimum="1"
+                RelativePanel.AlignLeftWithPanel="True"
+                RelativePanel.Below="Price"
+                Text="1"
+                ValueChanged="QuantityValue_ValueChanged"
+                Value="{x:Bind ViewModel.CurrentProduct.Quantity, Mode=TwoWay}" />
+
+            <SymbolIcon
+                Margin="0,35,0,0"
+                Foreground="OrangeRed"
+                RelativePanel.AlignVerticalCenterWith="Quantity"
+                RelativePanel.RightOf="Quantity"
+                Symbol="ReportHacked"
+                Visibility="{x:Bind ViewModel.CurrentProduct.HasQuantityErrors, Mode=OneWay}">
+                <ToolTipService.ToolTip>
+                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentProduct.QuantityErrors, Mode=OneWay}" />
+                </ToolTipService.ToolTip>
+            </SymbolIcon>
+
+        </RelativePanel>
+
+
+
+    </ScrollViewer>
+
+</Page>

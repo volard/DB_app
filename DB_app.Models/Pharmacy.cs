@@ -24,7 +24,7 @@ public class Pharmacy
 
     [Required]
     [Key]
-    public int id_pharmacy          { get; set; }
+    public int Id          { get; set; }
 
     [Required]
     public string Name              { get; set; }
