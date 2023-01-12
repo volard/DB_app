@@ -2,6 +2,7 @@
     x:Class="DB_app.Views.AddressesGridPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:appcontrols="using:DB_app.Views.Components"
     xmlns:behaviors="using:DB_app.Behaviors"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -39,6 +40,7 @@
 
                 <AppBarButton
                     x:Name="CommandBarDeleteButton"
+                    Click="DeleteFancy"
                     Icon="Delete"
                     IsEnabled="{Binding IsGridItemSelected, Mode=OneWay}"
                     Label="Delete"
@@ -94,9 +96,28 @@
         </Grid>
 
         <RelativePanel HorizontalAlignment="Stretch">
-            <InfoBar
+
+            <RelativePanel.Resources>
+                <Storyboard x:Name="myStoryboard">
+                    <DoubleAnimation
+                        Storyboard.TargetName="Translation"
+                        Storyboard.TargetProperty="Opacity"
+                        From="1.0"
+                        To="0.0"
+                        Duration="0:0:5">
+                        <DoubleAnimation.EasingFunction>
+                            <ExponentialEase EasingMode="EaseOut" Exponent="7" />
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+
+                </Storyboard>
+            </RelativePanel.Resources>
+
+            <appcontrols:AutoClosingInfoBar
+                x:Name="Translation"
                 Title="{x:Bind ViewModel.InfoBarSeverity, Mode=OneWay}"
-                IsOpen="{x:Bind ViewModel.IsInfoBarOpened, Mode=OneWay}"
+                IsClosable="False"
+                IsOpen="{x:Bind ViewModel.IsInfoBarOpened, Mode=TwoWay}"
                 Message="{x:Bind ViewModel.InfoBarMessage, Mode=OneWay}"
                 RelativePanel.AlignBottomWithPanel="True"
                 RelativePanel.AlignHorizontalCenterWithPanel="True"

@@ -97,18 +97,17 @@ public partial class AddressesGridViewModel : ObservableRecipient, INavigationAw
 
 
 
-    public void deleteItem_Click(object sender, RoutedEventArgs e)
+    public async void DeleteItem_Click()
     {
         if (_selectedItem != null)
         {
-            int id = _selectedItem.AddressData.id_address;
-            //await _repositoryControllerService.Medicines.DeleteAsync(id);
-            //Source.Remove(_selectedItem);
+            int id = _selectedItem.AddressData.Id;
+            await _repositoryControllerService.Addresses.DeleteAsync(id);
+            Source.Remove(_selectedItem);
 
             InfoBarMessage = "Medicine was deleted";
             InfoBarSeverity = Microsoft.UI.Xaml.Controls.InfoBarSeverity.Success;
             IsInfoBarOpened = true;
-
         }
         else
         {
@@ -136,7 +135,7 @@ public partial class AddressesGridViewModel : ObservableRecipient, INavigationAw
     public void UpdateGridWithEditedWrapper(AddressWrapper givenAddressWrapper)
     {
         // TODO rename it or something IDK it's just looks terrible imo
-        //var foundInSource = Source.FirstOrDefault(wrapper => wrapper.MedicineData.id_medicine == givenAddressWrapper.MedicineData.id_medicine);
+        //var foundInSource = Source.FirstOrDefault(wrapper => wrapper.MedicineData.Id == givenAddressWrapper.MedicineData.Id);
         //if (foundInSource != null)
         //{
         //    givenAddressWrapper.IsModified = false;

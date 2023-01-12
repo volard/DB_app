@@ -45,6 +45,14 @@ public sealed partial class AddressesGridPage : Page
     private void AddNewAddress_Click(object sender, RoutedEventArgs e) =>
         Frame.Navigate(typeof(AddressDetailsPage), null, new DrillInNavigationTransitionInfo());
 
+
+    private void DeleteFancy(object sender, RoutedEventArgs e)
+    {
+        ViewModel.DeleteItem_Click();
+        myStoryboard.Begin();
+    }
+
+
     private void EditExistingAddress_Click(object sender, RoutedEventArgs e)
     {
         Frame.Navigate(typeof(AddressDetailsPage), null, new DrillInNavigationTransitionInfo());
