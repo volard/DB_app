@@ -11,13 +11,13 @@ namespace DB_app.Views;
 /// <summary>
 /// An empty page that can be used on its own or navigated to within a Frame.
 /// </summary>
-public sealed partial class HospitalDetailsPage : Page
+public sealed partial class PharmacyDetailsPage : Page
 {
-    public HospitalDetailsViewModel ViewModel { get; }
+    public PharmacyDetailsViewModel ViewModel { get; }
 
-    public HospitalDetailsPage()
+    public PharmacyDetailsPage()
     {
-        ViewModel = App.GetService<HospitalDetailsViewModel>();
+        ViewModel = App.GetService<PharmacyDetailsViewModel>();
         InitializeComponent();
         SetBinding(NavigationViewHeaderBehavior.HeaderContextProperty, new Binding
         {
@@ -31,9 +31,9 @@ public sealed partial class HospitalDetailsPage : Page
     {
         if (ViewModel.SelectedAddress != null)
         {
-            ViewModel.CurrentHospital.HospitalData.Addresses.Add(ViewModel.SelectedAddress);
-            ViewModel.CurrentHospital.IsModified = true;
-            ViewModel.CurrentHospital.NotifyAboutAddressesChanged();
+            ViewModel.CurrentPharmacy.PharmacyData.Addresses.Add(ViewModel.SelectedAddress);
+            ViewModel.CurrentPharmacy.IsModified = true;
+            ViewModel.CurrentPharmacy.NotifyAboutAddressesChanged();
             ViewModel.AvailableAddresses.Remove(ViewModel.SelectedAddress);
         }
     }
@@ -43,9 +43,9 @@ public sealed partial class HospitalDetailsPage : Page
         if (ViewModel.SelectedExistingAddress != null)
         {
             ViewModel.AvailableAddresses.Add(ViewModel.SelectedExistingAddress);
-            ViewModel.CurrentHospital.HospitalData.Addresses.Remove(ViewModel.SelectedExistingAddress);
-            ViewModel.CurrentHospital.IsModified = true;
-            ViewModel.CurrentHospital.NotifyAboutAddressesChanged();
+            ViewModel.CurrentPharmacy.PharmacyData.Addresses.Remove(ViewModel.SelectedExistingAddress);
+            ViewModel.CurrentPharmacy.IsModified = true;
+            ViewModel.CurrentPharmacy.NotifyAboutAddressesChanged();
         }
     }
 
@@ -53,9 +53,9 @@ public sealed partial class HospitalDetailsPage : Page
     {
         await ViewModel.SaveAsync();
         ViewModel.NotifyGridAboutChange();
-        Debug.WriteLine($"So boiii the ViewModel.CurrentHospital now is {ViewModel.CurrentHospital}");
+        Debug.WriteLine($"So boiii the ViewModel.CurrentPharmacy now is {ViewModel.CurrentPharmacy}");
 
-        Frame.Navigate(typeof(HospitalsGridPage), null);
+        Frame.Navigate(typeof(PharmaciesGridPage), null);
     }
 
     /// <summary>
@@ -74,23 +74,17 @@ public sealed partial class HospitalDetailsPage : Page
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
-        ViewModel.CurrentHospital.BuckupData();
-        ViewModel.CurrentHospital.NotifyAboutProperties();
+        ViewModel.CurrentPharmacy.BuckupData();
+        ViewModel.CurrentPharmacy.NotifyAboutProperties();
         base.OnNavigatedTo(e);
     }
 
-    private void Name_main_doctorText_TextChanged(object sender, TextChangedEventArgs e) =>
-        ViewModel.CurrentHospital.Name_main_doctor = Name_main_doctor.Text;
-
-    private void Middlename_main_doctorText_TextChanged(object sender, TextChangedEventArgs e) =>
-        ViewModel.CurrentHospital.Middlename_main_doctor = Middlename_main_doctor.Text;
-
-    private void Surename_main_doctorText_TextChanged(object sender, TextChangedEventArgs e) =>
-        ViewModel.CurrentHospital.Surename_main_doctor = Surename_main_doctor.Text;
+    private void NameText_TextChanged(object sender, TextChangedEventArgs e) =>
+        ViewModel.CurrentPharmacy.Name = Name.Text;
 
     private void INNText_TextChanged(object sender, TextChangedEventArgs e) =>
-        ViewModel.CurrentHospital.INN = INN.Text;
-    
+        ViewModel.CurrentPharmacy.INN = INN.Text;
+
     private void OGRNText_TextChanged(object sender, TextChangedEventArgs e) =>
-        ViewModel.CurrentHospital.OGRN = OGRN.Text;
+        ViewModel.CurrentPharmacy.OGRN = OGRN.Text;
 }

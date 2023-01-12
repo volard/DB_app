@@ -16,6 +16,8 @@ namespace DB_app.ViewModels;
 public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEquatable<HospitalWrapper>
 {
 
+    #region Constructors
+
     public HospitalWrapper(Hospital hospital)
     {
         HospitalData = hospital;
@@ -30,46 +32,7 @@ public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEq
         NotifyAboutProperties();
     }
 
-    public void NotifyAboutProperties()
-    {
-        OnPropertyChanged(nameof(Name_main_doctor));
-        OnPropertyChanged(nameof(Surename_main_doctor));
-        OnPropertyChanged(nameof(Middlename_main_doctor));
-        OnPropertyChanged(nameof(INN));
-        OnPropertyChanged(nameof(OGRN));
-        OnPropertyChanged(nameof(ObservableAddresses));
-    }
-
-    public void NotifyAboutAddressesChanged() =>
-        OnPropertyChanged(nameof(ObservableAddresses));
-
-    private void Suspect_ErrorsChanged(object sender, DataErrorsChangedEventArgs e)
-    {
-        OnPropertyChanged(nameof(Errors));
-        OnPropertyChanged(nameof(Name_main_doctorErrors));
-        OnPropertyChanged(nameof(Surename_main_doctorErrors));
-        OnPropertyChanged(nameof(Middlename_main_doctorErrors));
-        OnPropertyChanged(nameof(INNErrors));
-        OnPropertyChanged(nameof(OGRNErrors));
-
-        OnPropertyChanged(nameof(Name_main_doctor));
-        OnPropertyChanged(nameof(Surename_main_doctor));
-        OnPropertyChanged(nameof(Middlename_main_doctor));
-        OnPropertyChanged(nameof(INN));
-        OnPropertyChanged(nameof(OGRN));
-
-        OnPropertyChanged(nameof(HasName_main_doctorErrors));
-        OnPropertyChanged(nameof(HasSurename_main_doctorErrors));
-        OnPropertyChanged(nameof(HasMiddlename_main_doctorErrors));
-        OnPropertyChanged(nameof(HasINNErrors));
-        OnPropertyChanged(nameof(HasOGRNErrors));
-
-        OnPropertyChanged(nameof(AreNoErrors));
-    }
-
-    public override string ToString() 
-        => $"HospitalWrapper with HospitalData - [ {HospitalData} ]";
-
+    #endregion
 
 
     #region Properties
@@ -88,13 +51,11 @@ public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEq
         set
         {
             ValidateProperty(value);
-            Debug.WriteLine($"I've just validated the name and got this errors: {Errors}");
             if (!GetErrors(nameof(Name_main_doctor)).Any())
             {
                 HospitalData.Name_main_doctor = value;
                 OnPropertyChanged();
             }
-            Debug.WriteLine($"\nfor name property especially: {GetErrors(nameof(Name_main_doctor))}");
         }
     }
 
@@ -106,13 +67,11 @@ public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEq
         set
         {
             ValidateProperty(value);
-            Debug.WriteLine($"I've just validated the type and got this errors: {Errors}");
             if (!GetErrors(nameof(Surename_main_doctor)).Any())
             {
                 HospitalData.Surename_main_doctor = value;
                 OnPropertyChanged();
             }
-            Debug.WriteLine($"\nfor type property especially: {GetErrors(nameof(Surename_main_doctor))}");
         }
     }
 
@@ -124,13 +83,11 @@ public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEq
         set
         {
             ValidateProperty(value);
-            Debug.WriteLine($"I've just validated the type and got this errors: {Errors}");
             if (!GetErrors(nameof(Middlename_main_doctor)).Any())
             {
                 HospitalData.Middlename_main_doctor = value;
                 OnPropertyChanged();
             }
-            Debug.WriteLine($"\nfor type property especially: {GetErrors(nameof(Middlename_main_doctor))}");
         }
     }
 
@@ -143,13 +100,11 @@ public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEq
         set
         {
             ValidateProperty(value);
-            Debug.WriteLine($"I've just validated the type and got this errors: {Errors}");
             if (!GetErrors(nameof(INN)).Any())
             {
                 HospitalData.INN = value;
                 OnPropertyChanged();
             }
-            Debug.WriteLine($"\nfor type property especially: {GetErrors(nameof(INN))}");
         }
     }
 
@@ -162,13 +117,11 @@ public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEq
         set
         {
             ValidateProperty(value);
-            Debug.WriteLine($"I've just validated the type and got this errors: {Errors}");
             if (!GetErrors(nameof(OGRN)).Any())
             {
                 HospitalData.OGRN = value;
                 OnPropertyChanged();
             }
-            Debug.WriteLine($"\nfor type property especially: {GetErrors(nameof(OGRN))}");
         }
     }
 
@@ -242,6 +195,48 @@ public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEq
 
 
     #region Modification methods
+
+
+    public void NotifyAboutProperties()
+    {
+        OnPropertyChanged(nameof(Name_main_doctor));
+        OnPropertyChanged(nameof(Surename_main_doctor));
+        OnPropertyChanged(nameof(Middlename_main_doctor));
+        OnPropertyChanged(nameof(INN));
+        OnPropertyChanged(nameof(OGRN));
+        OnPropertyChanged(nameof(ObservableAddresses));
+    }
+
+    public void NotifyAboutAddressesChanged() =>
+        OnPropertyChanged(nameof(ObservableAddresses));
+
+    private void Suspect_ErrorsChanged(object sender, DataErrorsChangedEventArgs e)
+    {
+        OnPropertyChanged(nameof(Errors));
+        OnPropertyChanged(nameof(Name_main_doctorErrors));
+        OnPropertyChanged(nameof(Surename_main_doctorErrors));
+        OnPropertyChanged(nameof(Middlename_main_doctorErrors));
+        OnPropertyChanged(nameof(INNErrors));
+        OnPropertyChanged(nameof(OGRNErrors));
+
+        OnPropertyChanged(nameof(Name_main_doctor));
+        OnPropertyChanged(nameof(Surename_main_doctor));
+        OnPropertyChanged(nameof(Middlename_main_doctor));
+        OnPropertyChanged(nameof(INN));
+        OnPropertyChanged(nameof(OGRN));
+
+        OnPropertyChanged(nameof(HasName_main_doctorErrors));
+        OnPropertyChanged(nameof(HasSurename_main_doctorErrors));
+        OnPropertyChanged(nameof(HasMiddlename_main_doctorErrors));
+        OnPropertyChanged(nameof(HasINNErrors));
+        OnPropertyChanged(nameof(HasOGRNErrors));
+
+        OnPropertyChanged(nameof(AreNoErrors));
+    }
+
+    public override string ToString()
+        => $"HospitalWrapper with HospitalData - [ {HospitalData} ]";
+
 
     public void BuckupData()
     {

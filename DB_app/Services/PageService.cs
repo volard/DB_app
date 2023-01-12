@@ -39,10 +39,13 @@ public class PageService : IPageService
         Configure<AddressesGridViewModel, AddressesGridPage>();
         Configure<AddressDetailsViewModel, AddressDetailsPage>();
 
-        
-        Configure<OrdersGridViewModel, OrdersGridPage>();
+        // Pharmacies
         Configure<PharmaciesGridViewModel, PharmaciesGridPage>();
+        Configure<PharmacyDetailsViewModel, PharmacyDetailsPage>();
+
+
         Configure<ProductsGridViewModel, ProductsGridPage>();
+        Configure<OrdersGridViewModel, OrdersGridPage>();
 
         // ====================
         // Reports

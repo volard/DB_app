@@ -1,5 +1,5 @@
 <Page
-    x:Class="DB_app.Views.HospitalDetailsPage"
+    x:Class="DB_app.Views.PharmacyDetailsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="using:DB_app.Behaviors"
@@ -12,7 +12,7 @@
 
 
     <behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
-        <DataTemplate x:DataType="viewModel:HospitalDetailsViewModel">
+        <DataTemplate x:DataType="viewModel:PharmacyDetailsViewModel">
             <CommandBar
                 HorizontalAlignment="Stretch"
                 Background="Transparent"
@@ -24,7 +24,7 @@
                 <AppBarButton
                     Click="SaveButton_Click"
                     Icon="Save"
-                    IsEnabled="{Binding CurrentHospital.AreNoErrors}"
+                    IsEnabled="{Binding CurrentPharmacy.AreNoErrors}"
                     Label="Save" />
                 <AppBarButton
                     Click="CancelEdit_Click"
@@ -67,7 +67,7 @@
                             <TextBlock
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
-                                Text="{x:Bind ViewModel.CurrentHospital.Surename_main_doctor, Mode=OneWay}" />
+                                Text="{x:Bind ViewModel.CurrentPharmacy.Name, Mode=OneWay}" />
                         </Grid>
                     </muxc:Expander.Header>
 
@@ -76,68 +76,26 @@
                         <RelativePanel>
 
                             <TextBox
-                                x:Name="Surename_main_doctor"
+                                x:Name="Name"
                                 MinWidth="300"
                                 Margin="10,20,16,8"
                                 Header="Maindoctor's surename"
                                 RelativePanel.AlignLeftWithPanel="True"
-                                Text="{x:Bind ViewModel.CurrentHospital.Surename_main_doctor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                TextChanged="Surename_main_doctorText_TextChanged" />
+                                Text="{x:Bind ViewModel.CurrentPharmacy.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                TextChanged="NameText_TextChanged" />
 
                             <SymbolIcon
                                 Margin="0,35,0,0"
                                 Foreground="OrangeRed"
-                                RelativePanel.AlignVerticalCenterWith="Surename_main_doctor"
-                                RelativePanel.RightOf="Surename_main_doctor"
+                                RelativePanel.AlignVerticalCenterWith="Name"
+                                RelativePanel.RightOf="Name"
                                 Symbol="ReportHacked"
-                                Visibility="{x:Bind ViewModel.CurrentHospital.HasSurename_main_doctorErrors, Mode=OneWay}">
+                                Visibility="{x:Bind ViewModel.CurrentPharmacy.HasNameErrors, Mode=OneWay}">
                                 <ToolTipService.ToolTip>
-                                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentHospital.Surename_main_doctorErrors, Mode=OneWay}" />
+                                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentPharmacy.NameErrors, Mode=OneWay}" />
                                 </ToolTipService.ToolTip>
                             </SymbolIcon>
 
-
-                            <TextBox
-                                x:Name="Name_main_doctor"
-                                MinWidth="300"
-                                Margin="10,20,16,8"
-                                Header="Maindoctor's name"
-                                RelativePanel.AlignLeftWithPanel="True"
-                                RelativePanel.Below="Surename_main_doctor"
-                                Text="{x:Bind ViewModel.CurrentHospital.Name_main_doctor, Mode=TwoWay}"
-                                TextChanged="Name_main_doctorText_TextChanged" />
-                            <SymbolIcon
-                                Margin="0,35,0,0"
-                                Foreground="OrangeRed"
-                                RelativePanel.AlignVerticalCenterWith="Name_main_doctor"
-                                RelativePanel.RightOf="Name_main_doctor"
-                                Symbol="ReportHacked"
-                                Visibility="{x:Bind ViewModel.CurrentHospital.HasName_main_doctorErrors, Mode=OneWay}">
-                                <ToolTipService.ToolTip>
-                                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentHospital.Name_main_doctorErrors, Mode=OneWay}" />
-                                </ToolTipService.ToolTip>
-                            </SymbolIcon>
-
-                            <TextBox
-                                x:Name="Middlename_main_doctor"
-                                MinWidth="300"
-                                Margin="10,20,16,8"
-                                Header="Maindoctor's middlename"
-                                RelativePanel.AlignLeftWithPanel="True"
-                                RelativePanel.Below="Name_main_doctor"
-                                Text="{x:Bind ViewModel.CurrentHospital.Middlename_main_doctor, Mode=TwoWay}"
-                                TextChanged="Middlename_main_doctorText_TextChanged" />
-                            <SymbolIcon
-                                Margin="0,35,0,0"
-                                Foreground="OrangeRed"
-                                RelativePanel.AlignVerticalCenterWith="Middlename_main_doctor"
-                                RelativePanel.RightOf="Middlename_main_doctor"
-                                Symbol="ReportHacked"
-                                Visibility="{x:Bind ViewModel.CurrentHospital.HasMiddlename_main_doctorErrors, Mode=OneWay}">
-                                <ToolTipService.ToolTip>
-                                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentHospital.Middlename_main_doctorErrors, Mode=OneWay}" />
-                                </ToolTipService.ToolTip>
-                            </SymbolIcon>
                         </RelativePanel>
 
                     </muxc:Expander.Content>
@@ -156,7 +114,7 @@
                             <TextBlock
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
-                                Text="{x:Bind ViewModel.CurrentHospital.INN, Mode=OneWay}" />
+                                Text="{x:Bind ViewModel.CurrentPharmacy.INN, Mode=OneWay}" />
                         </Grid>
                     </muxc:Expander.Header>
 
@@ -167,9 +125,9 @@
                                 x:Name="INN"
                                 MinWidth="300"
                                 Margin="10,20,16,8"
-                                Header="Hospital's INN"
+                                Header="Pharmacy's INN"
                                 RelativePanel.AlignLeftWithPanel="True"
-                                Text="{x:Bind ViewModel.CurrentHospital.INN, Mode=TwoWay}"
+                                Text="{x:Bind ViewModel.CurrentPharmacy.INN, Mode=TwoWay}"
                                 TextChanged="INNText_TextChanged" />
                             <SymbolIcon
                                 Margin="0,35,0,0"
@@ -177,9 +135,9 @@
                                 RelativePanel.AlignVerticalCenterWith="INN"
                                 RelativePanel.RightOf="INN"
                                 Symbol="ReportHacked"
-                                Visibility="{x:Bind ViewModel.CurrentHospital.HasINNErrors, Mode=OneWay}">
+                                Visibility="{x:Bind ViewModel.CurrentPharmacy.HasINNErrors, Mode=OneWay}">
                                 <ToolTipService.ToolTip>
-                                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentHospital.INNErrors, Mode=OneWay}" />
+                                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentPharmacy.INNErrors, Mode=OneWay}" />
                                 </ToolTipService.ToolTip>
                             </SymbolIcon>
 
@@ -188,10 +146,10 @@
                                 x:Name="OGRN"
                                 MinWidth="300"
                                 Margin="10,20,16,8"
-                                Header="Hospital's OGRN"
+                                Header="Pharmacy's OGRN"
                                 RelativePanel.AlignLeftWithPanel="True"
                                 RelativePanel.Below="INN"
-                                Text="{x:Bind ViewModel.CurrentHospital.OGRN, Mode=TwoWay}"
+                                Text="{x:Bind ViewModel.CurrentPharmacy.OGRN, Mode=TwoWay}"
                                 TextChanged="OGRNText_TextChanged" />
                             <SymbolIcon
                                 Margin="0,35,0,0"
@@ -199,9 +157,9 @@
                                 RelativePanel.AlignVerticalCenterWith="OGRN"
                                 RelativePanel.RightOf="OGRN"
                                 Symbol="ReportHacked"
-                                Visibility="{x:Bind ViewModel.CurrentHospital.HasOGRNErrors, Mode=OneWay}">
+                                Visibility="{x:Bind ViewModel.CurrentPharmacy.HasOGRNErrors, Mode=OneWay}">
                                 <ToolTipService.ToolTip>
-                                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentHospital.OGRNErrors, Mode=OneWay}" />
+                                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentPharmacy.OGRNErrors, Mode=OneWay}" />
                                 </ToolTipService.ToolTip>
                             </SymbolIcon>
                         </RelativePanel>
@@ -274,7 +232,7 @@
                                 CanUserReorderColumns="False"
                                 GridLinesVisibility="All"
                                 IsReadOnly="True"
-                                ItemsSource="{x:Bind ViewModel.CurrentHospital.ObservableAddresses, Mode=OneWay}"
+                                ItemsSource="{x:Bind ViewModel.CurrentPharmacy.ObservableAddresses, Mode=OneWay}"
                                 RelativePanel.Below="AddressCommandBar"
                                 SelectedItem="{x:Bind ViewModel.SelectedExistingAddress, Mode=TwoWay}"
                                 SelectionMode="Single"

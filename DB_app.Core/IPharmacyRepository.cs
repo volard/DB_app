@@ -1,9 +1,4 @@
 ﻿using DB_app.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DB_app.Repository;
 public interface IPharmacyRepository
@@ -19,12 +14,17 @@ public interface IPharmacyRepository
     Task<IEnumerable<Pharmacy>> GetAsync();
 
     /// <summary>
+    /// Returns specific pharmacy. 
+    /// </summary>
+    public Task<Pharmacy> GetAsync(int id);
+
+    /// <summary>
     /// Inserts new pharmacy
     /// </summary>
-    public Task InsertAsync(Pharmacy medicine);
+    public Task InsertAsync(Pharmacy pharmacy);
 
     /// <summary>
     /// Updates existing pharmacy
     /// </summary>
-    public Task UpdateAsync(Pharmacy medicine);
+    public Task UpdateAsync(Pharmacy pharmacy);
 }

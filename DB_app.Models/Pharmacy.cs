@@ -9,6 +9,18 @@ using System.Threading.Tasks;
 namespace DB_app.Models;
 public class Pharmacy
 {
+    public Pharmacy(
+        string name,
+        string inn,
+        string ogrn)
+    {
+        Name = name;
+        INN = inn;
+        OGRN = ogrn;
+    }
+
+    public Pharmacy() { }
+
 
     [Required]
     [Key]
@@ -18,13 +30,12 @@ public class Pharmacy
     public string Name              { get; set; }
 
     [Required]
-    public int INN                  { get; set;}
+    public string INN               { get; set;}
 
     [Required]
-    public int OGRN                 { get; set; }
+    public string OGRN              { get; set; }
 
-    [Required]
-    public List<Address> Addresses  { get; set; }
+    public List<Address> Addresses { get; set; } = new();
 
-    public override string ToString() => $"Pharmacy '{Name}' with '{INN}' INN and {OGRN} OGRN";
+    public override string ToString() => $"Pharmacy '{Name}'";
 }

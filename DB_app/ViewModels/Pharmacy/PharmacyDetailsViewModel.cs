@@ -3,68 +3,62 @@ using CommunityToolkit.Mvvm.Messaging;
 using DB_app.Core.Contracts.Services;
 using DB_app.Models;
 using DB_app.Services.Messages;
-using Microsoft.UI.Xaml;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace DB_app.ViewModels;
 
-public partial class HospitalDetailsViewModel : ObservableRecipient, IRecipient<ShowHospitalDetailsMessage>
+public partial class PharmacyDetailsViewModel : ObservableRecipient, IRecipient<ShowPharmacyDetailsMessage>
 {
 
     #region Constructors
 
 
-    public HospitalDetailsViewModel()
+    public PharmacyDetailsViewModel()
     {
-        CurrentHospital = new()
+        CurrentPharmacy = new()
         {
             isNew = true
         };
         WeakReferenceMessenger.Default.Register(this);
         AvailableAddresses = new(_repositoryControllerService.Addresses.GetAsync().Result);
-        pageTitle = "New hospital";
+        pageTitle = "New pharmacy";
     }
 
 
 
-    public HospitalDetailsViewModel(HospitalWrapper HospitalWrapper)
+    public PharmacyDetailsViewModel(PharmacyWrapper PharmacyWrapper)
     {
-        CurrentHospital = HospitalWrapper;
+        CurrentPharmacy = PharmacyWrapper;
         WeakReferenceMessenger.Default.Register(this);
         AvailableAddresses = new(getAvailableAddresses());
     }
 
 
     #endregion
-    
+
 
 
     #region Members
 
-    public void Receive(ShowHospitalDetailsMessage message)
+    public void Receive(ShowPharmacyDetailsMessage message)
     {
-        CurrentHospital = message.Value;
-        CurrentHospital.NotifyAboutProperties();
+        CurrentPharmacy = message.Value;
+        CurrentPharmacy.NotifyAboutProperties();
     }
 
     /// <summary>
-    /// Saves hospital that was edited or created
+    /// Saves pharmacy that was edited or created
     /// </summary>
     public async Task SaveAsync()
     {
-        if (CurrentHospital.isNew) // Create new medicine
+        if (CurrentPharmacy.isNew) // Create new medicine
         {
-            await _repositoryControllerService.Hospitals.InsertAsync(CurrentHospital.HospitalData);
+            await _repositoryControllerService.Pharmacies.InsertAsync(CurrentPharmacy.PharmacyData);
         }
         else // Update existing medicine
         {
-            await _repositoryControllerService.Hospitals.UpdateAsync(CurrentHospital.HospitalData);
+            await _repositoryControllerService.Pharmacies.UpdateAsync(CurrentPharmacy.PharmacyData);
         }
     }
 
@@ -77,15 +71,15 @@ public partial class HospitalDetailsViewModel : ObservableRecipient, IRecipient<
     {
         List<Address> _addresses = new();
 
-        foreach (var item in _repositoryControllerService.Hospitals.GetAsync().Result.Select(a => a.Addresses))
+        foreach (var item in _repositoryControllerService.Pharmacies.GetAsync().Result.Select(a => a.Addresses))
             _addresses.AddRange(item);
-           
+
 
         return _repositoryControllerService.Addresses.GetAsync().Result.
                  Except(_addresses);
     }
 
-    public void NotifyGridAboutChange() => WeakReferenceMessenger.Default.Send(new AddHospitalMessage(CurrentHospital));
+    public void NotifyGridAboutChange() => WeakReferenceMessenger.Default.Send(new AddPharmacyMessage(CurrentPharmacy));
 
     #endregion
 
@@ -97,21 +91,21 @@ public partial class HospitalDetailsViewModel : ObservableRecipient, IRecipient<
          = App.GetService<IRepositoryControllerService>();
 
 
-    private HospitalWrapper currentHospital;
+    private PharmacyWrapper currentPharmacy;
 
     /// <summary>
-    /// Current HospitalWrapper to edit
+    /// Current PharmacyWrapper to edit
     /// </summary>
-    public HospitalWrapper CurrentHospital 
-    { 
+    public PharmacyWrapper CurrentPharmacy
+    {
         get
         {
-            return currentHospital;
+            return currentPharmacy;
         }
         set
         {
-            currentHospital = value;
-            pageTitle = "Hospital #" + currentHospital.Id;
+            currentPharmacy = value;
+            pageTitle = "Hospital #" + currentPharmacy.Id;
             AvailableAddresses = new(getAvailableAddresses());
         }
     }
@@ -132,12 +126,12 @@ public partial class HospitalDetailsViewModel : ObservableRecipient, IRecipient<
 
     public Address AddressModel { get; set; }
 
-    public string City      { get => AddressModel.City; }
-    public string Street    { get => AddressModel.Street; }
-    public string Building  { get => AddressModel.Building; }
+    public string City { get => AddressModel.City; }
+    public string Street { get => AddressModel.Street; }
+    public string Building { get => AddressModel.Building; }
 
 
     #endregion
 
-    
+
 }

@@ -19,6 +19,7 @@
     <None Remove="Views\Address\AddressDetailsPage.xaml" />
     <None Remove="Views\Hospital\HospitalDetailsPage.xaml" />
     <None Remove="Views\MedicineDetailsPage.xaml" />
+    <None Remove="Views\Pharmacy\PharmacyDetailsPage.xaml" />
   </ItemGroup>
   <ItemGroup>
     <Page Remove="Views\SaveChangesDialog.xaml" />
@@ -45,6 +46,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Page Update="Views\Pharmacy\PharmacyDetailsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Views\Hospital\HospitalDetailsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -70,7 +74,6 @@
     <Folder Include="Views\Medicine\" />
     <Folder Include="Views\Order\" />
     <Folder Include="Views\Product\" />
-    <Folder Include="Views\Pharmacy\" />
   </ItemGroup>
   
   <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
