@@ -21,7 +21,7 @@ public class OrderItem
     public Order RepresentingOrder { get; set; }
 
     [Required]
-    public Product UnderlyingProduct { get; set; }
+    public Product Product { get; set; }
 
     public int Quantity { get; set; } = 1;
 }

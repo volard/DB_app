@@ -49,13 +49,13 @@ public partial class ProductWrapper : ObservableValidator, IEditableObject, IEqu
     [Required(ErrorMessage = "Medicine is Required")]
     public Medicine ContainingMedicine
     {
-        get => ProductData.ContainingMedicine;
+        get => ProductData.Medicine;
         set
         {
             ValidateProperty(value);
             if (!GetErrors(nameof(ContainingMedicine)).Any())
             {
-                ProductData.ContainingMedicine = value;
+                ProductData.Medicine = value;
                 OnPropertyChanged();
                 IsModified = true;
                 OnPropertyChanged(nameof(CanSave));
@@ -109,13 +109,13 @@ public partial class ProductWrapper : ObservableValidator, IEditableObject, IEqu
     [Required(ErrorMessage = "Pharmacy is Required")]
     public Pharmacy SellingPharmacy
     {
-        get => ProductData.SellingPharmacy;
+        get => ProductData.Pharmacy;
         set
         {
             ValidateProperty(value);
             if (!GetErrors(nameof(SellingPharmacy)).Any())
             {
-                ProductData.SellingPharmacy = value;
+                ProductData.Pharmacy = value;
                 IsModified = true;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(CanSave));
@@ -274,15 +274,15 @@ public partial class ProductWrapper : ObservableValidator, IEditableObject, IEqu
     /// <summary>
     /// City of the current ProductWrapper's data object
     /// </summary>
-    public string PharmacyName { get => ProductData.SellingPharmacy.Name; }
+    public string PharmacyName { get => ProductData.Pharmacy.Name; }
 
     /// <summary>
     /// Street of the current ProductWrapper's data object
     /// </summary>
-    public string MedicineName { get => ProductData.ContainingMedicine.Name; }
+    public string MedicineName { get => ProductData.Medicine.Name; }
 
     /// <summary>
     /// Building of the current ProductWrapper's data object
     /// </summary>
-    public string MedicineType { get => ProductData.ContainingMedicine.Type; }
+    public string MedicineType { get => ProductData.Medicine.Type; }
 }

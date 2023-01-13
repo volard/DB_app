@@ -1,9 +1,4 @@
 ﻿using DB_app.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DB_app.Repository;
 public interface IHospitalRepository
@@ -18,6 +13,7 @@ public interface IHospitalRepository
     /// Returns all hospitals. 
     /// </summary>
     Task<IEnumerable<Hospital>> GetAsync();
+
 
     /// <summary>
     /// Returns specific hospital. 

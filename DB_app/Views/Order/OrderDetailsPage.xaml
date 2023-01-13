@@ -50,10 +50,10 @@
         <TabViewItem
             Background="#323232"
             CanDrag="False"
-            Header="All"
+            Header="Current order"
             IsClosable="False">
             <TabViewItem.IconSource>
-                <FontIconSource Glyph="&#xE109;" />
+                <FontIconSource Glyph="&#xE16C;" />
             </TabViewItem.IconSource>
 
             <Grid
@@ -84,7 +84,9 @@
                             Margin="0,20,16,8"
                             VerticalAlignment="Stretch"
                             Header="Customer"
-                            PlaceholderText="Select hospital" />
+                            ItemsSource="{x:Bind ViewModel.AvailableHospitals, Mode=OneWay}"
+                            PlaceholderText="Select hospital"
+                            SelectedItem="{x:Bind ViewModel.SelectedHospital, Mode=TwoWay}" />
 
                         <ComboBox
                             x:Name="ShippingAddressComboBox"
@@ -92,6 +94,8 @@
                             Margin="0,20,16,8"
                             VerticalAlignment="Stretch"
                             Header="Shipping address"
+                            IsEnabled="{x:Bind ViewModel.IsHospitalSelected, Mode=OneWay}"
+                            ItemsSource="{x:Bind ViewModel.AvailableAddresses, Mode=OneWay}"
                             PlaceholderText="Select address"
                             RelativePanel.Below="HospitalCustomerComboBox" />
 
@@ -101,6 +105,7 @@
                             Margin="0,20,16,8"
                             VerticalAlignment="Stretch"
                             Header="Seller"
+                            ItemsSource="{x:Bind ViewModel.AvailablePharmacies, Mode=TwoWay}"
                             PlaceholderText="Select pharmacy"
                             RelativePanel.Below="ShippingAddressComboBox" />
 
@@ -247,10 +252,10 @@
         <TabViewItem
             Background="#323232"
             CanDrag="False"
-            Header="All"
+            Header="Market"
             IsClosable="False">
             <TabViewItem.IconSource>
-                <FontIconSource Glyph="&#xE109;" />
+                <FontIconSource Glyph="&#xE12B;" />
             </TabViewItem.IconSource>
 
             <toolkit:DataGrid

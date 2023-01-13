@@ -40,16 +40,16 @@ public class SQLProductRepository : IProductRepository
     public async Task<IEnumerable<Product>> GetAsync()
     {
         return await _db.Products
-                .Include(product => product.SellingPharmacy)
-                .Include(product => product.ContainingMedicine)
+                .Include(product => product.Pharmacy)
+                .Include(product => product.Medicine)
                 .ToListAsync();
     }
 
     public async Task<Product> GetAsync(int id)
     {
         return await _db.Products
-                .Include(product => product.SellingPharmacy)
-                .Include(product => product.ContainingMedicine)
+                .Include(product => product.Pharmacy)
+                .Include(product => product.Medicine)
                 .FirstOrDefaultAsync(product => product.Id == id);
     }
 

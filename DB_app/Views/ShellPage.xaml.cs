@@ -65,7 +65,7 @@ public sealed partial class ShellPage : Page
     private static KeyboardAccelerator BuildKeyboardAccelerator(VirtualKey key, VirtualKeyModifiers? modifiers = null)
     {
         var keyboardAccelerator = new KeyboardAccelerator() { Key = key };
-
+        // TODO bind back mouse button to back()
         if (modifiers.HasValue)
         {
             keyboardAccelerator.Modifiers = modifiers.Value;

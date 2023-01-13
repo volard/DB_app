@@ -4,6 +4,7 @@ using DB_app.Core.Contracts.Services;
 using DB_app.Models;
 using DB_app.Services.Messages;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace DB_app.ViewModels;
 
@@ -19,18 +20,24 @@ public partial class OrderDetailsViewModel : ObservableRecipient, IRecipient<Sho
         {
             isNew = true
         };
-        WeakReferenceMessenger.Default.Register(this);
-        AvailableAddresses = new(_repositoryControllerService.Addresses.GetAsync().Result);
         pageTitle = "New order";
+
+        Initialize();
     }
 
-
+    public void Initialize()
+    {
+        WeakReferenceMessenger.Default.Register(this);
+        availablePharmacies = new(_repositoryControllerService.Pharmacies.GetAsync().Result);
+        AvailableHospitals = new(_repositoryControllerService.Hospitals.GetAsync().Result);
+        AvailableAddresses = new(getAvailableAddresses());
+    }
 
     public OrderDetailsViewModel(OrderWrapper OrderWrapper)
     {
         CurrentOrder = OrderWrapper;
-        WeakReferenceMessenger.Default.Register(this);
-        AvailableAddresses = new(getAvailableAddresses());
+
+        Initialize();
     }
 
 
@@ -68,7 +75,10 @@ public partial class OrderDetailsViewModel : ObservableRecipient, IRecipient<Sho
 
     public IEnumerable<Address> getAvailableAddresses()
     {
-        return _repositoryControllerService.Addresses.GetAsync().Result;
+        if (CurrentOrder.HospitalCustomer != null)
+            return CurrentOrder.HospitalCustomer.Addresses;
+        else 
+            return Enumerable.Empty<Address>();
     }
 
     public void NotifyGridAboutChange() => WeakReferenceMessenger.Default.Send(new AddOrderMessage(CurrentOrder));
@@ -98,20 +108,76 @@ public partial class OrderDetailsViewModel : ObservableRecipient, IRecipient<Sho
         {
             currentOrder = value;
             pageTitle = "Order #" + currentOrder.Id;
-            AvailableAddresses = new(getAvailableAddresses());
         }
     }
 
-    public ObservableCollection<Address> AvailableAddresses { get; set; }
+    [ObservableProperty]
+    private ObservableCollection<Pharmacy> availablePharmacies;
 
     [ObservableProperty]
-    public Address selectedAddress;
+    private ObservableCollection<Hospital> availableHospitals;
 
     [ObservableProperty]
-    public string pageTitle;
+    private ObservableCollection<Address> availableAddresses;
+
+
+    //public ObservableCollection<Pharmacy> AvailablePharmacies { get; set; }
+    //public ObservableCollection<Hospital> AvailableHospitals { get; set; }
+    //public ObservableCollection<Address> AvailableAddresses { get; set; } = new();
+
+
+    [ObservableProperty]
+    private Address selectedAddress;
+
+    public Hospital SelectedHospital
+    {
+        get => CurrentOrder.OrderData.HospitalCustomer;
+        set
+        {
+            if (CurrentOrder.OrderData.HospitalCustomer != value)
+            {
+                CurrentOrder.IsModified = true;
+                CurrentOrder.OrderData.HospitalCustomer = value;
+                OnPropertyChanged();
+                IsHospitalSelected = true;
+                AvailableAddresses = new(getAvailableAddresses());
+            }
+        }
+    }
+
+    public Pharmacy selectedPharmacy
+    {
+        get => CurrentOrder.OrderData.PharmacySeller;
+        set
+        {
+            if (CurrentOrder.OrderData.PharmacySeller != value)
+            {
+                CurrentOrder.IsModified = true;
+                CurrentOrder.OrderData.PharmacySeller = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    [ObservableProperty]
+    private string pageTitle;
+
+    [ObservableProperty]
+    private bool isHospitalSelected = false;
 
     #endregion
 
+
+    #region Required for OrderItems DataGrid
+
+    public OrderItem OrderItemModel { get; set; }
+
+    public string MedicineName { get => OrderItemModel.Product.Medicine.Name; }
+    public string MedicineType { get => OrderItemModel.Product.Medicine.Type; }
+    public string Quantity { get => OrderItemModel.Product.Quantity.ToString(); }
+    public string ItemTotal { get => (OrderItemModel.Quantity * OrderItemModel.Product.Price).ToString(); }
+
+    #endregion
 
 
     #region Required for addresses DataGrid
@@ -124,6 +190,4 @@ public partial class OrderDetailsViewModel : ObservableRecipient, IRecipient<Sho
 
 
     #endregion
-
-
 }

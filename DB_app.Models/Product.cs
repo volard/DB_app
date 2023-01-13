@@ -13,13 +13,13 @@ public class Product
     public int Id   { get; set; }
 
     [Required]
-    public Medicine ContainingMedicine  { get; set; }
+    public Medicine Medicine  { get; set; }
 
     [Required]
-    public Pharmacy SellingPharmacy     { get; set; }
+    public Pharmacy Pharmacy  { get; set; }
 
     [Required]
-    public double Price                { get; set; }
+    public double Price       { get; set; }
 
     [Required]
     public int Quantity { get; set; } = 1;

@@ -85,12 +85,12 @@ public partial class OrdersGridViewModel : ObservableRecipient, INavigationAware
     ///// <summary>
     ///// Street of the current OrderWrapper's data object
     ///// </summary>
-    //public string MedicineName { get => _model.ContainingMedicine.Name; }
+    //public string MedicineName { get => _model.Medicine.Name; }
 
     ///// <summary>
     ///// Building of the current OrderWrapper's data object
     ///// </summary>
-    //public string MedicineType { get => _model.ContainingMedicine.Type; }
+    //public string MedicineType { get => _model.Medicine.Type; }
 
     ///// <summary>
     ///// Building of the current OrderWrapper's data object

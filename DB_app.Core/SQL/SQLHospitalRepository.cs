@@ -26,13 +26,16 @@ public class SQLHospitalRepository : IHospitalRepository
     /// <inheritdoc/>
     public async Task<IEnumerable<Hospital>> GetAsync()
     {
-        return await _db.Hospitals.ToListAsync();
+        return await _db.Hospitals
+            .Include(hospital => hospital.Addresses)
+            .ToListAsync();
     }
 
     /// <inheritdoc/>
     public async Task<Hospital> GetAsync(int id)
     {
         return await _db.Hospitals
+           .Include(hospital => hospital.Addresses)
            .FirstOrDefaultAsync(hospital => hospital.Id == id);
     }
 

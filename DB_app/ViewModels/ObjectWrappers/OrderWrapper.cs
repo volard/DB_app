@@ -122,7 +122,7 @@ public partial class OrderWrapper : ObservableValidator, IEditableObject, IEquat
     /// <summary>
     /// Gets the order's total price.
     /// </summary>
-    public double Total => ObservableItems.Sum(item => item.UnderlyingProduct.Price * item.Quantity);
+    public double Total => ObservableItems.Sum(item => item.Product.Price * item.Quantity);
 
 
     // TODO that looks disgusting. I wonder if functions in xaml bindings works properly for me
