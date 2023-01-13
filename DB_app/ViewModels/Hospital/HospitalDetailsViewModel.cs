@@ -27,7 +27,7 @@ public partial class HospitalDetailsViewModel : ObservableRecipient, IRecipient<
             isNew = true
         };
         WeakReferenceMessenger.Default.Register(this);
-        AvailableAddresses = new(_repositoryControllerService.Addresses.GetAsync().Result);
+        AvailableAddresses = new(getAvailableAddresses());
         pageTitle = "New hospital";
     }
 
@@ -79,7 +79,6 @@ public partial class HospitalDetailsViewModel : ObservableRecipient, IRecipient<
 
         foreach (var item in _repositoryControllerService.Hospitals.GetAsync().Result.Select(a => a.Addresses))
             _addresses.AddRange(item);
-           
 
         return _repositoryControllerService.Addresses.GetAsync().Result.
                  Except(_addresses);
