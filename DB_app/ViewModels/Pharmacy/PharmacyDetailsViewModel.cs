@@ -74,6 +74,9 @@ public partial class PharmacyDetailsViewModel : ObservableRecipient, IRecipient<
         foreach (var item in _repositoryControllerService.Pharmacies.GetAsync().Result.Select(a => a.Addresses))
             _addresses.AddRange(item);
 
+        foreach (var item in _repositoryControllerService.Hospitals.GetAsync().Result.Select(a => a.Addresses))
+            _addresses.AddRange(item);
+
 
         return _repositoryControllerService.Addresses.GetAsync().Result.
                  Except(_addresses);
