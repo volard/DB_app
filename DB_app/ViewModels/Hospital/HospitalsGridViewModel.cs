@@ -46,7 +46,7 @@ public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAw
     [ObservableProperty]
     private int selectedGridIndex;
 
-    // TODO this shit isn't working See this to solve - https://xamlbrewer.wordpress.com/2021/01/04/introducing-the-winui-infobar-control/
+
     [ObservableProperty]
     private InfoBarSeverity _infoBarSeverity = InfoBarSeverity.Informational;
     // Error

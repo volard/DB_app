@@ -111,6 +111,9 @@ public partial class App : Application
             services.AddTransient<OrdersGridViewModel>();
             services.AddTransient<OrdersGridPage>();
 
+            services.AddTransient<OrderDetailsViewModel>();
+            services.AddTransient<OrderDetailsPage>();
+
 
             // === Pharmacy
             services.AddTransient<PharmacyReportGridViewModel>();

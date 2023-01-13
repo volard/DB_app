@@ -84,8 +84,6 @@ public partial class ProductWrapper : ObservableValidator, IEditableObject, IEqu
         }
     }
 
-    public void ValidateAll()
-        => ValidateAllProperties();
 
     [Required(ErrorMessage = "Price is Required")]
     //[RegularExpression("([1-9]+)", ErrorMessage = "Please enter a Number")]

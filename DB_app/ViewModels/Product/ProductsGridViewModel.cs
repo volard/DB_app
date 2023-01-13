@@ -44,7 +44,7 @@ public partial class ProductsGridViewModel : ObservableRecipient, INavigationAwa
     [ObservableProperty]
     private int selectedGridIndex;
 
-    // TODO this shit isn't working See this to solve - https://xamlbrewer.wordpress.com/2021/01/04/introducing-the-winui-infobar-control/
+
     [ObservableProperty]
     private InfoBarSeverity _infoBarSeverity = InfoBarSeverity.Informational;
     // Error
@@ -81,7 +81,7 @@ public partial class ProductsGridViewModel : ObservableRecipient, INavigationAwa
     ///// <summary>
     ///// City of the current ProductWrapper's data object
     ///// </summary>
-    //public string PharmacyName { get => _model.SellingPharmacy.Name; }
+    //public string PharmacyName { get => _model.PharmacySeller.Name; }
 
     ///// <summary>
     ///// Street of the current ProductWrapper's data object

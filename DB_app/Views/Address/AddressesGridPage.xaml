@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:appcontrols="using:DB_app.Views.Components"
     xmlns:behaviors="using:DB_app.Behaviors"
-    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:DB_app.ViewModels"
@@ -57,7 +57,7 @@
         VerticalAlignment="Stretch">
         <Grid Padding="0,0,0,50">
 
-            <controls:DataGrid
+            <toolkit:DataGrid
                 x:Name="AddressGrid"
                 AutoGenerateColumns="False"
                 CanUserReorderColumns="False"
@@ -71,28 +71,28 @@
                 VirtualizingStackPanel.VirtualizationMode="Recycling">
 
 
-                <controls:DataGrid.Resources>
+                <toolkit:DataGrid.Resources>
                     <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
-                </controls:DataGrid.Resources>
+                </toolkit:DataGrid.Resources>
 
-                <controls:DataGrid.Columns>
+                <toolkit:DataGrid.Columns>
 
                     <!--  As I got it, DataGrid doesn't support x:Bind  -->
-                    <controls:DataGridTextColumn
+                    <toolkit:DataGridTextColumn
                         Width="30*"
                         Binding="{Binding City}"
                         Header="City" />
-                    <controls:DataGridTextColumn
+                    <toolkit:DataGridTextColumn
                         Width="30*"
                         Binding="{Binding Street}"
                         Header="Street" />
-                    <controls:DataGridTextColumn
+                    <toolkit:DataGridTextColumn
                         Width="30*"
                         Binding="{Binding Building}"
                         Header="Building" />
 
-                </controls:DataGrid.Columns>
-            </controls:DataGrid>
+                </toolkit:DataGrid.Columns>
+            </toolkit:DataGrid>
         </Grid>
 
         <RelativePanel HorizontalAlignment="Stretch">

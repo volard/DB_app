@@ -27,28 +27,29 @@ public class PageService : IPageService
         // DataGrids
         // ====================
 
-        // Hospitals
+        // === Hospitals
         Configure<HospitalsGridViewModel, HospitalsGridPage>();
         Configure<HospitalDetailsViewModel, HospitalDetailsPage>();
 
-        // Medicines
+        // === Medicines
         Configure<MedicinesGridViewModel, MedicinesGridPage>();
         Configure<MedicineDetailsViewModel, MedicineDetailsPage>();
 
-        // HospitalAddresses
+        // === HospitalAddresses
         Configure<AddressesGridViewModel, AddressesGridPage>();
         Configure<AddressDetailsViewModel, AddressDetailsPage>();
 
-        // Pharmacies
+        // === Pharmacies
         Configure<PharmaciesGridViewModel, PharmaciesGridPage>();
         Configure<PharmacyDetailsViewModel, PharmacyDetailsPage>();
 
-        // Products
+        // === Products
         Configure<ProductsGridViewModel, ProductsGridPage>();
         Configure<ProductDetailsViewModel, ProductDetailsPage>();
 
-        // Orders
+        // === Orders
         Configure<OrdersGridViewModel, OrdersGridPage>();
+        Configure<OrderDetailsViewModel, OrderDetailsPage>();
 
         // ====================
         // Reports

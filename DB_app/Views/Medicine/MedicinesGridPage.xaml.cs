@@ -3,8 +3,11 @@ using DB_app.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
+using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
+using System.Diagnostics;
+using Windows.Media.Devices;
 
 namespace DB_app.Views;
 
@@ -22,6 +25,17 @@ public sealed partial class MedicinesGridPage : Page
             Source = ViewModel,
             Mode = BindingMode.OneWay
         });
+
+        PointerPressed += MouseBackKey_KeyClicked;
+    }
+
+    
+
+    //event KeyEventHandler KeyEvent;
+
+    public void MouseBackKey_KeyClicked(object sender, PointerRoutedEventArgs e)
+    {
+        Debug.WriteLine("Hello pidor");
     }
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
