@@ -20,19 +20,24 @@ public partial class ProductDetailsViewModel : ObservableRecipient, IRecipient<S
         {
             isNew = true
         };
-        CurrentProduct.NotifyAboutProperties();
-        WeakReferenceMessenger.Default.Register(this);
+        Initialize();
+
+
+    }
+
+    public void Initialize()
+    {
         AvailablePharmacies = _repositoryControllerService.Pharmacies.GetAsync().Result.ToList();
         AvailableMedicines = _repositoryControllerService.Medicines.GetAsync().Result.ToList();
+        WeakReferenceMessenger.Default.Register(this);
+        CurrentProduct.NotifyAboutProperties();
     }
 
     public ProductDetailsViewModel(ProductWrapper ProductWrapper)
     {
         CurrentProduct = ProductWrapper;
-        WeakReferenceMessenger.Default.Register(this);
-        CurrentProduct.NotifyAboutProperties();
-        AvailablePharmacies = _repositoryControllerService.Pharmacies.GetAsync().Result.ToList();
-        AvailableMedicines = _repositoryControllerService.Medicines.GetAsync().Result.ToList();
+
+        Initialize();
     }
 
     

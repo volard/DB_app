@@ -47,16 +47,15 @@ public partial class ProductWrapper : ObservableValidator, IEditableObject, IEqu
 
 
     [Required(ErrorMessage = "Medicine is Required")]
-    public Medicine ContainingMedicine
+    public Medicine Medicine
     {
         get => ProductData.Medicine;
         set
         {
             ValidateProperty(value);
-            if (!GetErrors(nameof(ContainingMedicine)).Any())
+            if (!GetErrors(nameof(Medicine)).Any())
             {
                 ProductData.Medicine = value;
-                OnPropertyChanged();
                 IsModified = true;
                 OnPropertyChanged(nameof(CanSave));
             }
@@ -107,17 +106,16 @@ public partial class ProductWrapper : ObservableValidator, IEditableObject, IEqu
 
 
     [Required(ErrorMessage = "Pharmacy is Required")]
-    public Pharmacy SellingPharmacy
+    public Pharmacy Pharmacy
     {
         get => ProductData.Pharmacy;
         set
         {
             ValidateProperty(value);
-            if (!GetErrors(nameof(SellingPharmacy)).Any())
+            if (!GetErrors(nameof(Pharmacy)).Any())
             {
                 ProductData.Pharmacy = value;
                 IsModified = true;
-                OnPropertyChanged();
                 OnPropertyChanged(nameof(CanSave));
             }
         }
@@ -129,20 +127,20 @@ public partial class ProductWrapper : ObservableValidator, IEditableObject, IEqu
     // TODO that looks disgusting. I wonder if functions in xaml bindings works properly for me
     public string Errors
         => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(null) select e.ErrorMessage);
-    public string ContainingMedicineErrors
-        => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(nameof(ContainingMedicine)) select e.ErrorMessage);
-    public string SellingPharmacyErrors
-        => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(nameof(SellingPharmacy)) select e.ErrorMessage);
+    public string MedicineErrors
+        => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(nameof(Medicine)) select e.ErrorMessage);
+    public string PharmacyErrors
+        => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(nameof(Pharmacy)) select e.ErrorMessage);
     public string PriceErrors
         => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(nameof(Price)) select e.ErrorMessage);
     public string QuantityErrors
         => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(nameof(Quantity)) select e.ErrorMessage);
 
 
-    public bool HasContainingMedicineErrors
-        => GetErrors(nameof(ContainingMedicine)).Any();
-    public bool HasSellingPharmacyErrors
-        => GetErrors(nameof(SellingPharmacy)).Any();
+    public bool HasMedicineErrors
+        => GetErrors(nameof(Medicine)).Any();
+    public bool HasPharmacyErrors
+        => GetErrors(nameof(Pharmacy)).Any();
     public bool HasPriceErrors
         => GetErrors(nameof(Price)).Any();
     public bool HasQuantityErrors
@@ -156,8 +154,8 @@ public partial class ProductWrapper : ObservableValidator, IEditableObject, IEqu
     // TODO implement cancel button on notification popup
     // TODO maybe it will be better to create another Product object instead of 
     // keeping the bunch of backuped properties
-    public Medicine? BackupedContainingMedicine;
-    public Pharmacy? BackupedSellingPharmacy;
+    public Medicine? BackupedMedicine;
+    public Pharmacy? BackupedPharmacy;
     public double? BackupedPrice;
     public int? BackupedQuantity;
 
@@ -182,17 +180,17 @@ public partial class ProductWrapper : ObservableValidator, IEditableObject, IEqu
     public void NotifyAboutProperties()
     {
         OnPropertyChanged(nameof(Errors));
-        OnPropertyChanged(nameof(ContainingMedicineErrors));
-        OnPropertyChanged(nameof(SellingPharmacyErrors));
+        OnPropertyChanged(nameof(MedicineErrors));
+        OnPropertyChanged(nameof(PharmacyErrors));
         OnPropertyChanged(nameof(PriceErrors));
 
-        OnPropertyChanged(nameof(ContainingMedicine));
-        OnPropertyChanged(nameof(SellingPharmacy));
+        OnPropertyChanged(nameof(Medicine));
+        OnPropertyChanged(nameof(Pharmacy));
         OnPropertyChanged(nameof(Price));
         OnPropertyChanged(nameof(Quantity));
 
-        OnPropertyChanged(nameof(HasContainingMedicineErrors));
-        OnPropertyChanged(nameof(HasSellingPharmacyErrors));
+        OnPropertyChanged(nameof(HasMedicineErrors));
+        OnPropertyChanged(nameof(HasPharmacyErrors));
         OnPropertyChanged(nameof(HasPriceErrors));
         OnPropertyChanged(nameof(HasQuantityErrors));
 
@@ -210,8 +208,8 @@ public partial class ProductWrapper : ObservableValidator, IEditableObject, IEqu
 
     public void BuckupData()
     {
-        BackupedContainingMedicine = ContainingMedicine;
-        BackupedSellingPharmacy = SellingPharmacy;
+        BackupedMedicine = Medicine;
+        BackupedPharmacy = Pharmacy;
         BackupedPrice = Price;
         BackupedQuantity = Quantity;
     }
@@ -221,14 +219,14 @@ public partial class ProductWrapper : ObservableValidator, IEditableObject, IEqu
     public void UndoChanges()
     {
         if (
-                BackupedContainingMedicine != null &&
-                BackupedSellingPharmacy != null &&
+                BackupedMedicine != null &&
+                BackupedPharmacy != null &&
                 BackupedPrice != null &&
                 BackupedQuantity != null
            )
         {
-            ContainingMedicine = BackupedContainingMedicine;
-            SellingPharmacy = BackupedSellingPharmacy;
+            Medicine = BackupedMedicine;
+            Pharmacy = BackupedPharmacy;
             Price = (double)BackupedPrice;
             Quantity = (int)BackupedQuantity;
 
@@ -264,8 +262,8 @@ public partial class ProductWrapper : ObservableValidator, IEditableObject, IEqu
     }
 
     public bool Equals(ProductWrapper? other) =>
-        ContainingMedicine == other?.ContainingMedicine &&
-        SellingPharmacy == other?.SellingPharmacy &&
+        Medicine == other?.Medicine &&
+        Pharmacy == other?.Pharmacy &&
         Price == other?.Price &&
         BackupedQuantity == other?.Quantity;
 

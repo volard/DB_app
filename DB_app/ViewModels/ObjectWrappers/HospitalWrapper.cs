@@ -47,13 +47,13 @@ public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEq
     [Required(ErrorMessage = "Maindoctor's name is Required")]
     public string Name_main_doctor
     {
-        get => HospitalData.Name_main_doctor;
+        get => HospitalData.MainDoctorName;
         set
         {
             ValidateProperty(value);
             if (!GetErrors(nameof(Name_main_doctor)).Any())
             {
-                HospitalData.Name_main_doctor = value;
+                HospitalData.MainDoctorName = value;
                 OnPropertyChanged();
             }
         }
@@ -63,13 +63,13 @@ public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEq
     [Required(ErrorMessage = "Maindoctor's surename is Required")]
     public string Surename_main_doctor
     {
-        get => HospitalData.Surename_main_doctor;
+        get => HospitalData.MainDoctorSurename;
         set
         {
             ValidateProperty(value);
             if (!GetErrors(nameof(Surename_main_doctor)).Any())
             {
-                HospitalData.Surename_main_doctor = value;
+                HospitalData.MainDoctorSurename = value;
                 OnPropertyChanged();
             }
         }
@@ -79,13 +79,13 @@ public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEq
     [Required(ErrorMessage = "Maindoctor's middlename is Required")]
     public string Middlename_main_doctor
     {
-        get => HospitalData.Middlename_main_doctor;
+        get => HospitalData.MainDoctorMiddlename;
         set
         {
             ValidateProperty(value);
             if (!GetErrors(nameof(Middlename_main_doctor)).Any())
             {
-                HospitalData.Middlename_main_doctor = value;
+                HospitalData.MainDoctorMiddlename = value;
                 OnPropertyChanged();
             }
         }

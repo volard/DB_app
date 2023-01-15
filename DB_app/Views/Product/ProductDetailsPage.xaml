@@ -51,7 +51,7 @@
                 VerticalAlignment="Stretch"
                 ItemsSource="{x:Bind ViewModel.AvailablePharmacies, Mode=TwoWay}"
                 PlaceholderText="Select pharmacy"
-                SelectedItem="{x:Bind ViewModel.CurrentProduct.SellingPharmacy, Mode=OneWay}" />
+                SelectedItem="{x:Bind ViewModel.CurrentProduct.Pharmacy, Mode=TwoWay}" />
 
             <SymbolIcon
                 Margin="0,35,0,0"
@@ -59,9 +59,9 @@
                 RelativePanel.AlignVerticalCenterWith="PharmacyComboBox"
                 RelativePanel.RightOf="PharmacyComboBox"
                 Symbol="ReportHacked"
-                Visibility="{x:Bind ViewModel.CurrentProduct.HasSellingPharmacyErrors, Mode=OneWay}">
+                Visibility="{x:Bind ViewModel.CurrentProduct.HasPharmacyErrors, Mode=OneWay}">
                 <ToolTipService.ToolTip>
-                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentProduct.SellingPharmacyErrors, Mode=OneWay}" />
+                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentProduct.PharmacyErrors, Mode=OneWay}" />
                 </ToolTipService.ToolTip>
             </SymbolIcon>
 
@@ -73,7 +73,7 @@
                 ItemsSource="{x:Bind ViewModel.AvailableMedicines, Mode=TwoWay}"
                 PlaceholderText="Select medicine"
                 RelativePanel.Below="PharmacyComboBox"
-                SelectedItem="{x:Bind ViewModel.CurrentProduct.ContainingMedicine, Mode=OneWay}" />
+                SelectedItem="{x:Bind ViewModel.CurrentProduct.Medicine, Mode=TwoWay}" />
 
             <SymbolIcon
                 Margin="0,35,0,0"
@@ -81,9 +81,9 @@
                 RelativePanel.AlignVerticalCenterWith="MedicineComboBox"
                 RelativePanel.RightOf="MedicineComboBox"
                 Symbol="ReportHacked"
-                Visibility="{x:Bind ViewModel.CurrentProduct.HasContainingMedicineErrors, Mode=OneWay}">
+                Visibility="{x:Bind ViewModel.CurrentProduct.HasMedicineErrors, Mode=OneWay}">
                 <ToolTipService.ToolTip>
-                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentProduct.ContainingMedicineErrors, Mode=OneWay}" />
+                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentProduct.MedicineErrors, Mode=OneWay}" />
                 </ToolTipService.ToolTip>
             </SymbolIcon>
 

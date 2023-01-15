@@ -266,7 +266,7 @@ public partial class OrderWrapper : ObservableValidator, IEditableObject, IEquat
     /// <summary>
     /// City of the current OrderWrapper's data object
     /// </summary>
-    public string Surename_main_doctor { get => OrderData.HospitalCustomer.Surename_main_doctor; }
+    public string Surename_main_doctor { get => OrderData.HospitalCustomer.MainDoctorSurename; }
 
     /// <summary>
     /// Street of the current OrderWrapper's data object
