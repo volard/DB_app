@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
-using System.Xml.Linq;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace DB_app.Models;
 
@@ -13,15 +7,53 @@ namespace DB_app.Models;
 /// </summary>
 public class OrderItem
 {
+    #region Constructors
+
+    public OrderItem
+        (
+            Order   representingOrder, 
+            Product product, 
+            int     quantity
+        )
+    {
+        RepresentingOrder = representingOrder;
+        Product           = product;
+        Quantity          = quantity;
+    }
+
+    public OrderItem
+        (
+            int     id,
+            Order   representingOrder,
+            Product product,
+            int     quantity
+        ) : this
+            (
+                representingOrder,
+                product,
+                quantity
+            )
+    {
+        Id = id;
+    }
+
+    public OrderItem() { }
+
+    #endregion
+
+    #region Properties
+
     [Key]
     [Required]
-    public int Id { get; set; }
+    public int     Id                 { get; set; }
 
     [Required]
-    public Order RepresentingOrder { get; set; }
+    public Order   RepresentingOrder  { get; set; }
 
     [Required]
-    public Product Product { get; set; }
+    public Product Product            { get; set; }
 
-    public int Quantity { get; set; } = 1;
+    public int     Quantity           { get; set; } = 1;
+
+    #endregion
 }

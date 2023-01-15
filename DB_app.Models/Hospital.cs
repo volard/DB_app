@@ -1,45 +1,81 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace DB_app.Models;
+
 public class Hospital
 {
-    public Hospital(
-        string surename_main_doctor, 
-        string name_main_doctor, 
-        string middlename_main_doctor,
-        string inn,
-        string ogrn)
+
+    #region Constructors
+
+    public Hospital
+        (
+            string surename_main_doctor,
+            string name_main_doctor,
+            string middlename_main_doctor,
+            string inn,
+            string ogrn,
+            List<Address> addresses
+        )
     {
-        Surename_main_doctor    = surename_main_doctor;
-        Name_main_doctor        = name_main_doctor;
-        Middlename_main_doctor  = middlename_main_doctor;
-        INN                     = inn;
-        OGRN                    = ogrn;
+        MainDoctorSurename    = surename_main_doctor;
+        MainDoctorName        = name_main_doctor;
+        MainDoctorMiddlename  = middlename_main_doctor;
+        INN                   = inn;
+        OGRN                  = ogrn;
+        Addresses             = addresses;
+    }
+
+    public Hospital
+        (
+            int id,
+            string surename_main_doctor,
+            string name_main_doctor,
+            string middlename_main_doctor,
+            string inn,
+            string ogrn,
+            List<Address> addresses
+        ) : this
+        (
+            surename_main_doctor,
+            name_main_doctor,
+            middlename_main_doctor,
+            inn,
+            ogrn,
+            addresses
+        )
+    {
+        Id = id;
     }
 
     public Hospital() { }
 
+    #endregion
+
+    #region Properties
+
     [Required]
     [Key]
-    public int Id                  { get; set; }
+    public int           Id                        { get; set; }
 
     [Required]
-    public string Surename_main_doctor      { get; set; }
+    public string        MainDoctorSurename        { get; set; }
 
     [Required]
-    public string Name_main_doctor          { get; set; }
+    public string        MainDoctorName            { get; set; }
 
     [Required]
-    public string Middlename_main_doctor    { get; set; }
+    public string        MainDoctorMiddlename      { get; set; }
 
     [Required]
-    public string INN                       { get; set; }
+    public string        INN                       { get; set; }
 
     [Required]
-    public string OGRN                      { get; set; }
+    public string        OGRN                      { get; set; }
 
-    public List<Address> Addresses          { get; set; } = new List<Address>();
+    public List<Address> Addresses                 { get; set; } = new List<Address>();
 
-    public override string ToString() 
-        => $"Hospital managed by {Surename_main_doctor} {Name_main_doctor} {Middlename_main_doctor} maindoctor";
+    #endregion
+
+    public override string ToString()
+        => $"Hospital managed by {MainDoctorSurename} {MainDoctorName} {MainDoctorMiddlename} maindoctor";
 }

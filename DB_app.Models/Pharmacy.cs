@@ -1,41 +1,65 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace DB_app.Models;
+
 public class Pharmacy
 {
-    public Pharmacy(
-        string name,
-        string inn,
-        string ogrn)
+    #region Constructors
+
+    public Pharmacy
+        (
+            string        name,
+            string        inn,
+            string        ogrn,
+            List<Address> addresses
+        )
     {
-        Name = name;
-        INN = inn;
-        OGRN = ogrn;
+        Name      = name;
+        INN       = inn;
+        OGRN      = ogrn;
+        Addresses = addresses;
+    }
+
+    public Pharmacy
+        (
+            int           id,
+            string        name,
+            string        inn,
+            string        ogrn,
+            List<Address> addresses
+        ) : this
+            (
+                name,
+                inn,
+                ogrn,
+                addresses
+            )
+    {
+        Id = id;
     }
 
     public Pharmacy() { }
 
+    #endregion
+
+    #region Properties
 
     [Required]
     [Key]
-    public int Id          { get; set; }
+    public int           Id         { get; set; }
 
     [Required]
-    public string Name              { get; set; }
+    public string        Name       { get; set; }
 
     [Required]
-    public string INN               { get; set;}
+    public string        INN        { get; set; }
 
     [Required]
-    public string OGRN              { get; set; }
+    public string        OGRN       { get; set; }
 
-    public List<Address> Addresses { get; set; } = new();
+    public List<Address> Addresses  { get; set; } = new();
+
+    #endregion
 
     public override string ToString() => $"Pharmacy '{Name}'";
 }

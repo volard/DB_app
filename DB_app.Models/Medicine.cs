@@ -1,15 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace DB_app.Models;
+
 public class Medicine
 {
+    public Medicine
+        (
+            string name, 
+            string type
+        )
+    {
+        Name = name;
+        Type = type;
+    }
+
+    public Medicine
+        (
+            int id, 
+            string name, 
+            string type
+        )
+        : this
+            (
+                name, 
+                type
+            )
+    {
+        Id = id;
+    }
+
+    public Medicine() { }
+
     [Key]
-    public int Id  { get; private set; }
+    public int    Id           { get; set; }
 
     [Required]
     public string Name         { get; set; }

@@ -22,11 +22,15 @@ public class SQLControllerService : IRepositoryControllerService
         _db = new SQLContext(options);
         _db.Database.EnsureCreated();
 
+        DataSeeder.Seed(_db);
+
         Hospitals   = new SQLHospitalRepository (_db);
         Orders      = new SQLOrderRepository    (_db);
         Products    = new SQLProductRepository  (_db);
         Addresses   = new SQLAddressRepository  (_db);
         Pharmacies  = new SQLPharmacyRepository (_db);
         Medicines   = new SQLMedicineRepository (_db);
+
+
     }
 }
