@@ -27,6 +27,7 @@
                     x:Name="CommandBarAddButton"
                     Click="AddNewOrder_Click"
                     Icon="Add"
+                    Visibility="{Binding IsNewWindowClosed}"
                     Label="Add new"
                     ToolTipService.ToolTip="Add new" />
 

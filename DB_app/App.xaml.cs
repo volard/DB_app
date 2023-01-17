@@ -3,7 +3,7 @@ using DB_app.Contracts.Services;
 using DB_app.Core.Contracts.Services;
 using DB_app.Core.Services;
 using DB_app.Helpers;
-using DB_app.Models;
+using DB_app.Entities;
 using DB_app.Repository.Services;
 using DB_app.Services;
 using DB_app.ViewModels;

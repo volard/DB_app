@@ -1,4 +1,4 @@
-﻿using DB_app.Models;
+﻿using DB_app.Entities;
 
 namespace DB_app.Repository.SQL;
 
@@ -76,7 +76,24 @@ public class DataSeeder
             new Address( 49, "Можайск" , "пл. Ладыгина", "79" ),
             new Address( 50, "Воскресенск" , "пл. Гагарина", "13" ),
             new Address( 51, "Дмитров" , "пр. Гагарина", "22" ),
-            new Address( 52, "Луховицы" , "спуск 1905 года", "40" )
+            new Address( 52, "Луховицы" , "спуск 1905 года", "40" ),
+            new Address( 53, "Волоколамск" , "пл. Косиора", "58" ),
+            new Address( 54, "Дорохово" , "проезд Сталина", "38" ),
+            new Address( 55, "Москва" , "проезд Сталина", "58" ),
+            new Address( 56, "Ногинск" , "въезд Косиора", "39" ),
+            new Address( 57, "Зарайск" , "пер. Чехова", "96" ),
+            new Address( 58, "Мытищи" , "пр. Сталина", "21" ),
+            new Address( 59, "Солнечногорск" , "пл. 1905 года", "14" ),
+            new Address( 60, "Щёлково" , "Будапештсткая", "49" ),
+            new Address( 61, "Орехово-Зуево" , "пл. Сталина", "57" ),
+            new Address( 62, "Наро-Фоминск" , "спуск Ломоносова", "45/1" ),
+            new Address( 63, "Балашиха" , "Будапештсткая", "12" ),
+            new Address( 64, "Серпухов" , "пр. Гагарина", "12C" ),
+            new Address( 65, "Истра" , "въезд Гагарина", "39" ),
+            new Address( 66, "Лотошино" , "въезд 1905 года", "11" ),
+            new Address( 67, "Коломна" , "бульвар Ленина", "85" ),
+            new Address( 68, "Сергиев Посад" , "пер. Будапештсткая", "21" ),
+            new Address( 69, "Воскресенск" , "пр. Косиора", "79" ),
         };
 
         dbContext.Addresses.AddRange(addresses);
@@ -118,69 +135,73 @@ public class DataSeeder
         };
 
         dbContext.Medicines.AddRange(medicines);
-        
+
 
         var pharmacies = new List<Pharmacy>()
         {
-            new Pharmacy(1, "Аптека от склада", "892277534495", "1138793867530",
+            new Pharmacy(1, "Аптека от склада",
                 new(){ addresses[3], addresses[5], addresses[1] }
             ),
-            new Pharmacy(2, "Фармкопейка", "2675519818", "2097045775495",
+            new Pharmacy(2, "Фармкопейка",
                 new(){ addresses[2], addresses[6], addresses[4] }
             ),
-            new Pharmacy(3, "Аптека.ру", "2675519818", "2097045775495",
+            new Pharmacy(3, "Аптека.ру",
                 new(){ addresses[7], addresses[8], addresses[11] }
             ),
-            new Pharmacy(4, "Аптека №1", "4093395003", "3032517827724",
-                new(){ addresses[7], addresses[8], addresses[10] }
-            ),
-            new Pharmacy(5, "Нейрон", "3269059863", "3068588117848",
-                new(){ addresses[12], addresses[9], addresses[15] }
-            ),
-            new Pharmacy(6, "Здравсити", "4284981087", "7040229063274",
-                new(){ addresses[18], addresses[13], addresses[16] }
-            ),
-            new Pharmacy(7, "Магнит Аптека", "1236423538", "1125089191260",
-                new(){ addresses[23], addresses[20], addresses[21] }
-            ),
+            new Pharmacy(4, "Аптека №1", new() { addresses[7], addresses[8], addresses[10] }),
+            new Pharmacy(5, "Нейрон", new() { addresses[12], addresses[9], addresses[15] }),
+            new Pharmacy(6, "Здравсити", new() { addresses[18], addresses[13], addresses[16] }),
+            new Pharmacy(7, "Магнит Аптека", new() { addresses[23], addresses[20], addresses[21] }),
+
+            new Pharmacy(8, "DocPharma"){IsActive = false},
+            new Pharmacy(9, "Семейная аптека" ){IsActive = false},
+            new Pharmacy(10, "ДЕЖУРНАЯ АПТЕКА"){IsActive = false},
+            new Pharmacy(11, "СМ-Клиника"){IsActive = false},
+            new Pharmacy(12, "Онфарм"){IsActive = false}
         };
 
         dbContext.Pharmacies.AddRange(pharmacies);
-        
+
 
         var hospitals = new List<Hospital>()
         {
-            new Hospital(1, "Копылов", "Вольдемар", "Улебович", "", "", 
-                new() {addresses[29], addresses[25], addresses[22] } 
+            new Hospital(1, "Копылов", "Вольдемар", "Улебович",
+                new() {addresses[29], addresses[25], addresses[22] }
             ),
-            new Hospital(2, "Белозёров", "Натан", "Филиппович", "", "", 
-                new() {addresses[26], addresses[27], addresses[28] } 
+            new Hospital(2, "Белозёров", "Натан", "Филиппович",
+                new() {addresses[26], addresses[27], addresses[28] }
             ),
-            new Hospital(3, "Аксёнов", "Абрам", "Геласьевич", "", "", 
-                new() {addresses[37], addresses[33], addresses[35] } 
+            new Hospital(3, "Аксёнов", "Абрам", "Геласьевич",
+                new() {addresses[37], addresses[33], addresses[35] }
             ),
-            new Hospital(4, "Гордеев", "Зиновий", "Витальевич", "", "", 
-                new() {addresses[31], addresses[30], addresses[32] } 
+            new Hospital(4, "Гордеев", "Зиновий", "Витальевич",
+                new() {addresses[31], addresses[30], addresses[32] }
             ),
-            new Hospital(5, "Князев", "Иван", "Денисович", "", "", 
-                new() {addresses[36], addresses[38], addresses[40] } 
+            new Hospital(5, "Князев", "Иван", "Денисович",
+                new() {addresses[36], addresses[38], addresses[40] }
             ),
-            new Hospital(6, "Мухин", "Тихон", "Кимович", "", "", 
-                new() {addresses[46], addresses[41], addresses[43] } 
+            new Hospital(6, "Мухин", "Тихон", "Кимович",
+                new() {addresses[46], addresses[41], addresses[43] }
             ),
-            new Hospital(7, "Королёв", "Алан", "Константинович", "", "", 
-                new() {addresses[42], addresses[44], addresses[47] } 
+            new Hospital(7, "Королёв", "Алан", "Константинович",
+                new() {addresses[42], addresses[44], addresses[47] }
             ),
-            new Hospital(8, "Жданов", "Ростислав", "Антонович", "", "", 
-                new() {addresses[48], addresses[50], addresses[49] } 
+            new Hospital(8, "Жданов", "Ростислав", "Антонович",
+                new() {addresses[48], addresses[50], addresses[49] }
             ),
-            new Hospital(9, "Карпов", "Моисей", "Геласьевич", "", "", 
-                new() {addresses[0], addresses[17], addresses[14] } 
-                
+            new Hospital(9, "Карпов", "Моисей", "Геласьевич",
+                new() {addresses[0], addresses[17], addresses[14] }
             ),
-            new Hospital(10, "Морозов", "Рубен", "Федотович", "", "", 
-                new() {addresses[19], addresses[24], addresses[34] } 
+            new Hospital(10, "Морозов", "Рубен", "Федотович",
+                new() {addresses[19], addresses[24], addresses[34] }
             ),
+
+
+
+            new Hospital(11, "Ефремов", "Юстин", "Михайлович"){IsActive = false},
+            new Hospital(12, "Чернов", "Варлаам", "Артемович"){IsActive = false},
+            new Hospital(13, "Кабанов", "Аскольд", "Валентинович"){IsActive = false},
+            new Hospital(14, "Титов", "Глеб", "Анатольевич"){IsActive = false}
         };
 
         dbContext.Hospitals.AddRange(hospitals);
@@ -220,6 +241,12 @@ public class DataSeeder
             new Product(31, medicines[1], pharmacies[0], 145, 664),
             new Product(32, medicines[27], pharmacies[3], 99, 2252),
             new Product(33, medicines[20], pharmacies[3], 104, 1845),
+            new Product(34, medicines[1], pharmacies[4], 1299, 0),
+            new Product(35, medicines[16], pharmacies[5], 295, 0),
+            new Product(36, medicines[25], pharmacies[6], 783, 0),
+            new Product(37, medicines[28], pharmacies[1], 1023, 0),
+            new Product(38, medicines[28], pharmacies[2], 1599, 0),
+            new Product(39, medicines[3], pharmacies[3], 1853, 0),
 
         };
 

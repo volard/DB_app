@@ -1,4 +1,4 @@
-﻿using DB_app.Models;
+﻿using DB_app.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace DB_app.Repository.SQL;
@@ -19,4 +19,8 @@ public class SQLContext : DbContext
     public DbSet<Address>   Addresses    { get; set; }
     public DbSet<Medicine>  Medicines    { get; set; }
     public DbSet<OrderItem> OrderItems   { get; set; }
+
+    public DbSet<HospitalLocation> HospitalLocations { get; set; }
+
+    public DbSet<PharmacyLocation> PharmacyLocations { get; set; }
 }

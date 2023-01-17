@@ -1,4 +1,7 @@
+using AppUIBasics.Helper;
+using CommunityToolkit.Mvvm.ComponentModel;
 using DB_app.Behaviors;
+using DB_app.Entities;
 using DB_app.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -24,8 +27,36 @@ public sealed partial class OrderDetailsPage : Page
             Source = ViewModel,
             Mode = BindingMode.OneWay
         });
+    }
+
+    
+    public OrderDetailsPage(OrderDetailsViewModel viewModel)
+    {
+        ViewModel = viewModel;
+        InitializeComponent();
+        SetBinding(NavigationViewHeaderBehavior.HeaderContextProperty, new Binding
+        {
+            Source = ViewModel,
+            Mode = BindingMode.OneWay
+        });
 
     }
+
+    public void GetAvailableProducts(object sender, SelectionChangedEventArgs e)
+    {
+        ViewModel.SelectedPharmacy = (Pharmacy)PharmacySellerComboBox.SelectedItem;
+    }
+
+    // Create a new Window once the Tab is dragged outside.
+    private void Tabs_TabDroppedOutside(object sender, RoutedEventArgs args)
+    {
+        var newPage = new OrderDetailsPage(ViewModel);
+        var orderDetailWindow = new OrderDetailsWindow(newPage);
+
+        orderDetailWindow.Activate();
+        Frame.GoBack();
+    }
+
 
     //public void AddSelectedButton_Clicked(object sender, RoutedEventArgs e)
     //{
@@ -54,8 +85,11 @@ public sealed partial class OrderDetailsPage : Page
         await ViewModel.SaveAsync();
         ViewModel.NotifyGridAboutChange();
         Debug.WriteLine($"So boiii the ViewModel.CurrentOrder now is {ViewModel.CurrentOrder}");
-
-        Frame.Navigate(typeof(OrdersGridPage), null);
+        if (!WindowHelper.ActiveWindows.Any())
+        {
+            Frame.Navigate(typeof(OrdersGridPage), null);
+        }
+        
     }
 
     /// <summary>

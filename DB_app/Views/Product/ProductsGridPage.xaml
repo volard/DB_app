@@ -3,9 +3,9 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="using:DB_app.Behaviors"
-    xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:vm="using:DB_app.ViewModels"
     d:DataContext="{d:DesignInstance Type=vm:ProductsGridViewModel}"
     mc:Ignorable="d">
@@ -37,12 +37,11 @@
                     Label="Edit"
                     ToolTipService.ToolTip="Edit" />
 
-                <AppBarButton
-                    x:Name="CommandBarDeleteButton"
-                    Icon="Delete"
-                    IsEnabled="{Binding IsGridItemSelected, Mode=OneWay}"
-                    Label="Delete"
-                    ToolTipService.ToolTip="Delete" />
+                <AppBarToggleButton
+                    Icon="List"
+                    IsChecked="{Binding IsOutOfStockShowed, Mode=TwoWay}"
+                    Label="Out of stock" />
+
 
             </CommandBar>
         </DataTemplate>

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DB_app.Models;
+namespace DB_app.Entities;
 
 public class Order
 {
@@ -15,7 +15,6 @@ public class Order
     {
         HospitalCustomer = hospitalCustomer;
         ShippingAddress  = shippingAddress;
-        PharmacySeller   = pharmacySeller;
     }
 
     public Order
@@ -51,9 +50,6 @@ public class Order
     public Address         ShippingAddress     { get; set; }
 
     [Required]
-    public Pharmacy        PharmacySeller      { get; set; }
-
-    [Required]
     public DateTime        DatePlaced          { get; set; } = DateTime.Now;
 
     public List<OrderItem> Items               { get; set; } = new();
@@ -61,4 +57,20 @@ public class Order
     #endregion
 
     public override string ToString() => $"Order # {Id} - {Items.Count} medicines to {ShippingAddress}";
+
+    public override bool Equals(object? obj)
+    {
+        if (obj == null)
+        {
+            return false;
+        }
+
+        if (obj is not Order)
+        {
+            return false;
+        }
+
+        return
+            ((Order)obj).Id == Id;
+    }
 }

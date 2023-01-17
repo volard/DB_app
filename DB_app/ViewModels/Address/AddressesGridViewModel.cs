@@ -11,7 +11,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace DB_app.ViewModels;
 
-public partial class AddressesGridViewModel : ObservableRecipient, INavigationAware, IRecipient<AddAddressMessage>
+public partial class AddressesGridViewModel : ObservableRecipient, INavigationAware, IRecipient<Messages>
 {
     private readonly IRepositoryControllerService _repositoryControllerService
         = App.GetService<IRepositoryControllerService>();
@@ -169,7 +169,7 @@ public partial class AddressesGridViewModel : ObservableRecipient, INavigationAw
     {
     }
 
-    public void Receive(AddAddressMessage message)
+    public void Receive(Messages message)
     {
         var givenAddressWrapper = message.Value;
         if (givenAddressWrapper.isNew)

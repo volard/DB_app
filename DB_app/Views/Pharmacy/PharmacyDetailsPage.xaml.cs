@@ -27,11 +27,31 @@ public sealed partial class PharmacyDetailsPage : Page
 
     }
 
+    private async void MakeInactiveButton_ButtonClicked(object sender, RoutedEventArgs e)
+    {
+        ContentDialog dialog = new();
+
+        // XamlRoot must be set in the case of a ContentDialog running in a Desktop app
+        dialog.XamlRoot = this.XamlRoot;
+        dialog.Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style;
+        dialog.Title = "Are you sure?";
+        dialog.PrimaryButtonText = "Confirm";
+        dialog.CloseButtonText = "Cancel";
+        dialog.DefaultButton = ContentDialogButton.Primary;
+        dialog.Content = "When you disable pharmacy, it will be unlinked from its addresses and become read only.";
+
+        var result = await dialog.ShowAsync();
+        if (result == ContentDialogResult.Primary)
+        {
+        }
+    }
+
+
     public void AddSelectedButton_Clicked(object sender, RoutedEventArgs e)
     {
         if (ViewModel.SelectedAddress != null)
         {
-            ViewModel.CurrentPharmacy.PharmacyData.Addresses.Add(ViewModel.SelectedAddress);
+            ViewModel.CurrentPharmacy.PharmacyData.AddAddress(ViewModel.SelectedAddress);
             ViewModel.CurrentPharmacy.IsModified = true;
             ViewModel.CurrentPharmacy.NotifyAboutAddressesChanged();
             ViewModel.AvailableAddresses.Remove(ViewModel.SelectedAddress);
@@ -43,7 +63,7 @@ public sealed partial class PharmacyDetailsPage : Page
         if (ViewModel.SelectedExistingAddress != null)
         {
             ViewModel.AvailableAddresses.Add(ViewModel.SelectedExistingAddress);
-            ViewModel.CurrentPharmacy.PharmacyData.Addresses.Remove(ViewModel.SelectedExistingAddress);
+            ViewModel.CurrentPharmacy.PharmacyData.RemoveAddress(ViewModel.SelectedExistingAddress);
             ViewModel.CurrentPharmacy.IsModified = true;
             ViewModel.CurrentPharmacy.NotifyAboutAddressesChanged();
         }
@@ -81,10 +101,4 @@ public sealed partial class PharmacyDetailsPage : Page
 
     private void NameText_TextChanged(object sender, TextChangedEventArgs e) =>
         ViewModel.CurrentPharmacy.Name = Name.Text;
-
-    private void INNText_TextChanged(object sender, TextChangedEventArgs e) =>
-        ViewModel.CurrentPharmacy.INN = INN.Text;
-
-    private void OGRNText_TextChanged(object sender, TextChangedEventArgs e) =>
-        ViewModel.CurrentPharmacy.OGRN = OGRN.Text;
 }

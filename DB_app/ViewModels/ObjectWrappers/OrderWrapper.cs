@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using DB_app.Core.Contracts.Services;
-using DB_app.Models;
+using DB_app.Entities;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -10,18 +10,6 @@ namespace DB_app.ViewModels;
 
 public partial class OrderWrapper : ObservableValidator, IEditableObject, IEquatable<OrderWrapper>
 {
-
-    /*
-     * HospitalCustomer ✅
-     * ShippingAddress  ✅
-     * PharmacySeller   ✅
-     * DatePlaced       ✅
-     * Items            ✅
-     * 
-     * -----
-     * Totalcost        ✅
-     */
-
 
     #region Constructors
 
@@ -86,17 +74,18 @@ public partial class OrderWrapper : ObservableValidator, IEditableObject, IEquat
         }
     }
 
+    private Pharmacy pharmacySeller;
 
     [Required(ErrorMessage = "Pharmacy-seller is Required")]
     public Pharmacy PharmacySeller
     {
-        get => OrderData.PharmacySeller;
+        get => pharmacySeller;
         set
         {
             ValidateProperty(value);
             if (!GetErrors(nameof(PharmacySeller)).Any())
             {
-                OrderData.PharmacySeller = value;
+                pharmacySeller = value;
                 OnPropertyChanged();
                 IsModified = true;
                 OnPropertyChanged(nameof(CanSave));
@@ -271,7 +260,7 @@ public partial class OrderWrapper : ObservableValidator, IEditableObject, IEquat
     /// <summary>
     /// Street of the current OrderWrapper's data object
     /// </summary>
-    public string PharmacyName { get => OrderData.PharmacySeller.Name; }
+    public string PharmacyName { get => "placeholder"; }
 
     public DateTime DatePlaced { get => OrderData.DatePlaced; }
 }

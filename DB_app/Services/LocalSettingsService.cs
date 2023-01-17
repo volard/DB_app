@@ -2,7 +2,7 @@
 using DB_app.Core.Contracts.Services;
 using DB_app.Core.Helpers;
 using DB_app.Helpers;
-using DB_app.Models;
+using DB_app.Entities;
 
 using Microsoft.Extensions.Options;
 

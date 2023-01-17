@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using DB_app.Core.Contracts.Services;
-using DB_app.Models;
+using DB_app.Entities;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -265,7 +265,7 @@ public partial class ProductWrapper : ObservableValidator, IEditableObject, IEqu
         Medicine == other?.Medicine &&
         Pharmacy == other?.Pharmacy &&
         Price == other?.Price &&
-        BackupedQuantity == other?.Quantity;
+        Quantity == other?.Quantity;
 
     #endregion
 
@@ -283,4 +283,6 @@ public partial class ProductWrapper : ObservableValidator, IEditableObject, IEqu
     /// Building of the current ProductWrapper's data object
     /// </summary>
     public string MedicineType { get => ProductData.Medicine.Type; }
+
+
 }

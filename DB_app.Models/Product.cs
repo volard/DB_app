@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DB_app.Models;
+namespace DB_app.Entities;
 
 public class Product
 {
@@ -61,4 +61,24 @@ public class Product
     public int      Quantity { get; set; } = 1;
 
     #endregion
+
+    public override bool Equals(object? obj)
+    {
+        if (obj == null)
+        {
+            return false;
+        }
+
+        if (obj is not Product)
+        {
+            return false;
+        }
+
+        return
+            (
+                ((Product)obj).Medicine == Medicine &&
+                ((Product)obj).Pharmacy == Pharmacy
+            ) || 
+            ((Product)obj).Id == Id;
+    }
 }

@@ -1,15 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using DB_app.Core.Contracts.Services;
-using DB_app.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DB_app.Entities;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 
 namespace DB_app.ViewModels;
 
@@ -92,40 +87,6 @@ public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEq
     }
 
 
-    [Required(ErrorMessage = "INN is Required")]
-    [RegularExpression("([0-9]+)", ErrorMessage = "Please enter a Number")]
-    public string INN
-    {
-        get => HospitalData.INN;
-        set
-        {
-            ValidateProperty(value);
-            if (!GetErrors(nameof(INN)).Any())
-            {
-                HospitalData.INN = value;
-                OnPropertyChanged();
-            }
-        }
-    }
-
-
-    [Required(ErrorMessage = "OGRN is Required")]
-    [RegularExpression("([0-9]+)", ErrorMessage = "Please enter a Number")]
-    public string OGRN
-    {
-        get => HospitalData.OGRN;
-        set
-        {
-            ValidateProperty(value);
-            if (!GetErrors(nameof(OGRN)).Any())
-            {
-                HospitalData.OGRN = value;
-                OnPropertyChanged();
-            }
-        }
-    }
-
-
     public ObservableCollection<Address> ObservableAddresses
     {
         get => new(HospitalData.Addresses);
@@ -137,6 +98,15 @@ public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEq
         }
     }
 
+    public bool IsActive
+    {
+        get => HospitalData.IsActive;
+        set
+        {
+            HospitalData.IsActive = value;
+            OnPropertyChanged();
+        }
+    }
 
     public int Id { get => HospitalData.Id; }
 
@@ -150,10 +120,6 @@ public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEq
         => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(nameof(Surename_main_doctor)) select e.ErrorMessage);
     public string Middlename_main_doctorErrors
         => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(nameof(Middlename_main_doctor)) select e.ErrorMessage);
-    public string INNErrors
-        => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(nameof(INN)) select e.ErrorMessage);
-    public string OGRNErrors
-        => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(nameof(OGRN)) select e.ErrorMessage);
 
 
     public bool HasName_main_doctorErrors
@@ -162,10 +128,6 @@ public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEq
         => GetErrors(nameof(Surename_main_doctor)).Any();
     public bool HasMiddlename_main_doctorErrors
         => GetErrors(nameof(Middlename_main_doctor)).Any();
-    public bool HasINNErrors
-        => GetErrors(nameof(INN)).Any();
-    public bool HasOGRNErrors
-        => GetErrors(nameof(OGRN)).Any();
     public bool AreNoErrors
         => !HasErrors;
 
@@ -176,8 +138,6 @@ public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEq
     public string? BackupedName_main_doctor;
     public string? BackupedSurename_main_doctor;
     public string? BackupedMiddlename_main_doctor;
-    public string? BackupedINN;
-    public string? BackupedOGRN;
 
 
     /// <summary>
@@ -202,8 +162,6 @@ public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEq
         OnPropertyChanged(nameof(Name_main_doctor));
         OnPropertyChanged(nameof(Surename_main_doctor));
         OnPropertyChanged(nameof(Middlename_main_doctor));
-        OnPropertyChanged(nameof(INN));
-        OnPropertyChanged(nameof(OGRN));
         OnPropertyChanged(nameof(ObservableAddresses));
     }
 
@@ -216,20 +174,17 @@ public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEq
         OnPropertyChanged(nameof(Name_main_doctorErrors));
         OnPropertyChanged(nameof(Surename_main_doctorErrors));
         OnPropertyChanged(nameof(Middlename_main_doctorErrors));
-        OnPropertyChanged(nameof(INNErrors));
-        OnPropertyChanged(nameof(OGRNErrors));
+
 
         OnPropertyChanged(nameof(Name_main_doctor));
         OnPropertyChanged(nameof(Surename_main_doctor));
         OnPropertyChanged(nameof(Middlename_main_doctor));
-        OnPropertyChanged(nameof(INN));
-        OnPropertyChanged(nameof(OGRN));
+
 
         OnPropertyChanged(nameof(HasName_main_doctorErrors));
         OnPropertyChanged(nameof(HasSurename_main_doctorErrors));
         OnPropertyChanged(nameof(HasMiddlename_main_doctorErrors));
-        OnPropertyChanged(nameof(HasINNErrors));
-        OnPropertyChanged(nameof(HasOGRNErrors));
+
 
         OnPropertyChanged(nameof(AreNoErrors));
     }
@@ -240,11 +195,9 @@ public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEq
 
     public void BuckupData()
     {
-        BackupedName_main_doctor        = Name_main_doctor;
-        BackupedSurename_main_doctor    = Surename_main_doctor;
-        BackupedMiddlename_main_doctor  = Middlename_main_doctor;
-        BackupedINN                     = INN;
-        BackupedOGRN                    = OGRN;
+        BackupedName_main_doctor = Name_main_doctor;
+        BackupedSurename_main_doctor = Surename_main_doctor;
+        BackupedMiddlename_main_doctor = Middlename_main_doctor;
     }
 
     public void ApplyChanges() => isModified = true;
@@ -252,18 +205,14 @@ public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEq
     public void UndoChanges()
     {
         if (
-                BackupedName_main_doctor        != null &&
-                BackupedSurename_main_doctor    != null &&
-                BackupedMiddlename_main_doctor  != null &&
-                BackupedINN                     != null &&
-                BackupedOGRN                    != null
+                BackupedName_main_doctor != null &&
+                BackupedSurename_main_doctor != null &&
+                BackupedMiddlename_main_doctor != null
            )
         {
-            Name_main_doctor        = BackupedName_main_doctor;
-            Surename_main_doctor    = BackupedSurename_main_doctor;
-            Middlename_main_doctor  = BackupedMiddlename_main_doctor;
-            INN                     = BackupedINN;
-            OGRN                    = BackupedOGRN;
+            Name_main_doctor = BackupedName_main_doctor;
+            Surename_main_doctor = BackupedSurename_main_doctor;
+            Middlename_main_doctor = BackupedMiddlename_main_doctor;
 
             isModified = true;
         }
@@ -296,11 +245,9 @@ public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEq
     }
 
     public bool Equals(HospitalWrapper? other) =>
-        Name_main_doctor        == other?.Name_main_doctor          &&
-        Surename_main_doctor    == other?.Surename_main_doctor      &&
-        Middlename_main_doctor  == other?.Middlename_main_doctor    &&
-        INN                     == other?.INN                       &&
-        OGRN                    == other?.OGRN;
+        Name_main_doctor == other?.Name_main_doctor &&
+        Surename_main_doctor == other?.Surename_main_doctor &&
+        Middlename_main_doctor == other?.Middlename_main_doctor;
 
     #endregion
 }

@@ -7,7 +7,6 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace DB_app.ViewModels;
 
@@ -28,7 +27,6 @@ public partial class ProductsGridViewModel : ObservableRecipient, INavigationAwa
     /// </summary>
     public ProductsGridViewModel()
     {
-        //_model = new ProductWrapper();
         WeakReferenceMessenger.Default.Register(this);
     }
 
@@ -54,6 +52,54 @@ public partial class ProductsGridViewModel : ObservableRecipient, INavigationAwa
 
     [ObservableProperty]
     private string _infoBarMessage = "";
+
+    
+    private bool isOutOfStockShowed = false;
+
+    public bool IsOutOfStockShowed
+    {
+        get => isOutOfStockShowed;
+        set
+        {
+            isOutOfStockShowed = value;
+            if (value)
+            {
+                _ = AddOutOfStock();
+            }
+            else
+            {
+                RemoveOutOfStock();
+            }
+        }
+    }
+
+    public async Task AddOutOfStock()
+    {
+        var _outOfStock = await _repositoryControllerService.Products.GetOutOfStockAsync();
+        foreach (var item in _outOfStock)
+        {
+            Source.Add(new ProductWrapper(item));
+        }
+    }
+
+    public void RemoveOutOfStock()
+    {
+        var _data = new List<ProductWrapper>();
+        foreach (var item in Source)
+        {
+            if (item.ProductData.Quantity == 0)
+            {
+                _data.Add(item);
+            }
+        }
+
+
+
+        foreach (var item in _data)
+        {
+            Source.Remove(item);
+        }
+    }
 
 
     /// <summary>

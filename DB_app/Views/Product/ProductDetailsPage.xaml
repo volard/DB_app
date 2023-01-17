@@ -34,111 +34,113 @@
         </DataTemplate>
     </behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
 
+    <Grid>
 
-    <ScrollViewer
-        x:Name="DetailPanel"
-        RelativePanel.AlignLeftWithPanel="True"
-        RelativePanel.AlignRightWithPanel="True"
-        RelativePanel.Below="MainCommandBar"
-        VerticalScrollBarVisibility="Auto"
-        VerticalScrollMode="Auto">
+        <ScrollViewer
+            x:Name="DetailPanel"
+            RelativePanel.AlignLeftWithPanel="True"
+            RelativePanel.AlignRightWithPanel="True"
+            RelativePanel.Below="MainCommandBar"
+            VerticalScrollBarVisibility="Auto"
+            VerticalScrollMode="Auto">
 
-        <RelativePanel>
-            <ComboBox
-                x:Name="PharmacyComboBox"
-                Width="380"
-                Margin="0,20,16,8"
-                VerticalAlignment="Stretch"
-                ItemsSource="{x:Bind ViewModel.AvailablePharmacies, Mode=TwoWay}"
-                PlaceholderText="Select pharmacy"
-                SelectedItem="{x:Bind ViewModel.CurrentProduct.Pharmacy, Mode=TwoWay}" />
+            <RelativePanel>
+                <ComboBox
+                    x:Name="PharmacyComboBox"
+                    Width="380"
+                    Margin="0,20,16,8"
+                    VerticalAlignment="Stretch"
+                    ItemsSource="{x:Bind ViewModel.AvailablePharmacies, Mode=TwoWay}"
+                    PlaceholderText="Select pharmacy"
+                    SelectedItem="{x:Bind ViewModel.CurrentProduct.Pharmacy, Mode=TwoWay}" />
 
-            <SymbolIcon
-                Margin="0,35,0,0"
-                Foreground="OrangeRed"
-                RelativePanel.AlignVerticalCenterWith="PharmacyComboBox"
-                RelativePanel.RightOf="PharmacyComboBox"
-                Symbol="ReportHacked"
-                Visibility="{x:Bind ViewModel.CurrentProduct.HasPharmacyErrors, Mode=OneWay}">
-                <ToolTipService.ToolTip>
-                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentProduct.PharmacyErrors, Mode=OneWay}" />
-                </ToolTipService.ToolTip>
-            </SymbolIcon>
+                <SymbolIcon
+                    Margin="0,35,0,0"
+                    Foreground="OrangeRed"
+                    RelativePanel.AlignVerticalCenterWith="PharmacyComboBox"
+                    RelativePanel.RightOf="PharmacyComboBox"
+                    Symbol="ReportHacked"
+                    Visibility="{x:Bind ViewModel.CurrentProduct.HasPharmacyErrors, Mode=OneWay}">
+                    <ToolTipService.ToolTip>
+                        <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentProduct.PharmacyErrors, Mode=OneWay}" />
+                    </ToolTipService.ToolTip>
+                </SymbolIcon>
 
-            <ComboBox
-                x:Name="MedicineComboBox"
-                Width="380"
-                Margin="0,20,16,8"
-                VerticalAlignment="Stretch"
-                ItemsSource="{x:Bind ViewModel.AvailableMedicines, Mode=TwoWay}"
-                PlaceholderText="Select medicine"
-                RelativePanel.Below="PharmacyComboBox"
-                SelectedItem="{x:Bind ViewModel.CurrentProduct.Medicine, Mode=TwoWay}" />
+                <ComboBox
+                    x:Name="MedicineComboBox"
+                    Width="380"
+                    Margin="0,20,16,8"
+                    VerticalAlignment="Stretch"
+                    ItemsSource="{x:Bind ViewModel.AvailableMedicines, Mode=TwoWay}"
+                    PlaceholderText="Select medicine"
+                    RelativePanel.Below="PharmacyComboBox"
+                    SelectedItem="{x:Bind ViewModel.CurrentProduct.Medicine, Mode=TwoWay}" />
 
-            <SymbolIcon
-                Margin="0,35,0,0"
-                Foreground="OrangeRed"
-                RelativePanel.AlignVerticalCenterWith="MedicineComboBox"
-                RelativePanel.RightOf="MedicineComboBox"
-                Symbol="ReportHacked"
-                Visibility="{x:Bind ViewModel.CurrentProduct.HasMedicineErrors, Mode=OneWay}">
-                <ToolTipService.ToolTip>
-                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentProduct.MedicineErrors, Mode=OneWay}" />
-                </ToolTipService.ToolTip>
-            </SymbolIcon>
+                <SymbolIcon
+                    Margin="0,35,0,0"
+                    Foreground="OrangeRed"
+                    RelativePanel.AlignVerticalCenterWith="MedicineComboBox"
+                    RelativePanel.RightOf="MedicineComboBox"
+                    Symbol="ReportHacked"
+                    Visibility="{x:Bind ViewModel.CurrentProduct.HasMedicineErrors, Mode=OneWay}">
+                    <ToolTipService.ToolTip>
+                        <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentProduct.MedicineErrors, Mode=OneWay}" />
+                    </ToolTipService.ToolTip>
+                </SymbolIcon>
 
-            <NumberBox
-                x:Name="Price"
-                MinWidth="300"
-                Margin="0,20,16,8"
-                Header="Price"
-                Minimum="1"
-                RelativePanel.AlignLeftWithPanel="True"
-                RelativePanel.Below="MedicineComboBox"
-                ValueChanged="PriceValue_ValueChanged"
-                Value="{x:Bind ViewModel.CurrentProduct.Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <NumberBox
+                    x:Name="Price"
+                    MinWidth="300"
+                    Margin="0,20,16,8"
+                    Header="Price"
+                    Minimum="1"
+                    RelativePanel.AlignLeftWithPanel="True"
+                    RelativePanel.Below="MedicineComboBox"
+                    ValueChanged="PriceValue_ValueChanged"
+                    Value="{x:Bind ViewModel.CurrentProduct.Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-            <SymbolIcon
-                Margin="0,35,0,0"
-                Foreground="OrangeRed"
-                RelativePanel.AlignVerticalCenterWith="Price"
-                RelativePanel.RightOf="Price"
-                Symbol="ReportHacked"
-                Visibility="{x:Bind ViewModel.CurrentProduct.HasPriceErrors, Mode=OneWay}">
-                <ToolTipService.ToolTip>
-                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentProduct.PriceErrors, Mode=OneWay}" />
-                </ToolTipService.ToolTip>
-            </SymbolIcon>
-
-
-            <NumberBox
-                x:Name="Quantity"
-                MinWidth="300"
-                Margin="0,20,16,8"
-                Header="Quantity"
-                Minimum="1"
-                RelativePanel.AlignLeftWithPanel="True"
-                RelativePanel.Below="Price"
-                Text="1"
-                ValueChanged="QuantityValue_ValueChanged"
-                Value="{x:Bind ViewModel.CurrentProduct.Quantity, Mode=TwoWay}" />
-
-            <SymbolIcon
-                Margin="0,35,0,0"
-                Foreground="OrangeRed"
-                RelativePanel.AlignVerticalCenterWith="Quantity"
-                RelativePanel.RightOf="Quantity"
-                Symbol="ReportHacked"
-                Visibility="{x:Bind ViewModel.CurrentProduct.HasQuantityErrors, Mode=OneWay}">
-                <ToolTipService.ToolTip>
-                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentProduct.QuantityErrors, Mode=OneWay}" />
-                </ToolTipService.ToolTip>
-            </SymbolIcon>
-
-        </RelativePanel>
+                <SymbolIcon
+                    Margin="0,35,0,0"
+                    Foreground="OrangeRed"
+                    RelativePanel.AlignVerticalCenterWith="Price"
+                    RelativePanel.RightOf="Price"
+                    Symbol="ReportHacked"
+                    Visibility="{x:Bind ViewModel.CurrentProduct.HasPriceErrors, Mode=OneWay}">
+                    <ToolTipService.ToolTip>
+                        <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentProduct.PriceErrors, Mode=OneWay}" />
+                    </ToolTipService.ToolTip>
+                </SymbolIcon>
 
 
+                <NumberBox
+                    x:Name="Quantity"
+                    MinWidth="300"
+                    Margin="0,20,16,8"
+                    Header="Quantity"
+                    Minimum="1"
+                    RelativePanel.AlignLeftWithPanel="True"
+                    RelativePanel.Below="Price"
+                    Text="1"
+                    ValueChanged="QuantityValue_ValueChanged"
+                    Value="{x:Bind ViewModel.CurrentProduct.Quantity, Mode=TwoWay}" />
 
-    </ScrollViewer>
+                <SymbolIcon
+                    Margin="0,35,0,0"
+                    Foreground="OrangeRed"
+                    RelativePanel.AlignVerticalCenterWith="Quantity"
+                    RelativePanel.RightOf="Quantity"
+                    Symbol="ReportHacked"
+                    Visibility="{x:Bind ViewModel.CurrentProduct.HasQuantityErrors, Mode=OneWay}">
+                    <ToolTipService.ToolTip>
+                        <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentProduct.QuantityErrors, Mode=OneWay}" />
+                    </ToolTipService.ToolTip>
+                </SymbolIcon>
+
+            </RelativePanel>
+
+
+
+        </ScrollViewer>
+    </Grid>
 
 </Page>

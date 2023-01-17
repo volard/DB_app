@@ -124,8 +124,6 @@
                 Severity="{x:Bind ViewModel.InfoBarSeverity, Mode=OneWay}" />
         </RelativePanel>
 
-
-
     </Grid>
 
 </Page>

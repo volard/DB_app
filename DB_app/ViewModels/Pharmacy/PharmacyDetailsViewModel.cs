@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using DB_app.Core.Contracts.Services;
-using DB_app.Models;
+using DB_app.Entities;
 using DB_app.Services.Messages;
 using System.Collections.ObjectModel;
 
@@ -90,7 +90,7 @@ public partial class PharmacyDetailsViewModel : ObservableRecipient, IRecipient<
 
     #region Properties
 
-    private readonly IRepositoryControllerService _repositoryControllerService
+    public readonly IRepositoryControllerService _repositoryControllerService
          = App.GetService<IRepositoryControllerService>();
 
 
@@ -120,19 +120,6 @@ public partial class PharmacyDetailsViewModel : ObservableRecipient, IRecipient<
 
     [ObservableProperty]
     public string pageTitle;
-
-    #endregion
-
-
-
-    #region Required for addresses DataGrid
-
-    public Address AddressModel { get; set; }
-
-    public string City { get => AddressModel.City; }
-    public string Street { get => AddressModel.Street; }
-    public string Building { get => AddressModel.Building; }
-
 
     #endregion
 

@@ -19,6 +19,7 @@
     <None Remove="Views\Address\AddressDetailsPage.xaml" />
     <None Remove="Views\Hospital\HospitalDetailsPage.xaml" />
     <None Remove="Views\MedicineDetailsPage.xaml" />
+    <None Remove="Views\OrderDetailsWindow.xaml" />
     <None Remove="Views\Order\OrderDetailsPage.xaml" />
     <None Remove="Views\Pharmacy\PharmacyDetailsPage.xaml" />
     <None Remove="Views\Product\ProductDetailsPage.xaml" />
@@ -49,6 +50,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Page Update="Views\OrderDetailsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Views\Order\OrderDetailsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 using DB_app.Contracts.ViewModels;
 using DB_app.Core.Contracts.Services;
-using DB_app.Models;
+using DB_app.Entities;
 using DB_app.Services.Messages;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml;
@@ -30,7 +30,7 @@ public partial class PharmaciesGridViewModel : ObservableRecipient, INavigationA
     /// </summary>
     public PharmaciesGridViewModel()
     {
-        _model = new PharmacyWrapper();
+        //_model = new PharmacyWrapper();
         WeakReferenceMessenger.Default.Register(this);
     }
 
@@ -72,26 +72,70 @@ public partial class PharmaciesGridViewModel : ObservableRecipient, INavigationA
         }
     }
 
+    private bool isInactiveShowed = false;
 
-    #region Required for DataGrid
+    public bool IsInactiveShowed
+    {
+        get => isInactiveShowed;
+        set
+        {
+            isInactiveShowed = value;
+            if (value)
+            {
+                _ = AddInactive();
+            }
+            else
+            {
+                RemoveInactive();
+            }
+        }
+    }
 
-    /// <summary>
-    /// Represents current PharmacyWrapper object
-    /// </summary>
-    public PharmacyWrapper _model { get; set; }
+    public async Task AddInactive()
+    {
+        var _outOfStock = await _repositoryControllerService.Pharmacies.GetInactiveAsync();
+        foreach (var item in _outOfStock)
+        {
+            Source.Add(new PharmacyWrapper(item));
+        }
+    }
 
-    /// <summary>
-    /// Name of the current PharmacyWrapper's data object
-    /// </summary>
-    public string Surename_main_doctor { get => _model.Name; }
+    public void RemoveInactive()
+    {
+        var _data = new List<PharmacyWrapper>();
+        foreach (var item in Source)
+        {
+            if (!item.PharmacyData.IsActive)
+            {
+                _data.Add(item);
+            }
+        }
 
 
-    /// <summary>
-    /// Type of the current PharmacyWrapper's data object
-    /// </summary>
-    public string INN { get => _model.INN; }
 
-    #endregion
+        foreach (var item in _data)
+        {
+            Source.Remove(item);
+        }
+    }
+
+
+    //#region Required for DataGrid
+
+    ///// <summary>
+    ///// Represents current PharmacyWrapper object
+    ///// </summary>
+    //public PharmacyWrapper _model { get; set; }
+
+    ///// <summary>
+    ///// Name of the current PharmacyWrapper's data object
+    ///// </summary>
+    //public string Surename_main_doctor { get => _model.Name; }
+
+    //public string Surename_main_doctor { get => _model.Name; }
+
+
+    //#endregion
 
 
 

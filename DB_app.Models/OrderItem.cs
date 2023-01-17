@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DB_app.Models;
+namespace DB_app.Entities;
 
 /// <summary>
 /// Represents an order item (product + quantity).
@@ -53,7 +53,27 @@ public class OrderItem
     [Required]
     public Product Product            { get; set; }
 
-    public int     Quantity           { get; set; } = 1;
+    [Required]
+    public int     Quantity           { get; set; }
+
+    [Required]
+    public double  Price              { get; set; }
 
     #endregion
+
+    public override bool Equals(object? obj)
+    {
+        if (obj == null)
+        {
+            return false;
+        }
+
+        if (obj is not OrderItem)
+        {
+            return false;
+        }
+
+        return
+            ((OrderItem)obj).Id == Id;
+    }
 }

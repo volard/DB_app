@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DB_app.Models;
+﻿using DB_app.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace DB_app.Repository.SQL;
 

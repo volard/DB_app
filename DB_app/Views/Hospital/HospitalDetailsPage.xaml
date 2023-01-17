@@ -50,7 +50,7 @@
                 <StackPanel.Resources>
                     <Style TargetType="muxc:Expander">
                         <Setter Property="HorizontalAlignment" Value="Stretch" />
-                        <Setter Property="HorizontalContentAlignment" Value="Left" />
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                         <Setter Property="Margin" Value="0,10,0,0" />
                     </Style>
                 </StackPanel.Resources>
@@ -79,10 +79,20 @@
                                 x:Name="Surename_main_doctor"
                                 MinWidth="300"
                                 Margin="10,20,16,8"
+                                IsReadOnly="{x:Bind viewModel:Converters.Not(ViewModel.CurrentHospital.IsActive), Mode=OneWay}"
                                 Header="Maindoctor's surename"
                                 RelativePanel.AlignLeftWithPanel="True"
                                 Text="{x:Bind ViewModel.CurrentHospital.Surename_main_doctor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 TextChanged="Surename_main_doctorText_TextChanged" />
+
+                            <Button
+                                Background="Red"
+                                Click="MakeInactiveButton_ButtonClicked"
+                                IsEnabled="{x:Bind ViewModel.CurrentHospital.IsActive, Mode=OneWay}"
+                                Visibility="{x:Bind viewModel:Converters.CollapsedIf(ViewModel.CurrentHospital.isNew), Mode=OneWay}"
+                                Content="Make inactive"
+                                RelativePanel.AlignVerticalCenterWith="Surename_main_doctor"
+                                RelativePanel.AlignRightWithPanel="True" />
 
                             <SymbolIcon
                                 Margin="0,35,0,0"
@@ -103,6 +113,7 @@
                                 Margin="10,20,16,8"
                                 Header="Maindoctor's name"
                                 RelativePanel.AlignLeftWithPanel="True"
+                                IsReadOnly="{x:Bind viewModel:Converters.Not(ViewModel.CurrentHospital.IsActive), Mode=OneWay}"
                                 RelativePanel.Below="Surename_main_doctor"
                                 Text="{x:Bind ViewModel.CurrentHospital.Name_main_doctor, Mode=TwoWay}"
                                 TextChanged="Name_main_doctorText_TextChanged" />
@@ -123,6 +134,7 @@
                                 MinWidth="300"
                                 Margin="10,20,16,8"
                                 Header="Maindoctor's middlename"
+                                IsReadOnly="{x:Bind viewModel:Converters.Not(ViewModel.CurrentHospital.IsActive), Mode=OneWay}"
                                 RelativePanel.AlignLeftWithPanel="True"
                                 RelativePanel.Below="Name_main_doctor"
                                 Text="{x:Bind ViewModel.CurrentHospital.Middlename_main_doctor, Mode=TwoWay}"
@@ -146,74 +158,9 @@
                 </muxc:Expander>
 
                 <muxc:Expander
-                    x:Name="ExpanderOrganization"
-                    ExpandDirection="Down"
-                    IsExpanded="True">
-
-                    <muxc:Expander.Header>
-                        <Grid>
-                            <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="Organization" />
-                            <TextBlock
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Center"
-                                Text="{x:Bind ViewModel.CurrentHospital.INN, Mode=OneWay}" />
-                        </Grid>
-                    </muxc:Expander.Header>
-
-                    <muxc:Expander.Content>
-
-                        <RelativePanel>
-                            <TextBox
-                                x:Name="INN"
-                                MinWidth="300"
-                                Margin="10,20,16,8"
-                                Header="Hospital's INN"
-                                RelativePanel.AlignLeftWithPanel="True"
-                                Text="{x:Bind ViewModel.CurrentHospital.INN, Mode=TwoWay}"
-                                TextChanged="INNText_TextChanged" />
-                            <SymbolIcon
-                                Margin="0,35,0,0"
-                                Foreground="OrangeRed"
-                                RelativePanel.AlignVerticalCenterWith="INN"
-                                RelativePanel.RightOf="INN"
-                                Symbol="ReportHacked"
-                                Visibility="{x:Bind ViewModel.CurrentHospital.HasINNErrors, Mode=OneWay}">
-                                <ToolTipService.ToolTip>
-                                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentHospital.INNErrors, Mode=OneWay}" />
-                                </ToolTipService.ToolTip>
-                            </SymbolIcon>
-
-
-                            <TextBox
-                                x:Name="OGRN"
-                                MinWidth="300"
-                                Margin="10,20,16,8"
-                                Header="Hospital's OGRN"
-                                RelativePanel.AlignLeftWithPanel="True"
-                                RelativePanel.Below="INN"
-                                Text="{x:Bind ViewModel.CurrentHospital.OGRN, Mode=TwoWay}"
-                                TextChanged="OGRNText_TextChanged" />
-                            <SymbolIcon
-                                Margin="0,35,0,0"
-                                Foreground="OrangeRed"
-                                RelativePanel.AlignVerticalCenterWith="OGRN"
-                                RelativePanel.RightOf="OGRN"
-                                Symbol="ReportHacked"
-                                Visibility="{x:Bind ViewModel.CurrentHospital.HasOGRNErrors, Mode=OneWay}">
-                                <ToolTipService.ToolTip>
-                                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentHospital.OGRNErrors, Mode=OneWay}" />
-                                </ToolTipService.ToolTip>
-                            </SymbolIcon>
-                        </RelativePanel>
-
-
-                    </muxc:Expander.Content>
-
-                </muxc:Expander>
-
-                <muxc:Expander
                     x:Name="ExpanderAddresses"
                     ExpandDirection="Down"
+                    Visibility="{x:Bind viewModel:Converters.VisibleIf(ViewModel.CurrentHospital.IsActive), Mode=OneWay}"
                     IsExpanded="True">
 
                     <muxc:Expander.Header>

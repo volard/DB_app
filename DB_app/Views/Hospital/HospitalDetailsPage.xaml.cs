@@ -27,11 +27,30 @@ public sealed partial class HospitalDetailsPage : Page
 
     }
 
+    private async void MakeInactiveButton_ButtonClicked(object sender, RoutedEventArgs e)
+    {
+        ContentDialog dialog = new();
+
+        // XamlRoot must be set in the case of a ContentDialog running in a Desktop app
+        dialog.XamlRoot = this.XamlRoot;
+        dialog.Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style;
+        dialog.Title = "Are you sure?";
+        dialog.PrimaryButtonText = "Confirm";
+        dialog.CloseButtonText = "Cancel";
+        dialog.DefaultButton = ContentDialogButton.Primary;
+        dialog.Content = "When you disable hospital, it will be unlinked from its addresses and become read only.";
+
+        var result = await dialog.ShowAsync();
+        if (result == ContentDialogResult.Primary)
+        {
+        }
+    }
+
     public void AddSelectedButton_Clicked(object sender, RoutedEventArgs e)
     {
         if (ViewModel.SelectedAddress != null)
         {
-            ViewModel.CurrentHospital.HospitalData.Addresses.Add(ViewModel.SelectedAddress);
+            ViewModel.CurrentHospital.HospitalData.AddAddress(ViewModel.SelectedAddress);
             ViewModel.CurrentHospital.IsModified = true;
             ViewModel.CurrentHospital.NotifyAboutAddressesChanged();
             ViewModel.AvailableAddresses.Remove(ViewModel.SelectedAddress);
@@ -43,7 +62,7 @@ public sealed partial class HospitalDetailsPage : Page
         if (ViewModel.SelectedExistingAddress != null)
         {
             ViewModel.AvailableAddresses.Add(ViewModel.SelectedExistingAddress);
-            ViewModel.CurrentHospital.HospitalData.Addresses.Remove(ViewModel.SelectedExistingAddress);
+            ViewModel.CurrentHospital.HospitalData.RemoveAddress(ViewModel.SelectedExistingAddress);
             ViewModel.CurrentHospital.IsModified = true;
             ViewModel.CurrentHospital.NotifyAboutAddressesChanged();
         }
@@ -87,10 +106,4 @@ public sealed partial class HospitalDetailsPage : Page
 
     private void Surename_main_doctorText_TextChanged(object sender, TextChangedEventArgs e) =>
         ViewModel.CurrentHospital.Surename_main_doctor = Surename_main_doctor.Text;
-
-    private void INNText_TextChanged(object sender, TextChangedEventArgs e) =>
-        ViewModel.CurrentHospital.INN = INN.Text;
-    
-    private void OGRNText_TextChanged(object sender, TextChangedEventArgs e) =>
-        ViewModel.CurrentHospital.OGRN = OGRN.Text;
 }

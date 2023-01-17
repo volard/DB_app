@@ -1,5 +1,5 @@
 using DB_app.Behaviors;
-using DB_app.Models;
+using DB_app.Entities;
 using DB_app.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;

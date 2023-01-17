@@ -1,12 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Messaging.Messages;
 using DB_app.Core.Contracts.Services;
-using DB_app.Models;
+using DB_app.Entities;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
-using System.Linq;
-using System.Runtime.CompilerServices;
 
 namespace DB_app.ViewModels;
 
@@ -15,8 +12,8 @@ namespace DB_app.ViewModels;
 /// </summary>
 public partial class MedicineWrapper : ObservableValidator, IEditableObject, IEquatable<MedicineWrapper>
 {
-    
-    
+
+
     public MedicineWrapper(Medicine medicine)
     {
         MedicineData = medicine;
@@ -126,8 +123,8 @@ public partial class MedicineWrapper : ObservableValidator, IEditableObject, IEq
 
     public void BuckupData()
     {
-        BackupedName= MedicineData.Name;
-        BackupedType= MedicineData.Type;
+        BackupedName = MedicineData.Name;
+        BackupedType = MedicineData.Type;
     }
 
     public void ApplyChanges() => isModified = true;

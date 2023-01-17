@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Security.AccessControl;
 
-namespace DB_app.Models;
+namespace DB_app.Entities;
 
 public class Address
 {
@@ -58,4 +59,19 @@ public class Address
     #endregion
 
     public override string ToString() => $"{City}; {Street}; {Building}";
+
+    public override bool Equals(object? obj)
+    {
+        if (obj == null)
+        {
+            return false;
+        }
+
+        if (obj is not Address)
+        {
+            return false;
+        }
+
+        return ((Address)obj).City == City && ((Address)obj).Street == Street && ((Address)obj).Building == Building;
+    }
 }

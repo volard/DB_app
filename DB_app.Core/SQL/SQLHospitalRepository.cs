@@ -1,11 +1,6 @@
-﻿using DB_app.Models;
+﻿using DB_app.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DB_app.Repository.SQL;
 
@@ -23,31 +18,43 @@ public class SQLHospitalRepository : IHospitalRepository
         _db = db;
     }
 
-    /// <inheritdoc/>
+
     public async Task<IEnumerable<Hospital>> GetAsync()
     {
         return await _db.Hospitals
-            .Include(hospital => hospital.Addresses)
+            .Include(hospital => hospital.Locations)
+            .Where(hospital => hospital.IsActive)
             .ToListAsync();
     }
 
-    /// <inheritdoc/>
+
     public async Task<Hospital> GetAsync(int id)
     {
         return await _db.Hospitals
-           .Include(hospital => hospital.Addresses)
+           .Include(hospital => hospital.Locations)
            .FirstOrDefaultAsync(hospital => hospital.Id == id);
     }
 
-    /// <inheritdoc/>
     public async Task InsertAsync(Hospital hospital)
     {
+        Hospital foundHospital = await _db.Hospitals
+               .FirstOrDefaultAsync(existHospital => existHospital.Id == hospital.Id);
+
+        if (foundHospital != null)
+        {
+            throw new SaveDublicateRecordException();
+        }
+
+        if (hospital.Addresses == null || hospital.Addresses.Count == 0)
+        {
+            hospital.IsActive = false;
+        }
+
         _db.Hospitals.Add(hospital);
         await _db.SaveChangesAsync();
-        Debug.WriteLine("InsertAsync - Hospital : " + hospital.Id + "was succesfully inserted in the Database");
     }
 
-    /// <inheritdoc/>
+
     public async Task UpdateAsync(Hospital hospital)
     {
         Hospital foundHospital = await _db.Hospitals
@@ -63,10 +70,10 @@ public class SQLHospitalRepository : IHospitalRepository
         {
             Debug.WriteLine("UpdateAsync - Hospital : attempt to update hospital failed - no hospital found to update");
         }
-        
+
     }
 
-    /// <inheritdoc/>
+
     public async Task DeleteAsync(int id)
     {
         var foundHospital = await _db.Hospitals.FirstOrDefaultAsync(_hospital => _hospital.Id == id);
@@ -80,5 +87,19 @@ public class SQLHospitalRepository : IHospitalRepository
         {
             Debug.WriteLine("DeleteAsync - Hospital : No hospital under specified id was found in the Database");
         }
+    }
+
+    public async Task<IEnumerable<Hospital>> GetAllAsync()
+    {
+        return await _db.Hospitals
+            .Include(hospital => hospital.Addresses)
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<Hospital>> GetInactiveAsync()
+    {
+        return await _db.Hospitals
+            .Where(hospital => !hospital.IsActive)
+            .ToListAsync();
     }
 }

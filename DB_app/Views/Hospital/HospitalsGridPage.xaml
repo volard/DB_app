@@ -44,6 +44,11 @@
                     Label="Delete"
                     ToolTipService.ToolTip="Delete" />
 
+                <AppBarToggleButton
+                    Icon="Import"
+                    IsChecked="{Binding IsInactiveShowed, Mode=TwoWay}"
+                    Label="Closed" />
+
             </CommandBar>
         </DataTemplate>
     </behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
@@ -75,7 +80,11 @@
 
                 <toolkit:DataGrid.Columns>
 
-                    <!--  As I got it, DataGrid doesn't support x:Bind  -->
+
+                    <toolkit:DataGridTextColumn
+                        Width="20*"
+                        Binding="{Binding Id}"
+                        Header="Number" />
                     <toolkit:DataGridTextColumn
                         Width="20*"
                         Binding="{Binding Surename_main_doctor}"
@@ -88,10 +97,7 @@
                         Width="20*"
                         Binding="{Binding Middlename_main_doctor}"
                         Header="Maindoctor's middlename" />
-                    <toolkit:DataGridTextColumn
-                        Width="20*"
-                        Binding="{Binding INN}"
-                        Header="INN" />
+                    
 
                 </toolkit:DataGrid.Columns>
             </toolkit:DataGrid>

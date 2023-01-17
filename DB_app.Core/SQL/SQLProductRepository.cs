@@ -1,11 +1,6 @@
-﻿using DB_app.Models;
+﻿using DB_app.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DB_app.Repository.SQL;
 
@@ -25,16 +20,25 @@ public class SQLProductRepository : IProductRepository
     public async Task DeleteAsync(int id)
     {
         var foundProduct = await _db.Products.FirstOrDefaultAsync(_Product => _Product.Id == id);
-        if (null != foundProduct)
+        if (foundProduct != null)
         {
+
+
             _db.Products.Remove(foundProduct);
             await _db.SaveChangesAsync();
-            Debug.WriteLine("DeleteAsync - Product : " + foundProduct + "was succesfully deleted from the Database");
         }
         else
         {
-            Debug.WriteLine("DeleteAsync - Product : No product under specified id was found in the Database");
+            throw new RecordNotFound();
         }
+    }
+
+    public async Task<IEnumerable<Product>> GetAllAsync()
+    {
+        return await _db.Products
+                .Include(product => product.Pharmacy)
+                .Include(product => product.Medicine)
+                .ToListAsync();
     }
 
     public async Task<IEnumerable<Product>> GetAsync()
@@ -42,8 +46,10 @@ public class SQLProductRepository : IProductRepository
         return await _db.Products
                 .Include(product => product.Pharmacy)
                 .Include(product => product.Medicine)
+                .Where(product => product.Quantity > 0)
                 .ToListAsync();
     }
+
 
     public async Task<Product> GetAsync(int id)
     {
@@ -53,10 +59,20 @@ public class SQLProductRepository : IProductRepository
                 .FirstOrDefaultAsync(product => product.Id == id);
     }
 
+    public async Task<IEnumerable<Product>> GetOutOfStockAsync()
+    {
+        return await _db.Products
+                .Include(product => product.Pharmacy)
+                .Include(product => product.Medicine)
+                .Where(product => product.Quantity == 0)
+                .ToListAsync();
+    }
+
     public async Task InsertAsync(Product product)
     {
         Product foundProduct = await _db.Products
                .FirstOrDefaultAsync(existProduct => existProduct == product);
+
 
         if (foundProduct != null)
         {
@@ -70,6 +86,18 @@ public class SQLProductRepository : IProductRepository
         }
     }
 
+    /// <summary>
+    /// Returns all products from pharmacy
+    /// </summary>
+    public async Task<IEnumerable<Product>> GetFromPharmacy(int id)
+    {
+        return await _db.Products
+                .Include(product => product.Pharmacy)
+                .Include(product => product.Medicine)
+                .Where(product => product.Pharmacy.Id == id)
+                .ToListAsync();
+    }
+
     public async Task UpdateAsync(Product product)
     {
         Product foundProduct = await _db.Products
@@ -79,11 +107,10 @@ public class SQLProductRepository : IProductRepository
         {
             _db.Entry(foundProduct).CurrentValues.SetValues(product);
             await _db.SaveChangesAsync();
-            Debug.WriteLine("UpdateAsync - Product : " + foundProduct.Id + " was succesfully updated in the Database");
         }
         else
         {
-            Debug.WriteLine("UpdateAsync - Product : attempt to update Product failed - no Product found to update");
+            throw new RecordNotFound();
         }
     }
 }

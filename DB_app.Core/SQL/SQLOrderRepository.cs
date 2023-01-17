@@ -1,11 +1,6 @@
-﻿using DB_app.Models;
+﻿using DB_app.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DB_app.Repository.SQL;
 
@@ -42,7 +37,6 @@ public class SQLOrderRepository : IOrderRepository
         return await _db.Orders
                 .Include(order => order.HospitalCustomer)
                 .Include(order => order.ShippingAddress)
-                .Include(order => order.PharmacySeller)
                 .ToListAsync();
     }
 
@@ -51,7 +45,6 @@ public class SQLOrderRepository : IOrderRepository
         return await _db.Orders
                 .Include(order => order.HospitalCustomer)
                 .Include(order => order.ShippingAddress)
-                .Include(order => order.PharmacySeller)
                 .FirstOrDefaultAsync(order => order.Id == id);
     }
 

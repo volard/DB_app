@@ -1,10 +1,7 @@
 ﻿using System.Collections.ObjectModel;
-
 using CommunityToolkit.Mvvm.ComponentModel;
-
 using DB_app.Contracts.ViewModels;
 using DB_app.Core.Contracts.Services;
-using DB_app.Models;
 using DB_app.Services.Messages;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml;
@@ -30,7 +27,6 @@ public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAw
     /// </summary>
     public HospitalsGridViewModel()
     {
-        _model = new HospitalWrapper();
         WeakReferenceMessenger.Default.Register(this);
     }
 
@@ -71,46 +67,61 @@ public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAw
             IsGridItemSelected = Converters.IsNotNull(value);
         }
     }
+    private bool isInactiveShowed = false;
+
+    public bool IsInactiveShowed
+    {
+        get => isInactiveShowed;
+        set
+        {
+            isInactiveShowed = value;
+            if (value)
+            {
+                _ = AddInactive();
+            }
+            else
+            {
+                RemoveInactive();
+            }
+        }
+    }
+
+    public async Task AddInactive()
+    {
+        var _outOfStock = await _repositoryControllerService.Hospitals.GetInactiveAsync();
+        foreach (var item in _outOfStock)
+        {
+            Source.Add(new HospitalWrapper(item));
+        }
+    }
+
+    public void RemoveInactive()
+    {
+        var _data = new List<HospitalWrapper>();
+        foreach (var item in Source)
+        {
+            if (!item.HospitalData.IsActive)
+            {
+                _data.Add(item);
+            }
+        }
 
 
-    #region Required for DataGrid
 
-    /// <summary>
-    /// Represents current HospitalWrapper object
-    /// </summary>
-    public HospitalWrapper _model { get; set; }
-
-    /// <summary>
-    /// Name of the current HospitalWrapper's data object
-    /// </summary>
-    public string Surename_main_doctor { get => _model.Surename_main_doctor; }
-
-    /// <summary>
-    /// Type of the current HospitalWrapper's data object
-    /// </summary>
-    public string Name_main_doctor { get => _model.Name_main_doctor; }
-
-    /// <summary>
-    /// Type of the current HospitalWrapper's data object
-    /// </summary>
-    public string Middlename_main_doctor { get => _model.Middlename_main_doctor; }
-
-    /// <summary>
-    /// Type of the current HospitalWrapper's data object
-    /// </summary>
-    public string INN { get => _model.INN; }
-
-    #endregion
+        foreach (var item in _data)
+        {
+            Source.Remove(item);
+        }
+    }
 
 
-
-    public void deleteItem_Click(object sender, RoutedEventArgs e)
+    public async void deleteItem_Click(object sender, RoutedEventArgs e)
     {
         if (_selectedItem != null)
         {
             int id = _selectedItem.HospitalData.Id;
-            //await _repositoryControllerService.Medicines.DeleteAsync(id);
-            //Source.Remove(_selectedItem);
+            await _repositoryControllerService.Hospitals.DeleteAsync(id);
+            Source.Remove(_selectedItem);
 
             InfoBarMessage = "Medicine was deleted";
             InfoBarSeverity = Microsoft.UI.Xaml.Controls.InfoBarSeverity.Success;

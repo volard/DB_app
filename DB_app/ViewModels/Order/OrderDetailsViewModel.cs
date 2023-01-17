@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using DB_app.Core.Contracts.Services;
-using DB_app.Models;
+using DB_app.Entities;
 using DB_app.Services.Messages;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -111,6 +111,7 @@ public partial class OrderDetailsViewModel : ObservableRecipient, IRecipient<Sho
         }
     }
 
+
     [ObservableProperty]
     private ObservableCollection<Pharmacy> availablePharmacies;
 
@@ -120,10 +121,20 @@ public partial class OrderDetailsViewModel : ObservableRecipient, IRecipient<Sho
     [ObservableProperty]
     private ObservableCollection<Address> availableAddresses;
 
+    [ObservableProperty]
+    private ObservableCollection<ProductWrapper> availableProducts = new();
 
-    //public ObservableCollection<Pharmacy> AvailablePharmacies { get; set; }
-    //public ObservableCollection<Hospital> AvailableHospitals { get; set; }
-    //public ObservableCollection<Address> AvailableAddresses { get; set; } = new();
+    public async Task GetAvailableProducts()
+    {
+        var _data = await _repositoryControllerService.Products.GetFromPharmacy(SelectedPharmacy.Id);
+        var _anotherdata = new List<ProductWrapper>();
+        foreach (var item in _data)
+        {
+            _anotherdata.Add(new ProductWrapper(item));
+        }
+
+        AvailableProducts = new(_anotherdata);
+    }
 
 
     [ObservableProperty]
@@ -145,17 +156,18 @@ public partial class OrderDetailsViewModel : ObservableRecipient, IRecipient<Sho
         }
     }
 
-    public Pharmacy selectedPharmacy
+    public Pharmacy SelectedPharmacy
     {
-        get => CurrentOrder.OrderData.PharmacySeller;
+        get => CurrentOrder.PharmacySeller;
         set
         {
-            if (CurrentOrder.OrderData.PharmacySeller != value)
-            {
+            //if (CurrentOrder.OrderData.PharmacySeller != value)
+            //{
                 CurrentOrder.IsModified = true;
-                CurrentOrder.OrderData.PharmacySeller = value;
+                CurrentOrder.PharmacySeller = value;
                 OnPropertyChanged();
-            }
+                _ = GetAvailableProducts();
+            //}
         }
     }
 
@@ -172,22 +184,19 @@ public partial class OrderDetailsViewModel : ObservableRecipient, IRecipient<Sho
 
     public OrderItem OrderItemModel { get; set; }
 
-    public string MedicineName { get => OrderItemModel.Product.Medicine.Name; }
-    public string MedicineType { get => OrderItemModel.Product.Medicine.Type; }
-    public string Quantity { get => OrderItemModel.Product.Quantity.ToString(); }
+    public string OrderItemMedicineName { get => OrderItemModel.Product.Medicine.Name; }
+    public string OrderItemMedicineType { get => OrderItemModel.Product.Medicine.Type; }
+    public string OrderItemQuantity { get => OrderItemModel.Product.Quantity.ToString(); }
     public string ItemTotal { get => (OrderItemModel.Quantity * OrderItemModel.Product.Price).ToString(); }
 
     #endregion
 
+    public ProductWrapper ProductModel { get; set; }
 
-    #region Required for addresses DataGrid
+    public string ProductMedicineName { get => ProductModel.Medicine.Name; }
 
-    public Address AddressModel { get; set; }
+    public string ProductMedicineType { get => ProductModel.Medicine.Type; }
 
-    public string City { get => AddressModel.City; }
-    public string Street { get => AddressModel.Street; }
-    public string Building { get => AddressModel.Building; }
-
-
-    #endregion
+    public double ProductPrice { get => ProductModel.Price; }
+    public int ProductQuantity { get => ProductModel.Quantity; }
 }

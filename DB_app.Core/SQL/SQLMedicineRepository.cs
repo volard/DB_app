@@ -1,11 +1,5 @@
-﻿using DB_app.Models;
+﻿using DB_app.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DB_app.Repository.SQL;
 
@@ -44,9 +38,16 @@ public class SQLMedicineRepository : IMedicineRepository
     /// <inheritdoc/>
     public async Task InsertAsync(Medicine medicine)
     {
+        Medicine foundMedicine = await _db.Medicines
+                .FirstOrDefaultAsync(existMedicine => existMedicine == medicine);
+
+        if (foundMedicine != null)
+        {
+            throw new RecordAlreadyExists();
+        }
+
         _db.Medicines.Add(medicine);
         await _db.SaveChangesAsync();
-        Debug.WriteLine("InsertAsync - Medicine : " + medicine.Name + "was succesfully inserted in the Database");
     }
 
 
@@ -59,9 +60,14 @@ public class SQLMedicineRepository : IMedicineRepository
 
         if (foundMedicine != null)
         {
+
+
             _db.Entry(foundMedicine).CurrentValues.SetValues(medicine);
             await _db.SaveChangesAsync();
-            Debug.WriteLine("UpdateAsync - Medicine : " + foundMedicine.Name + "was succesfully updated in the Database");
+        }
+        else
+        {
+            throw new RecordNotFound();
         }
     }
 
@@ -71,15 +77,16 @@ public class SQLMedicineRepository : IMedicineRepository
     public async Task DeleteAsync(int id)
     {
         var foundMedicine = await _db.Medicines.FirstOrDefaultAsync(_medicine => _medicine.Id == id);
-        if (null != foundMedicine)
+        if (foundMedicine != null)
         {
+
+
             _db.Medicines.Remove(foundMedicine);
             await _db.SaveChangesAsync();
-            Debug.WriteLine("DeleteAsync - Medicine : " + foundMedicine.Name + "was succesfully deleted from the Database");
         }
         else
         {
-            Debug.WriteLine("DeleteAsync - Medicine : No medicine under specified id was found in the Database");
+            throw new RecordNotFound();
         }
     }
 }

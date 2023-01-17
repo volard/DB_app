@@ -20,6 +20,7 @@ public class SQLControllerService : IRepositoryControllerService
     public SQLControllerService(DbContextOptions<SQLContext> options)
     {
         _db = new SQLContext(options);
+        _db.Database.EnsureDeleted();
         _db.Database.EnsureCreated();
 
         DataSeeder.Seed(_db);
@@ -30,7 +31,6 @@ public class SQLControllerService : IRepositoryControllerService
         Addresses   = new SQLAddressRepository  (_db);
         Pharmacies  = new SQLPharmacyRepository (_db);
         Medicines   = new SQLMedicineRepository (_db);
-
 
     }
 }

@@ -1,16 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using DB_app.Core.Contracts.Services;
-using DB_app.Models;
+using DB_app.Entities;
 using DB_app.Services.Messages;
-using Microsoft.UI.Xaml;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DB_app.ViewModels;
 
@@ -42,7 +35,7 @@ public partial class HospitalDetailsViewModel : ObservableRecipient, IRecipient<
 
 
     #endregion
-    
+
 
 
     #region Members
@@ -101,8 +94,8 @@ public partial class HospitalDetailsViewModel : ObservableRecipient, IRecipient<
     /// <summary>
     /// Current HospitalWrapper to edit
     /// </summary>
-    public HospitalWrapper CurrentHospital 
-    { 
+    public HospitalWrapper CurrentHospital
+    {
         get
         {
             return currentHospital;
@@ -127,16 +120,4 @@ public partial class HospitalDetailsViewModel : ObservableRecipient, IRecipient<
 
 
 
-    #region Required for addresses DataGrid
-
-    public Address AddressModel { get; set; }
-
-    public string City      { get => AddressModel.City; }
-    public string Street    { get => AddressModel.Street; }
-    public string Building  { get => AddressModel.Building; }
-
-
-    #endregion
-
-    
 }

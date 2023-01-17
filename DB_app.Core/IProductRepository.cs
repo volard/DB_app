@@ -1,4 +1,4 @@
-﻿using DB_app.Models;
+﻿using DB_app.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,9 +15,24 @@ public interface IProductRepository
     public Task DeleteAsync(int id);
 
     /// <summary>
-    /// Returns all products. 
+    /// Returns all out of stock products.
     /// </summary>
-    Task<IEnumerable<Product>> GetAsync();
+    public Task<IEnumerable<Product>> GetOutOfStockAsync();
+
+    /// <summary>
+    /// Returns all products from pharmacy
+    /// </summary>
+    public Task<IEnumerable<Product>> GetFromPharmacy(int id);
+
+    /// <summary>
+    /// Returns all products.
+    /// </summary>
+    public Task<IEnumerable<Product>> GetAllAsync();
+
+    /// <summary>
+    /// Returns all available for purchasing products. 
+    /// </summary>
+    public Task<IEnumerable<Product>> GetAsync();
 
     /// <summary>
     /// Returns specific product. 

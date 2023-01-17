@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DB_app.Models;
+namespace DB_app.Entities;
 
 public class Medicine
 {
@@ -40,5 +40,22 @@ public class Medicine
     [Required]
     public string Type         { get; set; }
 
-    public override string ToString() => $"Medicine '{Name}' under '{Type}' type";
+    public override string ToString() => $"{Name} - {Type}";
+
+    public override bool Equals(object? obj)
+    {
+        if (obj == null)
+        {
+            return false;
+        }
+
+        if (obj is not Medicine)
+        {
+            return false;
+        }
+
+        return
+            ((Medicine)obj).Name == Name ||
+            ((Medicine)obj).Id == Id;
+    }
 }

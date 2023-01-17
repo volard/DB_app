@@ -1,9 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using DB_app.Core.Contracts.Services;
-using DB_app.Models;
 using DB_app.Services.Messages;
-using Microsoft.UI.Xaml;
 using System.Diagnostics;
 
 namespace DB_app.ViewModels;
@@ -58,6 +56,6 @@ public partial class AddressDetailsViewModel : ObservableRecipient, IRecipient<S
         }
     }
 
-    public void NotifyGridAboutChange() => WeakReferenceMessenger.Default.Send(new AddAddressMessage(CurrentAddress));
+    public void NotifyGridAboutChange() => WeakReferenceMessenger.Default.Send(new Messages(CurrentAddress));
 }
 

@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using DB_app.Core.Contracts.Services;
-using DB_app.Models;
+using DB_app.Entities;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
@@ -54,45 +54,28 @@ public partial class PharmacyWrapper : ObservableValidator, IEditableObject, IEq
         }
     }
 
+    public bool IsActive
+    {
+        get => PharmacyData.IsActive;
+        set
+        {
+            PharmacyData.IsActive = value;
+            OnPropertyChanged();
+        }
+    }
 
    
-    [Required(ErrorMessage = "INN is Required")]
-    [RegularExpression("([0-9]+)", ErrorMessage = "Please enter a Number")]
-    public string INN
-    {
-        get => PharmacyData.INN;
-        set
-        {
-            ValidateProperty(value);
-            if (!GetErrors(nameof(INN)).Any())
-            {
-                PharmacyData.INN = value;
-                OnPropertyChanged();
-            }
-        }
-    }
-
-
-    [Required(ErrorMessage = "OGRN is Required")]
-    [RegularExpression("([0-9]+)", ErrorMessage = "Please enter a Number")]
-    public string OGRN
-    {
-        get => PharmacyData.OGRN;
-        set
-        {
-            ValidateProperty(value);
-            if (!GetErrors(nameof(OGRN)).Any())
-            {
-                PharmacyData.OGRN = value;
-                OnPropertyChanged();
-            }
-        }
-    }
-
 
     public ObservableCollection<Address> ObservableAddresses
     {
-        get => new(PharmacyData.Addresses);
+        get
+        {   
+            if (PharmacyData.Addresses == null) { return new(); }
+            else
+            {
+                return new(PharmacyData.Addresses);
+            }
+        }
         set
         {
             PharmacyData.Addresses = value.ToList();
@@ -110,18 +93,11 @@ public partial class PharmacyWrapper : ObservableValidator, IEditableObject, IEq
         => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(null) select e.ErrorMessage);
     public string NameErrors
         => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(nameof(Name)) select e.ErrorMessage);
-    public string INNErrors
-        => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(nameof(INN)) select e.ErrorMessage);
-    public string OGRNErrors
-        => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(nameof(OGRN)) select e.ErrorMessage);
 
 
     public bool HasNameErrors
         => GetErrors(nameof(Name)).Any();
-    public bool HasINNErrors
-        => GetErrors(nameof(INN)).Any();
-    public bool HasOGRNErrors
-        => GetErrors(nameof(OGRN)).Any();
+
     public bool AreNoErrors
         => !HasErrors;
 
@@ -154,8 +130,6 @@ public partial class PharmacyWrapper : ObservableValidator, IEditableObject, IEq
     public void NotifyAboutProperties()
     {
         OnPropertyChanged(nameof(Name));
-        OnPropertyChanged(nameof(INN));
-        OnPropertyChanged(nameof(OGRN));
         OnPropertyChanged(nameof(ObservableAddresses));
     }
 
@@ -166,16 +140,12 @@ public partial class PharmacyWrapper : ObservableValidator, IEditableObject, IEq
     {
         OnPropertyChanged(nameof(Errors));
         OnPropertyChanged(nameof(NameErrors));
-        OnPropertyChanged(nameof(INNErrors));
-        OnPropertyChanged(nameof(OGRNErrors));
 
         OnPropertyChanged(nameof(Name));
-        OnPropertyChanged(nameof(INN));
-        OnPropertyChanged(nameof(OGRN));
+
 
         OnPropertyChanged(nameof(HasNameErrors));
-        OnPropertyChanged(nameof(HasINNErrors));
-        OnPropertyChanged(nameof(HasOGRNErrors));
+
 
         OnPropertyChanged(nameof(AreNoErrors));
     }
@@ -187,8 +157,6 @@ public partial class PharmacyWrapper : ObservableValidator, IEditableObject, IEq
     public void BuckupData()
     {
         BackupedName = Name;
-        BackupedINN = INN;
-        BackupedOGRN = OGRN;
     }
 
     public void ApplyChanges() => isModified = true;
@@ -202,8 +170,6 @@ public partial class PharmacyWrapper : ObservableValidator, IEditableObject, IEq
            )
         {
             Name = BackupedName;
-            INN = BackupedINN;
-            OGRN = BackupedOGRN;
 
             isModified = true;
         }
@@ -236,9 +202,7 @@ public partial class PharmacyWrapper : ObservableValidator, IEditableObject, IEq
     }
 
     public bool Equals(PharmacyWrapper? other) =>
-        Name == other?.Name &&
-        INN == other?.INN &&
-        OGRN == other?.OGRN;
+        Name == other?.Name;
 
     #endregion
 }

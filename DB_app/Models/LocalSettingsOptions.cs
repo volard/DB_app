@@ -1,4 +1,4 @@
-﻿namespace DB_app.Models;
+﻿namespace DB_app.Entities;
 
 public class LocalSettingsOptions
 {

@@ -1,5 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
-using DB_app.Models;
+using DB_app.Entities;
 using DB_app.ViewModels;
 
 namespace DB_app.Services.Messages;

@@ -1,4 +1,4 @@
-﻿using DB_app.Models;
+﻿using DB_app.Entities;
 
 namespace DB_app.Repository;
 public interface IPharmacyRepository
@@ -9,15 +9,26 @@ public interface IPharmacyRepository
     public Task DeleteAsync(int id);
 
     /// <summary>
-    /// Returns all pharmacies
+    /// Returns all active pharmacies
     /// </summary>
-    Task<IEnumerable<Pharmacy>> GetAsync();
+    public Task<IEnumerable<Pharmacy>> GetAsync();
 
     /// <summary>
     /// Returns specific pharmacy. 
     /// </summary>
     public Task<Pharmacy> GetAsync(int id);
 
+    /// <summary>
+    /// Returns all pharmacies
+    /// </summary>
+    public Task<IEnumerable<Pharmacy>> GetAllAsync();
+
+
+    /// <summary>
+    /// Returns inactive pharmacies
+    /// </summary>
+    public Task<IEnumerable<Pharmacy>> GetInactiveAsync();
+    
     /// <summary>
     /// Inserts new pharmacy
     /// </summary>

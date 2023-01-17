@@ -1,4 +1,5 @@
-﻿using DB_app.Behaviors;
+﻿using AppUIBasics.Helper;
+using DB_app.Behaviors;
 using DB_app.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -22,7 +23,10 @@ public sealed partial class OrdersGridPage : Page
             Source = ViewModel,
             Mode = BindingMode.OneWay
         });
+        
     }
+
+    
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {

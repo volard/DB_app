@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using AppUIBasics.Helper;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using DB_app.Contracts.ViewModels;
 using DB_app.Core.Contracts.Services;
@@ -42,6 +43,9 @@ public partial class OrdersGridViewModel : ObservableRecipient, INavigationAware
 
     [ObservableProperty]
     private int selectedGridIndex;
+
+    [ObservableProperty]
+    private bool isNewWindowClosed = !WindowHelper.ActiveWindows.Any();
 
 
     [ObservableProperty]
