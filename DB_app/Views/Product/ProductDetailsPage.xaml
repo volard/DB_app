@@ -50,6 +50,7 @@
                     Width="380"
                     Margin="0,20,16,8"
                     VerticalAlignment="Stretch"
+                    IsEnabled="{x:Bind ViewModel.CurrentProduct.isNew, Mode=OneWay}"
                     ItemsSource="{x:Bind ViewModel.AvailablePharmacies, Mode=TwoWay}"
                     PlaceholderText="Select pharmacy"
                     SelectedItem="{x:Bind ViewModel.CurrentProduct.Pharmacy, Mode=TwoWay}" />
@@ -71,6 +72,7 @@
                     Width="380"
                     Margin="0,20,16,8"
                     VerticalAlignment="Stretch"
+                    IsEnabled="{x:Bind ViewModel.CurrentProduct.isNew, Mode=OneWay}"
                     ItemsSource="{x:Bind ViewModel.AvailableMedicines, Mode=TwoWay}"
                     PlaceholderText="Select medicine"
                     RelativePanel.Below="PharmacyComboBox"

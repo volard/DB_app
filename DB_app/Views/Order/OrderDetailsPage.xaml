@@ -62,7 +62,7 @@
                 <FontIconSource Glyph="&#xE16C;" />
             </TabViewItem.IconSource>-->
 
- 
+
     <Grid
         x:Name="RootGrid"
         Padding="10,0"
@@ -80,80 +80,92 @@
         <ScrollViewer
             Grid.Row="0"
             Grid.Column="0"
-            Padding="0,0,0,30"
+            Padding="0,0,10,30"
             HorizontalAlignment="Stretch">
-            <RelativePanel>
+            <StackPanel>
 
-                <ComboBox
-                    x:Name="HospitalCustomerComboBox"
-                    Width="380"
-                    Margin="0,20,16,8"
-                    VerticalAlignment="Stretch"
-                    Header="Customer"
-                    ItemsSource="{x:Bind ViewModel.AvailableHospitals, Mode=OneWay}"
-                    PlaceholderText="Select hospital"
-                    SelectedItem="{x:Bind ViewModel.SelectedHospital, Mode=TwoWay}" />
+                <StackPanel.Resources>
+                    <Style TargetType="muxc:Expander">
+                        <Setter Property="HorizontalAlignment" Value="Stretch" />
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        <Setter Property="Margin" Value="0,10,0,0" />
+                    </Style>
+                </StackPanel.Resources>
 
-                <ComboBox
-                    x:Name="ShippingAddressComboBox"
-                    Width="380"
-                    Margin="0,20,16,8"
-                    VerticalAlignment="Stretch"
-                    Header="Shipping address"
-                    IsEnabled="{x:Bind ViewModel.IsHospitalSelected, Mode=OneWay}"
-                    ItemsSource="{x:Bind ViewModel.AvailableAddresses, Mode=OneWay}"
-                    PlaceholderText="Select address"
-                    RelativePanel.Below="HospitalCustomerComboBox" />
+                <RelativePanel HorizontalAlignment="Stretch">
 
-                <ComboBox
-                    x:Name="PharmacySellerComboBox"
-                    Width="380"
-                    Margin="0,20,16,8"
-                    VerticalAlignment="Stretch"
-                    Header="Seller"
-                    ItemsSource="{x:Bind ViewModel.AvailablePharmacies, Mode=TwoWay}"
-                    PlaceholderText="Select pharmacy"
-                    RelativePanel.Below="ShippingAddressComboBox"
-                    SelectedItem="{x:Bind ViewModel.SelectedPharmacy, Mode=OneWay}"
-                    SelectionChanged="{x:Bind GetAvailableProducts, Mode=OneWay}" />
+                    <ComboBox
+                        x:Name="HospitalCustomerComboBox"
+                        Width="380"
+                        Margin="0,20,16,8"
+                        VerticalAlignment="Stretch"
+                        Header="Customer"
+                        ItemsSource="{x:Bind ViewModel.AvailableHospitals, Mode=OneWay}"
+                        PlaceholderText="Select hospital"
+                        SelectedItem="{x:Bind ViewModel.SelectedHospital, Mode=TwoWay}" />
 
+                    <ComboBox
+                        x:Name="ShippingAddressComboBox"
+                        Width="380"
+                        Margin="0,20,16,8"
+                        VerticalAlignment="Stretch"
+                        Header="Shipping address"
+                        IsEnabled="{x:Bind ViewModel.IsHospitalSelected, Mode=OneWay}"
+                        ItemsSource="{x:Bind ViewModel.AvailableAddresses, Mode=OneWay}"
+                        PlaceholderText="Select address"
+                        RelativePanel.Below="HospitalCustomerComboBox" />
 
-                <TextBlock
-                    x:Name="DatePlacedHeader"
-                    RelativePanel.AlignRightWithPanel="True"
-                    RelativePanel.AlignVerticalCenterWith="HospitalCustomerComboBox"
-                    Style="{ThemeResource SubtitleTextBlockStyle}"
-                    Text="Date placed" />
-                <TextBlock
-                    x:Name="DatePlacedTextBox"
-                    Margin="0,10,0,0"
-                    FontStyle="Italic"
-                    RelativePanel.AlignRightWithPanel="True"
-                    RelativePanel.Below="DatePlacedHeader"
-                    Text="1234.12.05" />
+                    <ComboBox
+                        x:Name="PharmacySellerComboBox"
+                        Width="380"
+                        Margin="0,20,16,8"
+                        VerticalAlignment="Stretch"
+                        Header="Seller"
+                        ItemsSource="{x:Bind ViewModel.AvailablePharmacies, Mode=TwoWay}"
+                        PlaceholderText="Select pharmacy"
+                        RelativePanel.Below="ShippingAddressComboBox"
+                        SelectedItem="{x:Bind ViewModel.SelectedPharmacy, Mode=OneWay}"
+                        SelectionChanged="{x:Bind GetAvailableProducts, Mode=OneWay}" />
 
 
-                <TextBlock
-                    x:Name="TotalHeader"
-                    Margin="0,15,0,0"
-                    RelativePanel.AlignRightWithPanel="True"
-                    RelativePanel.Below="DatePlacedTextBox"
-                    Style="{ThemeResource SubtitleTextBlockStyle}"
-                    Text="Total" />
-                <TextBlock
-                    Margin="0,10,0,0"
-                    FontStyle="Italic"
-                    RelativePanel.AlignRightWithPanel="True"
-                    RelativePanel.Below="TotalHeader"
-                    Text="{x:Bind ViewModel.CurrentOrder.Total}" />
+                    <TextBlock
+                        x:Name="DatePlacedHeader"
+                        RelativePanel.AlignRightWithPanel="True"
+                        RelativePanel.AlignVerticalCenterWith="HospitalCustomerComboBox"
+                        Style="{ThemeResource SubtitleTextBlockStyle}"
+                        Text="Date placed" />
+                    <TextBlock
+                        x:Name="DatePlacedTextBox"
+                        Margin="0,10,0,0"
+                        FontStyle="Italic"
+                        RelativePanel.AlignRightWithPanel="True"
+                        RelativePanel.Below="DatePlacedHeader"
+                        Text="1234.12.05" />
+
+
+                    <TextBlock
+                        x:Name="TotalHeader"
+                        Margin="0,15,0,0"
+                        RelativePanel.AlignRightWithPanel="True"
+                        RelativePanel.Below="DatePlacedTextBox"
+                        Style="{ThemeResource SubtitleTextBlockStyle}"
+                        Text="Total" />
+                    <TextBlock
+                        Margin="0,10,0,0"
+                        FontStyle="Italic"
+                        RelativePanel.AlignRightWithPanel="True"
+                        RelativePanel.Below="TotalHeader"
+                        Text="{x:Bind ViewModel.CurrentOrder.Total}" />
+
+                </RelativePanel>
+
+
 
                 <muxc:Expander
                     x:Name="ExpanderItems"
                     Margin="0,20,0,0"
-                    HorizontalAlignment="Stretch"
                     ExpandDirection="Down"
-                    IsExpanded="True"
-                    RelativePanel.Below="PharmacySellerComboBox">
+                    IsExpanded="True">
 
                     <muxc:Expander.Header>
                         <Grid>
@@ -177,6 +189,7 @@
                                 GridLinesVisibility="All"
                                 IsReadOnly="True"
                                 SelectionMode="Single"
+                                Style="{StaticResource DataGridStyle1}"
                                 VerticalScrollBarVisibility="Auto"
                                 VirtualizingStackPanel.VirtualizationMode="Recycling">
 
@@ -201,7 +214,7 @@
 
                 </muxc:Expander>
 
-            </RelativePanel>
+            </StackPanel>
 
         </ScrollViewer>
 

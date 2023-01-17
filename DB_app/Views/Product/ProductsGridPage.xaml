@@ -64,6 +64,7 @@
                 SelectedIndex="{x:Bind ViewModel.SelectedGridIndex, Mode=OneWay}"
                 SelectedItem="{x:Bind ViewModel.SelectedItem, Mode=TwoWay}"
                 SelectionMode="Single"
+                Style="{StaticResource DataGridStyle1}"
                 VerticalScrollBarVisibility="Auto"
                 VirtualizingStackPanel.VirtualizationMode="Recycling">
 

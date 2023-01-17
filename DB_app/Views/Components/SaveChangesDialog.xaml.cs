@@ -19,7 +19,7 @@ public sealed partial class SaveChangesDialog : ContentDialog
 
     /// <summary>
     /// Gets or sets the user's choice. 
-    /// </summary>
+    /// </summary
     public SaveChangesDialogResult Result { get; private set; } = SaveChangesDialogResult.Cancel;
 
     /// <summary>

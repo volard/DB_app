@@ -11,7 +11,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace DB_app.ViewModels;
 
-public partial class MedicinesGridViewModel : ObservableRecipient, INavigationAware, IRecipient<AddMedicineMessage>
+public partial class MedicinesGridViewModel : ObservableRecipient, INavigationAware, IRecipient<AddRecordMessage<MedicineWrapper>>
 {
     private readonly IRepositoryControllerService _repositoryControllerService
         = App.GetService<IRepositoryControllerService>();
@@ -92,22 +92,18 @@ public partial class MedicinesGridViewModel : ObservableRecipient, INavigationAw
 
 
 
-    public  void deleteItem_Click(object sender, RoutedEventArgs e)
+    public async void deleteItem_Click(object sender, RoutedEventArgs e)
     {
         if (_selectedItem != null)
         {
             int id = _selectedItem.MedicineData.Id;
-            //await _repositoryControllerService.Medicines.DeleteAsync(id);
-            //Source.Remove(_selectedItem);
+            await _repositoryControllerService.Medicines.DeleteAsync(id);
+            Source.Remove(_selectedItem);
 
             InfoBarMessage = "Medicine was deleted";
             InfoBarSeverity = Microsoft.UI.Xaml.Controls.InfoBarSeverity.Success;
             IsInfoBarOpened = true;
 
-        }
-        else
-        {
-            Debug.WriteLine(new ArgumentNullException(nameof(_selectedItem)).Message);
         }
     }
 
@@ -121,7 +117,7 @@ public partial class MedicinesGridViewModel : ObservableRecipient, INavigationAw
 
     public void SendPrikol()
     {
-        WeakReferenceMessenger.Default.Send(new ShowMedicineDetailsMessage(_selectedItem));
+        WeakReferenceMessenger.Default.Send(new ShowRecordDetailsMessage<MedicineWrapper>(_selectedItem));
     }
 
 
@@ -165,7 +161,7 @@ public partial class MedicinesGridViewModel : ObservableRecipient, INavigationAw
     {
     }
 
-    public void Receive(AddMedicineMessage message)
+    public void Receive(AddRecordMessage<MedicineWrapper> message)
     {
         var givenMedicineWrapper = message.Value;
         if (givenMedicineWrapper.isNew)

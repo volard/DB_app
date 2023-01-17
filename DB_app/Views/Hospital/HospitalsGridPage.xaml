@@ -3,9 +3,10 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="using:DB_app.Behaviors"
-    xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:primitives="using:CommunityToolkit.WinUI.UI.Controls.Primitives"
+    xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:vm="using:DB_app.ViewModels"
     d:DataContext="{d:DesignInstance Type=vm:HospitalsGridViewModel}"
     mc:Ignorable="d">
@@ -70,6 +71,7 @@
                 SelectedIndex="{x:Bind ViewModel.SelectedGridIndex, Mode=OneWay}"
                 SelectedItem="{x:Bind ViewModel.SelectedItem, Mode=TwoWay}"
                 SelectionMode="Single"
+                Style="{StaticResource DataGridStyle1}"
                 VerticalScrollBarVisibility="Auto"
                 VirtualizingStackPanel.VirtualizationMode="Recycling">
 
@@ -84,7 +86,21 @@
                     <toolkit:DataGridTextColumn
                         Width="20*"
                         Binding="{Binding Id}"
-                        Header="Number" />
+                        Header="Number">
+
+
+                        <!--  Local Style for header of first DataGrid column.  -->
+                        <!--<toolkit:DataGridColumn.HeaderStyle>
+                            <Style TargetType="primitives:DataGridColumnHeader">
+                                    <Setter Property="Background" Value="Blue"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Setter Property="FontSize" Value="24"/>
+                                </Style>
+                            </toolkit:DataGridColumn.HeaderStyle>-->
+
+
+
+                    </toolkit:DataGridTextColumn>
                     <toolkit:DataGridTextColumn
                         Width="20*"
                         Binding="{Binding Surename_main_doctor}"
@@ -97,7 +113,7 @@
                         Width="20*"
                         Binding="{Binding Middlename_main_doctor}"
                         Header="Maindoctor's middlename" />
-                    
+
 
                 </toolkit:DataGrid.Columns>
             </toolkit:DataGrid>

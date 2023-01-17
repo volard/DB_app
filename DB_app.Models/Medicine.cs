@@ -4,27 +4,14 @@ namespace DB_app.Entities;
 
 public class Medicine
 {
-    public Medicine
-        (
-            string name, 
-            string type
-        )
+    public Medicine (string name, string type)
     {
         Name = name;
         Type = type;
     }
 
-    public Medicine
-        (
-            int id, 
-            string name, 
-            string type
-        )
-        : this
-            (
-                name, 
-                type
-            )
+    public Medicine( int id, string name,  string type)
+        : this(name,  type)
     {
         Id = id;
     }

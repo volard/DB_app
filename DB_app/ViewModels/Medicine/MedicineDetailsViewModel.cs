@@ -8,7 +8,7 @@ using System.Diagnostics;
 
 namespace DB_app.ViewModels;
 
-public partial class MedicineDetailsViewModel : ObservableRecipient, IRecipient<ShowMedicineDetailsMessage>
+public partial class MedicineDetailsViewModel : ObservableRecipient, IRecipient<ShowRecordDetailsMessage<MedicineWrapper>>
 {
     private readonly IRepositoryControllerService _repositoryControllerService
          = App.GetService<IRepositoryControllerService>();
@@ -22,7 +22,7 @@ public partial class MedicineDetailsViewModel : ObservableRecipient, IRecipient<
         WeakReferenceMessenger.Default.Register(this);
     }
 
-    public void Receive(ShowMedicineDetailsMessage message)
+    public void Receive(ShowRecordDetailsMessage<MedicineWrapper> message)
     {
         Debug.WriteLine("________________");
         Debug.WriteLine($"You know, I'm standing here with the {message.Value} item so peacfully");

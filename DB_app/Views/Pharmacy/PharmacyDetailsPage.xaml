@@ -78,18 +78,18 @@
                             <Button
                                 Background="Red"
                                 Click="MakeInactiveButton_ButtonClicked"
-                                IsEnabled="{x:Bind ViewModel.CurrentPharmacy.IsActive, Mode=OneWay}"
-                                Visibility="{x:Bind viewModel:Converters.CollapsedIf(ViewModel.CurrentPharmacy.isNew), Mode=OneWay}"
                                 Content="Make inactive"
+                                IsEnabled="{x:Bind ViewModel.CurrentPharmacy.IsActive, Mode=OneWay}"
+                                RelativePanel.AlignRightWithPanel="True"
                                 RelativePanel.AlignVerticalCenterWith="Name"
-                                RelativePanel.AlignRightWithPanel="True" />
+                                Visibility="{x:Bind viewModel:Converters.CollapsedIf(ViewModel.CurrentPharmacy.isNew), Mode=OneWay}" />
 
                             <TextBox
                                 x:Name="Name"
                                 MinWidth="300"
                                 Margin="10,20,16,8"
-                                IsReadOnly="{x:Bind viewModel:Converters.Not(ViewModel.CurrentPharmacy.IsActive), Mode=OneWay}"
                                 Header="Name"
+                                IsReadOnly="{x:Bind viewModel:Converters.Not(ViewModel.CurrentPharmacy.IsActive), Mode=OneWay}"
                                 RelativePanel.AlignLeftWithPanel="True"
                                 Text="{x:Bind ViewModel.CurrentPharmacy.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 TextChanged="NameText_TextChanged" />
@@ -116,8 +116,8 @@
                 <muxc:Expander
                     x:Name="ExpanderAddresses"
                     ExpandDirection="Down"
-                    Visibility="{x:Bind viewModel:Converters.VisibleIf(ViewModel.CurrentPharmacy.IsActive), Mode=OneWay}"
-                    IsExpanded="True">
+                    IsExpanded="True"
+                    Visibility="{x:Bind viewModel:Converters.VisibleIf(ViewModel.CurrentPharmacy.IsActive), Mode=OneWay}">
 
                     <muxc:Expander.Header>
                         <Grid>
@@ -181,6 +181,7 @@
                                 RelativePanel.Below="AddressCommandBar"
                                 SelectedItem="{x:Bind ViewModel.SelectedExistingAddress, Mode=TwoWay}"
                                 SelectionMode="Single"
+                                Style="{StaticResource DataGridStyle1}"
                                 VerticalScrollBarVisibility="Auto"
                                 VirtualizingStackPanel.VirtualizationMode="Recycling">
 
