@@ -72,7 +72,6 @@ public sealed partial class HospitalDetailsPage : Page
     {
         await ViewModel.SaveAsync();
         ViewModel.NotifyGridAboutChange();
-        Debug.WriteLine($"So boiii the ViewModel.CurrentHospital now is {ViewModel.CurrentHospital}");
 
         Frame.Navigate(typeof(HospitalsGridPage), null);
     }

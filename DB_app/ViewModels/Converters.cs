@@ -1,4 +1,5 @@
 ﻿using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Data;
 
 namespace DB_app.ViewModels;
 
@@ -50,4 +51,24 @@ public static class Converters // TODO all this class is peace of shit https://s
     /// </summary>
     public static Visibility CollapsedIfNullOrEmpty(string value) =>
         string.IsNullOrEmpty(value) ? Visibility.Collapsed : Visibility.Visible;
+}
+
+
+public class StringVisiblityConverter : IValueConverter
+{
+
+    public object Convert(object value, Type targetType, object parameter, string language)
+    {
+        if (string.IsNullOrEmpty(((string)value)))
+        {
+            return Visibility.Collapsed;
+        }
+        return Visibility.Visible;
+    }
+
+
+    public object ConvertBack(object value, Type targetType, object parameter, string language)
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -9,7 +9,7 @@ using System.Diagnostics;
 
 namespace DB_app.ViewModels;
 
-public partial class ProductDetailsViewModel : ObservableRecipient, IRecipient<ShowProductDetailsMessage>
+public partial class ProductDetailsViewModel : ObservableRecipient, IRecipient<ShowRecordDetailsMessage<ProductWrapper>>
 {
     private readonly IRepositoryControllerService _repositoryControllerService
          = App.GetService<IRepositoryControllerService>();
@@ -33,16 +33,16 @@ public partial class ProductDetailsViewModel : ObservableRecipient, IRecipient<S
         CurrentProduct.NotifyAboutProperties();
     }
 
-    public ProductDetailsViewModel(ProductWrapper ProductWrapper)
+    public ProductDetailsViewModel(ProductWrapper product)
     {
-        CurrentProduct = ProductWrapper;
+        CurrentProduct = product;
 
         Initialize();
     }
 
     
 
-    public void Receive(ShowProductDetailsMessage message)
+    public void Receive(ShowRecordDetailsMessage<ProductWrapper> message)
     {
         CurrentProduct = message.Value;
         CurrentProduct.NotifyAboutProperties();
@@ -73,6 +73,6 @@ public partial class ProductDetailsViewModel : ObservableRecipient, IRecipient<S
         }
     }
 
-    public void NotifyGridAboutChange() => WeakReferenceMessenger.Default.Send(new AddProductMessage(CurrentProduct));
+    public void NotifyGridAboutChange() => WeakReferenceMessenger.Default.Send(new AddRecordMessage<ProductWrapper>(CurrentProduct));
 }
 

@@ -30,6 +30,11 @@
                     ToolTipService.ToolTip="Add new" />
 
                 <AppBarButton
+                    x:Name="Test"
+                    Icon="Bold"
+                    Label="{x:Bind }" />
+
+                <AppBarButton
                     x:Name="CommandBarEditButton"
                     Click="EditExistingMedicine_Click"
                     Icon="Edit"

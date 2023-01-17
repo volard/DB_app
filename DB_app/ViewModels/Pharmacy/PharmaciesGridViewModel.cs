@@ -13,7 +13,7 @@ using System.Diagnostics;
 
 namespace DB_app.ViewModels;
 
-public partial class PharmaciesGridViewModel : ObservableRecipient, INavigationAware, IRecipient<AddPharmacyMessage>
+public partial class PharmaciesGridViewModel : ObservableRecipient, INavigationAware, IRecipient<AddRecordMessage<PharmacyWrapper>>
 {
     private readonly IRepositoryControllerService _repositoryControllerService
         = App.GetService<IRepositoryControllerService>();
@@ -30,7 +30,6 @@ public partial class PharmaciesGridViewModel : ObservableRecipient, INavigationA
     /// </summary>
     public PharmaciesGridViewModel()
     {
-        //_model = new PharmacyWrapper();
         WeakReferenceMessenger.Default.Register(this);
     }
 
@@ -120,25 +119,6 @@ public partial class PharmaciesGridViewModel : ObservableRecipient, INavigationA
     }
 
 
-    //#region Required for DataGrid
-
-    ///// <summary>
-    ///// Represents current PharmacyWrapper object
-    ///// </summary>
-    //public PharmacyWrapper _model { get; set; }
-
-    ///// <summary>
-    ///// Name of the current PharmacyWrapper's data object
-    ///// </summary>
-    //public string Surename_main_doctor { get => _model.Name; }
-
-    //public string Surename_main_doctor { get => _model.Name; }
-
-
-    //#endregion
-
-
-
     public void deleteItem_Click(object sender, RoutedEventArgs e)
     {
         if (_selectedItem != null)
@@ -152,10 +132,6 @@ public partial class PharmaciesGridViewModel : ObservableRecipient, INavigationA
             IsInfoBarOpened = true;
 
         }
-        else
-        {
-            Debug.WriteLine(new ArgumentNullException(nameof(_selectedItem)).Message);
-        }
     }
 
     public void InsertToGridNewWrapper(PharmacyWrapper givenPharmacyWrapper)
@@ -167,7 +143,7 @@ public partial class PharmaciesGridViewModel : ObservableRecipient, INavigationA
 
     public void SendPrikol()
     {
-        WeakReferenceMessenger.Default.Send(new ShowPharmacyDetailsMessage(_selectedItem));
+        WeakReferenceMessenger.Default.Send(new ShowRecordDetailsMessage<PharmacyWrapper>(_selectedItem));
     }
 
 
@@ -211,7 +187,7 @@ public partial class PharmaciesGridViewModel : ObservableRecipient, INavigationA
     {
     }
 
-    public void Receive(AddPharmacyMessage message)
+    public void Receive(AddRecordMessage<PharmacyWrapper> message)
     {
         var givenPharmacyWrapper = message.Value;
         if (givenPharmacyWrapper.isNew)

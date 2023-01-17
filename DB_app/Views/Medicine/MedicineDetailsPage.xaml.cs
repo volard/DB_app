@@ -30,7 +30,6 @@ public sealed partial class MedicineDetailsPage : Page
     {
         await ViewModel.SaveAsync();
         ViewModel.NotifyGridAboutChange();
-        Debug.WriteLine($"So boiii the ViewModel.CurrentMedicine now is {ViewModel.CurrentMedicine}");
         
         Frame.Navigate(typeof(MedicinesGridPage), null);
     }
@@ -43,9 +42,46 @@ public sealed partial class MedicineDetailsPage : Page
     /// <summary>
     /// Check whether there are unsaved changes and warn the user.
     /// </summary>
-    protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+    protected async override void OnNavigatingFrom(NavigatingCancelEventArgs e)
     {
-        // TODO implement this
+        if (ViewModel.CurrentMedicine.IsModified)
+        {
+            // Cancel the navigation immediately, otherwise it will continue at the await call. 
+            e.Cancel = true;
+
+            void resumeNavigation()
+            {
+                if (e.NavigationMode == NavigationMode.Back)
+                {
+                    Frame.GoBack();
+                }
+                else
+                {
+                    Frame.Navigate(e.SourcePageType, e.Parameter, e.NavigationTransitionInfo);
+                }
+            }
+
+            var saveDialog = new SaveChangesDialog() { Title = $"Save changes?" };
+            saveDialog.XamlRoot = this.Content.XamlRoot;
+            await saveDialog.ShowAsync();
+            SaveChangesDialogResult result = saveDialog.Result;
+
+            switch (result)
+            {
+                case SaveChangesDialogResult.Save:
+                    await ViewModel.SaveAsync();
+                    resumeNavigation();
+                    break;
+                //case SaveChangesDialogResult.DontSave:
+                //    await ViewModel.RevertChangesAsync();
+                //    resumeNavigation();
+                //    break;
+                case SaveChangesDialogResult.Cancel:
+                    break;
+            }
+        }
+
+        base.OnNavigatingFrom(e);
     }
 
 

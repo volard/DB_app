@@ -8,7 +8,7 @@ using System.Diagnostics;
 
 namespace DB_app.ViewModels;
 
-public partial class OrderDetailsViewModel : ObservableRecipient, IRecipient<ShowOrderDetailsMessage>
+public partial class OrderDetailsViewModel : ObservableRecipient, IRecipient<ShowRecordDetailsMessage<OrderWrapper>>
 {
 
     #region Constructors
@@ -47,7 +47,7 @@ public partial class OrderDetailsViewModel : ObservableRecipient, IRecipient<Sho
 
     #region Members
 
-    public void Receive(ShowOrderDetailsMessage message)
+    public void Receive(ShowRecordDetailsMessage<OrderWrapper> message)
     {
         CurrentOrder = message.Value;
         CurrentOrder.NotifyAboutProperties();
@@ -81,7 +81,7 @@ public partial class OrderDetailsViewModel : ObservableRecipient, IRecipient<Sho
             return Enumerable.Empty<Address>();
     }
 
-    public void NotifyGridAboutChange() => WeakReferenceMessenger.Default.Send(new AddOrderMessage(CurrentOrder));
+    public void NotifyGridAboutChange() => WeakReferenceMessenger.Default.Send(new AddRecordMessage<OrderWrapper>(CurrentOrder));
 
     #endregion
 
@@ -161,13 +161,10 @@ public partial class OrderDetailsViewModel : ObservableRecipient, IRecipient<Sho
         get => CurrentOrder.PharmacySeller;
         set
         {
-            //if (CurrentOrder.OrderData.PharmacySeller != value)
-            //{
-                CurrentOrder.IsModified = true;
-                CurrentOrder.PharmacySeller = value;
-                OnPropertyChanged();
-                _ = GetAvailableProducts();
-            //}
+            CurrentOrder.IsModified = true;
+            CurrentOrder.PharmacySeller = value;
+            OnPropertyChanged();
+            _ = GetAvailableProducts();
         }
     }
 

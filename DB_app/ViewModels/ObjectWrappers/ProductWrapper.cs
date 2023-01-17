@@ -79,7 +79,6 @@ public partial class ProductWrapper : ObservableValidator, IEditableObject, IEqu
                 IsModified = true;
                 OnPropertyChanged(nameof(CanSave));
             }
-            Debug.WriteLine("Quantity errors: " + QuantityErrors);
         }
     }
 
@@ -232,7 +231,7 @@ public partial class ProductWrapper : ObservableValidator, IEditableObject, IEqu
 
             isModified = true;
         }
-        Debug.WriteLine("Impossible to undo changes - backuped data is empty");
+        
     }
 
 
@@ -246,18 +245,16 @@ public partial class ProductWrapper : ObservableValidator, IEditableObject, IEqu
     {
         isModified = true;
         BuckupData();
-        Debug.WriteLine($"BeginEdit : For now the editable ProductWrapper = {this}");
     }
 
     public void CancelEdit()
     {
-        Debug.WriteLine("Look at me! Im soooo lazy to implement CancelEdit");
+        
         isModified = false;
     }
 
     public async void EndEdit()
     {
-        Debug.WriteLine($"EndEdit : For now the editable ProductWrapper = {this}");
         await _repositoryControllerService.Products.UpdateAsync(ProductData);
     }
 

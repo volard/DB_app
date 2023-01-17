@@ -12,34 +12,22 @@ namespace DB_app.ViewModels;
 /// </summary>
 public partial class AddressWrapper : ObservableValidator, IEditableObject, IEquatable<AddressWrapper>
 {
-    public AddressWrapper(Address address)
-    {
-        AddressData = address;
-        ErrorsChanged += Suspect_ErrorsChanged;
-        NotifyAboutProperties();
-    }
 
-    public AddressWrapper()
+    public AddressWrapper(Address? address = null)
     {
-        AddressData = new();
+        if (address == null)
+        {
+            isNew = true;
+            AddressData = new();
+        }
+        else { AddressData = address; }
         ErrorsChanged += Suspect_ErrorsChanged;
         NotifyAboutProperties();
     }
 
     private void Suspect_ErrorsChanged(object sender, DataErrorsChangedEventArgs e)
     {
-        // TODO this looks weird imo
-        OnPropertyChanged(nameof(Errors));
-
-        OnPropertyChanged(nameof(CityErrors));
-        OnPropertyChanged(nameof(StreetErrors));
-        OnPropertyChanged(nameof(BuildingErrors));
-
-        OnPropertyChanged(nameof(HasCityErrors));
-        OnPropertyChanged(nameof(HasStreetErrors));
-        OnPropertyChanged(nameof(HasBuildingErrors));
-
-        OnPropertyChanged(nameof(AreNoErrors));
+        NotifyAboutProperties();
     }
 
     public override string ToString() => $"AddressWrapper with addressData '{City}' city '{Street}' street '{Building}' building";
@@ -49,93 +37,64 @@ public partial class AddressWrapper : ObservableValidator, IEditableObject, IEqu
     private readonly IRepositoryControllerService _repositoryControllerService
         = App.GetService<IRepositoryControllerService>();
 
+    private Address _addressData;
 
-    public Address AddressData { get; set; }
+    public Address AddressData 
+    {
+        get => _addressData;
+        set 
+        {   
+            _addressData = value;
+            City = _addressData.City;
+            Street = _addressData.Street;
+            Building = _addressData.Building;
+        } 
+    }
 
+
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
     [Required(ErrorMessage = "City is Required")]
-    public string City
-    {
-        get => AddressData.City;
-        set
-        {
-            ValidateProperty(value);
-            Debug.WriteLine($"I've just validated the name and got this errors: {Errors}");
-            if (!GetErrors(nameof(City)).Any())
-            {
-                AddressData.City = value;
-                OnPropertyChanged();
-            }
-            Debug.WriteLine($"\nfor name property especially: {GetErrors(nameof(City))}");
-        }
-    }
+    private string _city;
 
-
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
     [Required(ErrorMessage = "Street is Required")]
-    public string Street
-    {
-        get => AddressData.Street;
-        set
-        {
-            ValidateProperty(value);
-            Debug.WriteLine($"I've just validated the type and got this errors: {Errors}");
-            if (!GetErrors(nameof(Street)).Any())
-            {
-                AddressData.Street = value;
-                OnPropertyChanged();
-            }
-            Debug.WriteLine($"\nfor type property especially: {GetErrors(nameof(Street))}");
-        }
-    }
+    private string _street;
 
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
     [Required(ErrorMessage = "Building is Required")]
-    public string Building
-    {
-        get => AddressData.Building;
-        set
-        {
-            ValidateProperty(value);
-            Debug.WriteLine($"I've just validated the type and got this errors: {Errors}");
-            if (!GetErrors(nameof(Building)).Any())
-            {
-                AddressData.Building = value;
-                OnPropertyChanged();
-            }
-            Debug.WriteLine($"\nfor type property especially: {GetErrors(nameof(Building))}");
-        }
-    }
+    private string _building;
 
     public void NotifyAboutProperties()
     {
-        OnPropertyChanged(nameof(City));
-        OnPropertyChanged(nameof(Street));
-        OnPropertyChanged(nameof(Building));
+        OnPropertyChanged(string.Empty);
     }
-
-
+        
+    public string GetPropertyErrors(string type)
+        => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(type) select e.ErrorMessage);
 
     public string Errors            
         => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(null) select e.ErrorMessage);
-    public string CityErrors        
-        => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(nameof(City)) select e.ErrorMessage);
-    public string StreetErrors      
-        => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(nameof(Street)) select e.ErrorMessage);
-    public string BuildingErrors    
-        => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(nameof(Building)) select e.ErrorMessage);
-    public bool HasCityErrors 
-        => GetErrors(nameof(City)).Any();
-    public bool HasStreetErrors 
-        => GetErrors(nameof(Street)).Any();
-    public bool HasBuildingErrors
-        => GetErrors(nameof(Building)).Any();
+    
+    public bool HasCityErrors =>
+        GetPropertyErrors(nameof(City)).Any();
+
+    public bool HasStreetErrors =>
+       GetPropertyErrors(nameof(Street)).Any();
+
+    public bool HasBuildingErrors =>
+       GetPropertyErrors(nameof(Building)).Any();
+
+
+    public Microsoft.UI.Xaml.Visibility HasPropertyErrors(string type)
+        => Converters.CollapsedIfNull(GetErrors(type).Any());
+    
     public bool AreNoErrors 
         => !HasErrors;
 
-    public int Id { get => AddressData.Id; }
-
-    // TODO implement cancel button on notification popup
-    public string? BackupedCity;
-    public string? BackupedStreet;
-    public string? BackupedBuilding;
+    public int Id { get => _addressData.Id; }
 
 
     /// <summary>
@@ -154,29 +113,41 @@ public partial class AddressWrapper : ObservableValidator, IEditableObject, IEqu
 
     #region Modification methods
 
-    public void BuckupData()
+
+    public async Task ApplyChanges()
     {
-        BackupedCity = AddressData.City;
-        BackupedStreet = AddressData.Street;
-        BackupedBuilding = AddressData.Building;
+        _addressData.City = City;
+        _addressData.Street = Street;
+        _addressData.Building = Building;
     }
 
-    public void ApplyChanges() => isModified = true;
-
+    /// <summary>
+    /// Undo current changes
+    /// </summary>
     public void UndoChanges()
     {
-        if (BackupedCity != null && 
-            BackupedStreet != null &&
-            BackupedBuilding != null
-            )
-        {
-            City = BackupedCity;
-            Street = BackupedStreet;
-            Building  = BackupedBuilding;
-            isModified = true;
-        }
-        Debug.WriteLine("Impossible to undo changes - backuped data is empty");
+        City = _addressData.City;
+        Street = _addressData.Street;
+        Building = _addressData.Building;
+        IsModified = false;
     }
+
+    /// <summary>
+    /// Get back to prevoius data after updating
+    /// </summary>
+    public async Task Revert()
+    {
+        if (BackupData != null)
+        {
+            AddressData = BackupData;
+            await _repositoryControllerService.Addresses.UpdateAsync(_addressData);
+        }
+    }
+
+    private Address? BackupData;
+
+    public void Backup() =>
+        BackupData = _addressData;
 
     #endregion
 
@@ -185,20 +156,17 @@ public partial class AddressWrapper : ObservableValidator, IEditableObject, IEqu
     // TODO figure out how to use this interface correctly...
     public void BeginEdit()
     {
+        Backup();
         isModified = true;
-        BuckupData();
-        Debug.WriteLine($"BeginEdit : For now the editable addressWrapper = {AddressData}");
     }
 
     public void CancelEdit()
     {
-        Debug.WriteLine("Look at me! Im soooo lazy to implement CancelEdit");
         isModified = false;
     }
 
     public async void EndEdit()
     {
-        Debug.WriteLine($"EndEdit : For now the editable addressWrapper = {AddressData}");
         await _repositoryControllerService.Addresses.UpdateAsync(AddressData);
     }
 

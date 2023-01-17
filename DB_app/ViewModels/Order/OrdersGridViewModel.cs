@@ -11,7 +11,7 @@ using System.Diagnostics;
 
 namespace DB_app.ViewModels;
 
-public partial class OrdersGridViewModel : ObservableRecipient, INavigationAware, IRecipient<AddOrderMessage>
+public partial class OrdersGridViewModel : ObservableRecipient, INavigationAware, IRecipient<AddRecordMessage<OrderWrapper>>
 {
     private readonly IRepositoryControllerService _repositoryControllerService
         = App.GetService<IRepositoryControllerService>();
@@ -28,7 +28,6 @@ public partial class OrdersGridViewModel : ObservableRecipient, INavigationAware
     /// </summary>
     public OrdersGridViewModel()
     {
-        //_model = new OrderWrapper();
         WeakReferenceMessenger.Default.Register(this);
     }
 
@@ -74,41 +73,6 @@ public partial class OrdersGridViewModel : ObservableRecipient, INavigationAware
     }
 
 
-    #region Required for DataGrid
-
-    /// <summary>
-    /// Represents current OrderWrapper object
-    /// </summary>
-    //public OrderWrapper _model { get; set; }
-
-    ///// <summary>
-    ///// City of the current OrderWrapper's data object
-    ///// </summary>
-    //public string PharmacyName { get => _model.PharmacySeller.Name; }
-
-    ///// <summary>
-    ///// Street of the current OrderWrapper's data object
-    ///// </summary>
-    //public string MedicineName { get => _model.Medicine.Name; }
-
-    ///// <summary>
-    ///// Building of the current OrderWrapper's data object
-    ///// </summary>
-    //public string MedicineType { get => _model.Medicine.Type; }
-
-    ///// <summary>
-    ///// Building of the current OrderWrapper's data object
-    ///// </summary>
-    //public double Price { get => _model.Price; }
-
-    ///// <summary>
-    ///// Building of the current OrderWrapper's data object
-    ///// </summary>
-    //public int Quantity { get => _model.Quantity; }
-
-    #endregion
-
-
 
     public void deleteItem_Click(object sender, RoutedEventArgs e)
     {
@@ -123,23 +87,18 @@ public partial class OrdersGridViewModel : ObservableRecipient, INavigationAware
             IsInfoBarOpened = true;
 
         }
-        else
-        {
-            Debug.WriteLine(new ArgumentNullException(nameof(_selectedItem)).Message);
-        }
     }
 
     public void InsertToGridNewWrapper(OrderWrapper givenOrderWrapper)
     {
         givenOrderWrapper.isNew = false;
         Source.Insert(0, givenOrderWrapper);
-        Debug.WriteLine($"so new wrapper is {givenOrderWrapper}");
         selectedGridIndex = 0;
     }
 
     public void SendPrikol()
     {
-        WeakReferenceMessenger.Default.Send(new ShowOrderDetailsMessage(_selectedItem));
+        WeakReferenceMessenger.Default.Send(new ShowRecordDetailsMessage<OrderWrapper>(_selectedItem));
     }
 
 
@@ -183,7 +142,7 @@ public partial class OrdersGridViewModel : ObservableRecipient, INavigationAware
     {
     }
 
-    public void Receive(AddOrderMessage message)
+    public void Receive(AddRecordMessage<OrderWrapper> message)
     {
         var givenOrderWrapper = message.Value;
         if (givenOrderWrapper.isNew)

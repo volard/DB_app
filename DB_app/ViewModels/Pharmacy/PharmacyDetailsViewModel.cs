@@ -8,7 +8,7 @@ using System.Collections.ObjectModel;
 
 namespace DB_app.ViewModels;
 
-public partial class PharmacyDetailsViewModel : ObservableRecipient, IRecipient<ShowPharmacyDetailsMessage>
+public partial class PharmacyDetailsViewModel : ObservableRecipient, IRecipient<ShowRecordDetailsMessage<PharmacyWrapper>>
 {
 
     #region Constructors
@@ -41,7 +41,7 @@ public partial class PharmacyDetailsViewModel : ObservableRecipient, IRecipient<
 
     #region Members
 
-    public void Receive(ShowPharmacyDetailsMessage message)
+    public void Receive(ShowRecordDetailsMessage<PharmacyWrapper> message)
     {
         CurrentPharmacy = message.Value;
         CurrentPharmacy.NotifyAboutProperties();
@@ -82,7 +82,7 @@ public partial class PharmacyDetailsViewModel : ObservableRecipient, IRecipient<
                  Except(_addresses);
     }
 
-    public void NotifyGridAboutChange() => WeakReferenceMessenger.Default.Send(new AddPharmacyMessage(CurrentPharmacy));
+    public void NotifyGridAboutChange() => WeakReferenceMessenger.Default.Send(new AddRecordMessage<PharmacyWrapper>(CurrentPharmacy));
 
     #endregion
 

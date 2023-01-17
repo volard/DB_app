@@ -73,7 +73,6 @@ public sealed partial class PharmacyDetailsPage : Page
     {
         await ViewModel.SaveAsync();
         ViewModel.NotifyGridAboutChange();
-        Debug.WriteLine($"So boiii the ViewModel.CurrentPharmacy now is {ViewModel.CurrentPharmacy}");
 
         Frame.Navigate(typeof(PharmaciesGridPage), null);
     }

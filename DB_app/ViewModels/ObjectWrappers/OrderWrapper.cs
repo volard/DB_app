@@ -218,7 +218,7 @@ public partial class OrderWrapper : ObservableValidator, IEditableObject, IEquat
 
             isModified = true;
         }
-        Debug.WriteLine("Impossible to undo changes - backuped data is empty");
+        
     }
 
 
@@ -232,18 +232,16 @@ public partial class OrderWrapper : ObservableValidator, IEditableObject, IEquat
     {
         isModified = true;
         BuckupData();
-        Debug.WriteLine($"BeginEdit : For now the editable OrderWrapper = {this}");
     }
 
     public void CancelEdit()
     {
-        Debug.WriteLine("Look at me! Im soooo lazy to implement CancelEdit");
+        
         isModified = false;
     }
 
     public async void EndEdit()
     {
-        Debug.WriteLine($"EndEdit : For now the editable OrderWrapper = {this}");
         await _repositoryControllerService.Orders.UpdateAsync(OrderData);
     }
 

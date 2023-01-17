@@ -31,7 +31,6 @@ public sealed partial class ProductDetailsPage : Page
     {
         await ViewModel.SaveAsync();
         ViewModel.NotifyGridAboutChange();
-        Debug.WriteLine($"So boiii the ViewModel.CurrentProduct now is {ViewModel.CurrentProduct}");
 
         Frame.Navigate(typeof(ProductsGridPage), null);
     }
@@ -61,7 +60,6 @@ public sealed partial class ProductDetailsPage : Page
     private void PriceValue_ValueChanged(object sender, NumberBoxValueChangedEventArgs e)
     {
         ViewModel.CurrentProduct.Price = Price.Value is double.NaN ? 1 : Price.Value;
-        Debug.WriteLine("Got from e.newvalue: " + e.NewValue);
 
         ViewModel.CurrentProduct.IsModified = true;
     }

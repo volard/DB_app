@@ -216,7 +216,7 @@ public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEq
 
             isModified = true;
         }
-        Debug.WriteLine("Impossible to undo changes - backuped data is empty");
+        
     }
 
 
@@ -229,18 +229,15 @@ public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEq
     {
         isModified = true;
         BuckupData();
-        Debug.WriteLine($"BeginEdit : For now the editable HospitalWrapper = {this}");
     }
 
     public void CancelEdit()
     {
-        Debug.WriteLine("Look at me! Im soooo lazy to implement CancelEdit");
         isModified = false;
     }
 
     public async void EndEdit()
     {
-        Debug.WriteLine($"EndEdit : For now the editable HospitalWrapper = {this}");
         await _repositoryControllerService.Hospitals.UpdateAsync(HospitalData);
     }
 

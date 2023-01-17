@@ -24,11 +24,8 @@ public partial class MedicineDetailsViewModel : ObservableRecipient, IRecipient<
 
     public void Receive(ShowRecordDetailsMessage<MedicineWrapper> message)
     {
-        Debug.WriteLine("________________");
-        Debug.WriteLine($"You know, I'm standing here with the {message.Value} item so peacfully");
-        Debug.WriteLine("________________");
         CurrentMedicine = message.Value;
-        CurrentMedicine.NotifyAboutProperties();
+        //CurrentMedicine.NotifyAboutProperties();
     }
 
     public MedicineDetailsViewModel(MedicineWrapper medicineWrapper)
@@ -58,6 +55,6 @@ public partial class MedicineDetailsViewModel : ObservableRecipient, IRecipient<
         }
     }
 
-    public void NotifyGridAboutChange() => WeakReferenceMessenger.Default.Send(new AddMedicineMessage(CurrentMedicine));
+    public void NotifyGridAboutChange() => WeakReferenceMessenger.Default.Send(new AddRecordMessage<MedicineWrapper>(CurrentMedicine));
 }
 

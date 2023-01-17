@@ -18,14 +18,14 @@ public partial class MedicineWrapper : ObservableValidator, IEditableObject, IEq
     {
         MedicineData = medicine;
         ErrorsChanged += Suspect_ErrorsChanged;
-        NotifyAboutProperties();
+        //NotifyAboutProperties();
     }
 
     public MedicineWrapper()
     {
         MedicineData = new();
         ErrorsChanged += Suspect_ErrorsChanged;
-        NotifyAboutProperties();
+        //NotifyAboutProperties();
     }
 
     private void Suspect_ErrorsChanged(object sender, DataErrorsChangedEventArgs e)
@@ -56,13 +56,11 @@ public partial class MedicineWrapper : ObservableValidator, IEditableObject, IEq
         set
         {
             ValidateProperty(value);
-            Debug.WriteLine($"I've just validated the name and got this errors: {Errors}");
             if (!GetErrors(nameof(Name)).Any())
             {
                 MedicineData.Name = value;
                 OnPropertyChanged();
             }
-            Debug.WriteLine($"\nfor name property especially: {GetErrors(nameof(Name))}");
         }
     }
 
@@ -74,13 +72,11 @@ public partial class MedicineWrapper : ObservableValidator, IEditableObject, IEq
         set
         {
             ValidateProperty(value);
-            Debug.WriteLine($"I've just validated the type and got this errors: {Errors}");
             if (!GetErrors(nameof(Type)).Any())
             {
                 MedicineData.Type = value;
                 OnPropertyChanged();
             }
-            Debug.WriteLine($"\nfor type property especially: {GetErrors(nameof(Name))}");
         }
     }
 
@@ -137,7 +133,7 @@ public partial class MedicineWrapper : ObservableValidator, IEditableObject, IEq
             Type = BackupedType;
             isModified = true;
         }
-        Debug.WriteLine("Impossible to undo changes - backuped data is empty");
+        
     }
 
     #endregion
@@ -149,18 +145,15 @@ public partial class MedicineWrapper : ObservableValidator, IEditableObject, IEq
     {
         isModified = true;
         BuckupData();
-        Debug.WriteLine($"BeginEdit : For now the editable medicineWrapper = {MedicineData}");
     }
 
     public void CancelEdit()
     {
-        Debug.WriteLine("Look at me! Im soooo lazy to implement CancelEdit");
         isModified = false;
     }
 
     public async void EndEdit()
     {
-        Debug.WriteLine($"EndEdit : For now the editable medicineWrapper = {MedicineData}");
         await _repositoryControllerService.Medicines.UpdateAsync(MedicineData);
     }
 

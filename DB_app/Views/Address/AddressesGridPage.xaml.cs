@@ -1,4 +1,6 @@
 using DB_app.Behaviors;
+using DB_app.Contracts.Services;
+using DB_app.Services;
 using DB_app.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -24,23 +26,6 @@ public sealed partial class AddressesGridPage : Page
         });
     }
 
-    protected override void OnNavigatedTo(NavigationEventArgs e)
-    {
-        var givenAddress = (AddressWrapper)e.Parameter;
-        if (givenAddress != null)
-        {
-            if (givenAddress.isNew)
-            {
-                ViewModel.InsertToGridNewWrapper(givenAddress);
-            }
-            else if (givenAddress.IsModified)
-            {
-                ViewModel.UpdateGridWithEditedWrapper(givenAddress);
-            }
-        }
-        base.OnNavigatedTo(e);
-
-    }
 
     private void AddNewAddress_Click(object sender, RoutedEventArgs e) =>
         Frame.Navigate(typeof(AddressDetailsPage), null, new DrillInNavigationTransitionInfo());
@@ -55,7 +40,6 @@ public sealed partial class AddressesGridPage : Page
 
     private void EditExistingAddress_Click(object sender, RoutedEventArgs e)
     {
-        Frame.Navigate(typeof(AddressDetailsPage), null, new DrillInNavigationTransitionInfo());
-        ViewModel.SendPrikol();
+        App.GetService<INavigationService>().NavigateTo(typeof(AddressDetailsViewModel).FullName, ViewModel.SelectedItem);
     }
 }

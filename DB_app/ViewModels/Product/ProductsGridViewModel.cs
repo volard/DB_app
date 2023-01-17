@@ -10,7 +10,7 @@ using System.Diagnostics;
 
 namespace DB_app.ViewModels;
 
-public partial class ProductsGridViewModel : ObservableRecipient, INavigationAware, IRecipient<AddProductMessage>
+public partial class ProductsGridViewModel : ObservableRecipient, INavigationAware, IRecipient<AddRecordMessage<ProductWrapper>>
 {
     private readonly IRepositoryControllerService _repositoryControllerService
         = App.GetService<IRepositoryControllerService>();
@@ -116,43 +116,6 @@ public partial class ProductsGridViewModel : ObservableRecipient, INavigationAwa
         }
     }
 
-
-    #region Required for DataGrid
-
-    /// <summary>
-    /// Represents current ProductWrapper object
-    /// </summary>
-    //public ProductWrapper _model { get; set; }
-
-    ///// <summary>
-    ///// City of the current ProductWrapper's data object
-    ///// </summary>
-    //public string PharmacyName { get => _model.PharmacySeller.Name; }
-
-    ///// <summary>
-    ///// Street of the current ProductWrapper's data object
-    ///// </summary>
-    //public string MedicineName { get => _model.Medicine.Name; }
-
-    ///// <summary>
-    ///// Building of the current ProductWrapper's data object
-    ///// </summary>
-    //public string MedicineType { get => _model.Medicine.Type; }
-
-    ///// <summary>
-    ///// Building of the current ProductWrapper's data object
-    ///// </summary>
-    //public double Price { get => _model.Price; }
-
-    ///// <summary>
-    ///// Building of the current ProductWrapper's data object
-    ///// </summary>
-    //public int Quantity { get => _model.Quantity; }
-
-    #endregion
-
-
-
     public void deleteItem_Click(object sender, RoutedEventArgs e)
     {
         if (_selectedItem != null)
@@ -166,23 +129,18 @@ public partial class ProductsGridViewModel : ObservableRecipient, INavigationAwa
             IsInfoBarOpened = true;
 
         }
-        else
-        {
-            Debug.WriteLine(new ArgumentNullException(nameof(_selectedItem)).Message);
-        }
     }
 
     public void InsertToGridNewWrapper(ProductWrapper givenProductWrapper)
     {
         givenProductWrapper.isNew = false;
         Source.Insert(0, givenProductWrapper);
-        Debug.WriteLine($"so new wrapper is {givenProductWrapper}");
         selectedGridIndex = 0;
     }
 
     public void SendPrikol()
     {
-        WeakReferenceMessenger.Default.Send(new ShowProductDetailsMessage(_selectedItem));
+        WeakReferenceMessenger.Default.Send(new ShowRecordDetailsMessage<ProductWrapper>(_selectedItem));
     }
 
 
@@ -226,7 +184,7 @@ public partial class ProductsGridViewModel : ObservableRecipient, INavigationAwa
     {
     }
 
-    public void Receive(AddProductMessage message)
+    public void Receive(AddRecordMessage<ProductWrapper> message)
     {
         var givenProductWrapper = message.Value;
         if (givenProductWrapper.isNew)

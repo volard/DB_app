@@ -177,7 +177,6 @@ public partial class App : Application
             string demoDatabasePath = Package.Current.InstalledLocation.Path   + @"\Assets\SQLiteDatabase.db";
             string databasePath     = ApplicationData.Current.LocalFolder.Path + @"\SQLiteDatabase.db";
             
-            Debug.WriteLine("The db's file is located in " + databasePath);
             // C:\Users\volard\AppData\Local\Packages\143B4C51-0F44-4D70-BB38-F638E2F61F1B_7fv57v02n40z6\LocalState
 
             if (!File.Exists(databasePath) && File.Exists(demoDatabasePath))

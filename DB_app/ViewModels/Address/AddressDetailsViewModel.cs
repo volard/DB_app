@@ -1,39 +1,16 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
+using DB_app.Contracts.ViewModels;
 using DB_app.Core.Contracts.Services;
 using DB_app.Services.Messages;
 using System.Diagnostics;
 
 namespace DB_app.ViewModels;
 
-public partial class AddressDetailsViewModel : ObservableRecipient, IRecipient<ShowAddressDetailsMessage>
+public partial class AddressDetailsViewModel : ObservableRecipient, INavigationAware
 {
     private readonly IRepositoryControllerService _repositoryControllerService
          = App.GetService<IRepositoryControllerService>();
-
-    public AddressDetailsViewModel()
-    {
-        CurrentAddress = new()
-        {
-            isNew = true
-        };
-        WeakReferenceMessenger.Default.Register(this);
-    }
-
-    public void Receive(ShowAddressDetailsMessage message)
-    {
-        Debug.WriteLine("________________");
-        Debug.WriteLine($"You know, I'm standing here with the {message.Value} item so peacfully");
-        Debug.WriteLine("________________");
-        CurrentAddress = message.Value;
-        CurrentAddress.NotifyAboutProperties();
-    }
-
-    public AddressDetailsViewModel(AddressWrapper AddressWrapper)
-    {
-        CurrentAddress = AddressWrapper;
-        WeakReferenceMessenger.Default.Register(this);
-    }
 
     /// <summary>
     /// Current AddressWrapper to edit
@@ -46,16 +23,34 @@ public partial class AddressDetailsViewModel : ObservableRecipient, IRecipient<S
     /// </summary>
     public async Task SaveAsync()
     {
-        if (CurrentAddress.isNew) // Create new Address
+        await CurrentAddress.ApplyChanges();
+        if (CurrentAddress.isNew)
         {
             await _repositoryControllerService.Addresses.InsertAsync(CurrentAddress.AddressData);
         }
-        else // Update existing Address
+        else
         {
             await _repositoryControllerService.Addresses.UpdateAsync(CurrentAddress.AddressData);
         }
     }
 
-    public void NotifyGridAboutChange() => WeakReferenceMessenger.Default.Send(new Messages(CurrentAddress));
+    public void OnNavigatedTo(object? parameter)
+    {
+        if (parameter != null)
+        {
+            CurrentAddress = (AddressWrapper)parameter;
+            CurrentAddress.Backup();
+        }
+        else
+        {
+            CurrentAddress = new();
+            
+        }
+    }
+
+    public void OnNavigatedFrom()
+    {
+        // Not used
+    }
 }
 

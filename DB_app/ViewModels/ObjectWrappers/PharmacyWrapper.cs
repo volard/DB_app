@@ -173,7 +173,7 @@ public partial class PharmacyWrapper : ObservableValidator, IEditableObject, IEq
 
             isModified = true;
         }
-        Debug.WriteLine("Impossible to undo changes - backuped data is empty");
+        
     }
 
 
@@ -186,18 +186,16 @@ public partial class PharmacyWrapper : ObservableValidator, IEditableObject, IEq
     {
         isModified = true;
         BuckupData();
-        Debug.WriteLine($"BeginEdit : For now the editable PharmacyWrapper = {this}");
     }
 
     public void CancelEdit()
     {
-        Debug.WriteLine("Look at me! Im soooo lazy to implement CancelEdit");
+        
         isModified = false;
     }
 
     public async void EndEdit()
     {
-        Debug.WriteLine($"EndEdit : For now the editable PharmacyWrapper = {this}");
         await _repositoryControllerService.Pharmacies.UpdateAsync(PharmacyData);
     }
 

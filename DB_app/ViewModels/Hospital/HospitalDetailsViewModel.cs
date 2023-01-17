@@ -7,7 +7,7 @@ using System.Collections.ObjectModel;
 
 namespace DB_app.ViewModels;
 
-public partial class HospitalDetailsViewModel : ObservableRecipient, IRecipient<ShowHospitalDetailsMessage>
+public partial class HospitalDetailsViewModel : ObservableRecipient, IRecipient<ShowRecordDetailsMessage<HospitalWrapper>>
 {
 
     #region Constructors
@@ -40,7 +40,7 @@ public partial class HospitalDetailsViewModel : ObservableRecipient, IRecipient<
 
     #region Members
 
-    public void Receive(ShowHospitalDetailsMessage message)
+    public void Receive(ShowRecordDetailsMessage<HospitalWrapper> message)
     {
         CurrentHospital = message.Value;
         CurrentHospital.NotifyAboutProperties();
@@ -77,7 +77,7 @@ public partial class HospitalDetailsViewModel : ObservableRecipient, IRecipient<
                  Except(_addresses);
     }
 
-    public void NotifyGridAboutChange() => WeakReferenceMessenger.Default.Send(new AddHospitalMessage(CurrentHospital));
+    public void NotifyGridAboutChange() => WeakReferenceMessenger.Default.Send(new AddRecordMessage<HospitalWrapper>(CurrentHospital));
 
     #endregion
 

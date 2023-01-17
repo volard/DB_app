@@ -40,8 +40,11 @@ public sealed partial class ShellPage : Page
     {
         TitleBarHelper.UpdateTitleBar(RequestedTheme);
 
+        // TODO bind back mouse button to back()
         KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.Left, VirtualKeyModifiers.Menu));
         KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.GoBack));
+        KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.XButton1));
+        KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.XButton2));
     }
 
     private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
@@ -65,7 +68,7 @@ public sealed partial class ShellPage : Page
     private static KeyboardAccelerator BuildKeyboardAccelerator(VirtualKey key, VirtualKeyModifiers? modifiers = null)
     {
         var keyboardAccelerator = new KeyboardAccelerator() { Key = key };
-        // TODO bind back mouse button to back()
+        
         if (modifiers.HasValue)
         {
             keyboardAccelerator.Modifiers = modifiers.Value;

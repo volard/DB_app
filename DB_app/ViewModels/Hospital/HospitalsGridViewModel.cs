@@ -10,7 +10,7 @@ using System.Diagnostics;
 
 namespace DB_app.ViewModels;
 
-public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAware, IRecipient<AddHospitalMessage>
+public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAware, IRecipient<AddRecordMessage<HospitalWrapper>>
 {
     private readonly IRepositoryControllerService _repositoryControllerService
         = App.GetService<IRepositoryControllerService>();
@@ -128,23 +128,18 @@ public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAw
             IsInfoBarOpened = true;
 
         }
-        else
-        {
-            Debug.WriteLine(new ArgumentNullException(nameof(_selectedItem)).Message);
-        }
     }
 
     public void InsertToGridNewWrapper(HospitalWrapper givenHospitalWrapper)
     {
         givenHospitalWrapper.isNew = false;
         Source.Insert(0, givenHospitalWrapper);
-        Debug.WriteLine($"so new wrapper is {givenHospitalWrapper}");
         selectedGridIndex = 0;
     }
 
     public void SendPrikol()
     {
-        WeakReferenceMessenger.Default.Send(new ShowHospitalDetailsMessage(_selectedItem));
+        WeakReferenceMessenger.Default.Send(new ShowRecordDetailsMessage<HospitalWrapper>(_selectedItem));
     }
 
 
@@ -188,7 +183,7 @@ public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAw
     {
     }
 
-    public void Receive(AddHospitalMessage message)
+    public void Receive(AddRecordMessage<HospitalWrapper> message)
     {
         var givenHospitalWrapper = message.Value;
         if (givenHospitalWrapper.isNew)

@@ -84,7 +84,6 @@ public sealed partial class OrderDetailsPage : Page
     {
         await ViewModel.SaveAsync();
         ViewModel.NotifyGridAboutChange();
-        Debug.WriteLine($"So boiii the ViewModel.CurrentOrder now is {ViewModel.CurrentOrder}");
         if (!WindowHelper.ActiveWindows.Any())
         {
             Frame.Navigate(typeof(OrdersGridPage), null);

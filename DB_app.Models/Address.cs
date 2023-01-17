@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using System.Security.AccessControl;
 
 namespace DB_app.Entities;
@@ -43,18 +44,17 @@ public class Address
 
     #region Properties
 
-    [Required]
-    [Key]
+    [Key, Required]
     public int      Id        { get; set; }
 
     [Required]
-    public string   City      { get; set; }
+    public string City { get; set; } = "ы";
 
     [Required]
-    public string   Street    { get; set; }
+    public string   Street    { get; set; } = "ыыы";
 
     [Required]
-    public string   Building  { get; set; }
+    public string   Building  { get; set; } = "ыыыы";
 
     #endregion
 

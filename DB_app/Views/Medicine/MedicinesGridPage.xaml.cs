@@ -27,19 +27,19 @@ public sealed partial class MedicinesGridPage : Page
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
-        var givenMedicine = (MedicineWrapper)e.Parameter;
-        if (givenMedicine != null)
-        {
-            if (givenMedicine.isNew)
-            {
-                ViewModel.InsertToGridNewWrapper(givenMedicine);
-            }
-            else if (givenMedicine.IsModified)
-            {
-                ViewModel.UpdateGridWithEditedWrapper(givenMedicine);
-            }
-        }
-        base.OnNavigatedTo(e);
+        //var givenMedicine = (MedicineWrapper)e.Parameter;
+        //if (givenMedicine != null)
+        //{
+        //    if (givenMedicine.isNew)
+        //    {
+        //        ViewModel.InsertToGridNewWrapper(givenMedicine);
+        //    }
+        //    else if (givenMedicine.IsModified)
+        //    {
+        //        ViewModel.UpdateGridWithEditedWrapper(givenMedicine);
+        //    }
+        //}
+        //base.OnNavigatedTo(e);
 
     }
 

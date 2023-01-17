@@ -28,7 +28,6 @@ public partial class MedicinesGridViewModel : ObservableRecipient, INavigationAw
     /// </summary>
     public MedicinesGridViewModel()
     {
-        _model = new MedicineWrapper();
         WeakReferenceMessenger.Default.Register(this);
     }
 
@@ -71,26 +70,6 @@ public partial class MedicinesGridViewModel : ObservableRecipient, INavigationAw
     }
 
 
-    #region Required for DataGrid
-
-    /// <summary>
-    /// Represents current MedicineWrapper object
-    /// </summary>
-    public MedicineWrapper _model { get; set; }
-
-    /// <summary>
-    /// Name of the current MedicineWrapper's data object
-    /// </summary>
-    public string Name { get => _model.Name; }
-
-    /// <summary>
-    /// Type of the current MedicineWrapper's data object
-    /// </summary>
-    public string Type { get => _model.Type; }
-
-    #endregion
-
-
 
     public async void deleteItem_Click(object sender, RoutedEventArgs e)
     {
@@ -99,11 +78,14 @@ public partial class MedicinesGridViewModel : ObservableRecipient, INavigationAw
             int id = _selectedItem.MedicineData.Id;
             await _repositoryControllerService.Medicines.DeleteAsync(id);
             Source.Remove(_selectedItem);
-
             InfoBarMessage = "Medicine was deleted";
             InfoBarSeverity = Microsoft.UI.Xaml.Controls.InfoBarSeverity.Success;
             IsInfoBarOpened = true;
 
+
+            // TODO this is fukin sick
+            // Raise the PropertyChanged event for all properties.
+            // OnPropertyChanged(string.Empty);
         }
     }
 
@@ -111,7 +93,6 @@ public partial class MedicinesGridViewModel : ObservableRecipient, INavigationAw
     {
         givenMedicineWrapper.isNew = false;
         Source.Insert(0, givenMedicineWrapper);
-        Debug.WriteLine($"so new wrapper is {givenMedicineWrapper}");
         selectedGridIndex = 0;
     }
 
@@ -147,13 +128,11 @@ public partial class MedicinesGridViewModel : ObservableRecipient, INavigationAw
     {
         if (Source.Count < 1)
         {
+            Debug.WriteLine("Collection was recreated from db");
             Source.Clear();
             var data = await _repositoryControllerService.Medicines.GetAsync();
 
-            foreach (var item in data)
-            {
-                Source.Add(new MedicineWrapper(item));
-            }
+            foreach (var item in data){ Source.Add(new MedicineWrapper(item)); }
         }
     }
 

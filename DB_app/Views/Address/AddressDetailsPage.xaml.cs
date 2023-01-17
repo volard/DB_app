@@ -1,4 +1,5 @@
 using DB_app.Behaviors;
+using DB_app.Contracts.Services;
 using DB_app.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -30,8 +31,6 @@ public sealed partial class AddressDetailsPage : Page
     private async void SaveButton_Click(object sender, RoutedEventArgs e)
     {
         await ViewModel.SaveAsync();
-        ViewModel.NotifyGridAboutChange();
-        Debug.WriteLine($"So boiii the ViewModel.CurrentAddress now is {ViewModel.CurrentAddress}");
 
         Frame.Navigate(typeof(AddressesGridPage), null);
     }
@@ -47,16 +46,6 @@ public sealed partial class AddressDetailsPage : Page
     protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
     {
         // TODO implement this
-    }
-
-    
-
-
-    protected override void OnNavigatedTo(NavigationEventArgs e)
-    {
-        ViewModel.CurrentAddress.BuckupData();
-        ViewModel.CurrentAddress.NotifyAboutProperties();
-        base.OnNavigatedTo(e);
     }
 
     private void CityText_TextChanged(object sender, TextChangedEventArgs e)

@@ -7,11 +7,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:viewModel="using:DB_app.ViewModels"
-    NavigationCacheMode="Enabled"
+    xmlns:vm="using:DB_app.ViewModels"
     mc:Ignorable="d">
 
-
-
+    <Page.Resources>
+        <vm:StringVisiblityConverter x:Key="StringVisiblityConverter" />
+    </Page.Resources>
 
 
     <behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
@@ -67,7 +68,7 @@
                 Symbol="ReportHacked"
                 Visibility="{x:Bind ViewModel.CurrentAddress.HasCityErrors, Mode=OneWay}">
                 <ToolTipService.ToolTip>
-                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentAddress.CityErrors, Mode=OneWay}" />
+                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentAddress.GetPropertyErrors('City'), Mode=OneWay}" />
                 </ToolTipService.ToolTip>
             </SymbolIcon>
 
@@ -79,7 +80,7 @@
                 Header="Street"
                 RelativePanel.AlignLeftWithPanel="True"
                 RelativePanel.Below="City"
-                Text="{x:Bind ViewModel.CurrentAddress.Street, Mode=TwoWay}"
+                Text="{x:Bind ViewModel.CurrentAddress.Street, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 TextChanged="StreetText_TextChanged" />
             <SymbolIcon
                 Margin="0,35,0,0"
@@ -89,7 +90,7 @@
                 Symbol="ReportHacked"
                 Visibility="{x:Bind ViewModel.CurrentAddress.HasStreetErrors, Mode=OneWay}">
                 <ToolTipService.ToolTip>
-                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentAddress.StreetErrors, Mode=OneWay}" />
+                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentAddress.GetPropertyErrors('Street'), Mode=OneWay}" />
                 </ToolTipService.ToolTip>
             </SymbolIcon>
 
@@ -100,7 +101,7 @@
                 Header="Building"
                 RelativePanel.AlignLeftWithPanel="True"
                 RelativePanel.Below="Street"
-                Text="{x:Bind ViewModel.CurrentAddress.Building, Mode=TwoWay}"
+                Text="{x:Bind ViewModel.CurrentAddress.Building, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 TextChanged="BuildingText_TextChanged" />
             <SymbolIcon
                 Margin="0,35,0,0"
@@ -110,7 +111,7 @@
                 Symbol="ReportHacked"
                 Visibility="{x:Bind ViewModel.CurrentAddress.HasBuildingErrors, Mode=OneWay}">
                 <ToolTipService.ToolTip>
-                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentAddress.BuildingErrors, Mode=OneWay}" />
+                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentAddress.GetPropertyErrors('Building'), Mode=OneWay}" />
                 </ToolTipService.ToolTip>
             </SymbolIcon>
 

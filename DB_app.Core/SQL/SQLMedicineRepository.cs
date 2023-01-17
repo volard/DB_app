@@ -60,8 +60,6 @@ public class SQLMedicineRepository : IMedicineRepository
 
         if (foundMedicine != null)
         {
-
-
             _db.Entry(foundMedicine).CurrentValues.SetValues(medicine);
             await _db.SaveChangesAsync();
         }
