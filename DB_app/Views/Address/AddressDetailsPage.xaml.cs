@@ -1,13 +1,9 @@
 using DB_app.Behaviors;
-using DB_app.Contracts.Services;
 using DB_app.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
-using System.Diagnostics;
-using WinUIEx.Messaging;
 
 namespace DB_app.Views;
 
@@ -30,9 +26,13 @@ public sealed partial class AddressDetailsPage : Page
 
     private async void SaveButton_Click(object sender, RoutedEventArgs e)
     {
-        await ViewModel.SaveAsync();
+        bool result = await ViewModel.CurrentAddress.SaveAsync();
+        if (result)
+        {
+            Frame.Navigate(typeof(AddressesGridPage), null);
+        }
 
-        Frame.Navigate(typeof(AddressesGridPage), null);
+
     }
 
     /// <summary>
@@ -48,18 +48,8 @@ public sealed partial class AddressDetailsPage : Page
         // TODO implement this
     }
 
-    private void CityText_TextChanged(object sender, TextChangedEventArgs e)
-    {
-        ViewModel.CurrentAddress.City = City.Text;
-    }
+    private void Text_TextChanged(object sender, TextChangedEventArgs e)
+    => ViewModel.CurrentAddress.IsModified = true;
 
-    private void StreetText_TextChanged(object sender, TextChangedEventArgs e)
-    {
-        ViewModel.CurrentAddress.Street = Street.Text;
-    }
 
-    private void BuildingText_TextChanged(object sender, TextChangedEventArgs e)
-    {
-        ViewModel.CurrentAddress.Building = Building.Text;
-    }
 }

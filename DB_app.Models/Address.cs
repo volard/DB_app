@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
-using System.Security.AccessControl;
 
 namespace DB_app.Entities;
 
@@ -27,12 +26,13 @@ public class Address
             string city,
             string street,
             string building
-        ) : this 
-            (
-                city,
-                street,
-                building
-            )
+        ) : 
+        this 
+        (
+            city,
+            street,
+            building
+        )
     {
         Id = id;
     }
@@ -47,14 +47,14 @@ public class Address
     [Key, Required]
     public int      Id        { get; set; }
 
-    [Required]
-    public string City { get; set; } = "ы";
+    [Required, NotNull]
+    public string? City { get; set; }
 
-    [Required]
-    public string   Street    { get; set; } = "ыыы";
+    [Required, NotNull]
+    public string?   Street    { get; set; }
 
-    [Required]
-    public string   Building  { get; set; } = "ыыыы";
+    [Required, NotNull]
+    public string?   Building  { get; set; }
 
     #endregion
 
@@ -62,16 +62,13 @@ public class Address
 
     public override bool Equals(object? obj)
     {
-        if (obj == null)
-        {
-            return false;
-        }
+        if (obj is not Address other) return false;
 
-        if (obj is not Address)
-        {
-            return false;
-        }
+        return other.City == City && other.Street == Street && other.Building == Building;
+    }
 
-        return ((Address)obj).City == City && ((Address)obj).Street == Street && ((Address)obj).Building == Building;
+    public override int GetHashCode()
+    {
+        return Id.GetHashCode();
     }
 }

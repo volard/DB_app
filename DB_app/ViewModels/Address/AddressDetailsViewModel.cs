@@ -1,9 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Messaging;
 using DB_app.Contracts.ViewModels;
 using DB_app.Core.Contracts.Services;
-using DB_app.Services.Messages;
-using System.Diagnostics;
 
 namespace DB_app.ViewModels;
 
@@ -15,24 +12,14 @@ public partial class AddressDetailsViewModel : ObservableRecipient, INavigationA
     /// <summary>
     /// Current AddressWrapper to edit
     /// </summary>
-    public AddressWrapper CurrentAddress { get; set; }
+    public AddressWrapper? CurrentAddress { get; set; }
 
 
     /// <summary>
     /// Saves customer data that was edited.
     /// </summary>
-    public async Task SaveAsync()
-    {
-        await CurrentAddress.ApplyChanges();
-        if (CurrentAddress.isNew)
-        {
-            await _repositoryControllerService.Addresses.InsertAsync(CurrentAddress.AddressData);
-        }
-        else
-        {
-            await _repositoryControllerService.Addresses.UpdateAsync(CurrentAddress.AddressData);
-        }
-    }
+    
+
 
     public void OnNavigatedTo(object? parameter)
     {
@@ -44,7 +31,7 @@ public partial class AddressDetailsViewModel : ObservableRecipient, INavigationA
         else
         {
             CurrentAddress = new();
-            
+
         }
     }
 
