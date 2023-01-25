@@ -1,0 +1,36 @@
+<UserControl
+    x:Class="DB_app.Views.Components.ValidationTextBox"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:DB_app.Views.Components"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid HorizontalAlignment="Left" ColumnSpacing="12">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition MinWidth="300" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+
+        <TextBox
+            x:Name="PART_TextBox"
+            Margin="10,20,0,8"
+            HorizontalAlignment="Stretch"
+            Header="{x:Bind HeaderText}"
+            IsSpellCheckEnabled="False"
+            PlaceholderText="{x:Bind PlaceholderText}"
+            Text="{x:Bind Text}"
+            TextChanged="PART_TextBox_TextChanged" />
+        <FontIcon
+            x:Name="PART_WarningIcon"
+            Grid.Column="1"
+            Margin="0,32,0,0"
+            VerticalAlignment="Center"
+            FontSize="20"
+            Foreground="Orange"
+            Glyph="&#xE814;"
+            Visibility="Collapsed" />
+    </Grid>
+</UserControl>
