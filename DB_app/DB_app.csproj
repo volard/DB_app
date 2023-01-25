@@ -16,6 +16,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="AddressesGridPage.xaml" />
+    <None Remove="Styles\Icons.xaml" />
     <None Remove="Views\Address\AddressDetailsPage.xaml" />
     <None Remove="Views\Hospital\HospitalDetailsPage.xaml" />
     <None Remove="Views\MedicineDetailsPage.xaml" />
