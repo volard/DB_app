@@ -34,7 +34,9 @@ public sealed partial class AddressesGridPage : Page
     private void DeleteFancy(object sender, RoutedEventArgs e)
     {
         ViewModel.DeleteItem_Click();
-        myStoryboard.Begin();
+        Notification.Dismiss();
+        Notification.Show(2000);
+        //myStoryboard.Begin();
     }
 
 
