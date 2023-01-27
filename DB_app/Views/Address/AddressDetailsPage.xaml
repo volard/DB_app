@@ -12,8 +12,13 @@
     xmlns:vm="using:DB_app.ViewModels"
     mc:Ignorable="d">
 
+    <Page.Resources>
+        <helpers:NotConverter x:Key="NotConverter" />
+    </Page.Resources>
 
 
+
+    <!--#region Page's header-->
     <behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
         <DataTemplate x:DataType="viewModel:AddressDetailsViewModel">
             <CommandBar
@@ -21,14 +26,19 @@
                 Background="Transparent"
                 DefaultLabelPosition="Right">
                 <CommandBar.Content>
-                    <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="New address" />
+                    <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="{x:Bind }" />
                 </CommandBar.Content>
 
                 <AppBarButton
                     Click="SaveButton_Click"
                     Icon="Save"
-                    IsEnabled="{Binding CurrentAddress.CanSave}"
+                    IsEnabled="{Binding CurrentAddress.HasErrors, Converter={StaticResource NotConverter}}"
                     Label="Save" />
+                <AppBarButton
+                    Click="CancelEdit_Click"
+                    Icon="Cancel"
+                    Label="Cancel" />
+                <AppBarSeparator />
                 <AppBarButton
                     Click="CancelEdit_Click"
                     Icon="Cancel"
@@ -38,7 +48,10 @@
         </DataTemplate>
     </behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
 
+    <!--#endregion-->
 
+    
+    <!--#region Page's content-->
     <ScrollViewer
         x:Name="DetailPanel"
         RelativePanel.AlignLeftWithPanel="True"
@@ -52,102 +65,27 @@
 
             <components:ValidationTextBox
                 x:Name="City"
-                HeaderText="City"
                 DataContext="{x:Bind ViewModel.CurrentAddress}"
+                HeaderText="City"
                 PlaceholderText="Enter city"
                 PropertyName="City"
                 Text="{x:Bind ViewModel.CurrentAddress.City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            
+
             <components:ValidationTextBox
                 x:Name="Street"
-                HeaderText="Street"
                 DataContext="{x:Bind ViewModel.CurrentAddress}"
+                HeaderText="Street"
                 PlaceholderText="Enter street"
                 PropertyName="Street"
                 Text="{x:Bind ViewModel.CurrentAddress.Street, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            
+
             <components:ValidationTextBox
                 x:Name="Building"
-                HeaderText="Building"
                 DataContext="{x:Bind ViewModel.CurrentAddress}"
+                HeaderText="Building"
                 PlaceholderText="Enter building"
                 PropertyName="Building"
                 Text="{x:Bind ViewModel.CurrentAddress.Building, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-            <!--<components:TestValidationTextBox
-                x:Name="City"
-                HeaderText="Some"
-                DataContext="{x:Bind ViewModel.CurrentAddress}"
-                PlaceholderText="Prikol"
-                PropertyName="City"
-                Text="{x:Bind ViewModel.CurrentAddress.City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                ></components:TestValidationTextBox>-->
-
-
-            <!--<TextBox
-                x:Name="City"
-                MinWidth="300"
-                Margin="10,20,16,8"
-                Header="City"
-                RelativePanel.AlignLeftWithPanel="True"
-                Text="{x:Bind ViewModel.CurrentAddress.City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                TextChanged="Text_TextChanged" />
-
-            <SymbolIcon
-                x:Name="Some"
-                Margin="0,35,0,0"
-                Foreground="OrangeRed"
-                RelativePanel.AlignVerticalCenterWith="City"
-                RelativePanel.RightOf="City"
-                Symbol="ReportHacked"
-                Visibility="{x:Bind ViewModel.CurrentAddress.HasCityErrors, Mode=OneWay}">
-                <ToolTipService.ToolTip>
-                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentAddress.GetPropertyErrors('City'), Mode=OneWay}" />
-                </ToolTipService.ToolTip>
-            </SymbolIcon>-->
-
-
-            <!--<TextBox
-                x:Name="Street"
-                MinWidth="300"
-                Margin="10,20,16,8"
-                Header="Street"
-                RelativePanel.Below="City"
-                RelativePanel.AlignLeftWithPanel="True"
-                Text="{x:Bind ViewModel.CurrentAddress.Street, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                TextChanged="Text_TextChanged" />
-            <SymbolIcon
-                Margin="0,35,0,0"
-                Foreground="OrangeRed"
-                RelativePanel.AlignVerticalCenterWith="Street"
-                RelativePanel.RightOf="Street"
-                Symbol="ReportHacked"
-                Visibility="{x:Bind ViewModel.CurrentAddress.HasPropertyErrors('Street'), Mode=OneWay}">
-                <ToolTipService.ToolTip>
-                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentAddress.GetPropertyErrors('Street'), Mode=OneWay}" />
-                </ToolTipService.ToolTip>
-            </SymbolIcon>
-
-            <TextBox
-                x:Name="Building"
-                MinWidth="300"
-                Margin="10,20,16,8"
-                Header="Building"
-                RelativePanel.AlignLeftWithPanel="True"
-                RelativePanel.Below="Street"
-                Text="{x:Bind ViewModel.CurrentAddress.Building, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                TextChanged="Text_TextChanged" />
-            <SymbolIcon
-                Margin="0,35,0,0"
-                Foreground="OrangeRed"
-                RelativePanel.AlignVerticalCenterWith="Building"
-                RelativePanel.RightOf="Building"
-                Symbol="ReportHacked"
-                Visibility="{x:Bind ViewModel.CurrentAddress.HasPropertyErrors('Building'), Mode=OneWay}">
-                <ToolTipService.ToolTip>
-                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentAddress.GetPropertyErrors('Building'), Mode=OneWay}" />
-                </ToolTipService.ToolTip>
-            </SymbolIcon>-->
 
 
         </StackPanel>

@@ -4,13 +4,18 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="using:DB_app.Behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:DB_app.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:vm="using:DB_app.ViewModels"
     d:DataContext="{d:DesignInstance Type=vm:AddressesGridViewModel}"
     mc:Ignorable="d">
 
+    <Page.Resources>
+        <helpers:IsNotNullConverter x:Key="IsNotNullConverter" />
+    </Page.Resources>
 
+    <!--#region Page's header-->
     <behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
         <DataTemplate x:DataType="vm:AddressesGridViewModel">
             <CommandBar
@@ -33,7 +38,7 @@
                     x:Name="CommandBarEditButton"
                     Click="EditExistingAddress_Click"
                     Icon="Edit"
-                    IsEnabled="{Binding IsGridItemSelected, Mode=OneWay}"
+                    IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
                     Label="Edit"
                     ToolTipService.ToolTip="Edit" />
 
@@ -41,13 +46,15 @@
                     x:Name="CommandBarDeleteButton"
                     Click="DeleteFancy"
                     Icon="Delete"
-                    IsEnabled="{Binding IsGridItemSelected, Mode=OneWay}"
+                    IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
                     Label="Delete"
                     ToolTipService.ToolTip="Delete" />
 
             </CommandBar>
         </DataTemplate>
     </behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
+    <!--#endregion-->
+
 
 
     <Grid
@@ -76,7 +83,7 @@
 
                 <toolkit:DataGrid.Columns>
 
-                    <!--  As I got it, DataGrid doesn't support x:Bind  -->
+
                     <toolkit:DataGridTextColumn
                         Width="30*"
                         Binding="{Binding City}"
@@ -95,13 +102,13 @@
         </Grid>
 
         <toolkit:InAppNotification
-                x:Name="Notification"
-                HorizontalOffset="0"
-                RelativePanel.AlignBottomWithPanel="True"
-                RelativePanel.AlignHorizontalCenterWithPanel="True"
-                Content="{x:Bind ViewModel.InfoBarMessage, Mode=OneWay}"
-                StackMode="Replace"
-                 />
+            x:Name="Notification"
+            AnimationDuration="2000"
+            Content="Shit happends bro"
+            HorizontalOffset="400"
+            RelativePanel.AlignBottomWithPanel="True"
+            RelativePanel.AlignHorizontalCenterWithPanel="True"
+            StackMode="Replace" />
 
     </Grid>
 

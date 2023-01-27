@@ -31,17 +31,15 @@ public sealed partial class AddressesGridPage : Page
         Frame.Navigate(typeof(AddressDetailsPage), null, new DrillInNavigationTransitionInfo());
 
 
-    private void DeleteFancy(object sender, RoutedEventArgs e)
+    private async void DeleteFancy(object sender, RoutedEventArgs e)
     {
-        ViewModel.DeleteItem_Click();
-        Notification.Dismiss();
-        Notification.Show(2000);
-        //myStoryboard.Begin();
+        await ViewModel.DeleteSelected();
+        Notification.Show();
     }
 
 
     private void EditExistingAddress_Click(object sender, RoutedEventArgs e)
     {
-        App.GetService<INavigationService>().NavigateTo(typeof(AddressDetailsViewModel).FullName, ViewModel.SelectedItem);
+        App.GetService<INavigationService>().NavigateTo(typeof(AddressDetailsViewModel).FullName!, ViewModel.SelectedItem);
     }
 }

@@ -21,11 +21,8 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
             AddressData = new();
         }
         else { AddressData = address; }
-        ErrorsChanged += Handler_ErrorsChanged;
     }
 
-    private void Handler_ErrorsChanged(object? sender, DataErrorsChangedEventArgs e)
-    => NotifyAboutProperties();
 
     public override string ToString() => 
         $"AddressWrapper with addressData {AddressData}";
@@ -43,51 +40,24 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
             City = _addressData.City;
             Street = _addressData.Street;
             Building = _addressData.Building;
-            NotifyAboutProperties();
         } 
     }
 
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
-    [NotifyPropertyChangedFor(nameof(CanSave))]
     [Required(ErrorMessage = "City is Required")]
-    private string _city;
+    private string? _city;
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
-    [NotifyPropertyChangedFor(nameof(CanSave))]
     [Required(ErrorMessage = "Street is Required")]
-    private string _street;
+    private string? _street;
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
-    [NotifyPropertyChangedFor(nameof(CanSave))]
     [Required(ErrorMessage = "Building is Required")]
-    private string _building;
-
-    public void NotifyAboutProperties()
-    {
-        OnPropertyChanged(nameof(City));
-        OnPropertyChanged(nameof(Street));
-        OnPropertyChanged(nameof(Building));
-        OnPropertyChanged(nameof(HasCityErrors));
-    }
-        
-    public string GetPropertyErrors(string type)
-    => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(type) select e.ErrorMessage);
-
-    public string Errors 
-    => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(null) select e.ErrorMessage);
-
-    public bool HasCityErrors
-    => GetErrors(nameof(City)).Any();
-
-    public bool CanSave => !HasErrors;
-
-    public Visibility HasPropertyErrors(string type)
-    => Converters.VisibleIf(GetErrors(type).Any());
-
+    private string? _building;
     
 
     public int Id { get => _addressData.Id; }
@@ -97,8 +67,12 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
     /// Indicates about changes that is not synced with UI DataGrid
     /// </summary>
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(CanSave))]
     private bool isModified = false;
+
+
+    [ObservableProperty]
+    private bool _isInEdit;
+
 
     /// <summary>
     /// indicates whether its a new object

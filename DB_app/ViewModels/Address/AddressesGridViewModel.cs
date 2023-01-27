@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using DB_app.Contracts.ViewModels;
 using DB_app.Core.Contracts.Services;
-using Microsoft.UI.Xaml.Controls;
 using System.Collections.ObjectModel;
 
 namespace DB_app.ViewModels;
@@ -19,48 +18,20 @@ public partial class AddressesGridViewModel : ObservableRecipient, INavigationAw
 
 
     /// <summary>
-    /// Indicates whether user selected Medicine item in the grid
-    /// </summary>
-    [ObservableProperty]
-    private bool _isGridItemSelected = false;
-
-    [ObservableProperty]
-    private bool _isInfoBarOpened = false;
-
-    [ObservableProperty]
-    private InfoBarSeverity _infoBarSeverity = InfoBarSeverity.Informational;
-
-    [ObservableProperty]
-    private string _infoBarMessage = "";
-
-
-    /// <summary>
     /// Represents selected by user AddressWrapper object
     /// </summary>
+    [ObservableProperty]
     private AddressWrapper? _selectedItem;
-    public AddressWrapper? SelectedItem
+
+
+    public async Task DeleteSelected()
     {
-        get => _selectedItem;
-        set
+        if (SelectedItem != null)
         {
-            SetProperty(ref _selectedItem, value);
-            IsGridItemSelected = Converters.IsNotNull(value);
-        }
-    }
-
-
-
-    public async void DeleteItem_Click()
-    {
-        if (_selectedItem != null)
-        {
-            int id = _selectedItem.AddressData.Id;
+            int id = SelectedItem.AddressData.Id;
             await _repositoryControllerService.Addresses.DeleteAsync(id);
-            Source.Remove(_selectedItem);
 
-            InfoBarMessage = "Medicine was deleted";
-            InfoBarSeverity = Microsoft.UI.Xaml.Controls.InfoBarSeverity.Success;
-            IsInfoBarOpened = true;
+            Source.Remove(SelectedItem);
         }
     }
 
