@@ -78,7 +78,7 @@
 
                 <toolkit:DataGrid.Columns>
 
-                    <!--  As I got it, DataGrid doesn't support x:Bind  -->
+                    
                     <toolkit:DataGridTextColumn Binding="{Binding Surename_main_doctor}" Header="Hospital's main doctor surename" />
                     <toolkit:DataGridTextColumn Binding="{Binding PharmacyName}" Header="Pharmacy name" />
                     <toolkit:DataGridTemplateColumn Header="Date" Tag="Date Placed">

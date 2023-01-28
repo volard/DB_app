@@ -76,7 +76,7 @@
                 MinWidth="300"
                 Margin="10,20,16,8"
                 Header="Type"
-                IsEnabled="{x:Bind ViewModel.CurrentMedicine.isNew, Mode=OneWay}"
+                IsEnabled="{x:Bind ViewModel.CurrentMedicine.IsNew, Mode=OneWay}"
                 RelativePanel.AlignLeftWithPanel="True"
                 RelativePanel.Below="Name"
                 Text="{x:Bind ViewModel.CurrentMedicine.Type, Mode=TwoWay}"

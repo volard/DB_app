@@ -3,7 +3,6 @@ using DB_app.Core.Contracts.Services;
 using DB_app.Entities;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
 
 namespace DB_app.ViewModels;
 
@@ -13,32 +12,21 @@ namespace DB_app.ViewModels;
 public partial class MedicineWrapper : ObservableValidator, IEditableObject, IEquatable<MedicineWrapper>
 {
 
-
-    public MedicineWrapper(Medicine medicine)
+    public MedicineWrapper(Medicine? medicine = null)
     {
-        MedicineData = medicine;
+        MedicineData = medicine ?? new();
         ErrorsChanged += Suspect_ErrorsChanged;
-        //NotifyAboutProperties();
+
     }
 
-    public MedicineWrapper()
-    {
-        MedicineData = new();
-        ErrorsChanged += Suspect_ErrorsChanged;
-        //NotifyAboutProperties();
-    }
 
     private void Suspect_ErrorsChanged(object sender, DataErrorsChangedEventArgs e)
     {
-        OnPropertyChanged(nameof(Errors));
-        OnPropertyChanged(nameof(NameErrors));
-        OnPropertyChanged(nameof(TypeErrors));
-        OnPropertyChanged(nameof(HasNameErrors));
-        OnPropertyChanged(nameof(HasTypeErrors));
-        OnPropertyChanged(nameof(AreNoErrors));
+        NotifyAboutAllProperties();
     }
 
-    public override string ToString() => $"MedicineWrapper with MedicineData '{Name}' under '{Type}' type";
+    public void NotifyAboutAllProperties() =>
+        OnPropertyChanged(string.Empty);
 
     #region Properties
 
@@ -80,12 +68,6 @@ public partial class MedicineWrapper : ObservableValidator, IEditableObject, IEq
         }
     }
 
-    public void NotifyAboutProperties()
-    {
-        OnPropertyChanged(nameof(Name));
-        OnPropertyChanged(nameof(Type));
-    }
-
 
     public string Errors => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(null) select e.ErrorMessage);
     public string NameErrors => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(nameof(Name)) select e.ErrorMessage);
@@ -97,8 +79,7 @@ public partial class MedicineWrapper : ObservableValidator, IEditableObject, IEq
     public int Id { get => MedicineData.Id; }
 
     // TODO implement cancel button on notification popup
-    public string? BackupedName;
-    public string? BackupedType;
+    private Medicine? BackupData;
 
 
     /// <summary>
@@ -110,7 +91,7 @@ public partial class MedicineWrapper : ObservableValidator, IEditableObject, IEq
     /// <summary>
     /// indicates whether its a new object
     /// </summary>
-    public bool isNew = false;
+    public bool IsNew { get; private set; } = false;
 
     #endregion
 
@@ -119,21 +100,19 @@ public partial class MedicineWrapper : ObservableValidator, IEditableObject, IEq
 
     public void BuckupData()
     {
-        BackupedName = MedicineData.Name;
-        BackupedType = MedicineData.Type;
+        BackupData = MedicineData;   
     }
 
     public void ApplyChanges() => isModified = true;
 
     public void UndoChanges()
     {
-        if (BackupedName != null && BackupedType != null)
+        if (BackupData != null)
         {
-            Name = BackupedName;
-            Type = BackupedType;
+            BackupData = MedicineData;
             isModified = true;
         }
-        
+
     }
 
     #endregion
@@ -162,4 +141,6 @@ public partial class MedicineWrapper : ObservableValidator, IEditableObject, IEq
         Type == other?.Type;
 
     #endregion
+
+    public override string ToString() => $"MedicineWrapper with MedicineData '{Name}' under '{Type}' type";
 }

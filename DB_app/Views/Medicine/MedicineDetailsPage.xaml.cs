@@ -88,7 +88,7 @@ public sealed partial class MedicineDetailsPage : Page
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         ViewModel.CurrentMedicine.BuckupData();
-        ViewModel.CurrentMedicine.NotifyAboutProperties();
+        ViewModel.CurrentMedicine.NotifyAboutAllProperties();
         base.OnNavigatedTo(e);
     }
 

@@ -186,7 +186,8 @@ public partial class App : Application
 
             //var options = optionsBuilder.UseNpgsql(connectionString).Options;
             //optionsBuilder.EnableSensitiveDataLogging();
-            var options = optionsBuilder.EnableSensitiveDataLogging().UseSqlite("Data Source=" + databasePath).Options;
+            //var options = optionsBuilder.EnableSensitiveDataLogging().UseSqlite("Data Source=" + databasePath).Options;
+            var options = optionsBuilder.EnableSensitiveDataLogging().UseSqlite("Data Source=Database.db").Options;
 
             services.AddSingleton<IRepositoryControllerService>(new SQLControllerService(options));
         }).

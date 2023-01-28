@@ -43,7 +43,7 @@ public class SQLMedicineRepository : IMedicineRepository
 
         if (foundMedicine != null)
         {
-            throw new RecordAlreadyExists();
+            throw new RecordAlreadyExistsException();
         }
 
         _db.Medicines.Add(medicine);
@@ -65,7 +65,7 @@ public class SQLMedicineRepository : IMedicineRepository
         }
         else
         {
-            throw new RecordNotFound();
+            throw new RecordNotFoundException();
         }
     }
 
@@ -84,7 +84,7 @@ public class SQLMedicineRepository : IMedicineRepository
         }
         else
         {
-            throw new RecordNotFound();
+            throw new RecordNotFoundException();
         }
     }
 }

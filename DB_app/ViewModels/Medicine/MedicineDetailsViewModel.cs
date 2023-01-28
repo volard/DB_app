@@ -15,17 +15,14 @@ public partial class MedicineDetailsViewModel : ObservableRecipient, IRecipient<
 
     public MedicineDetailsViewModel()
     {
-        CurrentMedicine = new()
-        {
-            isNew = true
-        };
+        CurrentMedicine = new();
         WeakReferenceMessenger.Default.Register(this);
     }
 
     public void Receive(ShowRecordDetailsMessage<MedicineWrapper> message)
     {
         CurrentMedicine = message.Value;
-        //CurrentMedicine.NotifyAboutProperties();
+        //CurrentMedicine.NotifyAboutAllProperties();
     }
 
     public MedicineDetailsViewModel(MedicineWrapper medicineWrapper)
@@ -45,7 +42,7 @@ public partial class MedicineDetailsViewModel : ObservableRecipient, IRecipient<
     /// </summary>
     public async Task SaveAsync()
     {
-        if (CurrentMedicine.isNew) // Create new medicine
+        if (CurrentMedicine.IsNew) // Create new medicine
         {
             await _repositoryControllerService.Medicines.InsertAsync(CurrentMedicine.MedicineData);
         }

@@ -111,7 +111,6 @@ public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEq
     public int Id { get => HospitalData.Id; }
 
 
-    // TODO that looks disgusting. I wonder if functions in xaml bindings works properly for me
     public string Errors
         => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(null) select e.ErrorMessage);
     public string Name_main_doctorErrors

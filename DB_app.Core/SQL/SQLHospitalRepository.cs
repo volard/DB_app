@@ -42,7 +42,7 @@ public class SQLHospitalRepository : IHospitalRepository
 
         if (foundHospital != null)
         {
-            throw new SaveDublicateRecordException();
+            throw new RecordAlreadyExistsException();
         }
 
         if (hospital.Addresses == null || hospital.Addresses.Count == 0)

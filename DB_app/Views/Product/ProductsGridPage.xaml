@@ -75,7 +75,7 @@
 
                 <toolkit:DataGrid.Columns>
 
-                    <!--  As I got it, DataGrid doesn't support x:Bind  -->
+                    
                     <toolkit:DataGridTextColumn
                         Width="30*"
                         Binding="{Binding PharmacyName}"

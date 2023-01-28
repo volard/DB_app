@@ -29,7 +29,7 @@ public class SQLProductRepository : IProductRepository
         }
         else
         {
-            throw new RecordNotFound();
+            throw new RecordNotFoundException();
         }
     }
 
@@ -110,7 +110,7 @@ public class SQLProductRepository : IProductRepository
         }
         else
         {
-            throw new RecordNotFound();
+            throw new RecordNotFoundException();
         }
     }
 }

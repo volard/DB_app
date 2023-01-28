@@ -45,12 +45,12 @@ public class SQLPharmacyRepository : IPharmacyRepository
 
         if (foundPharmacy != null)
         {
-            throw new SaveDublicateRecordException();
+            throw new RecordAlreadyExistsException();
         }
 
         if ((pharmacy.Locations == null || pharmacy.Locations.Count == 0) && pharmacy.IsActive)
         {
-            throw new ActiveOrganisationMissingLocation();
+            throw new ActiveOrganisationMissingLocationException();
         }
 
         _db.Pharmacies.Add(pharmacy);
@@ -71,12 +71,12 @@ public class SQLPharmacyRepository : IPharmacyRepository
 
             if (!foundPharmacy.IsActive)
             {
-                throw new InactiveOrganisationReadonly();
+                throw new InactiveOrganisationReadonlyException();
             }
 
             if ((pharmacy.Locations == null || pharmacy.Locations.Count == 0) && pharmacy.IsActive)
             {
-                throw new ActiveOrganisationMissingLocation();
+                throw new ActiveOrganisationMissingLocationException();
             }
 
             _db.Entry(foundPharmacy).CurrentValues.SetValues(pharmacy);
@@ -84,7 +84,7 @@ public class SQLPharmacyRepository : IPharmacyRepository
         }
         else
         {
-            throw new RecordNotFound();
+            throw new RecordNotFoundException();
         }
     }
 
@@ -99,7 +99,7 @@ public class SQLPharmacyRepository : IPharmacyRepository
             // TODO here is problerm
             //if (_db.Orders.Any(order => order.Items == id))
             //{
-            //    throw new RecordLinkedWithOrder();
+            //    throw new RecordLinkedWithOrderException();
             //}
 
             _db.Pharmacies.Remove(foundPharmacy);
@@ -112,7 +112,7 @@ public class SQLPharmacyRepository : IPharmacyRepository
         }
         else
         {
-            throw new RecordNotFound();
+            throw new RecordNotFoundException();
         }
     }
 

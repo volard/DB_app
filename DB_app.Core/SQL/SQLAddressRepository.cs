@@ -61,8 +61,10 @@ public class SQLAddressRepository : IAddressRepository
     }
 
 
-
     /// <inheritdoc/>
+    /// <exception cref="RecordNotFoundException">
+    /// Thrown if attempt to delete non-existent record was made
+    /// </exception>  
     public async Task DeleteAsync(int id)
     {
         var foundAddress = await _db.Addresses.FirstOrDefaultAsync(_address => _address.Id == id);
@@ -70,11 +72,10 @@ public class SQLAddressRepository : IAddressRepository
         {
             _db.Addresses.Remove(foundAddress);
             await _db.SaveChangesAsync();
-            Debug.WriteLine("DeleteAsync - Address : " + foundAddress + "was succesfully deleted from the Database");
         }
         else
         {
-            Debug.WriteLine("DeleteAsync - Address : No address under specified id was found in the Database");
+            throw new RecordNotFoundException();
         }
     }
 }

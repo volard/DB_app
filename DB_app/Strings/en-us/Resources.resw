@@ -180,4 +180,7 @@
   <data name="Shell_AddressesGrid.Content" xml:space="preserve">
     <value>Addresses</value>
   </data>
+  <data name="RecordForDeletionNotFoundException" xml:space="preserve">
+    <value>The record for deletion doesn't found in the database. Try to sync data.</value>
+  </data>
 </root>

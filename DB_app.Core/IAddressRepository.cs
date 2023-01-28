@@ -6,8 +6,9 @@ public interface IAddressRepository
     /// <summary>
     /// Deletes specified address
     /// </summary>
-    // TODO implement all this restriction stuff or how is it called
+    /// <param name="id">Address' id to delete</param>
     public Task DeleteAsync(int id);
+    // TODO implement all this restriction stuff or how is it called
 
     /// <summary>
     /// Returns all addresses. 

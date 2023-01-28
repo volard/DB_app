@@ -81,45 +81,13 @@ public partial class MedicinesGridViewModel : ObservableRecipient, INavigationAw
             InfoBarMessage = "Medicine was deleted";
             InfoBarSeverity = Microsoft.UI.Xaml.Controls.InfoBarSeverity.Success;
             IsInfoBarOpened = true;
-
-
-            // TODO this is fukin sick
-            // Raise the PropertyChanged event for all properties.
-            // OnPropertyChanged(string.Empty);
         }
     }
 
-    public void InsertToGridNewWrapper(MedicineWrapper givenMedicineWrapper)
-    {
-        givenMedicineWrapper.isNew = false;
-        Source.Insert(0, givenMedicineWrapper);
-        selectedGridIndex = 0;
-    }
 
     public void SendPrikol()
     {
         WeakReferenceMessenger.Default.Send(new ShowRecordDetailsMessage<MedicineWrapper>(_selectedItem));
-    }
-
-
-    /// <summary>
-    /// Saves any modified MedicineWrappers and reloads the MedicineWrapper list from the database.
-    /// </summary>
-    public void UpdateGridWithEditedWrapper(MedicineWrapper givenMedicineWrapper)
-    {
-        // TODO rename it or something IDK it's just looks terrible imo
-        //var foundInSource = Source.FirstOrDefault(wrapper => wrapper.MedicineData.Id == givenMedicineWrapper.MedicineData.Id);
-        //if (foundInSource != null)
-        //{
-        //    givenMedicineWrapper.IsModified = false;
-        //    int index = Source.IndexOf(foundInSource);
-        //    Source[index] = givenMedicineWrapper;
-
-        //    Debug.WriteLine($"so index = {index} and wrapper is {givenMedicineWrapper}");
-        //    selectedGridIndex = index;
-        //}
-        SelectedItem = givenMedicineWrapper;
-        OnPropertyChanged("SelectedItem");
     }
 
 
@@ -142,14 +110,6 @@ public partial class MedicinesGridViewModel : ObservableRecipient, INavigationAw
 
     public void Receive(AddRecordMessage<MedicineWrapper> message)
     {
-        var givenMedicineWrapper = message.Value;
-        if (givenMedicineWrapper.isNew)
-        {
-            InsertToGridNewWrapper(givenMedicineWrapper);
-        }
-        else
-        {
-            UpdateGridWithEditedWrapper(givenMedicineWrapper);
-        }
+        
     }
 }

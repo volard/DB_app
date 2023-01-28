@@ -12,7 +12,7 @@
   <Identity
     Name="143B4C51-0F44-4D70-BB38-F638E2F61F1B"
     Publisher="CN=volard"
-    Version="1.0.0.0" />
+    Version="1.0.3.0" />
 
   <Properties>
     <DisplayName>DB_app</DisplayName>
