@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:DB_app.Views.Components"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="self"
     mc:Ignorable="d">
 
     <Grid HorizontalAlignment="Left" ColumnSpacing="12">
@@ -14,12 +15,15 @@
         </Grid.ColumnDefinitions>
 
 
+        <!--I didnt get it...-->
+        <!--https://social.msdn.microsoft.com/Forums/vstudio/en-US/70bbea59-63d8-4854-be5e-2f7691cfde2f/dependencyproperty-does-not-listen-to-propertychanged-event?forum=wpf -->
         <TextBox
             x:Name="PART_TextBox"
             Margin="10,20,0,8"
             HorizontalAlignment="Stretch"
             Header="{x:Bind HeaderText}"
             IsSpellCheckEnabled="False"
+            IsReadOnly="{Binding IsReadOnly, ElementName=self}"
             PlaceholderText="{x:Bind PlaceholderText}"
             Text="{x:Bind Text}"
             TextChanged="PART_TextBox_TextChanged" />

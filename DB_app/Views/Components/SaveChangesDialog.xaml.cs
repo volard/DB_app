@@ -14,7 +14,7 @@ public sealed partial class SaveChangesDialog : ContentDialog
     /// </summary>
     public SaveChangesDialog()
     {
-        //InitializeComponent();
+        InitializeComponent();
     }
 
     /// <summary>

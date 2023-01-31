@@ -12,7 +12,10 @@ namespace DB_app.ViewModels;
 /// </summary>
 public sealed partial class AddressWrapper : ObservableValidator, IEditableObject
 {
-
+    /// <summary>
+    /// Initialize new AddressWrapper object
+    /// </summary>
+    /// <param name="address">Address model representing by the wrapper</param>
     public AddressWrapper(Address? address = null)
     {
         if (address == null)
@@ -70,14 +73,18 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
     private bool isModified = false;
 
 
+    /// <summary>
+    /// Indicate edit mode
+    /// </summary>
     [ObservableProperty]
-    private bool _isInEdit;
+    private bool isInEdit = false;
 
 
     /// <summary>
     /// indicates whether its a new object
     /// </summary>
-    public bool IsNew { get; private set; } = false;
+    [ObservableProperty]
+    private bool _isNew = false;
 
     #endregion
 
@@ -109,7 +116,11 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
 
 
     public void BeginEdit()
-    => Backup();
+    {
+        this.IsInEdit = true;
+        OnPropertyChanged(nameof(IsInEdit));
+        Backup();
+    }
 
     public void CancelEdit()
     {
@@ -117,10 +128,12 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
         Street = _addressData.Street;
         Building = _addressData.Building;
         IsModified = false;
+        IsInEdit= false;
     }
 
     public void EndEdit()
     {
+        IsInEdit= false;
         _addressData.City = City;
         _addressData.Street = Street;
         _addressData.Building = Building;
