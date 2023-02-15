@@ -1,4 +1,5 @@
 using DB_app.Behaviors;
+using DB_app.Core.Contracts.Services;
 using DB_app.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -38,22 +39,24 @@ public sealed partial class AddressDetailsPage : Page
     /// </summary>
     private void CancelButton_Click(object? sender, RoutedEventArgs e)
     {
-
+        ViewModel.CurrentAddress.CancelEdit();
+        ViewModel.CurrentAddress.IsInEdit = false;
     }
 
 
-    private void DeleteButton_Click(object? sender, RoutedEventArgs e)
+    private async void DeleteButton_Click(object? sender, RoutedEventArgs e)
     {
-
+        Frame.GoBack();
+        await App.GetService<IRepositoryControllerService>().Addresses.DeleteAsync(ViewModel.CurrentAddress.Id);
     }
 
     private void AddButton_Click(object? sender, RoutedEventArgs e)
     {
         if (ViewModel.CurrentAddress.IsInEdit)
         {
-            // Display notification
+            // TODO Display notification
+            ViewModel.CurrentAddress.IsInEdit = false;
         }
-
     }
 
 
@@ -65,13 +68,13 @@ public sealed partial class AddressDetailsPage : Page
 
         if (ViewModel.CurrentAddress.IsModified)
         {
-            var saveDialog = new SaveChangesDialog()
+            var saveDialog = new SaveChangesDialog
             {
                 Title = $"Save changes?",
                 Content = $"This address " +
-                    "has unsaved changes that will be lost. Do you want to save your changes?"
+                    "has unsaved changes that will be lost. Do you want to save your changes?",
+                XamlRoot = this.Content.XamlRoot
             };
-            saveDialog.XamlRoot = this.Content.XamlRoot;
             await saveDialog.ShowAsync();
             SaveChangesDialogResult result = saveDialog.Result;
 

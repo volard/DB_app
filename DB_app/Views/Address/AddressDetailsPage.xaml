@@ -49,6 +49,7 @@
                 <AppBarSeparator />
                 <AppBarButton
                     Icon="Delete"
+                    Click="DeleteButton_Click"
                     Label="Delete"
                     Visibility="{Binding CurrentAddress.IsNew, Converter={StaticResource CollapsedIf}, Mode=OneWay}" />
                 <AppBarButton Icon="Add" Label="Add new" />
