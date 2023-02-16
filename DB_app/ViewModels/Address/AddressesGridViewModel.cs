@@ -1,11 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
 using DB_app.Contracts.ViewModels;
 using DB_app.Core.Contracts.Services;
+using DB_app.Services.Messages;
 using System.Collections.ObjectModel;
 
 namespace DB_app.ViewModels;
 
-public partial class AddressesGridViewModel : ObservableRecipient, INavigationAware
+public partial class AddressesGridViewModel : ObservableRecipient, INavigationAware, IRecipient<DeleteRecordMessage<AddressWrapper>>
 {
     private readonly IRepositoryControllerService _repositoryControllerService
         = App.GetService<IRepositoryControllerService>();
@@ -15,6 +17,17 @@ public partial class AddressesGridViewModel : ObservableRecipient, INavigationAw
     /// </summary>
     public ObservableCollection<AddressWrapper> Source { get; set; }
         = new ObservableCollection<AddressWrapper>();
+
+    public AddressesGridViewModel()
+    {
+        WeakReferenceMessenger.Default.Register(this);
+    }
+
+    public void Receive(DeleteRecordMessage<AddressWrapper> message)
+    {
+        var givenAddressWrapper = message.Value;
+        Source.Remove(givenAddressWrapper);
+    }
 
 
     /// <summary>

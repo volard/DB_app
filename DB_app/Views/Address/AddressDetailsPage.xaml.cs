@@ -1,5 +1,7 @@
+using CommunityToolkit.Mvvm.Messaging;
 using DB_app.Behaviors;
 using DB_app.Core.Contracts.Services;
+using DB_app.Services.Messages;
 using DB_app.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -47,7 +49,9 @@ public sealed partial class AddressDetailsPage : Page
     private async void DeleteButton_Click(object? sender, RoutedEventArgs e)
     {
         Frame.GoBack();
+        
         await App.GetService<IRepositoryControllerService>().Addresses.DeleteAsync(ViewModel.CurrentAddress.Id);
+        WeakReferenceMessenger.Default.Send(new DeleteRecordMessage<AddressWrapper>(ViewModel.CurrentAddress));
     }
 
     private void AddButton_Click(object? sender, RoutedEventArgs e)
