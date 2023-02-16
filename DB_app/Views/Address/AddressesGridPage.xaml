@@ -29,14 +29,21 @@
 
                 <AppBarButton
                     x:Name="CommandBarAddButton"
-                    Click="AddNewAddress_Click"
+                    Click="Add_Click"
                     Icon="Add"
                     Label="Add new"
                     ToolTipService.ToolTip="Add new" />
+                <AppBarButton
+                    x:Name="CommandBarViewButton"
+                    Click="View_Click"
+                    Icon="OpenLocal"
+                    IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
+                    Label="View"
+                    ToolTipService.ToolTip="View" />
 
                 <AppBarButton
                     x:Name="CommandBarEditButton"
-                    Click="EditExistingAddress_Click"
+                    Click="Edit_Click"
                     Icon="Edit"
                     IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
                     Label="Edit"
@@ -44,7 +51,7 @@
 
                 <AppBarButton
                     x:Name="CommandBarDeleteButton"
-                    Click="DeleteFancy"
+                    Click="Delete_Click"
                     Icon="Delete"
                     IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
                     Label="Delete"

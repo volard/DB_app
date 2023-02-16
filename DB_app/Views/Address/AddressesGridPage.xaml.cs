@@ -27,19 +27,24 @@ public sealed partial class AddressesGridPage : Page
     }
 
 
-    private void AddNewAddress_Click(object sender, RoutedEventArgs e) =>
-        Frame.Navigate(typeof(AddressDetailsPage), null, new DrillInNavigationTransitionInfo());
+    private void Add_Click(object sender, RoutedEventArgs e) =>
+        Frame.Navigate(typeof(AddressDetailsPage), new AddressWrapper() { IsInEdit = true }, new DrillInNavigationTransitionInfo());
 
 
-    private async void DeleteFancy(object sender, RoutedEventArgs e)
+    private void View_Click(object sender, RoutedEventArgs e) =>
+        Frame.Navigate(typeof(AddressDetailsPage), ViewModel.SelectedItem, new DrillInNavigationTransitionInfo());
+
+
+    private async void Delete_Click(object sender, RoutedEventArgs e)
     {
         await ViewModel.DeleteSelected();
         Notification.Show();
     }
 
 
-    private void EditExistingAddress_Click(object sender, RoutedEventArgs e)
+    private void Edit_Click(object sender, RoutedEventArgs e)
     {
+        ViewModel.SelectedItem!.IsInEdit = true;
         App.GetService<INavigationService>().NavigateTo(typeof(AddressDetailsViewModel).FullName!, ViewModel.SelectedItem);
     }
 }

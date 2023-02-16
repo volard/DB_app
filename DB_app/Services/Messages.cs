@@ -10,6 +10,11 @@ public class AddRecordMessage<T> : ValueChangedMessage<T>
     }
 }
 
+public class DeleteRecordMessage<T> : ValueChangedMessage<T>
+{
+    public DeleteRecordMessage(T value) : base(value) { }
+}
+
 public class ShowRecordDetailsMessage<T> : ValueChangedMessage<T>
 {
     public ShowRecordDetailsMessage(T value) : base(value)

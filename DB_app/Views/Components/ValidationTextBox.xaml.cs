@@ -15,6 +15,7 @@ public sealed partial class ValidationTextBox : UserControl
     {
         this.InitializeComponent();
         DataContextChanged += ValidationTextBox_DataContextChanged;
+
     }
 
 
@@ -42,6 +43,31 @@ public sealed partial class ValidationTextBox : UserControl
         typeof(string),
         typeof(ValidationTextBox),
         new PropertyMetadata(default(string)));
+
+
+
+
+
+    public event TextChangedEventHandler CustomTextChanged;
+
+
+
+    public bool IsReadOnly
+    {
+        get { return (bool)GetValue(IsReadOnlyProperty); }
+        set { SetValue(IsReadOnlyProperty, value); }
+    }
+
+    // Using a DependencyProperty as the backing store for IsReadOnly.  This enables animation, styling, binding, etc...
+    public static readonly DependencyProperty IsReadOnlyProperty =
+        DependencyProperty.Register(
+            nameof(IsReadOnly),
+            typeof(bool),
+            typeof(ValidationTextBox),
+            new PropertyMetadata(null));
+
+
+
 
 
     /// <summary>
@@ -153,6 +179,7 @@ public sealed partial class ValidationTextBox : UserControl
     {
         Text = ((TextBox)sender).Text;
         RefreshErrors();
+        CustomTextChanged?.Invoke(this, e);
     }
 
 

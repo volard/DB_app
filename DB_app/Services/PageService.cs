@@ -13,7 +13,7 @@ public class PageService : IPageService
     private readonly Dictionary<string, Type> _pages = new();
 
     /// <summary>
-    /// Creates a new <see cref="PageService"/> instance. And configures every page's ViewModel association
+    /// Creates a new <see cref="PageService"/> instance. AndVisibility configures every page's ViewModel association
     /// </summary>
     public PageService()
     {

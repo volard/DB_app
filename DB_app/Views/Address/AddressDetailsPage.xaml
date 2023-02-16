@@ -9,11 +9,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:viewModel="using:DB_app.ViewModels"
-    xmlns:vm="using:DB_app.ViewModels"
     mc:Ignorable="d">
 
     <Page.Resources>
         <helpers:NotConverter x:Key="NotConverter" />
+        <helpers:VisibleIfConverter x:Key="VisibleIf" />
+        <helpers:CollapsedIf x:Key="CollapsedIf" />
     </Page.Resources>
 
 
@@ -26,23 +27,36 @@
                 Background="Transparent"
                 DefaultLabelPosition="Right">
                 <CommandBar.Content>
-                    <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="{x:Bind }" />
+                    <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="{x:Bind PageTitle, Mode=OneWay}" />
                 </CommandBar.Content>
 
                 <AppBarButton
                     Click="SaveButton_Click"
                     Icon="Save"
-                    IsEnabled="{Binding CurrentAddress.HasErrors, Converter={StaticResource NotConverter}}"
-                    Label="Save" />
+                    IsEnabled="{Binding CurrentAddress.HasErrors, Converter={StaticResource NotConverter}, Mode=OneWay}"
+                    Label="Save"
+                    Visibility="{Binding CurrentAddress.IsInEdit, Converter={StaticResource VisibleIf}, Mode=OneWay}" />
                 <AppBarButton
-                    Click="CancelEdit_Click"
+                    Click="{x:Bind CurrentAddress.BeginEdit}"
+                    Icon="Edit"
+                    Label="Edit"
+                    Visibility="{x:Bind viewModel:Converters.CollapsedIfOneOfTwo(CurrentAddress.IsInEdit, CurrentAddress.IsNew), Mode=OneWay}" />
+                <AppBarButton
+                    Click="{x:Bind CurrentAddress.EndEdit}"
                     Icon="Cancel"
-                    Label="Cancel" />
+                    Label="Cancel"
+                    Visibility="{x:Bind viewModel:Converters.VisibleIfOneAndNotAnother(CurrentAddress.IsInEdit, CurrentAddress.IsNew), Mode=OneWay}" />
                 <AppBarSeparator />
                 <AppBarButton
-                    Click="CancelEdit_Click"
-                    Icon="Cancel"
-                    Label="Cancel" />
+                    Click="DeleteButton_Click"
+                    Icon="Delete"
+                    Label="Delete"
+                    Visibility="{Binding CurrentAddress.IsNew, Converter={StaticResource CollapsedIf}, Mode=OneWay}" />
+                <AppBarButton
+                    Click="AddButton_Click"
+                    Icon="Add"
+                    Label="Add new" />
+
                 <AppBarSeparator />
             </CommandBar>
         </DataTemplate>
@@ -50,7 +64,7 @@
 
     <!--#endregion-->
 
-    
+
     <!--#region Page's content-->
     <ScrollViewer
         x:Name="DetailPanel"
@@ -67,6 +81,7 @@
                 x:Name="City"
                 DataContext="{x:Bind ViewModel.CurrentAddress}"
                 HeaderText="City"
+                IsReadOnly="{x:Bind ViewModel.CurrentAddress.IsInEdit, Converter={StaticResource NotConverter}, Mode=OneWay}"
                 PlaceholderText="Enter city"
                 PropertyName="City"
                 Text="{x:Bind ViewModel.CurrentAddress.City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -75,6 +90,7 @@
                 x:Name="Street"
                 DataContext="{x:Bind ViewModel.CurrentAddress}"
                 HeaderText="Street"
+                IsReadOnly="{x:Bind ViewModel.CurrentAddress.IsInEdit, Converter={StaticResource NotConverter}, Mode=OneWay}"
                 PlaceholderText="Enter street"
                 PropertyName="Street"
                 Text="{x:Bind ViewModel.CurrentAddress.Street, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -83,9 +99,19 @@
                 x:Name="Building"
                 DataContext="{x:Bind ViewModel.CurrentAddress}"
                 HeaderText="Building"
+                IsReadOnly="{Binding IsInEdit, Converter={StaticResource NotConverter}, Mode=OneWay}"
                 PlaceholderText="Enter building"
                 PropertyName="Building"
                 Text="{x:Bind ViewModel.CurrentAddress.Building, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            <toolkit:InAppNotification
+                x:Name="Notification"
+                AnimationDuration="2000"
+                Content="Shit happends bro"
+                HorizontalOffset="400"
+                RelativePanel.AlignBottomWithPanel="True"
+                RelativePanel.AlignHorizontalCenterWithPanel="True"
+                StackMode="Replace" />
 
 
         </StackPanel>

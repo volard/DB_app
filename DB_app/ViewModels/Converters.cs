@@ -54,4 +54,20 @@ public static class Converters{
 
     public static bool DisabledIfNullOrEmpty(string value) =>
         !string.IsNullOrEmpty(value);
+
+    public static Visibility AndVisibility(bool lhs, bool rhs)
+    {
+        if (lhs && rhs) return Visibility.Visible; else return Visibility.Collapsed;
+    }
+
+
+    public static Visibility CollapsedIfOneOfTwo(bool lhs, bool rhs)
+    {
+        if (lhs || rhs) return Visibility.Collapsed; else return Visibility.Visible;
+    }
+
+    public static Visibility VisibleIfOneAndNotAnother(bool lhs, bool rhs)
+    {
+        if (lhs && !rhs) return Visibility.Visible; else return Visibility.Collapsed;
+    }
 }
