@@ -70,6 +70,11 @@ public class SQLAddressRepository : IAddressRepository
         var foundAddress = await _db.Addresses.FirstOrDefaultAsync(_address => _address.Id == id);
         if (foundAddress != null)
         {
+            var isLinkedToHospital = await _db.HospitalLocations.AnyAsync(_location => _location.Address == foundAddress);
+            if (isLinkedToHospital) { throw new LinkedRecordOperationException(); }
+            var isLinkedToPharmacy = await _db.PharmacyLocations.AnyAsync(_location => _location.Address == foundAddress);
+            if (isLinkedToPharmacy) { throw new LinkedRecordOperationException(); }
+
             _db.Addresses.Remove(foundAddress);
             await _db.SaveChangesAsync();
         }
