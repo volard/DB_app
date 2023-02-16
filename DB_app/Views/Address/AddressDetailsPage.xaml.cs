@@ -61,7 +61,10 @@ public sealed partial class AddressDetailsPage : Page
             // TODO Display notification
             ViewModel.CurrentAddress.IsInEdit = false;
         }
+        Frame.Navigate(typeof(AddressDetailsPage));
+        Frame.BackStack.Remove(Frame.BackStack.Last());
     }
+
 
 
     /// <summary>
@@ -69,7 +72,6 @@ public sealed partial class AddressDetailsPage : Page
     /// </summary>
     protected override async void OnNavigatingFrom(NavigatingCancelEventArgs e)
     {
-
         if (ViewModel.CurrentAddress.IsModified)
         {
             var saveDialog = new SaveChangesDialog

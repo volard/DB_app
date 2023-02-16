@@ -80,7 +80,7 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
 
 
     /// <summary>
-    /// indicates whether its a new object
+    /// Indicates whether its a new object
     /// </summary>
     [ObservableProperty]
     private bool _isNew = false;

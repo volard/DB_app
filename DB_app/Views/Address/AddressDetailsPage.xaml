@@ -48,11 +48,14 @@
                     Visibility="{x:Bind viewModel:Converters.VisibleIfOneAndNotAnother(CurrentAddress.IsInEdit, CurrentAddress.IsNew), Mode=OneWay}" />
                 <AppBarSeparator />
                 <AppBarButton
-                    Icon="Delete"
                     Click="DeleteButton_Click"
+                    Icon="Delete"
                     Label="Delete"
                     Visibility="{Binding CurrentAddress.IsNew, Converter={StaticResource CollapsedIf}, Mode=OneWay}" />
-                <AppBarButton Icon="Add" Label="Add new" />
+                <AppBarButton
+                    Click="AddButton_Click"
+                    Icon="Add"
+                    Label="Add new" />
 
                 <AppBarSeparator />
             </CommandBar>
@@ -101,14 +104,14 @@
                 PropertyName="Building"
                 Text="{x:Bind ViewModel.CurrentAddress.Building, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
- <toolkit:InAppNotification
-            x:Name="Notification"
-            AnimationDuration="2000"
-            Content="Shit happends bro"
-            HorizontalOffset="400"
-            RelativePanel.AlignBottomWithPanel="True"
-            RelativePanel.AlignHorizontalCenterWithPanel="True"
-            StackMode="Replace" />
+            <toolkit:InAppNotification
+                x:Name="Notification"
+                AnimationDuration="2000"
+                Content="Shit happends bro"
+                HorizontalOffset="400"
+                RelativePanel.AlignBottomWithPanel="True"
+                RelativePanel.AlignHorizontalCenterWithPanel="True"
+                StackMode="Replace" />
 
 
         </StackPanel>
