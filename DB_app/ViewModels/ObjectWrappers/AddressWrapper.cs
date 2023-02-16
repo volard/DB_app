@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using DB_app.Core.Contracts.Services;
 using DB_app.Entities;
-using Microsoft.UI.Xaml;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
