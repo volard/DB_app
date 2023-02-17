@@ -26,6 +26,11 @@ public sealed partial class AddressesGridPage : Page
         });
     }
 
+    protected override void OnNavigatedTo(NavigationEventArgs e)
+    {
+        ViewModel.D
+        base.OnNavigatedTo(e);
+    }
 
     private void Add_Click(object sender, RoutedEventArgs e) =>
         Frame.Navigate(typeof(AddressDetailsPage), new AddressWrapper() { IsInEdit = true }, new DrillInNavigationTransitionInfo());
@@ -33,6 +38,7 @@ public sealed partial class AddressesGridPage : Page
 
     private void View_Click(object sender, RoutedEventArgs e) =>
         Frame.Navigate(typeof(AddressDetailsPage), ViewModel.SelectedItem, new DrillInNavigationTransitionInfo());
+
 
 
     private async void Delete_Click(object sender, RoutedEventArgs e)

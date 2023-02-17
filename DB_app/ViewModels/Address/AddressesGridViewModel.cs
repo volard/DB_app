@@ -37,6 +37,9 @@ public partial class AddressesGridViewModel : ObservableRecipient, INavigationAw
     private AddressWrapper? _selectedItem;
 
 
+    public event EventHandler OperationRejected;
+
+
     public async Task DeleteSelected()
     {
         if (SelectedItem != null)
