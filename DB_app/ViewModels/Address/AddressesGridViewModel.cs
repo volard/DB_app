@@ -2,8 +2,11 @@
 using CommunityToolkit.Mvvm.Messaging;
 using DB_app.Contracts.ViewModels;
 using DB_app.Core.Contracts.Services;
+using DB_app.Helpers;
+using DB_app.Repository;
 using DB_app.Services.Messages;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace DB_app.ViewModels;
 
@@ -37,17 +40,28 @@ public partial class AddressesGridViewModel : ObservableRecipient, INavigationAw
     private AddressWrapper? _selectedItem;
 
 
-    public event EventHandler OperationRejected;
+    public event EventHandler<ListEventArgs> OperationRejected;
 
 
     public async Task DeleteSelected()
     {
         if (SelectedItem != null)
         {
-            int id = SelectedItem.AddressData.Id;
-            await _repositoryControllerService.Addresses.DeleteAsync(id);
+            try
+            {
 
-            Source.Remove(SelectedItem);
+                int id = SelectedItem.AddressData.Id;
+                await _repositoryControllerService.Addresses.DeleteAsync(id);
+
+                Source.Remove(SelectedItem);
+
+                OperationRejected?.Invoke(this, new ListEventArgs(new List<String>() { "Everything is good" }));
+
+            }
+            catch (LinkedRecordOperationException)
+            {
+                OperationRejected?.Invoke(this, new ListEventArgs(new List<String>() { "Адресс связан с организацией. Удалите связанную организацию, чтобы удалить адрес" }));
+            }
         }
     }
 

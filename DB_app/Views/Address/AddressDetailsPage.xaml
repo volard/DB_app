@@ -106,9 +106,6 @@
 
             <toolkit:InAppNotification
                 x:Name="Notification"
-                AnimationDuration="2000"
-                Content="Shit happends bro"
-                HorizontalOffset="400"
                 RelativePanel.AlignBottomWithPanel="True"
                 RelativePanel.AlignHorizontalCenterWithPanel="True"
                 StackMode="Replace" />

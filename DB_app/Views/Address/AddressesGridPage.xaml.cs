@@ -1,5 +1,6 @@
 using DB_app.Behaviors;
 using DB_app.Contracts.Services;
+using DB_app.Helpers;
 using DB_app.Services;
 using DB_app.ViewModels;
 using Microsoft.UI.Xaml;
@@ -7,6 +8,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
+using System.Diagnostics;
 
 namespace DB_app.Views;
 
@@ -28,8 +30,15 @@ public sealed partial class AddressesGridPage : Page
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
-        ViewModel.D
+        ViewModel.OperationRejected += ShowNotificationMessage;
         base.OnNavigatedTo(e);
+    }
+
+    private void ShowNotificationMessage(object? sender, ListEventArgs e)
+    {
+        var message = e.Data[0];
+        Notification.Content = message;
+        Notification.Show(2000);
     }
 
     private void Add_Click(object sender, RoutedEventArgs e) =>
@@ -41,11 +50,8 @@ public sealed partial class AddressesGridPage : Page
 
 
 
-    private async void Delete_Click(object sender, RoutedEventArgs e)
-    {
+    private async void Delete_Click(object sender, RoutedEventArgs e) =>
         await ViewModel.DeleteSelected();
-        Notification.Show();
-    }
 
 
     private void Edit_Click(object sender, RoutedEventArgs e)

@@ -48,10 +48,18 @@ public sealed partial class AddressDetailsPage : Page
 
     private async void DeleteButton_Click(object? sender, RoutedEventArgs e)
     {
-        Frame.GoBack();
-        
-        await App.GetService<IRepositoryControllerService>().Addresses.DeleteAsync(ViewModel.CurrentAddress.Id);
-        WeakReferenceMessenger.Default.Send(new DeleteRecordMessage<AddressWrapper>(ViewModel.CurrentAddress));
+        try
+        {
+            await App.GetService<IRepositoryControllerService>().Addresses.DeleteAsync(ViewModel.CurrentAddress.Id);
+            Frame.GoBack();
+            WeakReferenceMessenger.Default.Send(new DeleteRecordMessage<AddressWrapper>(ViewModel.CurrentAddress));
+        } 
+        catch (Exception)
+        {
+            var message = "жоская ошебка";
+            Notification.Content = message;
+            Notification.Show(2000);
+        }
     }
 
     private void AddButton_Click(object? sender, RoutedEventArgs e)
@@ -72,47 +80,51 @@ public sealed partial class AddressDetailsPage : Page
     /// </summary>
     protected override async void OnNavigatingFrom(NavigatingCancelEventArgs e)
     {
-        if (ViewModel.CurrentAddress.IsModified)
-        {
-            var saveDialog = new SaveChangesDialog
-            {
-                Title = $"Save changes?",
-                Content = $"This address " +
-                    "has unsaved changes that will be lost. Do you want to save your changes?",
-                XamlRoot = this.Content.XamlRoot
-            };
-            await saveDialog.ShowAsync();
-            SaveChangesDialogResult result = saveDialog.Result;
 
-            switch (result)
-            {
-                case SaveChangesDialogResult.Save:
-                    await ViewModel.CurrentAddress.SaveAsync();
-                    break;
-                case SaveChangesDialogResult.DontSave:
-                    break;
-                case SaveChangesDialogResult.Cancel:
-                    if (e.NavigationMode == NavigationMode.Back)
-                    {
-                        Frame.GoForward();
-                    }
-                    else
-                    {
-                        Frame.GoBack();
-                    }
-                    e.Cancel = true;
+        // TODO add confirmation feature etc
+        //if (ViewModel.CurrentAddress.IsModified)
+        //{
+        //    var saveDialog = new SaveChangesDialog
+        //    {
+        //        Title = $"Save changes?",
+        //        Content = $"This address " +
+        //            "has unsaved changes that will be lost. Do you want to save your changes?",
+        //        XamlRoot = this.Content.XamlRoot
+        //    };
+        //    await saveDialog.ShowAsync();
+        //    SaveChangesDialogResult result = saveDialog.Result;
 
-                    // This flag gets cleared on navigation, so restore it. 
-                    ViewModel.CurrentAddress.IsModified = true;
-                    break;
-            }
-        }
+        //    switch (result)
+        //    {
+        //        case SaveChangesDialogResult.Save:
+        //            await ViewModel.CurrentAddress.SaveAsync();
+        //            break;
+        //        case SaveChangesDialogResult.DontSave:
+        //            break;
+        //        case SaveChangesDialogResult.Cancel:
+        //            if (e.NavigationMode == NavigationMode.Back)
+        //            {
+        //                Frame.GoForward();
+        //            }
+        //            else
+        //            {
+        //                Frame.GoBack();
+        //            }
+        //            e.Cancel = true;
+
+        //            // This flag gets cleared on navigation, so restore it. 
+        //            ViewModel.CurrentAddress.IsModified = true;
+        //            break;
+        //    }
+        //}
 
         base.OnNavigatingFrom(e);
     }
 
     private void Text_TextChanged(object sender, TextChangedEventArgs e)
     {
+        // NOTE this is useless actually. Every time current address changes - text become in modified state but its 
+        // not modified actually
         if (ViewModel.CurrentAddress.IsInEdit) 
         {
             ViewModel.CurrentAddress.IsModified = true;
