@@ -1,10 +1,12 @@
 ﻿using DB_app.Behaviors;
 using DB_app.ViewModels;
 using Microsoft.UI.Xaml;
+using DB_app.Helpers;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
+using DB_app.Contracts.Services;
 
 namespace DB_app.Views;
 
@@ -25,30 +27,41 @@ public sealed partial class MedicinesGridPage : Page
     }
 
 
-    protected override void OnNavigatedTo(NavigationEventArgs e)
+   protected override void OnNavigatedTo(NavigationEventArgs e)
     {
-        //var givenMedicine = (MedicineWrapper)e.Parameter;
-        //if (givenMedicine != null)
-        //{
-        //    if (givenMedicine.isNew)
-        //    {
-        //        ViewModel.InsertToGridNewWrapper(givenMedicine);
-        //    }
-        //    else if (givenMedicine.IsModified)
-        //    {
-        //        ViewModel.UpdateGridWithEditedWrapper(givenMedicine);
-        //    }
-        //}
-        //base.OnNavigatedTo(e);
-
+        ViewModel.OperationRejected += ShowNotificationMessage;
+        base.OnNavigatedTo(e);
     }
 
-    private void AddNewMedicine_Click(object sender, RoutedEventArgs e) =>
-        Frame.Navigate(typeof(MedicineDetailsPage), null, new DrillInNavigationTransitionInfo());
-
-    private void EditExistingMedicine_Click(object sender, RoutedEventArgs e)
+    protected override void OnNavigatedFrom(NavigationEventArgs e)
     {
-        Frame.Navigate(typeof(MedicineDetailsPage), null, new DrillInNavigationTransitionInfo());
-        ViewModel.SendPrikol();
+        ViewModel.OperationRejected-= ShowNotificationMessage;
+        base.OnNavigatedFrom(e);
+    }
+
+    private void ShowNotificationMessage(object? sender, ListEventArgs e)
+    {
+        var message = e.Data[0];
+        Notification.Content = message;
+        Notification.Show(2000);
+    }
+
+    private void Add_Click(object sender, RoutedEventArgs e) =>
+        Frame.Navigate(typeof(AddressDetailsPage), new AddressWrapper() { IsInEdit = true }, new DrillInNavigationTransitionInfo());
+
+
+    private void View_Click(object sender, RoutedEventArgs e) =>
+        Frame.Navigate(typeof(AddressDetailsPage), ViewModel.SelectedItem, new DrillInNavigationTransitionInfo());
+
+
+
+    private async void Delete_Click(object sender, RoutedEventArgs e) =>
+        await ViewModel.DeleteSelected();
+
+
+    private void Edit_Click(object sender, RoutedEventArgs e)
+    {
+        ViewModel.SelectedItem!.IsInEdit = true;
+        App.GetService<INavigationService>().NavigateTo(typeof(AddressDetailsViewModel).FullName!, ViewModel.SelectedItem);
     }
 }

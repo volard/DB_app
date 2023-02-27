@@ -110,7 +110,6 @@
 
         <toolkit:InAppNotification
             x:Name="Notification"
-            HorizontalOffset="400"
             RelativePanel.AlignBottomWithPanel="True"
             RelativePanel.AlignHorizontalCenterWithPanel="True"
             StackMode="Replace" />

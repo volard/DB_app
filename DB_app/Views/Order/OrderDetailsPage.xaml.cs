@@ -1,5 +1,4 @@
 using AppUIBasics.Helper;
-using CommunityToolkit.Mvvm.ComponentModel;
 using DB_app.Behaviors;
 using DB_app.Entities;
 using DB_app.ViewModels;
@@ -107,8 +106,7 @@ public sealed partial class OrderDetailsPage : Page
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
-        ViewModel.CurrentOrder.BuckupData();
-        ViewModel.CurrentOrder.NotifyAboutProperties();
+        ViewModel.CurrentOrder.Buckup();
         base.OnNavigatedTo(e);
     }
 }

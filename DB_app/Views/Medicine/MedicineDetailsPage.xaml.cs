@@ -9,7 +9,6 @@ using WinUIEx.Messaging;
 
 namespace DB_app.Views;
 
-// TODO change "New medicine" page header to dynamic one
 public sealed partial class MedicineDetailsPage : Page
 {
     public MedicineDetailsViewModel ViewModel { get; }
@@ -87,8 +86,7 @@ public sealed partial class MedicineDetailsPage : Page
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
-        ViewModel.CurrentMedicine.BuckupData();
-        ViewModel.CurrentMedicine.NotifyAboutAllProperties();
+        ViewModel.CurrentMedicine.Backup();
         base.OnNavigatedTo(e);
     }
 

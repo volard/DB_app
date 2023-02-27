@@ -10,12 +10,14 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml;
 using CommunityToolkit.Mvvm.Messaging;
 using System.Diagnostics;
+using DB_app.Repository;
+using DB_app.Helpers;
 
 namespace DB_app.ViewModels;
 
-public partial class PharmaciesGridViewModel : ObservableRecipient, INavigationAware, IRecipient<AddRecordMessage<PharmacyWrapper>>
+public partial class PharmaciesGridViewModel : ObservableRecipient, INavigationAware, IRecipient<DeleteRecordMessage<PharmacyWrapper>>
 {
-    private readonly IRepositoryControllerService _repositoryControllerService
+private readonly IRepositoryControllerService _repositoryControllerService
         = App.GetService<IRepositoryControllerService>();
 
     /// <summary>
@@ -24,149 +26,49 @@ public partial class PharmaciesGridViewModel : ObservableRecipient, INavigationA
     public ObservableCollection<PharmacyWrapper> Source { get; set; }
         = new ObservableCollection<PharmacyWrapper>();
 
-
-    /// <summary>
-    /// Creates a new <see cref="PharmaciesGridViewModel"/> instance with new <see cref="PharmacyWrapper"/>
-    /// </summary>
     public PharmaciesGridViewModel()
     {
         WeakReferenceMessenger.Default.Register(this);
     }
 
-    /// <summary>
-    /// Indicates whether user selected Medicine item in the grid
-    /// </summary>
-    [ObservableProperty]
-    private bool _isGridItemSelected = false;
-
-    [ObservableProperty]
-    private bool _isInfoBarOpened = false;
-
-    [ObservableProperty]
-    private int selectedGridIndex;
-
-
-    [ObservableProperty]
-    private InfoBarSeverity _infoBarSeverity = InfoBarSeverity.Informational;
-    // Error
-    // Informational
-    // Warning
-    // Success
-
-    [ObservableProperty]
-    private string _infoBarMessage = "";
-
-
-    /// <summary>
-    /// Represents selected by user PharmacyWrapper object
-    /// </summary>
-    private PharmacyWrapper? _selectedItem;
-    public PharmacyWrapper? SelectedItem
+    public void Receive(DeleteRecordMessage<PharmacyWrapper> message)
     {
-        get => _selectedItem;
-        set
-        {
-            SetProperty(ref _selectedItem, value);
-            IsGridItemSelected = Converters.IsNotNull(value);
-        }
-    }
-
-    private bool isInactiveShowed = false;
-
-    public bool IsInactiveShowed
-    {
-        get => isInactiveShowed;
-        set
-        {
-            isInactiveShowed = value;
-            if (value)
-            {
-                _ = AddInactive();
-            }
-            else
-            {
-                RemoveInactive();
-            }
-        }
-    }
-
-    public async Task AddInactive()
-    {
-        var _outOfStock = await _repositoryControllerService.Pharmacies.GetInactiveAsync();
-        foreach (var item in _outOfStock)
-        {
-            Source.Add(new PharmacyWrapper(item));
-        }
-    }
-
-    public void RemoveInactive()
-    {
-        var _data = new List<PharmacyWrapper>();
-        foreach (var item in Source)
-        {
-            if (!item.PharmacyData.IsActive)
-            {
-                _data.Add(item);
-            }
-        }
-
-
-
-        foreach (var item in _data)
-        {
-            Source.Remove(item);
-        }
-    }
-
-
-    public void deleteItem_Click(object sender, RoutedEventArgs e)
-    {
-        if (_selectedItem != null)
-        {
-            int id = _selectedItem.PharmacyData.Id;
-            //await _repositoryControllerService.Medicines.DeleteAsync(id);
-            //Source.Remove(_selectedItem);
-
-            InfoBarMessage = "Medicine was deleted";
-            InfoBarSeverity = Microsoft.UI.Xaml.Controls.InfoBarSeverity.Success;
-            IsInfoBarOpened = true;
-
-        }
-    }
-
-    public void InsertToGridNewWrapper(PharmacyWrapper givenPharmacyWrapper)
-    {
-        givenPharmacyWrapper.isNew = false;
-        Source.Insert(0, givenPharmacyWrapper);
-        selectedGridIndex = 0;
-    }
-
-    public void SendPrikol()
-    {
-        WeakReferenceMessenger.Default.Send(new ShowRecordDetailsMessage<PharmacyWrapper>(_selectedItem));
+        var givenPharmacyWrapper = message.Value;
+        Source.Remove(givenPharmacyWrapper);
     }
 
 
     /// <summary>
-    /// Saves any modified PharmacyWrappers and reloads the PharmacyWrapper list from the database.
+    /// Represents selected by user AddressWrapper object
     /// </summary>
-    public void UpdateGridWithEditedWrapper(PharmacyWrapper givenPharmacyWrapper)
+    [ObservableProperty]
+    private PharmacyWrapper? selectedItem;
+
+
+    public event EventHandler<ListEventArgs>? OperationRejected;
+
+
+    public async Task DeleteSelected()
     {
-        // TODO rename it or something IDK it's just looks terrible imo
-        //var foundInSource = Source.FirstOrDefault(wrapper => wrapper.PharmacyData.Id == givenPharmacyWrapper.PharmacyData.Id);
-        //if (foundInSource != null)
-        //{
-        //    givenPharmacyWrapper.IsModified = false;
-        //    int index = Source.IndexOf(foundInSource);
-        //    Source[index] = givenPharmacyWrapper;
+        if (SelectedItem != null)
+        {
+            try
+            {
 
-        //    Debug.WriteLine($"so index = {index} and wrapper is {givenPharmacyWrapper}");
-        //    selectedGridIndex = index;
-        //}
-        SelectedItem = givenPharmacyWrapper;
-        OnPropertyChanged("SelectedItem");
+                int id = SelectedItem.Id;
+                await _repositoryControllerService.Pharmacies.DeleteAsync(id);
+
+                Source.Remove(SelectedItem);
+
+                OperationRejected?.Invoke(this, new ListEventArgs(new List<String>() { "Everything is good" }));
+
+            }
+            catch (LinkedRecordOperationException)
+            {
+                OperationRejected?.Invoke(this, new ListEventArgs(new List<String>() { "Адресс связан с организацией. Удалите связанную организацию, чтобы удалить адрес" }));
+            }
+        }
     }
-
 
 
     public async void OnNavigatedTo(object parameter)
@@ -185,18 +87,5 @@ public partial class PharmaciesGridViewModel : ObservableRecipient, INavigationA
 
     public void OnNavigatedFrom()
     {
-    }
-
-    public void Receive(AddRecordMessage<PharmacyWrapper> message)
-    {
-        var givenPharmacyWrapper = message.Value;
-        if (givenPharmacyWrapper.isNew)
-        {
-            InsertToGridNewWrapper(givenPharmacyWrapper);
-        }
-        else
-        {
-            UpdateGridWithEditedWrapper(givenPharmacyWrapper);
-        }
     }
 }

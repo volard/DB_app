@@ -8,23 +8,18 @@ using System.Diagnostics;
 
 namespace DB_app.ViewModels;
 
-public partial class OrderWrapper : ObservableValidator, IEditableObject, IEquatable<OrderWrapper>
+/// <summary>
+/// Provides wrapper for the <see cref="Order"/> model class, encapsulating various services for access by the UI.
+/// </summary>
+public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
 {
 
     #region Constructors
 
-    public OrderWrapper(Order Order)
+    public OrderWrapper(Order? order = null)
     {
-        OrderData = Order;
-        ErrorsChanged += Suspect_ErrorsChanged;
-        NotifyAboutProperties();
-    }
-
-    public OrderWrapper()
-    {
-        OrderData = new();
-        ErrorsChanged += Suspect_ErrorsChanged;
-        NotifyAboutProperties();
+        if (order != null)
+        OrderData = order;
     }
 
     #endregion
@@ -51,10 +46,22 @@ public partial class OrderWrapper : ObservableValidator, IEditableObject, IEquat
                 OrderData.HospitalCustomer = value;
                 OnPropertyChanged();
                 IsModified = true;
-                OnPropertyChanged(nameof(CanSave));
             }
         }
     }
+
+    /// <summary>
+    /// City of the current OrderWrapper's data object
+    /// </summary>
+    public string Surename_main_doctor { get => OrderData.HospitalCustomer.Surename_main_doctor; }
+
+    /// <summary>
+    /// Street of the current OrderWrapper's data object
+    /// </summary>
+    public string PharmacyName { get => "placeholder"; }
+
+    public DateTime DatePlaced { get => OrderData.DatePlaced; }
+
 
 
     [Required(ErrorMessage = "Shipping address is Required")]
@@ -69,7 +76,6 @@ public partial class OrderWrapper : ObservableValidator, IEditableObject, IEquat
                 OrderData.ShippingAddress = value;
                 OnPropertyChanged();
                 IsModified = true;
-                OnPropertyChanged(nameof(CanSave));
             }
         }
     }
@@ -88,7 +94,6 @@ public partial class OrderWrapper : ObservableValidator, IEditableObject, IEquat
                 pharmacySeller = value;
                 OnPropertyChanged();
                 IsModified = true;
-                OnPropertyChanged(nameof(CanSave));
             }
 
         }
@@ -114,38 +119,8 @@ public partial class OrderWrapper : ObservableValidator, IEditableObject, IEquat
     public double Total => ObservableItems.Sum(item => item.Product.Price * item.Quantity);
 
 
-    // TODO that looks disgusting. I wonder if functions in xaml bindings works properly for me
-    public string Errors
-        => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(null) select e.ErrorMessage);
-    public string HospitalCustomerErrors
-        => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(nameof(HospitalCustomer)) select e.ErrorMessage);
-    public string ShippingAddressErrors
-        => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(nameof(ShippingAddress)) select e.ErrorMessage);
-    public string PharmacySellerErrors
-        => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(nameof(PharmacySeller)) select e.ErrorMessage);
 
-
-    public bool HasHospitalCustomerErrors
-        => GetErrors(nameof(HospitalCustomer)).Any();
-    public bool HasShippingAddressErrors
-        => GetErrors(nameof(ShippingAddress)).Any();
-    public bool HasPharmacySellerErrors
-        => GetErrors(nameof(PharmacySeller)).Any();
-
-    public bool AreNoErrors
-        => !HasErrors;
-    public bool CanSave
-        => !HasErrors && (isModified || isNew);
-
-
-    // TODO implement cancel button on notification popup
-    // TODO maybe it will be better to create another Order object instead of 
-    // keeping the bunch of backuped properties
-    public Hospital? BackupedHospitalCustomer;
-    public Address? BackupedShippingAddress;
-    public Pharmacy?   BackupedPharmacySeller;
-    public List<OrderItem>?      BackupedItems;
-
+    private Order? _backupData;
 
     /// <summary>
     /// Indicates about changes that is not synced with UI DataGrid
@@ -156,82 +131,74 @@ public partial class OrderWrapper : ObservableValidator, IEditableObject, IEquat
     /// <summary>
     /// Indicates whether its a new object
     /// </summary>
-    public bool isNew = false;
+    [ObservableProperty]
+    public bool _isNew = false;
 
     #endregion
 
 
     #region Modification methods
 
+    
 
-    public void NotifyAboutProperties()
+    public void Buckup()
     {
-        OnPropertyChanged(nameof(Errors));
-        OnPropertyChanged(nameof(HospitalCustomerErrors));
-        OnPropertyChanged(nameof(ShippingAddressErrors));
-        OnPropertyChanged(nameof(PharmacySellerErrors));
-
-        OnPropertyChanged(nameof(HospitalCustomer));
-        OnPropertyChanged(nameof(ShippingAddress));
-        OnPropertyChanged(nameof(PharmacySeller));
-        OnPropertyChanged(nameof(ObservableItems));
-
-        OnPropertyChanged(nameof(HasHospitalCustomerErrors));
-        OnPropertyChanged(nameof(HasShippingAddressErrors));
-        OnPropertyChanged(nameof(HasPharmacySellerErrors));
-
-        OnPropertyChanged(nameof(CanSave));
+        _backupData = OrderData;
     }
 
-    public void Suspect_ErrorsChanged(object sender, DataErrorsChangedEventArgs e)
+
+    /// <summary>
+    /// Go back to prevoius data after updating
+    /// </summary>
+    public async Task Revert()
     {
-        NotifyAboutProperties();
+        if (_backupData != null)
+        {
+            OrderData = _backupData;
+            await App.GetService<IRepositoryControllerService>().Orders.UpdateAsync(OrderData);
+        }
     }
+
+    public async Task<bool> SaveAsync()
+    {
+        ValidateAllProperties();
+        if (HasErrors) return false;
+        EndEdit();
+        if (IsNew)
+        {
+            await App.GetService<IRepositoryControllerService>().Orders.InsertAsync(OrderData);
+        }
+        else
+        {
+            await App.GetService<IRepositoryControllerService>().Orders.UpdateAsync(OrderData);
+        }
+        return true;
+    }
+
+
+        
+    #endregion
+
+
+    #region Members
+
+   public bool Equals(OrderWrapper? other) =>
+        Id == other?.Id;
 
     public override string ToString()
         => $"OrderWrapper with OrderData - [ {OrderData} ]";
 
 
-    public void BuckupData()
-    {
-        BackupedHospitalCustomer = HospitalCustomer;
-        BackupedShippingAddress = ShippingAddress;
-        BackupedPharmacySeller = PharmacySeller;
-        BackupedItems = ObservableItems.ToList();
-    }
-
-    public void ApplyChanges() => IsModified = true;
-
-    public void UndoChanges()
-    {
-        if (
-                BackupedHospitalCustomer != null &&
-                BackupedShippingAddress != null &&
-                BackupedPharmacySeller != null &&
-                BackupedItems != null
-           )
-        {
-            HospitalCustomer = BackupedHospitalCustomer;
-            ShippingAddress = BackupedShippingAddress;
-            PharmacySeller = BackupedPharmacySeller;
-            ObservableItems = new(BackupedItems);
-
-            isModified = true;
-        }
-        
-    }
-
-
     #endregion
 
 
-
     #region IEditable implementation
-    // TODO figure out how to use this interface correctly...
+
+
     public void BeginEdit()
     {
         isModified = true;
-        BuckupData();
+        Buckup();
     }
 
     public void CancelEdit()
@@ -245,20 +212,7 @@ public partial class OrderWrapper : ObservableValidator, IEditableObject, IEquat
         await _repositoryControllerService.Orders.UpdateAsync(OrderData);
     }
 
-    public bool Equals(OrderWrapper? other) =>
-        Id == other?.Id;
-
+ 
     #endregion
 
-    /// <summary>
-    /// City of the current OrderWrapper's data object
-    /// </summary>
-    public string Surename_main_doctor { get => OrderData.HospitalCustomer.MainDoctorSurename; }
-
-    /// <summary>
-    /// Street of the current OrderWrapper's data object
-    /// </summary>
-    public string PharmacyName { get => "placeholder"; }
-
-    public DateTime DatePlaced { get => OrderData.DatePlaced; }
 }

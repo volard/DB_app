@@ -3,16 +3,15 @@ using CommunityToolkit.Mvvm.Messaging;
 using DB_app.Contracts.ViewModels;
 using DB_app.Core.Contracts.Services;
 using DB_app.Services.Messages;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
+using DB_app.Helpers;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
+using DB_app.Repository;
 
 namespace DB_app.ViewModels;
 
-public partial class ProductsGridViewModel : ObservableRecipient, INavigationAware, IRecipient<AddRecordMessage<ProductWrapper>>
+public partial class ProductsGridViewModel : ObservableRecipient, INavigationAware, IRecipient<DeleteRecordMessage<ProductWrapper>>
 {
-    private readonly IRepositoryControllerService _repositoryControllerService
+private readonly IRepositoryControllerService _repositoryControllerService
         = App.GetService<IRepositoryControllerService>();
 
     /// <summary>
@@ -21,149 +20,49 @@ public partial class ProductsGridViewModel : ObservableRecipient, INavigationAwa
     public ObservableCollection<ProductWrapper> Source { get; set; }
         = new ObservableCollection<ProductWrapper>();
 
-
-    /// <summary>
-    /// Creates a new <see cref="ProductsGridViewModel"/> instance with new <see cref="ProductWrapper"/>
-    /// </summary>
     public ProductsGridViewModel()
     {
         WeakReferenceMessenger.Default.Register(this);
     }
 
-    /// <summary>
-    /// Indicates whether user selected Product item in the grid
-    /// </summary>
-    [ObservableProperty]
-    private bool _isGridItemSelected = false;
-
-    [ObservableProperty]
-    private bool _isInfoBarOpened = false;
-
-    [ObservableProperty]
-    private int selectedGridIndex;
-
-
-    [ObservableProperty]
-    private InfoBarSeverity _infoBarSeverity = InfoBarSeverity.Informational;
-    // Error
-    // Informational
-    // Warning
-    // Success
-
-    [ObservableProperty]
-    private string _infoBarMessage = "";
-
-    
-    private bool isOutOfStockShowed = false;
-
-    public bool IsOutOfStockShowed
+    public void Receive(DeleteRecordMessage<ProductWrapper> message)
     {
-        get => isOutOfStockShowed;
-        set
-        {
-            isOutOfStockShowed = value;
-            if (value)
-            {
-                _ = AddOutOfStock();
-            }
-            else
-            {
-                RemoveOutOfStock();
-            }
-        }
-    }
-
-    public async Task AddOutOfStock()
-    {
-        var _outOfStock = await _repositoryControllerService.Products.GetOutOfStockAsync();
-        foreach (var item in _outOfStock)
-        {
-            Source.Add(new ProductWrapper(item));
-        }
-    }
-
-    public void RemoveOutOfStock()
-    {
-        var _data = new List<ProductWrapper>();
-        foreach (var item in Source)
-        {
-            if (item.ProductData.Quantity == 0)
-            {
-                _data.Add(item);
-            }
-        }
-
-
-
-        foreach (var item in _data)
-        {
-            Source.Remove(item);
-        }
+        var givenProductWrapper = message.Value;
+        Source.Remove(givenProductWrapper);
     }
 
 
     /// <summary>
-    /// Represents selected by user ProductWrapper object
+    /// Represents selected by user AddressWrapper object
     /// </summary>
+    [ObservableProperty]
     private ProductWrapper? _selectedItem;
-    public ProductWrapper? SelectedItem
+
+
+    public event EventHandler<ListEventArgs>? OperationRejected;
+
+
+    public async Task DeleteSelected()
     {
-        get => _selectedItem;
-        set
+        if (SelectedItem != null)
         {
-            SetProperty(ref _selectedItem, value);
-            IsGridItemSelected = Converters.IsNotNull(value);
+            try
+            {
+
+                int id = SelectedItem.Id;
+                await _repositoryControllerService.Products.DeleteAsync(id);
+
+                Source.Remove(SelectedItem);
+
+                OperationRejected?.Invoke(this, new ListEventArgs(new List<String>() { "Everything is good" }));
+
+            }
+            catch (LinkedRecordOperationException)
+            {
+                OperationRejected?.Invoke(this, new ListEventArgs(new List<String>() { "Адресс связан с организацией. Удалите связанную организацию, чтобы удалить адрес" }));
+            }
         }
     }
-
-    public void deleteItem_Click(object sender, RoutedEventArgs e)
-    {
-        if (_selectedItem != null)
-        {
-            int id = _selectedItem.ProductData.Id;
-            //await _repositoryControllerService.Medicines.DeleteAsync(id);
-            //Source.Remove(_selectedItem);
-
-            InfoBarMessage = "Medicine was deleted";
-            InfoBarSeverity = Microsoft.UI.Xaml.Controls.InfoBarSeverity.Success;
-            IsInfoBarOpened = true;
-
-        }
-    }
-
-    public void InsertToGridNewWrapper(ProductWrapper givenProductWrapper)
-    {
-        givenProductWrapper.isNew = false;
-        Source.Insert(0, givenProductWrapper);
-        selectedGridIndex = 0;
-    }
-
-    public void SendPrikol()
-    {
-        WeakReferenceMessenger.Default.Send(new ShowRecordDetailsMessage<ProductWrapper>(_selectedItem));
-    }
-
-
-    /// <summary>
-    /// Saves any modified ProductWrappers and reloads the ProductWrapper list from the database.
-    /// </summary>
-    public void UpdateGridWithEditedWrapper(ProductWrapper givenProductWrapper)
-    {
-        // TODO rename it or something IDK it's just looks terrible imo
-        //var foundInSource = Source.FirstOrDefault(wrapper => wrapper.MedicineData.Id == givenProductWrapper.MedicineData.Id);
-        //if (foundInSource != null)
-        //{
-        //    givenProductWrapper.IsModified = false;
-        //    int index = Source.IndexOf(foundInSource);
-        //    Source[index] = givenProductWrapper;
-
-        //    Debug.WriteLine($"so index = {index} and wrapper is {givenProductWrapper}");
-        //    selectedGridIndex = index;
-        //}
-        SelectedItem = givenProductWrapper;
-        OnPropertyChanged("SelectedItem");
-    }
-
 
 
     public async void OnNavigatedTo(object parameter)
@@ -182,18 +81,5 @@ public partial class ProductsGridViewModel : ObservableRecipient, INavigationAwa
 
     public void OnNavigatedFrom()
     {
-    }
-
-    public void Receive(AddRecordMessage<ProductWrapper> message)
-    {
-        var givenProductWrapper = message.Value;
-        if (givenProductWrapper.isNew)
-        {
-            InsertToGridNewWrapper(givenProductWrapper);
-        }
-        else
-        {
-            UpdateGridWithEditedWrapper(givenProductWrapper);
-        }
     }
 }

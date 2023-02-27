@@ -18,7 +18,7 @@ public partial class OrderDetailsViewModel : ObservableRecipient, IRecipient<Sho
     {
         CurrentOrder = new()
         {
-            isNew = true
+            IsNew = true
         };
         pageTitle = "New order";
 
@@ -50,7 +50,6 @@ public partial class OrderDetailsViewModel : ObservableRecipient, IRecipient<Sho
     public void Receive(ShowRecordDetailsMessage<OrderWrapper> message)
     {
         CurrentOrder = message.Value;
-        CurrentOrder.NotifyAboutProperties();
     }
 
     /// <summary>
@@ -58,7 +57,7 @@ public partial class OrderDetailsViewModel : ObservableRecipient, IRecipient<Sho
     /// </summary>
     public async Task SaveAsync()
     {
-        if (CurrentOrder.isNew) // Create new medicine
+        if (CurrentOrder.IsNew) // Create new medicine
         {
             await _repositoryControllerService.Orders.InsertAsync(CurrentOrder.OrderData);
         }
@@ -173,6 +172,9 @@ public partial class OrderDetailsViewModel : ObservableRecipient, IRecipient<Sho
 
     [ObservableProperty]
     private bool isHospitalSelected = false;
+
+    [ObservableProperty]
+    private bool _isNew = false;
 
     #endregion
 

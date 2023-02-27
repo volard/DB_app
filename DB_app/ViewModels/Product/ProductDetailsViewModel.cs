@@ -3,9 +3,6 @@ using CommunityToolkit.Mvvm.Messaging;
 using DB_app.Core.Contracts.Services;
 using DB_app.Entities;
 using DB_app.Services.Messages;
-using Microsoft.UI.Xaml;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
 
 namespace DB_app.ViewModels;
 
@@ -18,7 +15,7 @@ public partial class ProductDetailsViewModel : ObservableRecipient, IRecipient<S
     {
         CurrentProduct = new()
         {
-            isNew = true
+            IsNew = true
         };
         Initialize();
 
@@ -30,7 +27,6 @@ public partial class ProductDetailsViewModel : ObservableRecipient, IRecipient<S
         AvailablePharmacies = _repositoryControllerService.Pharmacies.GetAsync().Result.ToList();
         AvailableMedicines = _repositoryControllerService.Medicines.GetAsync().Result.ToList();
         WeakReferenceMessenger.Default.Register(this);
-        CurrentProduct.NotifyAboutProperties();
     }
 
     public ProductDetailsViewModel(ProductWrapper product)
@@ -45,7 +41,6 @@ public partial class ProductDetailsViewModel : ObservableRecipient, IRecipient<S
     public void Receive(ShowRecordDetailsMessage<ProductWrapper> message)
     {
         CurrentProduct = message.Value;
-        CurrentProduct.NotifyAboutProperties();
     }
 
     public List<Pharmacy> AvailablePharmacies;
@@ -63,7 +58,7 @@ public partial class ProductDetailsViewModel : ObservableRecipient, IRecipient<S
     public async Task SaveAsync()
     {
 
-        if (CurrentProduct.isNew)
+        if (CurrentProduct.IsNew)
         {
             await _repositoryControllerService.Products.InsertAsync(CurrentProduct.ProductData);
         }

@@ -7,26 +7,28 @@ using System.ComponentModel.DataAnnotations;
 namespace DB_app.ViewModels;
 
 /// <summary>
-/// Provides wrapper for the Order model class, encapsulating various services for access by the UI.
+/// Provides wrapper for the <see cref="Medicine"/> model class, encapsulating various services for access by the UI.
 /// </summary>
-public partial class MedicineWrapper : ObservableValidator, IEditableObject, IEquatable<MedicineWrapper>
+public sealed partial class MedicineWrapper : ObservableValidator, IEditableObject
 {
+
+    #region Constructors
 
     public MedicineWrapper(Medicine? medicine = null)
     {
-        MedicineData = medicine ?? new();
-        ErrorsChanged += Suspect_ErrorsChanged;
-
+        if (medicine == null)
+        {
+            IsNew = true;
+            MedicineData = new();
+        }
+        else { MedicineData = medicine; }
     }
 
+    #endregion
 
-    private void Suspect_ErrorsChanged(object sender, DataErrorsChangedEventArgs e)
-    {
-        NotifyAboutAllProperties();
-    }
 
-    public void NotifyAboutAllProperties() =>
-        OnPropertyChanged(string.Empty);
+
+
 
     #region Properties
 
@@ -34,47 +36,35 @@ public partial class MedicineWrapper : ObservableValidator, IEditableObject, IEq
         = App.GetService<IRepositoryControllerService>();
 
 
-    public Medicine MedicineData { get; set; }
+    private Medicine _medicineData = null!;
 
 
+    private Medicine? _backupData;
+
+    public Medicine MedicineData
+    {
+        get => _medicineData;
+        set
+        {
+            _medicineData = value;
+            Name = _medicineData.Name;
+            Type = _medicineData.Type;
+        }
+    }
+
+
+
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
     [Required(ErrorMessage = "Name is Required")]
-    public string Name
-    {
-        get => MedicineData.Name;
-        set
-        {
-            ValidateProperty(value);
-            if (!GetErrors(nameof(Name)).Any())
-            {
-                MedicineData.Name = value;
-                OnPropertyChanged();
-            }
-        }
-    }
+    private string? _name;
 
 
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
     [Required(ErrorMessage = "Type is Required")]
-    public string Type
-    {
-        get => MedicineData.Type;
-        set
-        {
-            ValidateProperty(value);
-            if (!GetErrors(nameof(Type)).Any())
-            {
-                MedicineData.Type = value;
-                OnPropertyChanged();
-            }
-        }
-    }
+    private string? _type;
 
-
-    public string Errors => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(null) select e.ErrorMessage);
-    public string NameErrors => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(nameof(Name)) select e.ErrorMessage);
-    public string TypeErrors => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(nameof(Type)) select e.ErrorMessage);
-    public bool HasNameErrors => GetErrors(nameof(Name)).Any();
-    public bool HasTypeErrors => GetErrors(nameof(Type)).Any();
-    public bool AreNoErrors => !HasErrors;
 
     public int Id { get => MedicineData.Id; }
 
@@ -86,61 +76,117 @@ public partial class MedicineWrapper : ObservableValidator, IEditableObject, IEq
     /// Indicates about changes that is not synced with UI DataGrid
     /// </summary>
     [ObservableProperty]
-    private bool isModified = false;
+    private bool _isModified = false;
 
     /// <summary>
     /// indicates whether its a new object
     /// </summary>
-    public bool IsNew { get; private set; } = false;
+    [ObservableProperty]
+    private bool _isNew = false;
+
+
+    ///<summary>
+    /// Indicate edit mode
+    /// </summary>
+    [ObservableProperty]
+    private bool _isInEdit = false;
 
     #endregion
+
+
+
+
+    #region Members
+
+     public bool Equals(object? obj)
+    {
+        if (obj is not MedicineWrapper other) return false;
+        return 
+            Name == other?.Name &&
+            Type == other?.Type;
+    }
+
+
+    public override string ToString() => $"MedicineWrapper with MedicineData '{Name}' under '{Type}' type";
+
+
+    #endregion
+
+
+
 
 
     #region Modification methods
 
-    public void BuckupData()
-    {
-        BackupData = MedicineData;   
-    }
 
-    public void ApplyChanges() => isModified = true;
 
-    public void UndoChanges()
+    /// <summary>
+    /// Go back to prevoius data after updating
+    /// </summary>
+    public async Task Revert()
     {
-        if (BackupData != null)
+        if (_backupData != null)
         {
-            BackupData = MedicineData;
-            isModified = true;
+            MedicineData = _backupData;
+            await App.GetService<IRepositoryControllerService>().Medicines.UpdateAsync(_medicineData);
         }
-
     }
+
+
+     public async Task<bool> SaveAsync()
+    {
+        ValidateAllProperties();
+        if (HasErrors) return false;
+        EndEdit();
+        if (IsNew)
+        {
+            await App.GetService<IRepositoryControllerService>().Medicines.InsertAsync(MedicineData);
+        }
+        else
+        {
+            await App.GetService<IRepositoryControllerService>().Medicines.UpdateAsync(MedicineData);
+        }
+        return true;
+    }
+
+
+
+    public void Backup() =>
+        _backupData = _medicineData;
+
 
     #endregion
 
 
+
+
+
     #region IEditable implementation
-    // TODO figure out how to use this interface correctly...
+
+
     public void BeginEdit()
     {
-        isModified = true;
-        BuckupData();
+        this.IsInEdit = true;
+        OnPropertyChanged(nameof(IsInEdit));
+        Backup();
     }
 
     public void CancelEdit()
     {
-        isModified = false;
+        Name = _medicineData.Name;
+        Type = _medicineData.Type;
+        IsModified = false;
+        IsModified = false;
     }
 
     public async void EndEdit()
     {
-        await _repositoryControllerService.Medicines.UpdateAsync(MedicineData);
+        IsInEdit = false;
+        _medicineData.Name = Name;
+        _medicineData.Type = Type;
     }
 
-    public bool Equals(MedicineWrapper? other) =>
-        Name == other?.Name &&
-        Type == other?.Type;
 
     #endregion
 
-    public override string ToString() => $"MedicineWrapper with MedicineData '{Name}' under '{Type}' type";
 }

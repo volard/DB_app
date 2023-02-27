@@ -6,10 +6,17 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:helpers="using:DB_app.Helpers"
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:viewModel="using:DB_app.ViewModels"
     mc:Ignorable="d">
 
+
+    <Page.Resources>
+        <helpers:NotConverter x:Key="NotConverter" />
+        <helpers:VisibleIfConverter x:Key="VisibleIf" />
+        <helpers:CollapsedIf x:Key="CollapsedIf" />
+    </Page.Resources>
 
     <behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
         <DataTemplate x:DataType="viewModel:OrderDetailsViewModel">
@@ -24,7 +31,6 @@
                 <AppBarButton
                     Click="SaveButton_Click"
                     Icon="Save"
-                    IsEnabled="{Binding CurrentOrder.AreNoErrors}"
                     Label="Save" />
                 <AppBarButton
                     Click="CancelEdit_Click"

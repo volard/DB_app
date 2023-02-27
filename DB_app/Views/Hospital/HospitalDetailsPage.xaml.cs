@@ -52,7 +52,6 @@ public sealed partial class HospitalDetailsPage : Page
         {
             ViewModel.CurrentHospital.HospitalData.AddAddress(ViewModel.SelectedAddress);
             ViewModel.CurrentHospital.IsModified = true;
-            ViewModel.CurrentHospital.NotifyAboutAddressesChanged();
             ViewModel.AvailableAddresses.Remove(ViewModel.SelectedAddress);
         }
     }
@@ -64,7 +63,6 @@ public sealed partial class HospitalDetailsPage : Page
             ViewModel.AvailableAddresses.Add(ViewModel.SelectedExistingAddress);
             ViewModel.CurrentHospital.HospitalData.RemoveAddress(ViewModel.SelectedExistingAddress);
             ViewModel.CurrentHospital.IsModified = true;
-            ViewModel.CurrentHospital.NotifyAboutAddressesChanged();
         }
     }
 
@@ -92,17 +90,16 @@ public sealed partial class HospitalDetailsPage : Page
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
-        ViewModel.CurrentHospital.BuckupData();
-        ViewModel.CurrentHospital.NotifyAboutProperties();
+        ViewModel.CurrentHospital.Backup();
         base.OnNavigatedTo(e);
     }
 
-    private void Name_main_doctorText_TextChanged(object sender, TextChangedEventArgs e) =>
-        ViewModel.CurrentHospital.Name_main_doctor = Name_main_doctor.Text;
+    //private void Name_main_doctorText_TextChanged(object sender, TextChangedEventArgs e) =>
+        //ViewModel.CurrentHospital.Name_main_doctor = Name_main_doctor.Text;
 
-    private void Middlename_main_doctorText_TextChanged(object sender, TextChangedEventArgs e) =>
-        ViewModel.CurrentHospital.Middlename_main_doctor = Middlename_main_doctor.Text;
+    //private void Middlename_main_doctorText_TextChanged(object sender, TextChangedEventArgs e) =>
+        //ViewModel.CurrentHospital.Middlename_main_doctor = Middlename_main_doctor.Text;
 
-    private void Surename_main_doctorText_TextChanged(object sender, TextChangedEventArgs e) =>
-        ViewModel.CurrentHospital.Surename_main_doctor = Surename_main_doctor.Text;
+    //private void Surename_main_doctorText_TextChanged(object sender, TextChangedEventArgs e) =>
+        //ViewModel.CurrentHospital.Surename_main_doctor = Surename_main_doctor.Text;
 }

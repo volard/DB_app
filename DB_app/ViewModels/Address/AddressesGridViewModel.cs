@@ -37,10 +37,10 @@ public partial class AddressesGridViewModel : ObservableRecipient, INavigationAw
     /// Represents selected by user AddressWrapper object
     /// </summary>
     [ObservableProperty]
-    private AddressWrapper? _selectedItem;
+    private AddressWrapper? selectedItem;
 
 
-    public event EventHandler<ListEventArgs> OperationRejected;
+    public event EventHandler<ListEventArgs>? OperationRejected;
 
 
     public async Task DeleteSelected()

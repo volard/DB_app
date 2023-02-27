@@ -18,7 +18,7 @@ public partial class PharmacyDetailsViewModel : ObservableRecipient, IRecipient<
     {
         CurrentPharmacy = new()
         {
-            isNew = true
+            IsNew = true
         };
         WeakReferenceMessenger.Default.Register(this);
         AvailableAddresses = new(getAvailableAddresses());
@@ -44,7 +44,6 @@ public partial class PharmacyDetailsViewModel : ObservableRecipient, IRecipient<
     public void Receive(ShowRecordDetailsMessage<PharmacyWrapper> message)
     {
         CurrentPharmacy = message.Value;
-        CurrentPharmacy.NotifyAboutProperties();
     }
 
     /// <summary>
@@ -52,7 +51,7 @@ public partial class PharmacyDetailsViewModel : ObservableRecipient, IRecipient<
     /// </summary>
     public async Task SaveAsync()
     {
-        if (CurrentPharmacy.isNew) // Create new medicine
+        if (CurrentPharmacy.IsNew) // Create new medicine
         {
             await _repositoryControllerService.Pharmacies.InsertAsync(CurrentPharmacy.PharmacyData);
         }

@@ -4,30 +4,37 @@ using DB_app.Entities;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
 
 namespace DB_app.ViewModels;
 
-public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEquatable<HospitalWrapper>
+/// <summary>
+/// Provides wrapper for the <see cref="Hospital"/> model class, encapsulating various services for access by the UI.
+/// </summary>
+public sealed partial class HospitalWrapper : ObservableValidator, IEditableObject
 {
 
     #region Constructors
 
-    public HospitalWrapper(Hospital hospital)
+    /// <summary>
+    /// Initialize new HospitalWrapper object
+    /// </summary>
+    /// <param name="hospital">Hospital model representing by the wrapper</param>
+    public HospitalWrapper(Hospital? hospital = null)
     {
-        HospitalData = hospital;
-        ErrorsChanged += Suspect_ErrorsChanged;
-        NotifyAboutProperties();
+       if (hospital == null)
+        {
+            IsNew = true;
+            HospitalData = new();
+        }
+        else { HospitalData = hospital; }
     }
 
-    public HospitalWrapper()
-    {
-        HospitalData = new();
-        ErrorsChanged += Suspect_ErrorsChanged;
-        NotifyAboutProperties();
-    }
 
     #endregion
+
+
+
+
 
 
     #region Properties
@@ -35,57 +42,46 @@ public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEq
     private readonly IRepositoryControllerService _repositoryControllerService
         = App.GetService<IRepositoryControllerService>();
 
+    private Hospital? _backupData;
 
-    public Hospital HospitalData { get; set; }
+    private Hospital _hospitalData = null!; 
 
-
-    [Required(ErrorMessage = "Maindoctor's name is Required")]
-    public string Name_main_doctor
+    public Hospital HospitalData
     {
-        get => HospitalData.MainDoctorName;
+        get => _hospitalData;
         set
         {
-            ValidateProperty(value);
-            if (!GetErrors(nameof(Name_main_doctor)).Any())
-            {
-                HospitalData.MainDoctorName = value;
-                OnPropertyChanged();
-            }
+            _hospitalData = value;
+            Name_main_doctor = _hospitalData.Name_main_doctor;
+            Surename_main_doctor = _hospitalData.Surename_main_doctor;
+            Middlename_main_doctor = _hospitalData.Middlename_main_doctor;
+            IsActive = _hospitalData.IsActive;
         }
     }
 
 
-    [Required(ErrorMessage = "Maindoctor's surename is Required")]
-    public string Surename_main_doctor
-    {
-        get => HospitalData.MainDoctorSurename;
-        set
-        {
-            ValidateProperty(value);
-            if (!GetErrors(nameof(Surename_main_doctor)).Any())
-            {
-                HospitalData.MainDoctorSurename = value;
-                OnPropertyChanged();
-            }
-        }
-    }
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required(ErrorMessage = "Maindoctor's name is requireed")]
+    private string? _name_main_doctor;
 
 
-    [Required(ErrorMessage = "Maindoctor's middlename is Required")]
-    public string Middlename_main_doctor
-    {
-        get => HospitalData.MainDoctorMiddlename;
-        set
-        {
-            ValidateProperty(value);
-            if (!GetErrors(nameof(Middlename_main_doctor)).Any())
-            {
-                HospitalData.MainDoctorMiddlename = value;
-                OnPropertyChanged();
-            }
-        }
-    }
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required(ErrorMessage = "Maindoctor's name is requireed")]
+    private string? _middlename_main_doctor;
 
+
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required(ErrorMessage = "Maindoctor's name is requireed")]
+    private string? _surename_main_doctor;
+
+
+    [ObservableProperty]
+    private bool _isActive;
+    
+    public int Id { get => HospitalData.Id; }
 
     public ObservableCollection<Address> ObservableAddresses
     {
@@ -98,152 +94,138 @@ public partial class HospitalWrapper : ObservableValidator, IEditableObject, IEq
         }
     }
 
-    public bool IsActive
-    {
-        get => HospitalData.IsActive;
-        set
-        {
-            HospitalData.IsActive = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public int Id { get => HospitalData.Id; }
-
-
-    public string Errors
-        => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(null) select e.ErrorMessage);
-    public string Name_main_doctorErrors
-        => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(nameof(Name_main_doctor)) select e.ErrorMessage);
-    public string Surename_main_doctorErrors
-        => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(nameof(Surename_main_doctor)) select e.ErrorMessage);
-    public string Middlename_main_doctorErrors
-        => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(nameof(Middlename_main_doctor)) select e.ErrorMessage);
-
-
-    public bool HasName_main_doctorErrors
-        => GetErrors(nameof(Name_main_doctor)).Any();
-    public bool HasSurename_main_doctorErrors
-        => GetErrors(nameof(Surename_main_doctor)).Any();
-    public bool HasMiddlename_main_doctorErrors
-        => GetErrors(nameof(Middlename_main_doctor)).Any();
-    public bool AreNoErrors
-        => !HasErrors;
-
-
-    // TODO implement cancel button on notification popup
-    // TODO maybe it will be better to create another Hospital object instead of 
-    // keeping the bunch of backuped properties
-    public string? BackupedName_main_doctor;
-    public string? BackupedSurename_main_doctor;
-    public string? BackupedMiddlename_main_doctor;
-
-
+   
     /// <summary>
     /// Indicates about changes that is not synced with UI DataGrid
     /// </summary>
     [ObservableProperty]
-    private bool isModified = false;
+    private bool _isModified = false;
+
 
     /// <summary>
     /// Indicates whether its a new object
     /// </summary>
-    public bool isNew = false;
+    [ObservableProperty]
+    private bool isNew = false;
+
+
+    /// <summary>
+    /// Indicate edit mode
+    /// </summary>
+    [ObservableProperty]
+    private bool _isInEdit = false;
+
+
 
     #endregion
 
 
-    #region Modification methods
 
 
-    public void NotifyAboutProperties()
-    {
-        OnPropertyChanged(nameof(Name_main_doctor));
-        OnPropertyChanged(nameof(Surename_main_doctor));
-        OnPropertyChanged(nameof(Middlename_main_doctor));
-        OnPropertyChanged(nameof(ObservableAddresses));
-    }
-
-    public void NotifyAboutAddressesChanged() =>
-        OnPropertyChanged(nameof(ObservableAddresses));
-
-    private void Suspect_ErrorsChanged(object sender, DataErrorsChangedEventArgs e)
-    {
-        OnPropertyChanged(nameof(Errors));
-        OnPropertyChanged(nameof(Name_main_doctorErrors));
-        OnPropertyChanged(nameof(Surename_main_doctorErrors));
-        OnPropertyChanged(nameof(Middlename_main_doctorErrors));
 
 
-        OnPropertyChanged(nameof(Name_main_doctor));
-        OnPropertyChanged(nameof(Surename_main_doctor));
-        OnPropertyChanged(nameof(Middlename_main_doctor));
+    #region Members
 
 
-        OnPropertyChanged(nameof(HasName_main_doctorErrors));
-        OnPropertyChanged(nameof(HasSurename_main_doctorErrors));
-        OnPropertyChanged(nameof(HasMiddlename_main_doctorErrors));
-
-
-        OnPropertyChanged(nameof(AreNoErrors));
-    }
 
     public override string ToString()
         => $"HospitalWrapper with HospitalData - [ {HospitalData} ]";
 
 
-    public void BuckupData()
+    public override bool Equals(object? obj)
     {
-        BackupedName_main_doctor = Name_main_doctor;
-        BackupedSurename_main_doctor = Surename_main_doctor;
-        BackupedMiddlename_main_doctor = Middlename_main_doctor;
+        if (obj is not HospitalWrapper other) return false;
+        return
+            Name_main_doctor == other?.Name_main_doctor &&
+            Surename_main_doctor == other?.Surename_main_doctor &&
+            Middlename_main_doctor == other?.Middlename_main_doctor;
     }
 
-    public void ApplyChanges() => isModified = true;
+    
+   
+    #endregion
 
-    public void UndoChanges()
+
+
+
+
+
+    #region Modification methods
+
+     public void Backup() =>
+        _backupData = _hospitalData;
+
+    /// <summary>
+    /// Go back to prevoius data after updating
+    /// </summary>
+    public async Task Revert()
     {
-        if (
-                BackupedName_main_doctor != null &&
-                BackupedSurename_main_doctor != null &&
-                BackupedMiddlename_main_doctor != null
-           )
+        if (_backupData != null)
         {
-            Name_main_doctor = BackupedName_main_doctor;
-            Surename_main_doctor = BackupedSurename_main_doctor;
-            Middlename_main_doctor = BackupedMiddlename_main_doctor;
-
-            isModified = true;
+            HospitalData = _backupData;
+            await App.GetService<IRepositoryControllerService>().Hospitals.UpdateAsync(_hospitalData);
         }
-        
     }
+
+
+    public async Task<bool> SaveAsync()
+    {
+        ValidateAllProperties();
+        if (HasErrors) return false;
+        EndEdit();
+        if (IsNew)
+        {
+            await App.GetService<IRepositoryControllerService>().Hospitals.InsertAsync(HospitalData);
+        }
+        else
+        {
+            await App.GetService<IRepositoryControllerService>().Hospitals.UpdateAsync(HospitalData);
+        }
+        return true;
+    }
+
 
 
     #endregion
 
 
+
+
+
+
+
+
+
     #region IEditable implementation
-    // TODO figure out how to use this interface correctly...
+
+
     public void BeginEdit()
     {
-        isModified = true;
-        BuckupData();
+        this.IsInEdit = true;
+        OnPropertyChanged(nameof(IsInEdit));
+        Backup();
     }
+
+
+    
 
     public void CancelEdit()
     {
-        isModified = false;
+        Name_main_doctor = _hospitalData.Name_main_doctor;
+        Surename_main_doctor = _hospitalData.Surename_main_doctor;
+        Middlename_main_doctor = _hospitalData.Middlename_main_doctor;
+        IsModified = false;
+        IsInEdit = false;
     }
 
     public async void EndEdit()
     {
-        await _repositoryControllerService.Hospitals.UpdateAsync(HospitalData);
+        IsInEdit = false;
+        _hospitalData.Name_main_doctor = Name_main_doctor;
+        _hospitalData.Surename_main_doctor = Surename_main_doctor;
+        _hospitalData.Middlename_main_doctor = Middlename_main_doctor;
     }
 
-    public bool Equals(HospitalWrapper? other) =>
-        Name_main_doctor == other?.Name_main_doctor &&
-        Surename_main_doctor == other?.Surename_main_doctor &&
-        Middlename_main_doctor == other?.Middlename_main_doctor;
-
+    
     #endregion
 }

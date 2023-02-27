@@ -3,14 +3,13 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using DB_app.Contracts.ViewModels;
 using DB_app.Core.Contracts.Services;
 using DB_app.Services.Messages;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml;
 using CommunityToolkit.Mvvm.Messaging;
-using System.Diagnostics;
+using DB_app.Helpers;
+using DB_app.Repository;
 
 namespace DB_app.ViewModels;
 
-public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAware, IRecipient<AddRecordMessage<HospitalWrapper>>
+public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAware, IRecipient<DeleteRecordMessage<HospitalWrapper>>
 {
     private readonly IRepositoryControllerService _repositoryControllerService
         = App.GetService<IRepositoryControllerService>();
@@ -21,148 +20,49 @@ public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAw
     public ObservableCollection<HospitalWrapper> Source { get; set; }
         = new ObservableCollection<HospitalWrapper>();
 
-
-    /// <summary>
-    /// Creates a new <see cref="HospitalsGridViewModel"/> instance with new <see cref="HospitalWrapper"/>
-    /// </summary>
     public HospitalsGridViewModel()
     {
         WeakReferenceMessenger.Default.Register(this);
     }
 
-    /// <summary>
-    /// Indicates whether user selected Medicine item in the grid
-    /// </summary>
-    [ObservableProperty]
-    private bool _isGridItemSelected = false;
-
-    [ObservableProperty]
-    private bool _isInfoBarOpened = false;
-
-    [ObservableProperty]
-    private int selectedGridIndex;
-
-
-    [ObservableProperty]
-    private InfoBarSeverity _infoBarSeverity = InfoBarSeverity.Informational;
-    // Error
-    // Informational
-    // Warning
-    // Success
-
-    [ObservableProperty]
-    private string _infoBarMessage = "";
+    public void Receive(DeleteRecordMessage<HospitalWrapper> message)
+    {
+        var givenHospitalWrapper = message.Value;
+        Source.Remove(givenHospitalWrapper);
+    }
 
 
     /// <summary>
     /// Represents selected by user HospitalWrapper object
     /// </summary>
+    [ObservableProperty]
     private HospitalWrapper? _selectedItem;
-    public HospitalWrapper? SelectedItem
-    {
-        get => _selectedItem;
-        set
-        {
-            SetProperty(ref _selectedItem, value);
-            IsGridItemSelected = Converters.IsNotNull(value);
-        }
-    }
-    private bool isInactiveShowed = false;
 
-    public bool IsInactiveShowed
+
+    public event EventHandler<ListEventArgs>? OperationRejected;
+
+
+    public async Task DeleteSelected()
     {
-        get => isInactiveShowed;
-        set
+        if (SelectedItem != null)
         {
-            isInactiveShowed = value;
-            if (value)
+            try
             {
-                _ = AddInactive();
+
+                int id = SelectedItem.HospitalData.Id;
+                await _repositoryControllerService.Addresses.DeleteAsync(id);
+
+                Source.Remove(SelectedItem);
+
+                OperationRejected?.Invoke(this, new ListEventArgs(new List<String>() { "Everything is good" }));
+
             }
-            else
+            catch (LinkedRecordOperationException)
             {
-                RemoveInactive();
-            }
-        }
-    }
-
-    public async Task AddInactive()
-    {
-        var _outOfStock = await _repositoryControllerService.Hospitals.GetInactiveAsync();
-        foreach (var item in _outOfStock)
-        {
-            Source.Add(new HospitalWrapper(item));
-        }
-    }
-
-    public void RemoveInactive()
-    {
-        var _data = new List<HospitalWrapper>();
-        foreach (var item in Source)
-        {
-            if (!item.HospitalData.IsActive)
-            {
-                _data.Add(item);
+                OperationRejected?.Invoke(this, new ListEventArgs(new List<String>() { "Адресс связан с организацией. Удалите связанную организацию, чтобы удалить адрес" }));
             }
         }
-
-
-
-        foreach (var item in _data)
-        {
-            Source.Remove(item);
-        }
     }
-
-
-    public async void deleteItem_Click(object sender, RoutedEventArgs e)
-    {
-        if (_selectedItem != null)
-        {
-            int id = _selectedItem.HospitalData.Id;
-            await _repositoryControllerService.Hospitals.DeleteAsync(id);
-            Source.Remove(_selectedItem);
-
-            InfoBarMessage = "Medicine was deleted";
-            InfoBarSeverity = Microsoft.UI.Xaml.Controls.InfoBarSeverity.Success;
-            IsInfoBarOpened = true;
-
-        }
-    }
-
-    public void InsertToGridNewWrapper(HospitalWrapper givenHospitalWrapper)
-    {
-        givenHospitalWrapper.isNew = false;
-        Source.Insert(0, givenHospitalWrapper);
-        selectedGridIndex = 0;
-    }
-
-    public void SendPrikol()
-    {
-        WeakReferenceMessenger.Default.Send(new ShowRecordDetailsMessage<HospitalWrapper>(_selectedItem));
-    }
-
-
-    /// <summary>
-    /// Saves any modified HospitalWrappers and reloads the HospitalWrapper list from the database.
-    /// </summary>
-    public void UpdateGridWithEditedWrapper(HospitalWrapper givenHospitalWrapper)
-    {
-        // TODO rename it or something IDK it's just looks terrible imo
-        //var foundInSource = Source.FirstOrDefault(wrapper => wrapper.HospitalData.Id == givenHospitalWrapper.HospitalData.Id);
-        //if (foundInSource != null)
-        //{
-        //    givenHospitalWrapper.IsModified = false;
-        //    int index = Source.IndexOf(foundInSource);
-        //    Source[index] = givenHospitalWrapper;
-
-        //    Debug.WriteLine($"so index = {index} and wrapper is {givenHospitalWrapper}");
-        //    selectedGridIndex = index;
-        //}
-        SelectedItem = givenHospitalWrapper;
-        OnPropertyChanged("SelectedItem");
-    }
-
 
 
     public async void OnNavigatedTo(object parameter)
@@ -181,18 +81,5 @@ public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAw
 
     public void OnNavigatedFrom()
     {
-    }
-
-    public void Receive(AddRecordMessage<HospitalWrapper> message)
-    {
-        var givenHospitalWrapper = message.Value;
-        if (givenHospitalWrapper.isNew)
-        {
-            InsertToGridNewWrapper(givenHospitalWrapper);
-        }
-        else
-        {
-            UpdateGridWithEditedWrapper(givenHospitalWrapper);
-        }
     }
 }

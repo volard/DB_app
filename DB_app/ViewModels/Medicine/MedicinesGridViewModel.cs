@@ -2,6 +2,8 @@
 using CommunityToolkit.Mvvm.Messaging;
 using DB_app.Contracts.ViewModels;
 using DB_app.Core.Contracts.Services;
+using DB_app.Helpers;
+using DB_app.Repository;
 using DB_app.Services.Messages;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -11,9 +13,9 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace DB_app.ViewModels;
 
-public partial class MedicinesGridViewModel : ObservableRecipient, INavigationAware, IRecipient<AddRecordMessage<MedicineWrapper>>
+public partial class MedicinesGridViewModel : ObservableRecipient, INavigationAware, IRecipient<DeleteRecordMessage<MedicineWrapper>>
 {
-    private readonly IRepositoryControllerService _repositoryControllerService
+private readonly IRepositoryControllerService _repositoryControllerService
         = App.GetService<IRepositoryControllerService>();
 
     /// <summary>
@@ -22,94 +24,66 @@ public partial class MedicinesGridViewModel : ObservableRecipient, INavigationAw
     public ObservableCollection<MedicineWrapper> Source { get; set; }
         = new ObservableCollection<MedicineWrapper>();
 
-
-    /// <summary>
-    /// Creates a new <see cref="MedicinesGridViewModel"/> instance with new <see cref="MedicineWrapper"/>
-    /// </summary>
     public MedicinesGridViewModel()
     {
         WeakReferenceMessenger.Default.Register(this);
     }
 
-    /// <summary>
-    /// Indicates whether user selected Medicine item in the grid
-    /// </summary>
-    [ObservableProperty]
-    private bool _isGridItemSelected = false;
-
-    [ObservableProperty]
-    private bool _isInfoBarOpened = false;
-
-    [ObservableProperty]
-    private int selectedGridIndex;
-
-
-    [ObservableProperty]
-    private InfoBarSeverity _infoBarSeverity = InfoBarSeverity.Informational;
-    // Error
-    // Informational
-    // Warning
-    // Success
-
-    [ObservableProperty]
-    private string _infoBarMessage = "";
+    public void Receive(DeleteRecordMessage<MedicineWrapper> message)
+    {
+        var givenMedicineWrapper = message.Value;
+        Source.Remove(givenMedicineWrapper);
+    }
 
 
     /// <summary>
     /// Represents selected by user MedicineWrapper object
     /// </summary>
-    private MedicineWrapper? _selectedItem;
-    public MedicineWrapper? SelectedItem
+    [ObservableProperty]
+    private MedicineWrapper? selectedItem;
+
+
+    public event EventHandler<ListEventArgs>? OperationRejected;
+
+
+    public async Task DeleteSelected()
     {
-        get => _selectedItem;
-        set
+        if (SelectedItem != null)
         {
-            SetProperty(ref _selectedItem, value);
-            IsGridItemSelected = Converters.IsNotNull(value);
+            try
+            {
+
+                int id = SelectedItem.MedicineData.Id;
+                await _repositoryControllerService.Addresses.DeleteAsync(id);
+
+                Source.Remove(SelectedItem);
+
+                OperationRejected?.Invoke(this, new ListEventArgs(new List<String>() { "Everything is good" }));
+
+            }
+            catch (LinkedRecordOperationException)
+            {
+                OperationRejected?.Invoke(this, new ListEventArgs(new List<String>() { "Адресс связан с организацией. Удалите связанную организацию, чтобы удалить адрес" }));
+            }
         }
     }
-
-
-
-    public async void deleteItem_Click(object sender, RoutedEventArgs e)
-    {
-        if (_selectedItem != null)
-        {
-            int id = _selectedItem.MedicineData.Id;
-            await _repositoryControllerService.Medicines.DeleteAsync(id);
-            Source.Remove(_selectedItem);
-            InfoBarMessage = "Medicine was deleted";
-            InfoBarSeverity = Microsoft.UI.Xaml.Controls.InfoBarSeverity.Success;
-            IsInfoBarOpened = true;
-        }
-    }
-
-
-    public void SendPrikol()
-    {
-        WeakReferenceMessenger.Default.Send(new ShowRecordDetailsMessage<MedicineWrapper>(_selectedItem));
-    }
-
 
 
     public async void OnNavigatedTo(object parameter)
     {
         if (Source.Count < 1)
         {
-            Debug.WriteLine("Collection was recreated from db");
             Source.Clear();
             var data = await _repositoryControllerService.Medicines.GetAsync();
 
-            foreach (var item in data){ Source.Add(new MedicineWrapper(item)); }
+            foreach (var item in data)
+            {
+                Source.Add(new MedicineWrapper(item));
+            }
         }
     }
 
     public void OnNavigatedFrom()
     {
-    }
-
-    public void Receive(AddRecordMessage<MedicineWrapper> message)
-    {
-        
     }
 }

@@ -7,10 +7,12 @@ using System.ComponentModel.DataAnnotations;
 namespace DB_app.ViewModels;
 
 /// <summary>
-/// Provides wrapper for the Address model class, encapsulating various services for access by the UI.
+/// Provides wrapper for the <see cref="Address"/> model class, encapsulating various services for access by the UI.
 /// </summary>
 public sealed partial class AddressWrapper : ObservableValidator, IEditableObject
 {
+    #region Constructors
+
     /// <summary>
     /// Initialize new AddressWrapper object
     /// </summary>
@@ -25,14 +27,23 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
         else { AddressData = address; }
     }
 
+    #endregion
 
-    public override string ToString() => 
-        $"AddressWrapper with addressData {AddressData}";
+
+
+
+
 
     #region Properties
 
+    /// <summary>
+    /// Underlying <see cref="Address"/> data
+    /// </summary>
     private Address _addressData = null!;
 
+    /// <summary>
+    /// Underlying <see cref="Address"/> data
+    /// </summary>
     public Address AddressData 
     {
         get => _addressData;
@@ -64,6 +75,8 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
 
     public int Id { get => _addressData.Id; }
 
+    private Address? _backupData;
+
 
     /// <summary>
     /// Indicates about changes that is not synced with UI DataGrid
@@ -88,6 +101,24 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
     #endregion
 
 
+
+
+
+
+    #region Members
+
+    public override string ToString() => 
+        $"AddressWrapper with addressData {AddressData}";
+
+    #endregion
+
+
+
+
+
+
+
+
     #region Modification methods
 
 
@@ -103,12 +134,33 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
         }
     }
 
-    private Address? _backupData;
+    public async Task<bool> SaveAsync()
+    {
+        ValidateAllProperties();
+        if (HasErrors) return false;
+        EndEdit();
+        if (IsNew)
+        {
+            await App.GetService<IRepositoryControllerService>().Addresses.InsertAsync(AddressData);
+        }
+        else
+        {
+            await App.GetService<IRepositoryControllerService>().Addresses.UpdateAsync(AddressData);
+        }
+        return true;
+    }
+
+
+
 
     public void Backup() =>
         _backupData = _addressData;
 
     #endregion
+
+
+
+
 
 
     #region IEditable implementation
@@ -139,24 +191,6 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
     }
 
 
-    public async Task<bool> SaveAsync()
-    {
-        ValidateAllProperties();
-        if (HasErrors) return false;
-        EndEdit();
-        if (IsNew)
-        {
-            await App.GetService<IRepositoryControllerService>().Addresses.InsertAsync(AddressData);
-        }
-        else
-        {
-            await App.GetService<IRepositoryControllerService>().Addresses.UpdateAsync(AddressData);
-        }
-        return true;
-    }
-
-
-
     public override bool Equals(object? obj)
     {
         if (obj is not AddressWrapper other) return false;
@@ -166,11 +200,7 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
             Building == other?.Building;
     }
 
-
-
-    // TOOD GetHashCode() implementation
+    // TODO GetHashCode() implementation
     
-
-
     #endregion
 }

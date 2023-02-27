@@ -3,12 +3,20 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="using:DB_app.Behaviors"
+    xmlns:components="using:DB_app.Views.Components"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:DB_app.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:viewModel="using:DB_app.ViewModels"
     mc:Ignorable="d">
+
+    <Page.Resources>
+        <helpers:NotConverter x:Key="NotConverter" />
+        <helpers:VisibleIfConverter x:Key="VisibleIf" />
+        <helpers:CollapsedIf x:Key="CollapsedIf" />
+    </Page.Resources>
 
 
     <behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
@@ -18,18 +26,37 @@
                 Background="Transparent"
                 DefaultLabelPosition="Right">
                 <CommandBar.Content>
-                    <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="{x:Bind PageTitle}" />
+                    <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="{x:Bind PageTitle, Mode=OneWay}" />
                 </CommandBar.Content>
 
                 <AppBarButton
                     Click="SaveButton_Click"
                     Icon="Save"
-                    IsEnabled="{Binding CurrentHospital.AreNoErrors}"
-                    Label="Save" />
+                    IsEnabled="{Binding CurrentHospital.HasErrors, Converter={StaticResource NotConverter}, Mode=OneWay}"
+                    Label="Save"
+                    Visibility="{Binding CurrentHospital.IsInEdit, Converter={StaticResource VisibleIf}, Mode=OneWay}" />
                 <AppBarButton
-                    Click="CancelEdit_Click"
+                    Click="{x:Bind CurrentHospital.BeginEdit}"
+                    Icon="Edit"
+                    Label="Edit"
+                    Visibility="{x:Bind viewModel:Converters.CollapsedIfOneOfTwo(CurrentHospital.IsInEdit, CurrentHospital.IsNew), Mode=OneWay}" />
+                <AppBarButton
+                    Click="{x:Bind CurrentHospital.EndEdit}"
                     Icon="Cancel"
-                    Label="Cancel" />
+                    Label="Cancel"
+                    Visibility="{x:Bind viewModel:Converters.VisibleIfOneAndNotAnother(CurrentHospital.IsInEdit, CurrentHospital.IsNew), Mode=OneWay}" />
+                <AppBarSeparator />
+                <AppBarButton
+                    Click="DeleteButton_Click"
+                    Icon="Delete"
+                    Label="Delete"
+                    Visibility="{Binding CurrentHospital.IsNew, Converter={StaticResource CollapsedIf}, Mode=OneWay}" />
+                <AppBarButton
+                    Click="AddButton_Click"
+                    Icon="Add"
+                    Label="Add new" />
+
+                <AppBarSeparator />
             </CommandBar>
         </DataTemplate>
     </behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
@@ -75,7 +102,7 @@
 
                         <RelativePanel>
 
-                            <TextBox
+                            <!-- <TextBox
                                 x:Name="Surename_main_doctor"
                                 MinWidth="300"
                                 Margin="10,20,16,8"
@@ -92,7 +119,7 @@
                                 IsEnabled="{x:Bind ViewModel.CurrentHospital.IsActive, Mode=OneWay}"
                                 RelativePanel.AlignRightWithPanel="True"
                                 RelativePanel.AlignVerticalCenterWith="Surename_main_doctor"
-                                Visibility="{x:Bind viewModel:Converters.CollapsedIf(ViewModel.CurrentHospital.isNew), Mode=OneWay}" />
+                                Visibility="{x:Bind viewModel:Converters.CollapsedIf(ViewModel.CurrentHospital.IsNew), Mode=OneWay}" />
 
                             <SymbolIcon
                                 Margin="0,35,0,0"
@@ -100,13 +127,22 @@
                                 RelativePanel.AlignVerticalCenterWith="Surename_main_doctor"
                                 RelativePanel.RightOf="Surename_main_doctor"
                                 Symbol="ReportHacked"
-                                Visibility="{x:Bind ViewModel.CurrentHospital.HasSurename_main_doctorErrors, Mode=OneWay}">
                                 <ToolTipService.ToolTip>
                                     <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentHospital.Surename_main_doctorErrors, Mode=OneWay}" />
                                 </ToolTipService.ToolTip>
-                            </SymbolIcon>
+                            </SymbolIcon>                            -->
+
+                            <components:ValidationTextBox
+                                x:Name="Nametest"
+                                DataContext="{x:Bind ViewModel.CurrentHospital}"
+                                HeaderText="City"
+                                IsReadOnly="{x:Bind ViewModel.CurrentHospital.IsInEdit, Converter={StaticResource NotConverter}, Mode=OneWay}"
+                                PlaceholderText="Enter name"
+                                PropertyName="Name_main_doctor"
+                                Text="{x:Bind ViewModel.CurrentHospital.Name_main_doctor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
 
+                            <!--
                             <TextBox
                                 x:Name="Name_main_doctor"
                                 MinWidth="300"
@@ -123,7 +159,6 @@
                                 RelativePanel.AlignVerticalCenterWith="Name_main_doctor"
                                 RelativePanel.RightOf="Name_main_doctor"
                                 Symbol="ReportHacked"
-                                Visibility="{x:Bind ViewModel.CurrentHospital.HasName_main_doctorErrors, Mode=OneWay}">
                                 <ToolTipService.ToolTip>
                                     <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentHospital.Name_main_doctorErrors, Mode=OneWay}" />
                                 </ToolTipService.ToolTip>
@@ -145,11 +180,11 @@
                                 RelativePanel.AlignVerticalCenterWith="Middlename_main_doctor"
                                 RelativePanel.RightOf="Middlename_main_doctor"
                                 Symbol="ReportHacked"
-                                Visibility="{x:Bind ViewModel.CurrentHospital.HasMiddlename_main_doctorErrors, Mode=OneWay}">
                                 <ToolTipService.ToolTip>
                                     <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentHospital.Middlename_main_doctorErrors, Mode=OneWay}" />
                                 </ToolTipService.ToolTip>
                             </SymbolIcon>
+                            -->
                         </RelativePanel>
 
                     </muxc:Expander.Content>

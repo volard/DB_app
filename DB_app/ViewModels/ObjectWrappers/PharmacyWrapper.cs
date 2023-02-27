@@ -8,26 +8,30 @@ using System.Diagnostics;
 
 namespace DB_app.ViewModels;
 
-public partial class PharmacyWrapper : ObservableValidator, IEditableObject, IEquatable<PharmacyWrapper>
+/// <summary>
+/// Provides wrapper for the <see cref="Pharmacy"/> model class, encapsulating various services for access by the UI.
+/// </summary>
+
+public sealed partial class PharmacyWrapper : ObservableValidator, IEditableObject
 {
 
     #region Constructors
-
-    public PharmacyWrapper(Pharmacy Pharmacy)
+    public PharmacyWrapper(Pharmacy? pharmacy = null)
     {
-        PharmacyData = Pharmacy;
-        ErrorsChanged += Suspect_ErrorsChanged;
-        NotifyAboutProperties();
+        if (pharmacy == null)
+        {
+            isNew = true;
+            PharmacyData = new();
+        }
+        else { PharmacyData = pharmacy; }
     }
 
-    public PharmacyWrapper()
-    {
-        PharmacyData = new();
-        ErrorsChanged += Suspect_ErrorsChanged;
-        NotifyAboutProperties();
-    }
 
     #endregion
+
+
+
+
 
 
     #region Properties
@@ -36,35 +40,52 @@ public partial class PharmacyWrapper : ObservableValidator, IEditableObject, IEq
         = App.GetService<IRepositoryControllerService>();
 
 
-    public Pharmacy PharmacyData { get; set; }
 
 
-    [Required(ErrorMessage = "Maindoctor's name is Required")]
-    public string Name
+    private Pharmacy _pharmacyData = null!;
+
+    public Pharmacy PharmacyData 
     {
-        get => PharmacyData.Name;
-        set
-        {
-            ValidateProperty(value);
-            if (!GetErrors(nameof(Name)).Any())
-            {
-                PharmacyData.Name = value;
-                OnPropertyChanged();
-            }
-        }
+        get => _pharmacyData;
+        set 
+        {   
+            _pharmacyData = value;
+            Name = _pharmacyData.Name;
+        } 
     }
 
-    public bool IsActive
-    {
-        get => PharmacyData.IsActive;
-        set
-        {
-            PharmacyData.IsActive = value;
-            OnPropertyChanged();
-        }
-    }
 
-   
+    /// <summary>
+    /// Name of pharmacy
+    /// </summary>
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required(ErrorMessage = "City is Required")]
+    private string? _name;
+
+
+    /// <summary>
+    /// Indicates whether its closed or opened orginization
+    /// </summary>
+    [ObservableProperty]
+    private bool _isActive;
+
+    /// <summary>
+    /// Indicates about changes that is not synced with UI DataGrid
+    /// </summary>
+    [ObservableProperty]
+    private bool isModified = false;
+
+
+    [ObservableProperty]
+    private bool isInEdit = false;
+
+    /// <summary>
+    /// Indicates whether its a new object
+    /// </summary>
+    [ObservableProperty]
+    private bool isNew = false;
+
 
     public ObservableCollection<Address> ObservableAddresses
     {
@@ -88,110 +109,89 @@ public partial class PharmacyWrapper : ObservableValidator, IEditableObject, IEq
     public int Id { get => PharmacyData.Id; }
 
 
-    // TODO that looks disgusting. I wonder if functions in xaml bindings works properly for me
-    public string Errors
-        => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(null) select e.ErrorMessage);
-    public string NameErrors
-        => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(nameof(Name)) select e.ErrorMessage);
+    private Pharmacy? _backupData;
 
 
-    public bool HasNameErrors
-        => GetErrors(nameof(Name)).Any();
 
-    public bool AreNoErrors
-        => !HasErrors;
-
-
-    // TODO implement cancel button on notification popup
-    // TODO maybe it will be better to create another Pharmacy object instead of 
-    // keeping the bunch of backuped properties
-    public string? BackupedName;
-    public string? BackupedINN;
-    public string? BackupedOGRN;
-
-
-    /// <summary>
-    /// Indicates about changes that is not synced with UI DataGrid
-    /// </summary>
-    [ObservableProperty]
-    private bool isModified = false;
-
-    /// <summary>
-    /// Indicates whether its a new object
-    /// </summary>
-    public bool isNew = false;
 
     #endregion
+
+
+
+
+
+
+    #region Members
+
+     public override string ToString()
+        => $"PharmacyWrapper with PharmacyData - [ {PharmacyData} ]";
+
+    public bool Equals(PharmacyWrapper? other) =>
+        Name == other?.Name;
+
+    #endregion
+
+
+
 
 
     #region Modification methods
 
 
-    public void NotifyAboutProperties()
+   
+
+    public void Backup()
     {
-        OnPropertyChanged(nameof(Name));
-        OnPropertyChanged(nameof(ObservableAddresses));
     }
 
-    public void NotifyAboutAddressesChanged() =>
-        OnPropertyChanged(nameof(ObservableAddresses));
-
-    private void Suspect_ErrorsChanged(object sender, DataErrorsChangedEventArgs e)
+    /// <summary>
+    /// Go back to prevoius data after updating
+    /// </summary>
+    public async Task Revert()
     {
-        OnPropertyChanged(nameof(Errors));
-        OnPropertyChanged(nameof(NameErrors));
-
-        OnPropertyChanged(nameof(Name));
-
-
-        OnPropertyChanged(nameof(HasNameErrors));
-
-
-        OnPropertyChanged(nameof(AreNoErrors));
-    }
-
-    public override string ToString()
-        => $"PharmacyWrapper with PharmacyData - [ {PharmacyData} ]";
-
-
-    public void BuckupData()
-    {
-        BackupedName = Name;
-    }
-
-    public void ApplyChanges() => isModified = true;
-
-    public void UndoChanges()
-    {
-        if (
-                BackupedName != null &&
-                BackupedINN != null &&
-                BackupedOGRN != null
-           )
+        if (_backupData != null)
         {
-            Name = BackupedName;
-
-            isModified = true;
+            PharmacyData = _backupData;
+            await App.GetService<IRepositoryControllerService>().Pharmacies.UpdateAsync(PharmacyData);
         }
-        
     }
+
+      public async Task<bool> SaveAsync()
+    {
+        ValidateAllProperties();
+        if (HasErrors) return false;
+        EndEdit();
+        if (!isNew)
+        {
+            await App.GetService<IRepositoryControllerService>().Pharmacies.UpdateAsync(PharmacyData);
+        }
+        else
+        {
+            await App.GetService<IRepositoryControllerService>().Pharmacies.InsertAsync(PharmacyData);
+        }
+        return true;
+    }
+
 
 
     #endregion
 
 
+
+
+
+
     #region IEditable implementation
-    // TODO figure out how to use this interface correctly...
     public void BeginEdit()
     {
-        isModified = true;
-        BuckupData();
+        IsModified = true;
+        Backup();
     }
 
     public void CancelEdit()
     {
         
-        isModified = false;
+        IsModified = false;
     }
 
     public async void EndEdit()
@@ -199,8 +199,6 @@ public partial class PharmacyWrapper : ObservableValidator, IEditableObject, IEq
         await _repositoryControllerService.Pharmacies.UpdateAsync(PharmacyData);
     }
 
-    public bool Equals(PharmacyWrapper? other) =>
-        Name == other?.Name;
 
     #endregion
 }

@@ -1,40 +1,32 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using DB_app.Core.Contracts.Services;
 using DB_app.Entities;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using Windows.ApplicationModel.Activation;
-using Windows.ApplicationModel.UserDataTasks;
 
 namespace DB_app.ViewModels;
 
-public partial class ProductWrapper : ObservableValidator, IEditableObject, IEquatable<ProductWrapper>
+/// <summary>
+/// Provides wrapper for the <see cref="Product"/> model class, encapsulating various services for access by the UI.
+/// </summary>
+public sealed partial class ProductWrapper : ObservableValidator, IEditableObject
 {
     #region Constructors
 
-    public ProductWrapper(Product product)
+    public ProductWrapper(Product? product = null)
     {
-        ProductData = product;
-        ErrorsChanged += Suspect_ErrorsChanged;
-        NotifyAboutProperties();
+        if (product == null)
+        {
+            IsNew = true;
+        }
+        else { ProductData = product; }
     }
 
-    public ProductWrapper()
-    {
-        ProductData = new();
-        ErrorsChanged += Suspect_ErrorsChanged;
-        NotifyAboutProperties();
-    }
 
     #endregion
+
+
+
 
 
     #region Properties
@@ -43,7 +35,18 @@ public partial class ProductWrapper : ObservableValidator, IEditableObject, IEqu
         = App.GetService<IRepositoryControllerService>();
 
 
-    public Product ProductData { get; set; }
+    private Product _productData = null!;
+
+
+    public Product ProductData
+    {
+        get => _productData;
+        set
+        {
+            _productData = value;
+            Medicine = _productData.Medicine;
+        }
+    }
 
 
     [Required(ErrorMessage = "Medicine is Required")]
@@ -57,11 +60,26 @@ public partial class ProductWrapper : ObservableValidator, IEditableObject, IEqu
             {
                 ProductData.Medicine = value;
                 IsModified = true;
-                OnPropertyChanged(nameof(CanSave));
             }
         }
     }
 
+
+
+    /// <summary>
+    /// City of the current ProductWrapper's data object
+    /// </summary>
+    public string PharmacyName { get => ProductData.Pharmacy.Name; }
+
+    /// <summary>
+    /// Street of the current ProductWrapper's data object
+    /// </summary>
+    public string MedicineName { get => ProductData.Medicine.Name; }
+
+    /// <summary>
+    /// Building of the current ProductWrapper's data object
+    /// </summary>
+    public string MedicineType { get => ProductData.Medicine.Type; }
 
 
     [Required(ErrorMessage = "Quantity is Required")]
@@ -77,7 +95,6 @@ public partial class ProductWrapper : ObservableValidator, IEditableObject, IEqu
                 ProductData.Quantity = value;
                 OnPropertyChanged();
                 IsModified = true;
-                OnPropertyChanged(nameof(CanSave));
             }
         }
     }
@@ -97,7 +114,6 @@ public partial class ProductWrapper : ObservableValidator, IEditableObject, IEqu
                 ProductData.Price = value;
                 OnPropertyChanged();
                 IsModified= true; 
-                OnPropertyChanged(nameof(CanSave));
             }
             
         }
@@ -115,49 +131,14 @@ public partial class ProductWrapper : ObservableValidator, IEditableObject, IEqu
             {
                 ProductData.Pharmacy = value;
                 IsModified = true;
-                OnPropertyChanged(nameof(CanSave));
             }
         }
     }
 
     public int Id { get => ProductData.Id; }
 
-
-    // TODO that looks disgusting. I wonder if functions in xaml bindings works properly for me
-    public string Errors
-        => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(null) select e.ErrorMessage);
-    public string MedicineErrors
-        => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(nameof(Medicine)) select e.ErrorMessage);
-    public string PharmacyErrors
-        => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(nameof(Pharmacy)) select e.ErrorMessage);
-    public string PriceErrors
-        => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(nameof(Price)) select e.ErrorMessage);
-    public string QuantityErrors
-        => string.Join(Environment.NewLine, from ValidationResult e in GetErrors(nameof(Quantity)) select e.ErrorMessage);
-
-
-    public bool HasMedicineErrors
-        => GetErrors(nameof(Medicine)).Any();
-    public bool HasPharmacyErrors
-        => GetErrors(nameof(Pharmacy)).Any();
-    public bool HasPriceErrors
-        => GetErrors(nameof(Price)).Any();
-    public bool HasQuantityErrors
-        => GetErrors(nameof(Quantity)).Any();
-    public bool AreNoErrors
-        => !HasErrors;
-    public bool CanSave
-        => !HasErrors && (isModified || isNew);
-
-
-    // TODO implement cancel button on notification popup
-    // TODO maybe it will be better to create another Product object instead of 
-    // keeping the bunch of backuped properties
-    public Medicine? BackupedMedicine;
-    public Pharmacy? BackupedPharmacy;
-    public double? BackupedPrice;
-    public int? BackupedQuantity;
-
+    private Product? _backupData;
+   
 
     /// <summary>
     /// Indicates about changes that is not synced with UI DataGrid
@@ -165,98 +146,22 @@ public partial class ProductWrapper : ObservableValidator, IEditableObject, IEqu
     [ObservableProperty]
     private bool isModified = false;
 
+    [ObservableProperty]
+    private bool isInEdit = false;
+
     /// <summary>
     /// Indicates whether its a new object
     /// </summary>
-    public bool isNew = false;
-
-    #endregion
-
-
-    #region Modification methods
-
-
-    public void NotifyAboutProperties()
-    {
-        OnPropertyChanged(nameof(Errors));
-        OnPropertyChanged(nameof(MedicineErrors));
-        OnPropertyChanged(nameof(PharmacyErrors));
-        OnPropertyChanged(nameof(PriceErrors));
-
-        OnPropertyChanged(nameof(Medicine));
-        OnPropertyChanged(nameof(Pharmacy));
-        OnPropertyChanged(nameof(Price));
-        OnPropertyChanged(nameof(Quantity));
-
-        OnPropertyChanged(nameof(HasMedicineErrors));
-        OnPropertyChanged(nameof(HasPharmacyErrors));
-        OnPropertyChanged(nameof(HasPriceErrors));
-        OnPropertyChanged(nameof(HasQuantityErrors));
-
-        OnPropertyChanged(nameof(CanSave));
-    }
-
-    public void Suspect_ErrorsChanged(object sender, DataErrorsChangedEventArgs e)
-    {
-        NotifyAboutProperties();
-    }
-
-    public override string ToString()
-        => $"ProductWrapper with ProductData - [ {ProductData} ]";
-
-
-    public void BuckupData()
-    {
-        BackupedMedicine = Medicine;
-        BackupedPharmacy = Pharmacy;
-        BackupedPrice = Price;
-        BackupedQuantity = Quantity;
-    }
-
-    public void ApplyChanges() => IsModified = true;
-
-    public void UndoChanges()
-    {
-        if (
-                BackupedMedicine != null &&
-                BackupedPharmacy != null &&
-                BackupedPrice != null &&
-                BackupedQuantity != null
-           )
-        {
-            Medicine = BackupedMedicine;
-            Pharmacy = BackupedPharmacy;
-            Price = (double)BackupedPrice;
-            Quantity = (int)BackupedQuantity;
-
-            isModified = true;
-        }
-        
-    }
-
+    [ObservableProperty]
+    private bool _isNew = false;
 
     #endregion
 
 
 
-    #region IEditable implementation
-    // TODO figure out how to use this interface correctly...
-    public void BeginEdit()
-    {
-        isModified = true;
-        BuckupData();
-    }
 
-    public void CancelEdit()
-    {
-        
-        isModified = false;
-    }
 
-    public async void EndEdit()
-    {
-        await _repositoryControllerService.Products.UpdateAsync(ProductData);
-    }
+    #region Members
 
     public bool Equals(ProductWrapper? other) =>
         Medicine == other?.Medicine &&
@@ -264,22 +169,77 @@ public partial class ProductWrapper : ObservableValidator, IEditableObject, IEqu
         Price == other?.Price &&
         Quantity == other?.Quantity;
 
+    public override string ToString()
+        => $"ProductWrapper with ProductData - [ {ProductData} ]";
+
+
     #endregion
 
-    /// <summary>
-    /// City of the current ProductWrapper's data object
-    /// </summary>
-    public string PharmacyName { get => ProductData.Pharmacy.Name; }
+
+
+
+
+    #region Modification methods
 
     /// <summary>
-    /// Street of the current ProductWrapper's data object
+    /// Go back to prevoius data after updating
     /// </summary>
-    public string MedicineName { get => ProductData.Medicine.Name; }
+    public async Task Revert()
+    {
+        if (_backupData != null)
+        {
+            ProductData = _backupData;
+            await App.GetService<IRepositoryControllerService>().Products.UpdateAsync(ProductData);
+        }
+    }
 
-    /// <summary>
-    /// Building of the current ProductWrapper's data object
-    /// </summary>
-    public string MedicineType { get => ProductData.Medicine.Type; }
+
+     public async Task<bool> SaveAsync()
+    {
+        ValidateAllProperties();
+        if (HasErrors) return false;
+        EndEdit();
+        if (IsNew)
+        {
+            await App.GetService<IRepositoryControllerService>().Products.InsertAsync(ProductData);
+        }
+        else
+        {
+            await App.GetService<IRepositoryControllerService>().Products.UpdateAsync(ProductData);
+        }
+        return true;
+    }
 
 
+
+    public void Backup() =>
+        _backupData = _productData;
+
+
+    #endregion
+
+
+
+
+
+    #region IEditable implementation
+    public void BeginEdit()
+    {
+        IsModified = true;
+        Backup();
+    }
+
+    public void CancelEdit()
+    {
+        
+        IsModified = false;
+    }
+
+    public async void EndEdit()
+    {
+        await _repositoryControllerService.Products.UpdateAsync(ProductData);
+    }
+
+
+    #endregion
 }

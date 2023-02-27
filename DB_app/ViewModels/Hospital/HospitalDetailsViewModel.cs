@@ -17,7 +17,7 @@ public partial class HospitalDetailsViewModel : ObservableRecipient, IRecipient<
     {
         CurrentHospital = new()
         {
-            isNew = true
+            IsNew = true
         };
         WeakReferenceMessenger.Default.Register(this);
         AvailableAddresses = new(getAvailableAddresses());
@@ -43,7 +43,6 @@ public partial class HospitalDetailsViewModel : ObservableRecipient, IRecipient<
     public void Receive(ShowRecordDetailsMessage<HospitalWrapper> message)
     {
         CurrentHospital = message.Value;
-        CurrentHospital.NotifyAboutProperties();
     }
 
     /// <summary>
@@ -51,7 +50,7 @@ public partial class HospitalDetailsViewModel : ObservableRecipient, IRecipient<
     /// </summary>
     public async Task SaveAsync()
     {
-        if (CurrentHospital.isNew) // Create new medicine
+        if (CurrentHospital.IsNew) // Create new medicine
         {
             await _repositoryControllerService.Hospitals.InsertAsync(CurrentHospital.HospitalData);
         }

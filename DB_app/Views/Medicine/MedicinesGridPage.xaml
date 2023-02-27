@@ -6,11 +6,16 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:helpers="using:DB_app.Helpers"
     xmlns:vm="using:DB_app.ViewModels"
     d:DataContext="{d:DesignInstance Type=vm:MedicinesGridViewModel}"
     mc:Ignorable="d">
 
+    <Page.Resources>
+        <helpers:IsNotNullConverter x:Key="IsNotNullConverter" />
+    </Page.Resources>
 
+    <!--#region Header-->
     <behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
         <DataTemplate x:DataType="vm:MedicinesGridViewModel">
             <CommandBar
@@ -24,35 +29,34 @@
 
                 <AppBarButton
                     x:Name="CommandBarAddButton"
-                    Click="AddNewMedicine_Click"
                     Icon="Add"
                     Label="Add new"
                     ToolTipService.ToolTip="Add new" />
-
                 <AppBarButton
-                    x:Name="Test"
-                    Icon="Bold"
-                    Label="{x:Bind }" />
+                    x:Name="CommandBarViewButton"
+                    Icon="OpenLocal"
+                    IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
+                    Label="View"
+                    ToolTipService.ToolTip="View" />
 
                 <AppBarButton
                     x:Name="CommandBarEditButton"
-                    Click="EditExistingMedicine_Click"
                     Icon="Edit"
-                    IsEnabled="{Binding IsGridItemSelected, Mode=OneWay}"
+                    IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
                     Label="Edit"
                     ToolTipService.ToolTip="Edit" />
 
                 <AppBarButton
                     x:Name="CommandBarDeleteButton"
                     Icon="Delete"
-                    IsEnabled="{Binding IsGridItemSelected, Mode=OneWay}"
+                    IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
                     Label="Delete"
                     ToolTipService.ToolTip="Delete" />
 
             </CommandBar>
         </DataTemplate>
     </behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
-
+    <!--#endregion-->
 
     <Grid
         Padding="0,0,0,10"
@@ -67,7 +71,6 @@
                 GridLinesVisibility="All"
                 IsReadOnly="True"
                 ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
-                SelectedIndex="{x:Bind ViewModel.SelectedGridIndex, Mode=OneWay}"
                 SelectedItem="{x:Bind ViewModel.SelectedItem, Mode=TwoWay}"
                 SelectionMode="Single"
                 Style="{StaticResource DataGridStyle1}"
@@ -81,7 +84,7 @@
 
                 <toolkit:DataGrid.Columns>
 
-                    
+
                     <toolkit:DataGridTextColumn
                         Width="30*"
                         Binding="{Binding Name}"
@@ -95,15 +98,13 @@
             </toolkit:DataGrid>
         </Grid>
 
-        <RelativePanel HorizontalAlignment="Stretch">
-            <InfoBar
-                Title="{x:Bind ViewModel.InfoBarSeverity, Mode=OneWay}"
-                IsOpen="{x:Bind ViewModel.IsInfoBarOpened, Mode=OneWay}"
-                Message="{x:Bind ViewModel.InfoBarMessage, Mode=OneWay}"
-                RelativePanel.AlignBottomWithPanel="True"
-                RelativePanel.AlignHorizontalCenterWithPanel="True"
-                Severity="{x:Bind ViewModel.InfoBarSeverity, Mode=OneWay}" />
-        </RelativePanel>
+
+
+        <toolkit:InAppNotification
+            x:Name="Notification"
+            RelativePanel.AlignBottomWithPanel="True"
+            RelativePanel.AlignHorizontalCenterWithPanel="True"
+            StackMode="Replace" />
 
 
 

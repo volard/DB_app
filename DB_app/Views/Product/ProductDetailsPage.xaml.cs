@@ -51,20 +51,19 @@ public sealed partial class ProductDetailsPage : Page
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
-        ViewModel.CurrentProduct.BuckupData();
-        ViewModel.CurrentProduct.NotifyAboutProperties();
+        ViewModel.CurrentProduct.Backup();
         base.OnNavigatedTo(e);
     }
 
 
-    private void PriceValue_ValueChanged(object sender, NumberBoxValueChangedEventArgs e)
+    private void PriceValue_ValueChanged(object? sender, NumberBoxValueChangedEventArgs e)
     {
         ViewModel.CurrentProduct.Price = Price.Value is double.NaN ? 1 : Price.Value;
 
         ViewModel.CurrentProduct.IsModified = true;
     }
 
-    private void QuantityValue_ValueChanged(object sender, NumberBoxValueChangedEventArgs e)
+    private void QuantityValue_ValueChanged(object? sender, NumberBoxValueChangedEventArgs e)
     {
         ViewModel.CurrentProduct.Quantity = Quantity.Value is double.NaN ? 1 : (int)Quantity.Value;
         ViewModel.CurrentProduct.IsModified = true;

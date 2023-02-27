@@ -18,10 +18,10 @@ public class Hospital
             List<Address> addresses
         )
     {
-        MainDoctorSurename    = surename_main_doctor;
-        MainDoctorName        = name_main_doctor;
-        MainDoctorMiddlename  = middlename_main_doctor;
-        Addresses             = addresses;
+        Surename_main_doctor    = surename_main_doctor;
+        Name_main_doctor        = name_main_doctor;
+        Middlename_main_doctor  = middlename_main_doctor;
+        Addresses               = addresses;
     }
 
     public Hospital
@@ -32,10 +32,10 @@ public class Hospital
             string middlename_main_doctor
         )
     {
-        Id                   = id;
-        MainDoctorSurename   = surename_main_doctor;
-        MainDoctorName       = name_main_doctor;
-        MainDoctorMiddlename = middlename_main_doctor;
+        Id                     = id;
+        Surename_main_doctor   = surename_main_doctor;
+        Name_main_doctor       = name_main_doctor;
+        Middlename_main_doctor = middlename_main_doctor;
     }
 
     public Hospital
@@ -67,13 +67,13 @@ public class Hospital
     public int           Id                        { get; set; }
 
     [Required]
-    public string        MainDoctorSurename        { get; set; }
+    public string        Surename_main_doctor        { get; set; }
 
     [Required]
-    public string        MainDoctorName            { get; set; }
+    public string        Name_main_doctor            { get; set; }
 
     [Required]
-    public string        MainDoctorMiddlename      { get; set; }
+    public string        Middlename_main_doctor      { get; set; }
 
     [Required]
     public bool          IsActive                  { get; set; } = true;
@@ -127,7 +127,7 @@ public class Hospital
     #endregion
 
     public override string ToString()
-        => $"Hospital #{Id} - {MainDoctorSurename} {MainDoctorName} {MainDoctorMiddlename} maindoctor";
+        => $"Hospital #{Id} - {Surename_main_doctor} {Name_main_doctor} {Middlename_main_doctor} maindoctor";
 
     public override bool Equals(object? obj)
     {
@@ -144,9 +144,9 @@ public class Hospital
         return 
            (
             (
-                ((Hospital)obj).MainDoctorSurename == MainDoctorSurename && 
-                ((Hospital)obj).MainDoctorName == MainDoctorName &&
-                ((Hospital)obj).MainDoctorMiddlename == MainDoctorMiddlename
+                ((Hospital)obj).Surename_main_doctor == Surename_main_doctor && 
+                ((Hospital)obj).Name_main_doctor == Name_main_doctor &&
+                ((Hospital)obj).Middlename_main_doctor == Middlename_main_doctor
             ) && ((Hospital)obj).IsActive == IsActive) ||
             ((Hospital)obj).Id == Id ;
     }

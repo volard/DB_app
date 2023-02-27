@@ -34,6 +34,12 @@ public sealed partial class AddressesGridPage : Page
         base.OnNavigatedTo(e);
     }
 
+    protected override void OnNavigatedFrom(NavigationEventArgs e)
+    {
+        ViewModel.OperationRejected-= ShowNotificationMessage;
+        base.OnNavigatedFrom(e);
+    }
+
     private void ShowNotificationMessage(object? sender, ListEventArgs e)
     {
         var message = e.Data[0];

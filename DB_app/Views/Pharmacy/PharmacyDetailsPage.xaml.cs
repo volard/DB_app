@@ -29,16 +29,17 @@ public sealed partial class PharmacyDetailsPage : Page
 
     private async void MakeInactiveButton_ButtonClicked(object sender, RoutedEventArgs e)
     {
-        ContentDialog dialog = new();
-
-        // XamlRoot must be set in the case of a ContentDialog running in a Desktop app
-        dialog.XamlRoot = this.XamlRoot;
-        dialog.Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style;
-        dialog.Title = "Are you sure?";
-        dialog.PrimaryButtonText = "Confirm";
-        dialog.CloseButtonText = "Cancel";
-        dialog.DefaultButton = ContentDialogButton.Primary;
-        dialog.Content = "When you disable pharmacy, it will be unlinked from its addresses and become read only.";
+        ContentDialog dialog = new()
+        {
+            // XamlRoot must be set in the case of a ContentDialog running in a Desktop app
+            XamlRoot = this.XamlRoot,
+            Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style,
+            Title = "Are you sure?",
+            PrimaryButtonText = "Confirm",
+            CloseButtonText = "Cancel",
+            DefaultButton = ContentDialogButton.Primary,
+            Content = "When you disable pharmacy, it will be unlinked from its addresses and become read only."
+        };
 
         var result = await dialog.ShowAsync();
         if (result == ContentDialogResult.Primary)
@@ -53,7 +54,6 @@ public sealed partial class PharmacyDetailsPage : Page
         {
             ViewModel.CurrentPharmacy.PharmacyData.AddAddress(ViewModel.SelectedAddress);
             ViewModel.CurrentPharmacy.IsModified = true;
-            ViewModel.CurrentPharmacy.NotifyAboutAddressesChanged();
             ViewModel.AvailableAddresses.Remove(ViewModel.SelectedAddress);
         }
     }
@@ -65,7 +65,6 @@ public sealed partial class PharmacyDetailsPage : Page
             ViewModel.AvailableAddresses.Add(ViewModel.SelectedExistingAddress);
             ViewModel.CurrentPharmacy.PharmacyData.RemoveAddress(ViewModel.SelectedExistingAddress);
             ViewModel.CurrentPharmacy.IsModified = true;
-            ViewModel.CurrentPharmacy.NotifyAboutAddressesChanged();
         }
     }
 
@@ -87,14 +86,12 @@ public sealed partial class PharmacyDetailsPage : Page
     /// </summary>
     protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
     {
-        // TODO implement this
     }
 
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
-        ViewModel.CurrentPharmacy.BuckupData();
-        ViewModel.CurrentPharmacy.NotifyAboutProperties();
+        ViewModel.CurrentPharmacy.Backup();
         base.OnNavigatedTo(e);
     }
 
