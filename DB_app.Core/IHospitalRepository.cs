@@ -6,7 +6,6 @@ public interface IHospitalRepository
     /// <summary>
     /// Deletes specified hospital
     /// </summary>
-    // TODO implement all this restriction stuff or how is it called
     public Task DeleteAsync(int id);
 
     /// <summary>

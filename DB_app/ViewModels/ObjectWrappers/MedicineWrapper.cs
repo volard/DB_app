@@ -68,7 +68,6 @@ public sealed partial class MedicineWrapper : ObservableValidator, IEditableObje
 
     public int Id { get => MedicineData.Id; }
 
-    // TODO implement cancel button on notification popup
     private Medicine? BackupData;
 
 

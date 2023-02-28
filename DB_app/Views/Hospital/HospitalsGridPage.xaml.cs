@@ -13,11 +13,11 @@ using System.Diagnostics;
 namespace DB_app.Views;
 
 
-public sealed partial class HospitalGridPage : Page
+public sealed partial class HospitalsGridPage : Page
 {
     public HospitalsGridViewModel ViewModel { get; }
 
-    public HospitalGridPage()
+    public HospitalsGridPage()
     {
         ViewModel = App.GetService<HospitalsGridViewModel>();
         InitializeComponent();
@@ -26,11 +26,6 @@ public sealed partial class HospitalGridPage : Page
             Source = ViewModel,
             Mode = BindingMode.OneWay
         });
-    }
-
-    private void InitializeComponent()
-    {
-        throw new NotImplementedException();
     }
 
     protected override void OnNavigatedTo(NavigationEventArgs e)

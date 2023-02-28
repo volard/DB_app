@@ -10,7 +10,6 @@ using WinUIEx.Messaging;
 
 namespace DB_app.Views;
 
-// TODO change "New Product" page header to dynamic one
 public sealed partial class ProductDetailsPage : Page
 {
     public ProductDetailsViewModel ViewModel { get; }
@@ -45,7 +44,6 @@ public sealed partial class ProductDetailsPage : Page
     /// </summary>
     protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
     {
-        // TODO implement this
     }
 
 
@@ -58,15 +56,15 @@ public sealed partial class ProductDetailsPage : Page
 
     private void PriceValue_ValueChanged(object? sender, NumberBoxValueChangedEventArgs e)
     {
-        ViewModel.CurrentProduct.Price = Price.Value is double.NaN ? 1 : Price.Value;
+        //ViewModel.CurrentProduct.Price = Price.Value is double.NaN ? 1 : Price.Value;
 
-        ViewModel.CurrentProduct.IsModified = true;
+        //ViewModel.CurrentProduct.IsModified = true;
     }
 
     private void QuantityValue_ValueChanged(object? sender, NumberBoxValueChangedEventArgs e)
     {
-        ViewModel.CurrentProduct.Quantity = Quantity.Value is double.NaN ? 1 : (int)Quantity.Value;
-        ViewModel.CurrentProduct.IsModified = true;
+        //ViewModel.CurrentProduct.Quantity = Quantity.Value is double.NaN ? 1 : (int)Quantity.Value;
+        //ViewModel.CurrentProduct.IsModified = true;
     }
 
 }

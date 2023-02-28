@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:helpers="using:DB_app.Helpers"
+    xmlns:components="using:DB_app.Views.Components"
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:viewModel="using:DB_app.ViewModels"
     mc:Ignorable="d">
@@ -54,51 +55,24 @@
 
         <RelativePanel Margin="8,0,0,12">
 
-
-            <TextBox
+            
+            <components:ValidationTextBox
                 x:Name="Name"
-                MinWidth="300"
-                Margin="10,20,16,8"
-                Header="Name"
-                RelativePanel.AlignLeftWithPanel="True"
-                Text="{x:Bind ViewModel.CurrentMedicine.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                TextChanged="NameText_TextChanged" />
+                DataContext="{x:Bind ViewModel.CurrentMedicine}"
+                HeaderText="Medicine name"
+                IsReadOnly="{x:Bind ViewModel.CurrentMedicine.IsInEdit, Converter={StaticResource NotConverter}, Mode=OneWay}"
+                PlaceholderText="Enter name"
+                PropertyName="Name"
+                Text="{x:Bind ViewModel.CurrentMedicine.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-            <SymbolIcon
-                Margin="0,35,0,0"
-                Foreground="OrangeRed"
-                RelativePanel.AlignVerticalCenterWith="Name"
-                RelativePanel.RightOf="Name"
-                Symbol="ReportHacked"
-                Visibility="{x:Bind ViewModel.CurrentMedicine.HasNameErrors, Mode=OneWay}">
-                <ToolTipService.ToolTip>
-                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentMedicine.NameErrors, Mode=OneWay}" />
-                </ToolTipService.ToolTip>
-            </SymbolIcon>
-
-
-            <TextBox
+            <components:ValidationTextBox
                 x:Name="Type"
-                MinWidth="300"
-                Margin="10,20,16,8"
-                Header="Type"
-                IsEnabled="{x:Bind ViewModel.CurrentMedicine.IsNew, Mode=OneWay}"
-                RelativePanel.AlignLeftWithPanel="True"
-                RelativePanel.Below="Name"
-                Text="{x:Bind ViewModel.CurrentMedicine.Type, Mode=TwoWay}"
-                TextChanged="TypeText_TextChanged" />
-            <SymbolIcon
-                Margin="0,35,0,0"
-                Foreground="OrangeRed"
-                RelativePanel.AlignVerticalCenterWith="Type"
-                RelativePanel.RightOf="Type"
-                Symbol="ReportHacked"
-                Visibility="{x:Bind ViewModel.CurrentMedicine.HasTypeErrors, Mode=OneWay}">
-                <ToolTipService.ToolTip>
-                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentMedicine.TypeErrors, Mode=OneWay}" />
-                </ToolTipService.ToolTip>
-            </SymbolIcon>
-
+                DataContext="{x:Bind ViewModel.CurrentMedicine}"
+                HeaderText="Medicine type"
+                IsReadOnly="{x:Bind ViewModel.CurrentMedicine.IsInEdit, Converter={StaticResource NotConverter}, Mode=OneWay}"
+                PlaceholderText="Enter type"
+                PropertyName="Type"
+                Text="{x:Bind ViewModel.CurrentMedicine.Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         </RelativePanel>
 

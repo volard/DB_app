@@ -3,10 +3,11 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="using:DB_app.Behaviors"
+    xmlns:components="using:DB_app.Views.Components"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:DB_app.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    xmlns:helpers="using:DB_app.Helpers"
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:viewModel="using:DB_app.ViewModels"
     mc:Ignorable="d">
@@ -88,29 +89,17 @@
                                 IsEnabled="{x:Bind ViewModel.CurrentPharmacy.IsActive, Mode=OneWay}"
                                 RelativePanel.AlignRightWithPanel="True"
                                 RelativePanel.AlignVerticalCenterWith="Name"
-                                Visibility="{x:Bind viewModel:Converters.CollapsedIf(ViewModel.CurrentPharmacy.isNew), Mode=OneWay}" />
+                                Visibility="{x:Bind viewModel:Converters.CollapsedIf(ViewModel.CurrentPharmacy.IsNew), Mode=OneWay}" />
 
-                            <TextBox
+
+                            <components:ValidationTextBox
                                 x:Name="Name"
-                                MinWidth="300"
-                                Margin="10,20,16,8"
-                                Header="Name"
-                                IsReadOnly="{x:Bind viewModel:Converters.Not(ViewModel.CurrentPharmacy.IsActive), Mode=OneWay}"
-                                RelativePanel.AlignLeftWithPanel="True"
-                                Text="{x:Bind ViewModel.CurrentPharmacy.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                TextChanged="NameText_TextChanged" />
-
-                            <SymbolIcon
-                                Margin="0,35,0,0"
-                                Foreground="OrangeRed"
-                                RelativePanel.AlignVerticalCenterWith="Name"
-                                RelativePanel.RightOf="Name"
-                                Symbol="ReportHacked"
-                                Visibility="{x:Bind ViewModel.CurrentPharmacy.HasNameErrors, Mode=OneWay}">
-                                <ToolTipService.ToolTip>
-                                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentPharmacy.NameErrors, Mode=OneWay}" />
-                                </ToolTipService.ToolTip>
-                            </SymbolIcon>
+                                DataContext="{x:Bind ViewModel.CurrentPharmacy}"
+                                HeaderText="Pharmacy name"
+                                IsReadOnly="{x:Bind ViewModel.CurrentPharmacy.IsInEdit, Converter={StaticResource NotConverter}, Mode=OneWay}"
+                                PlaceholderText="Enter name"
+                                PropertyName="Name"
+                                Text="{x:Bind ViewModel.CurrentPharmacy.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                         </RelativePanel>
 

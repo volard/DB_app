@@ -84,7 +84,6 @@ public sealed partial class HospitalDetailsPage : Page
     /// </summary>
     protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
     {
-        // TODO implement this
     }
 
 

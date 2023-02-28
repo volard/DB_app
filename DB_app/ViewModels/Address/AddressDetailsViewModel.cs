@@ -25,7 +25,6 @@ public partial class AddressDetailsViewModel : ObservableRecipient, INavigationA
     /// <summary>
     /// Saves customer data that was edited.
     /// </summary>
-    // TODO this needs to be linked with  inappnotification
     public async void SaveCurrent(object? sender, RoutedEventArgs  e)
     {
         try

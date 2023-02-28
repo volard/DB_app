@@ -6,7 +6,6 @@ public interface IOrderRepository
     /// <summary>
     /// Deletes specified order
     /// </summary>
-    // TODO implement all this restriction stuff or how is it called
     public Task DeleteAsync(int id);
 
     /// <summary>

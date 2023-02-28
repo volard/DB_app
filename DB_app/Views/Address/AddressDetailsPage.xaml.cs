@@ -10,7 +10,6 @@ using Microsoft.UI.Xaml.Navigation;
 
 namespace DB_app.Views;
 
-// TODO change "New Address" page header to dynamic one
 public sealed partial class AddressDetailsPage : Page
 {
     public AddressDetailsViewModel ViewModel { get; }
@@ -66,7 +65,6 @@ public sealed partial class AddressDetailsPage : Page
     {
         if (ViewModel.CurrentAddress.IsInEdit)
         {
-            // TODO Display notification
             ViewModel.CurrentAddress.IsInEdit = false;
         }
         Frame.Navigate(typeof(AddressDetailsPage));

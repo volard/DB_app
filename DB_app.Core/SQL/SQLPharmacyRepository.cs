@@ -96,7 +96,6 @@ public class SQLPharmacyRepository : IPharmacyRepository
         if (foundPharmacy != null)
         {
             // if pharmacy linked to orders, its required to disable pharmacy instead of delete it
-            // TODO here is problerm
             //if (_db.Orders.Any(order => order.Items == id))
             //{
             //    throw new RecordLinkedWithOrderException();

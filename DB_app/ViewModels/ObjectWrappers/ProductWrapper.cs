@@ -102,7 +102,6 @@ public sealed partial class ProductWrapper : ObservableValidator, IEditableObjec
 
     [Required(ErrorMessage = "Price is Required")]
     //[RegularExpression("([1-9]+)", ErrorMessage = "Please enter a Number")]
-    // TODO change number validation to money validation
     public double Price
     {
         get => ProductData.Price;

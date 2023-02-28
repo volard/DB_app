@@ -6,8 +6,7 @@ public class DataSeeder
 {
     public static void ClearData(SQLContext dbContext)
     {
-        // TODO be careful with deletion order...
-
+        // NOTE be careful with deletion order...
         dbContext.Orders.RemoveRange(dbContext.Orders);
         dbContext.OrderItems.RemoveRange(dbContext.OrderItems);
         dbContext.Products.RemoveRange(dbContext.Products);

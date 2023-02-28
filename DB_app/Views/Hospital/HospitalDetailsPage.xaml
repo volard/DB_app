@@ -18,7 +18,8 @@
         <helpers:CollapsedIf x:Key="CollapsedIf" />
     </Page.Resources>
 
-
+    
+    <!--#region Header-->
     <behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
         <DataTemplate x:DataType="viewModel:HospitalDetailsViewModel">
             <CommandBar
@@ -47,12 +48,10 @@
                     Visibility="{x:Bind viewModel:Converters.VisibleIfOneAndNotAnother(CurrentHospital.IsInEdit, CurrentHospital.IsNew), Mode=OneWay}" />
                 <AppBarSeparator />
                 <AppBarButton
-                    Click="DeleteButton_Click"
                     Icon="Delete"
                     Label="Delete"
                     Visibility="{Binding CurrentHospital.IsNew, Converter={StaticResource CollapsedIf}, Mode=OneWay}" />
                 <AppBarButton
-                    Click="AddButton_Click"
                     Icon="Add"
                     Label="Add new" />
 
@@ -60,7 +59,7 @@
             </CommandBar>
         </DataTemplate>
     </behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
-
+    <!--#endregion-->
 
 
     <RelativePanel>
@@ -82,7 +81,7 @@
                     </Style>
                 </StackPanel.Resources>
 
-
+                <!-- Full name and hospital info in expander -->
                 <muxc:Expander
                     x:Name="ExpanderFullName"
                     ExpandDirection="Down"
@@ -102,16 +101,7 @@
 
                         <RelativePanel>
 
-                            <!-- <TextBox
-                                x:Name="Surename_main_doctor"
-                                MinWidth="300"
-                                Margin="10,20,16,8"
-                                Header="Maindoctor's surename"
-                                IsReadOnly="{x:Bind viewModel:Converters.Not(ViewModel.CurrentHospital.IsActive), Mode=OneWay}"
-                                RelativePanel.AlignLeftWithPanel="True"
-                                Text="{x:Bind ViewModel.CurrentHospital.Surename_main_doctor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                TextChanged="Surename_main_doctorText_TextChanged" />
-
+                           
                             <Button
                                 Background="Red"
                                 Click="MakeInactiveButton_ButtonClicked"
@@ -121,70 +111,34 @@
                                 RelativePanel.AlignVerticalCenterWith="Surename_main_doctor"
                                 Visibility="{x:Bind viewModel:Converters.CollapsedIf(ViewModel.CurrentHospital.IsNew), Mode=OneWay}" />
 
-                            <SymbolIcon
-                                Margin="0,35,0,0"
-                                Foreground="OrangeRed"
-                                RelativePanel.AlignVerticalCenterWith="Surename_main_doctor"
-                                RelativePanel.RightOf="Surename_main_doctor"
-                                Symbol="ReportHacked"
-                                <ToolTipService.ToolTip>
-                                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentHospital.Surename_main_doctorErrors, Mode=OneWay}" />
-                                </ToolTipService.ToolTip>
-                            </SymbolIcon>                            -->
 
                             <components:ValidationTextBox
-                                x:Name="Nametest"
+                                x:Name="Surename_main_doctor"
                                 DataContext="{x:Bind ViewModel.CurrentHospital}"
-                                HeaderText="City"
+                                HeaderText="Main doctor's surename"
+                                IsReadOnly="{x:Bind ViewModel.CurrentHospital.IsInEdit, Converter={StaticResource NotConverter}, Mode=OneWay}"
+                                PlaceholderText="Enter name"
+                                PropertyName="Surename_main_doctor"
+                                Text="{x:Bind ViewModel.CurrentHospital.Surename_main_doctor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <components:ValidationTextBox
+                                x:Name="Name_main_doctor"
+                                DataContext="{x:Bind ViewModel.CurrentHospital}"
+                                HeaderText="Main doctor's name"
                                 IsReadOnly="{x:Bind ViewModel.CurrentHospital.IsInEdit, Converter={StaticResource NotConverter}, Mode=OneWay}"
                                 PlaceholderText="Enter name"
                                 PropertyName="Name_main_doctor"
                                 Text="{x:Bind ViewModel.CurrentHospital.Name_main_doctor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-
-                            <!--
-                            <TextBox
-                                x:Name="Name_main_doctor"
-                                MinWidth="300"
-                                Margin="10,20,16,8"
-                                Header="Maindoctor's name"
-                                IsReadOnly="{x:Bind viewModel:Converters.Not(ViewModel.CurrentHospital.IsActive), Mode=OneWay}"
-                                RelativePanel.AlignLeftWithPanel="True"
-                                RelativePanel.Below="Surename_main_doctor"
-                                Text="{x:Bind ViewModel.CurrentHospital.Name_main_doctor, Mode=TwoWay}"
-                                TextChanged="Name_main_doctorText_TextChanged" />
-                            <SymbolIcon
-                                Margin="0,35,0,0"
-                                Foreground="OrangeRed"
-                                RelativePanel.AlignVerticalCenterWith="Name_main_doctor"
-                                RelativePanel.RightOf="Name_main_doctor"
-                                Symbol="ReportHacked"
-                                <ToolTipService.ToolTip>
-                                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentHospital.Name_main_doctorErrors, Mode=OneWay}" />
-                                </ToolTipService.ToolTip>
-                            </SymbolIcon>
-
-                            <TextBox
+                            <components:ValidationTextBox
                                 x:Name="Middlename_main_doctor"
-                                MinWidth="300"
-                                Margin="10,20,16,8"
-                                Header="Maindoctor's middlename"
-                                IsReadOnly="{x:Bind viewModel:Converters.Not(ViewModel.CurrentHospital.IsActive), Mode=OneWay}"
-                                RelativePanel.AlignLeftWithPanel="True"
-                                RelativePanel.Below="Name_main_doctor"
-                                Text="{x:Bind ViewModel.CurrentHospital.Middlename_main_doctor, Mode=TwoWay}"
-                                TextChanged="Middlename_main_doctorText_TextChanged" />
-                            <SymbolIcon
-                                Margin="0,35,0,0"
-                                Foreground="OrangeRed"
-                                RelativePanel.AlignVerticalCenterWith="Middlename_main_doctor"
-                                RelativePanel.RightOf="Middlename_main_doctor"
-                                Symbol="ReportHacked"
-                                <ToolTipService.ToolTip>
-                                    <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentHospital.Middlename_main_doctorErrors, Mode=OneWay}" />
-                                </ToolTipService.ToolTip>
-                            </SymbolIcon>
-                            -->
+                                DataContext="{x:Bind ViewModel.CurrentHospital}"
+                                HeaderText="Main doctor's middlename"
+                                IsReadOnly="{x:Bind ViewModel.CurrentHospital.IsInEdit, Converter={StaticResource NotConverter}, Mode=OneWay}"
+                                PlaceholderText="Enter name"
+                                PropertyName="Middlename_main_doctor"
+                                Text="{x:Bind ViewModel.CurrentHospital.Middlename_main_doctor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
                         </RelativePanel>
 
                     </muxc:Expander.Content>
@@ -192,6 +146,8 @@
 
                 </muxc:Expander>
 
+                
+                <!-- Addresses list in expander -->
                 <muxc:Expander
                     x:Name="ExpanderAddresses"
                     ExpandDirection="Down"

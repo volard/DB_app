@@ -20,7 +20,7 @@ public sealed partial class PharmacyWrapper : ObservableValidator, IEditableObje
     {
         if (pharmacy == null)
         {
-            isNew = true;
+            IsNew = true;
             PharmacyData = new();
         }
         else { PharmacyData = pharmacy; }

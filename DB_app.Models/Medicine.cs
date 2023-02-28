@@ -15,7 +15,6 @@ public class Medicine
     {
         Id = id;
     }
-    // TODO create separate table "medicineTypes" and use tokenizer token instead of stupid textbox
 
     public Medicine() { }
 

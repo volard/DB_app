@@ -100,7 +100,6 @@ public sealed partial class OrderDetailsPage : Page
     /// </summary>
     protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
     {
-        // TODO implement this
     }
 
 

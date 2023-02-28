@@ -11,7 +11,6 @@ public interface IProductRepository
     /// <summary>
     /// Deletes specified product
     /// </summary>
-    // TODO implement all this restriction stuff or how is it called
     public Task DeleteAsync(int id);
 
     /// <summary>
