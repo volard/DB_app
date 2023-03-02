@@ -196,6 +196,6 @@ public partial class OrderDetailsViewModel : ObservableRecipient, IRecipient<Sho
 
     public string ProductMedicineType { get => ProductModel.Medicine.Type; }
 
-    public double ProductPrice { get => ProductModel.Price; }
-    public int ProductQuantity { get => ProductModel.Quantity; }
+    public string ProductPrice { get => ProductModel.Price?.ToString(); }
+    public string ProductQuantity { get => ProductModel.Quantity?.ToString(); }
 }

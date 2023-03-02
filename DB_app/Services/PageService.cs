@@ -52,13 +52,13 @@ public class PageService : IPageService
         Configure<OrderDetailsViewModel, OrderDetailsPage>();
 
         // ====================
-        // Reports
+        // === Reports
         // ====================
         Configure<PharmacyReportGridViewModel, PharmacyReportGridPage>();
         Configure<HospitalReportGridViewModel, HospitalReportGridPage>();
 
         // ====================
-        // Settings
+        // === Settings
         // ====================
         Configure<SettingsViewModel, SettingsPage>();
     }

@@ -46,11 +46,11 @@ public sealed partial class ProductsGridPage : Page
     }
 
     private void Add_Click(object? sender, RoutedEventArgs e) =>
-        Frame.Navigate(typeof(AddressDetailsPage), new AddressWrapper() { IsInEdit = true }, new DrillInNavigationTransitionInfo());
+        Frame.Navigate(typeof(ProductDetailsPage), new ProductWrapper() { IsInEdit = true }, new DrillInNavigationTransitionInfo());
 
 
     private void View_Click(object? sender, RoutedEventArgs e) =>
-        Frame.Navigate(typeof(AddressDetailsPage), ViewModel.SelectedItem, new DrillInNavigationTransitionInfo());
+        Frame.Navigate(typeof(ProductDetailsPage), ViewModel.SelectedItem, new DrillInNavigationTransitionInfo());
 
 
 
@@ -61,6 +61,6 @@ public sealed partial class ProductsGridPage : Page
     private void Edit_Click(object? sender, RoutedEventArgs e)
     {
         ViewModel.SelectedItem!.IsInEdit = true;
-        App.GetService<INavigationService>().NavigateTo(typeof(AddressDetailsViewModel).FullName!, ViewModel.SelectedItem);
+        App.GetService<INavigationService>().NavigateTo(typeof(ProductDetailsPage).FullName!, ViewModel.SelectedItem);
     }
 }

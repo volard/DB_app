@@ -1,5 +1,8 @@
+using CommunityToolkit.Mvvm.Messaging;
 using DB_app.Behaviors;
+using DB_app.Core.Contracts.Services;
 using DB_app.Entities;
+using DB_app.Services.Messages;
 using DB_app.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -28,10 +31,11 @@ public sealed partial class ProductDetailsPage : Page
 
     private async void SaveButton_Click(object sender, RoutedEventArgs e)
     {
-        await ViewModel.SaveAsync();
-        ViewModel.NotifyGridAboutChange();
-
-        Frame.Navigate(typeof(ProductsGridPage), null);
+        bool isOk = await ViewModel.CurrentProduct.SaveAsync();
+        if (!isOk)
+        {
+            ViewModel.CurrentProduct.GetErrors(String.Empty);
+        }
     }
 
     /// <summary>
@@ -66,5 +70,48 @@ public sealed partial class ProductDetailsPage : Page
         //ViewModel.CurrentProduct.Quantity = Quantity.Value is double.NaN ? 1 : (int)Quantity.Value;
         //ViewModel.CurrentProduct.IsModified = true;
     }
+
+
+    /// <summary>
+    /// Navigate to the previous page when the user cancels the creation of a new record.
+    /// </summary>
+    private void CancelButton_Click(object? sender, RoutedEventArgs e)
+    {
+        ViewModel.CurrentProduct.CancelEdit();
+        ViewModel.CurrentProduct.IsInEdit = false;
+    }
+
+
+    private async void DeleteButton_Click(object? sender, RoutedEventArgs e)
+    {
+        try
+        {
+            await App.GetService<IRepositoryControllerService>().Products.DeleteAsync(ViewModel.CurrentProduct.Id);
+            Frame.GoBack();
+            WeakReferenceMessenger.Default.Send(new DeleteRecordMessage<ProductWrapper>(ViewModel.CurrentProduct));
+        } 
+        catch (Exception)
+        {
+            var message = "жоская ошебка";
+            ////Notification.Content = message;
+            //Notification.Show(2000);
+        }
+    }
+
+    private void AddButton_Click(object? sender, RoutedEventArgs e)
+    {
+        if (ViewModel.CurrentProduct.IsInEdit)
+        {
+            ViewModel.CurrentProduct.IsInEdit = false;
+        }
+        Frame.Navigate(typeof(ProductDetailsPage));
+        Frame.BackStack.Remove(Frame.BackStack.Last());
+    }
+
+
+
+
+
+
 
 }

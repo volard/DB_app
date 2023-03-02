@@ -3,8 +3,9 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="using:DB_app.Behaviors"
-    xmlns:helpers="using:DB_app.Helpers"
+    xmlns:components="using:DB_app.Views.Components"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:DB_app.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:viewModel="using:DB_app.ViewModels"
@@ -21,31 +22,51 @@
     <behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
         <DataTemplate x:DataType="viewModel:ProductDetailsViewModel">
             <CommandBar
+                x:Name="MainCommandBar"
                 HorizontalAlignment="Stretch"
                 Background="Transparent"
                 DefaultLabelPosition="Right">
                 <CommandBar.Content>
                     <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="New Product" />
                 </CommandBar.Content>
-
+<!--
                 <AppBarButton
                     Click="SaveButton_Click"
                     Icon="Save"
-                    Label="Save" />
+                    IsEnabled="{Binding CurrentProduct.HasErrors, Converter={StaticResource NotConverter}, Mode=OneWay}"
+                    Label="Save"
+                    Visibility="{Binding CurrentProduct.IsInEdit, Converter={StaticResource VisibleIf}, Mode=OneWay}" />
                 <AppBarButton
-                    Click="CancelEdit_Click"
+                    Click="{x:Bind CurrentProduct.BeginEdit}"
+                    Icon="Edit"
+                    Label="Edit"
+                    Visibility="{x:Bind viewModel:Converters.CollapsedIfOneOfTwo(CurrentProduct.IsInEdit, CurrentProduct.IsNew), Mode=OneWay}" />
+                <AppBarButton
+                    Click="{x:Bind CurrentProduct.EndEdit}"
                     Icon="Cancel"
-                    Label="Cancel" />
+                    Label="Cancel"
+                    Visibility="{x:Bind viewModel:Converters.VisibleIfOneAndNotAnother(CurrentProduct.IsInEdit, CurrentProduct.IsNew), Mode=OneWay}" />
                 <AppBarSeparator />
+                <AppBarButton
+                    Click="DeleteButton_Click"
+                    Icon="Delete"
+                    Label="Delete"
+                    Visibility="{Binding CurrentProduct.IsNew, Converter={StaticResource CollapsedIf}, Mode=OneWay}" />
+                <AppBarButton
+                    Click="AddButton_Click"
+                    Icon="Add"
+                    Label="Add new" />
+                    -->
+
             </CommandBar>
         </DataTemplate>
     </behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
     <!--#endregion-->
-    
-    
+
+<!-- 
     <Grid>
 
-        <ScrollViewer
+           <ScrollViewer
             x:Name="DetailPanel"
             RelativePanel.AlignLeftWithPanel="True"
             RelativePanel.AlignRightWithPanel="True"
@@ -54,7 +75,7 @@
             VerticalScrollMode="Auto">
 
             <RelativePanel>
-            <!--
+            
                 <ComboBox
                     x:Name="PharmacyComboBox"
                     Width="380"
@@ -70,10 +91,9 @@
                     Foreground="OrangeRed"
                     RelativePanel.AlignVerticalCenterWith="PharmacyComboBox"
                     RelativePanel.RightOf="PharmacyComboBox"
-                    Symbol="ReportHacked"
-                    Visibility="{x:Bind ViewModel.CurrentProduct.HasPharmacyErrors, Mode=OneWay}">
+                    Symbol="ReportHacked">
                     <ToolTipService.ToolTip>
-                        <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentProduct.PharmacyErrors, Mode=OneWay}" />
+                        <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentProduct.MedicineName, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </SymbolIcon>
 
@@ -89,14 +109,14 @@
                     SelectedItem="{x:Bind ViewModel.CurrentProduct.Medicine, Mode=TwoWay}" />
 
                 <SymbolIcon
+                    x:Name="MedicineIcon"
                     Margin="0,35,0,0"
                     Foreground="OrangeRed"
                     RelativePanel.AlignVerticalCenterWith="MedicineComboBox"
                     RelativePanel.RightOf="MedicineComboBox"
-                    Symbol="ReportHacked"
-                    Visibility="{x:Bind ViewModel.CurrentProduct.HasMedicineErrors, Mode=OneWay}">
+                    Symbol="ReportHacked">
                     <ToolTipService.ToolTip>
-                        <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentProduct.MedicineErrors, Mode=OneWay}" />
+                        <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentProduct.MedicineName, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </SymbolIcon>
 
@@ -112,14 +132,14 @@
                     Value="{x:Bind ViewModel.CurrentProduct.Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                 <SymbolIcon
+                    x:Name="PriceIcon"
                     Margin="0,35,0,0"
                     Foreground="OrangeRed"
                     RelativePanel.AlignVerticalCenterWith="Price"
                     RelativePanel.RightOf="Price"
-                    Symbol="ReportHacked"
-                    Visibility="{x:Bind ViewModel.CurrentProduct.HasPriceErrors, Mode=OneWay}">
+                    Symbol="ReportHacked">
                     <ToolTipService.ToolTip>
-                        <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentProduct.PriceErrors, Mode=OneWay}" />
+                        <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentProduct.MedicineName, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </SymbolIcon>
 
@@ -137,23 +157,28 @@
                     Value="{x:Bind ViewModel.CurrentProduct.Quantity, Mode=TwoWay}" />
 
                 <SymbolIcon
+                    x:Name="QuantityIcon"
                     Margin="0,35,0,0"
                     Foreground="OrangeRed"
                     RelativePanel.AlignVerticalCenterWith="Quantity"
                     RelativePanel.RightOf="Quantity"
-                    Symbol="ReportHacked"
-                    Visibility="{x:Bind ViewModel.CurrentProduct.HasQuantityErrors, Mode=OneWay}">
+                    Symbol="ReportHacked">
                     <ToolTipService.ToolTip>
-                        <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentProduct.QuantityErrors, Mode=OneWay}" />
+                        <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentProduct.MedicineName, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </SymbolIcon>
-                -->
+        <toolkit:InAppNotification
+                    x:Name="Notification"
+                    RelativePanel.AlignBottomWithPanel="True"
+                    RelativePanel.AlignHorizontalCenterWithPanel="True"
+                    StackMode="Replace" />
 
-            </RelativePanel>
+        </RelativePanel>
 
 
 
         </ScrollViewer>
     </Grid>
 
+    -->
 </Page>

@@ -28,7 +28,6 @@ public sealed partial class ProductWrapper : ObservableValidator, IEditableObjec
 
 
 
-
     #region Properties
 
     private readonly IRepositoryControllerService _repositoryControllerService
@@ -45,96 +44,64 @@ public sealed partial class ProductWrapper : ObservableValidator, IEditableObjec
         {
             _productData = value;
             Medicine = _productData.Medicine;
+            PharmacyName = _productData.Pharmacy.Name;
+            MedicineName = _productData.Medicine.Name;
+            Medicine = _productData.Medicine;
+            Pharmacy = _productData.Pharmacy;
+            MedicineType = _productData.Medicine.Type;
         }
     }
 
 
+
+
+
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
     [Required(ErrorMessage = "Medicine is Required")]
-    public Medicine Medicine
-    {
-        get => ProductData.Medicine;
-        set
-        {
-            ValidateProperty(value);
-            if (!GetErrors(nameof(Medicine)).Any())
-            {
-                ProductData.Medicine = value;
-                IsModified = true;
-            }
-        }
-    }
+    private Medicine? medicine;
 
 
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required]
+    private string? pharmacyName;
 
-    /// <summary>
-    /// City of the current ProductWrapper's data object
-    /// </summary>
-    public string PharmacyName { get => ProductData.Pharmacy.Name; }
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required]
+    private string? medicineName;
 
-    /// <summary>
-    /// Street of the current ProductWrapper's data object
-    /// </summary>
-    public string MedicineName { get => ProductData.Medicine.Name; }
-
-    /// <summary>
-    /// Building of the current ProductWrapper's data object
-    /// </summary>
-    public string MedicineType { get => ProductData.Medicine.Type; }
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required]
+    private string? medicineType;
 
 
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
     [Required(ErrorMessage = "Quantity is Required")]
     //[RegularExpression("([1-9]+)", ErrorMessage = "Please enter a Number")]
-    public int Quantity
-    {
-        get => ProductData.Quantity;
-        set
-        {
-            ValidateProperty(value);
-            if (!GetErrors(nameof(Quantity)).Any())
-            {
-                ProductData.Quantity = value;
-                OnPropertyChanged();
-                IsModified = true;
-            }
-        }
-    }
+    private int? quantity;
 
 
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
     [Required(ErrorMessage = "Price is Required")]
     //[RegularExpression("([1-9]+)", ErrorMessage = "Please enter a Number")]
-    public double Price
-    {
-        get => ProductData.Price;
-        set
-        {
-            ValidateProperty(value);
-            if (!GetErrors(nameof(Price)).Any())
-            {
-                ProductData.Price = value;
-                OnPropertyChanged();
-                IsModified= true; 
-            }
-            
-        }
-    }
+    private double? price;
 
 
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
     [Required(ErrorMessage = "Pharmacy is Required")]
-    public Pharmacy Pharmacy
-    {
-        get => ProductData.Pharmacy;
-        set
-        {
-            ValidateProperty(value);
-            if (!GetErrors(nameof(Pharmacy)).Any())
-            {
-                ProductData.Pharmacy = value;
-                IsModified = true;
-            }
-        }
-    }
+    private Pharmacy? pharmacy;
+
+
 
     public int Id { get => ProductData.Id; }
+
+
 
     private Product? _backupData;
    
@@ -152,10 +119,9 @@ public sealed partial class ProductWrapper : ObservableValidator, IEditableObjec
     /// Indicates whether its a new object
     /// </summary>
     [ObservableProperty]
-    private bool _isNew = false;
+    private bool isNew = false;
 
     #endregion
-
 
 
 

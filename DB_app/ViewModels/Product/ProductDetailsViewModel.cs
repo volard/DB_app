@@ -1,47 +1,47 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
+using DB_app.Contracts.ViewModels;
 using DB_app.Core.Contracts.Services;
 using DB_app.Entities;
 using DB_app.Services.Messages;
 
 namespace DB_app.ViewModels;
 
-public partial class ProductDetailsViewModel : ObservableRecipient, IRecipient<ShowRecordDetailsMessage<ProductWrapper>>
+public partial class ProductDetailsViewModel : ObservableRecipient, INavigationAware
 {
     private readonly IRepositoryControllerService _repositoryControllerService
          = App.GetService<IRepositoryControllerService>();
 
-    public ProductDetailsViewModel()
+    public ProductDetailsViewModel(ProductWrapper? product = null)
     {
-        CurrentProduct = new()
+        if (product == null)
         {
-            IsNew = true
-        };
-        Initialize();
+            CurrentProduct = new()
+            {
+                IsNew = true
+            };
+        }
+        else { CurrentProduct = product; }
 
-
-    }
-
-    public void Initialize()
-    {
         AvailablePharmacies = _repositoryControllerService.Pharmacies.GetAsync().Result.ToList();
         AvailableMedicines = _repositoryControllerService.Medicines.GetAsync().Result.ToList();
-        WeakReferenceMessenger.Default.Register(this);
     }
 
-    public ProductDetailsViewModel(ProductWrapper product)
+    public void OnNavigatedTo(object? parameter)
     {
-        CurrentProduct = product;
-
-        Initialize();
+        if (parameter is ProductWrapper model)
+        {
+            CurrentProduct = model;
+            CurrentProduct.Backup();
+        }
     }
 
-    
-
-    public void Receive(ShowRecordDetailsMessage<ProductWrapper> message)
+    public void OnNavigatedFrom()
     {
-        CurrentProduct = message.Value;
+        // Not used
     }
+
+
 
     public List<Pharmacy> AvailablePharmacies;
     public List<Medicine> AvailableMedicines;
@@ -49,7 +49,7 @@ public partial class ProductDetailsViewModel : ObservableRecipient, IRecipient<S
     /// <summary>
     /// Current ProductWrapper to edit
     /// </summary>
-    public ProductWrapper CurrentProduct { get; set; }
+    public ProductWrapper CurrentProduct { get; set; } = new();
 
 
     /// <summary>
@@ -68,6 +68,5 @@ public partial class ProductDetailsViewModel : ObservableRecipient, IRecipient<S
         }
     }
 
-    public void NotifyGridAboutChange() => WeakReferenceMessenger.Default.Send(new AddRecordMessage<ProductWrapper>(CurrentProduct));
 }
 
