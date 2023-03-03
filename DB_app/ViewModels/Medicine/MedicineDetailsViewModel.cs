@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
+using DB_app.Contracts.ViewModels;
 using DB_app.Core.Contracts.Services;
 using DB_app.Entities;
 using DB_app.Services.Messages;
@@ -8,50 +9,52 @@ using System.Diagnostics;
 
 namespace DB_app.ViewModels;
 
-public partial class MedicineDetailsViewModel : ObservableRecipient, IRecipient<ShowRecordDetailsMessage<MedicineWrapper>>
+public partial class MedicineDetailsViewModel : ObservableRecipient, INavigationAware
 {
-    private readonly IRepositoryControllerService _repositoryControllerService
-         = App.GetService<IRepositoryControllerService>();
-
-    public MedicineDetailsViewModel()
-    {
-        CurrentMedicine = new();
-        WeakReferenceMessenger.Default.Register(this);
-    }
-
-    public void Receive(ShowRecordDetailsMessage<MedicineWrapper> message)
-    {
-        CurrentMedicine = message.Value;
-        //CurrentMedicine.NotifyAboutAllProperties();
-    }
-
-    public MedicineDetailsViewModel(MedicineWrapper medicineWrapper)
-    {
-        CurrentMedicine = medicineWrapper;
-        WeakReferenceMessenger.Default.Register(this);
-    }
 
     /// <summary>
-    /// Current MedicineWrapper to edit
+    /// Current AddressWrapper to edit
     /// </summary>
-    public MedicineWrapper CurrentMedicine { get; set; }
+    public MedicineWrapper CurrentMedicine { get; set; } = new();
+
+
+
+    /// <summary>
+    /// Represents the page's title
+    /// </summary>
+    [ObservableProperty]
+    private string _pageTitle = "New meidicne";
 
 
     /// <summary>
     /// Saves customer data that was edited.
     /// </summary>
-    public async Task SaveAsync()
+    public async void SaveCurrent(object? sender, RoutedEventArgs  e)
     {
-        if (CurrentMedicine.IsNew) // Create new medicine
+        try
         {
-            await _repositoryControllerService.Medicines.InsertAsync(CurrentMedicine.MedicineData);
+            await CurrentMedicine.SaveAsync();
         }
-        else // Update existing medicine
+        catch(Exception ex)
         {
-            await _repositoryControllerService.Medicines.UpdateAsync(CurrentMedicine.MedicineData);
+
         }
     }
 
-    public void NotifyGridAboutChange() => WeakReferenceMessenger.Default.Send(new AddRecordMessage<MedicineWrapper>(CurrentMedicine));
+
+    public void OnNavigatedTo(object? parameter)
+    {
+        if (parameter is MedicineWrapper model)
+        {
+            CurrentMedicine = model;
+            PageTitle = "Edit address";
+            CurrentMedicine.Backup();
+        }
+    }
+
+    public void OnNavigatedFrom()
+    {
+        // Not used
+    }
 }
 

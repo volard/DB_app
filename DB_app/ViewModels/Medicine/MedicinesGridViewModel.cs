@@ -15,7 +15,7 @@ namespace DB_app.ViewModels;
 
 public partial class MedicinesGridViewModel : ObservableRecipient, INavigationAware, IRecipient<DeleteRecordMessage<MedicineWrapper>>
 {
-private readonly IRepositoryControllerService _repositoryControllerService
+    private readonly IRepositoryControllerService _repositoryControllerService
         = App.GetService<IRepositoryControllerService>();
 
     /// <summary>
@@ -37,7 +37,7 @@ private readonly IRepositoryControllerService _repositoryControllerService
 
 
     /// <summary>
-    /// Represents selected by user MedicineWrapper object
+    /// Represents selected by user AddressWrapper object
     /// </summary>
     [ObservableProperty]
     private MedicineWrapper? selectedItem;
@@ -53,8 +53,8 @@ private readonly IRepositoryControllerService _repositoryControllerService
             try
             {
 
-                int id = SelectedItem.MedicineData.Id;
-                await _repositoryControllerService.Addresses.DeleteAsync(id);
+                int id = SelectedItem.Id;
+                await _repositoryControllerService.Medicines.DeleteAsync(id);
 
                 Source.Remove(SelectedItem);
 
@@ -63,7 +63,7 @@ private readonly IRepositoryControllerService _repositoryControllerService
             }
             catch (LinkedRecordOperationException)
             {
-                OperationRejected?.Invoke(this, new ListEventArgs(new List<String>() { "Адресс связан с организацией. Удалите связанную организацию, чтобы удалить адрес" }));
+                OperationRejected?.Invoke(this, new ListEventArgs(new List<String>() { "Таблэтки связаны с чем-то. Удалите связанную организацию, чтобы удалить адрес" }));
             }
         }
     }
