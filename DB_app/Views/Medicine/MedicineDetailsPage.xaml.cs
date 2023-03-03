@@ -1,4 +1,5 @@
 using DB_app.Behaviors;
+using DB_app.Core.Contracts.Services;
 using DB_app.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -11,92 +12,117 @@ namespace DB_app.Views;
 
 public sealed partial class MedicineDetailsPage : Page
 {
-    public MedicineDetailsViewModel ViewModel { get; }
+    public MedicineDetailsPage ViewModel { get; }
 
     public MedicineDetailsPage()
     {
-        ViewModel = App.GetService<MedicineDetailsViewModel>();
+        ViewModel = App.GetService<MedicineDetailsPage>();
         InitializeComponent();
         SetBinding(NavigationViewHeaderBehavior.HeaderContextProperty, new Binding
         {
             Source = ViewModel,
             Mode = BindingMode.OneWay
         });
-
     }
 
     private async void SaveButton_Click(object sender, RoutedEventArgs e)
     {
-        await ViewModel.SaveAsync();
-        ViewModel.NotifyGridAboutChange();
-        
-        Frame.Navigate(typeof(MedicinesGridPage), null);
+        bool result = await ViewModel.CurrentMedicine.SaveAsync();
     }
 
     /// <summary>
     /// Navigate to the previous page when the user cancels the creation of a new record.
     /// </summary>
-    private void CancelEdit_Click(object sender, RoutedEventArgs e) => Frame.GoBack();
+    private void CancelButton_Click(object? sender, RoutedEventArgs e)
+    {
+        ViewModel.CurrentMedicine.CancelEdit();
+        ViewModel.CurrentMedicine.IsInEdit = false;
+    }
+
+
+    private async void DeleteButton_Click(object? sender, RoutedEventArgs e)
+    {
+        try
+        {
+            await App.GetService<IRepositoryControllerService>().Addresses.DeleteAsync(ViewModel.CurrentMedicine.Id);
+            Frame.GoBack();
+            WeakReferenceMessenger.Default.Send(new DeleteRecordMessage<MedicineWrapper>(ViewModel.CurrentMedicine));
+        } 
+        catch (Exception)
+        {
+            var message = "жоская ошебка";
+            Notification.Content = message;
+            Notification.Show(2000);
+        }
+    }
+
+    private void AddButton_Click(object? sender, RoutedEventArgs e)
+    {
+        if (ViewModel.CurrentMedicine.IsInEdit)
+        {
+            ViewModel.CurrentMedicine.IsInEdit = false;
+        }
+        Frame.Navigate(typeof(AddressDetailsPage));
+        Frame.BackStack.Remove(Frame.BackStack.Last());
+    }
+
+
 
     /// <summary>
     /// Check whether there are unsaved changes and warn the user.
     /// </summary>
-    protected async override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+    protected override async void OnNavigatingFrom(NavigatingCancelEventArgs e)
     {
-        if (ViewModel.CurrentMedicine.IsModified)
-        {
-            // Cancel the navigation immediately, otherwise it will continue at the await call. 
-            e.Cancel = true;
 
-            void resumeNavigation()
-            {
-                if (e.NavigationMode == NavigationMode.Back)
-                {
-                    Frame.GoBack();
-                }
-                else
-                {
-                    Frame.Navigate(e.SourcePageType, e.Parameter, e.NavigationTransitionInfo);
-                }
-            }
+        // TODO add confirmation feature etc
+        //if (ViewModel.CurrentAddress.IsModified)
+        //{
+        //    var saveDialog = new SaveChangesDialog
+        //    {
+        //        Title = $"Save changes?",
+        //        Content = $"This address " +
+        //            "has unsaved changes that will be lost. Do you want to save your changes?",
+        //        XamlRoot = this.Content.XamlRoot
+        //    };
+        //    await saveDialog.ShowAsync();
+        //    SaveChangesDialogResult result = saveDialog.Result;
 
-            var saveDialog = new SaveChangesDialog() { Title = $"Save changes?" };
-            saveDialog.XamlRoot = this.Content.XamlRoot;
-            await saveDialog.ShowAsync();
-            SaveChangesDialogResult result = saveDialog.Result;
+        //    switch (result)
+        //    {
+        //        case SaveChangesDialogResult.Save:
+        //            await ViewModel.CurrentAddress.SaveAsync();
+        //            break;
+        //        case SaveChangesDialogResult.DontSave:
+        //            break;
+        //        case SaveChangesDialogResult.Cancel:
+        //            if (e.NavigationMode == NavigationMode.Back)
+        //            {
+        //                Frame.GoForward();
+        //            }
+        //            else
+        //            {
+        //                Frame.GoBack();
+        //            }
+        //            e.Cancel = true;
 
-            switch (result)
-            {
-                case SaveChangesDialogResult.Save:
-                    await ViewModel.SaveAsync();
-                    resumeNavigation();
-                    break;
-                //case SaveChangesDialogResult.DontSave:
-                //    await ViewModel.RevertChangesAsync();
-                //    resumeNavigation();
-                //    break;
-                case SaveChangesDialogResult.Cancel:
-                    break;
-            }
-        }
+        //            // This flag gets cleared on navigation, so restore it. 
+        //            ViewModel.CurrentAddress.IsModified = true;
+        //            break;
+        //    }
+        //}
 
         base.OnNavigatingFrom(e);
     }
 
-
-    protected override void OnNavigatedTo(NavigationEventArgs e)
+    private void Text_TextChanged(object sender, TextChangedEventArgs e)
     {
-        ViewModel.CurrentMedicine.Backup();
-        base.OnNavigatedTo(e);
+        // NOTE this is useless actually. Every time current address changes - text become in modified state but its 
+        // not modified actually
+        if (ViewModel.CurrentMedicine.IsInEdit) 
+        {
+            ViewModel.CurrentMedicine.IsModified = true;
+        }
     }
 
-    private void NameText_TextChanged(object sender, TextChangedEventArgs e)
-    {
-         ViewModel.CurrentMedicine.Name = Name.Text;
-    }
 
-    private void TypeText_TextChanged(object sender, TextChangedEventArgs e)
-    {
-          ViewModel.CurrentMedicine.Type = Type.Text;
-    }
 }
