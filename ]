@@ -163,21 +163,20 @@
                                         VerticalAlignment="Stretch"
                                         ItemsSource="{x:Bind ViewModel.AvailableAddresses}"
                                         PlaceholderText="Select new address"
-                                        SelectedItem="{x:Bind ViewModel.SelectedAddress, Mode=TwoWay}" 
-                                        />
+                                        SelectedItem="{x:Bind ViewModel.SelectedAddress, Mode=TwoWay}" />
 
                                 </CommandBar.Content>
 
                                 <AppBarButton
                                     x:Name="AddressCommandBarAddButton"
-                                    Click="{x:Bind AddButton_Click}"
+                                    Click="{x:Bind AddSelectedButton_Clicked}"
                                     Icon="Add"
                                     Label="Add selected"
                                     ToolTipService.ToolTip="Add selected" />
 
                                 <AppBarButton
                                     x:Name="AddressCommandBarDeleteButton"
-                                    Click="{x:Bind DeleteButton_Click}"
+                                    Click="{x:Bind DeleteSelectedButton_Clicked}"
                                     Icon="Delete"
                                     Label="Delete"
                                     ToolTipService.ToolTip="Delete" />

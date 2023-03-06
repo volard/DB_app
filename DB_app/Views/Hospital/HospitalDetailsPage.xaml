@@ -18,7 +18,7 @@
         <helpers:CollapsedIf x:Key="CollapsedIf" />
     </Page.Resources>
 
-    
+
     <!--#region Header-->
     <behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
         <DataTemplate x:DataType="viewModel:HospitalDetailsViewModel">
@@ -51,9 +51,7 @@
                     Icon="Delete"
                     Label="Delete"
                     Visibility="{Binding CurrentHospital.IsNew, Converter={StaticResource CollapsedIf}, Mode=OneWay}" />
-                <AppBarButton
-                    Icon="Add"
-                    Label="Add new" />
+                <AppBarButton Icon="Add" Label="Add new" />
 
                 <AppBarSeparator />
             </CommandBar>
@@ -81,7 +79,7 @@
                     </Style>
                 </StackPanel.Resources>
 
-                <!-- Full name and hospital info in expander -->
+                <!--  Full name and hospital info in expander  -->
                 <muxc:Expander
                     x:Name="ExpanderFullName"
                     ExpandDirection="Down"
@@ -99,27 +97,30 @@
 
                     <muxc:Expander.Content>
 
-                        <RelativePanel>
+                        <StackPanel>
 
-                           
-                            <Button
-                                Background="Red"
-                                Click="MakeInactiveButton_ButtonClicked"
-                                Content="Make inactive"
-                                IsEnabled="{x:Bind ViewModel.CurrentHospital.IsActive, Mode=OneWay}"
-                                RelativePanel.AlignRightWithPanel="True"
-                                RelativePanel.AlignVerticalCenterWith="Surename_main_doctor"
-                                Visibility="{x:Bind viewModel:Converters.CollapsedIf(ViewModel.CurrentHospital.IsNew), Mode=OneWay}" />
+                            <RelativePanel HorizontalAlignment="Stretch">
+                                <Button
+                                    Background="Red"
+                                    Click="MakeInactiveButton_ButtonClicked"
+                                    Content="Make inactive"
+                                    IsEnabled="{x:Bind ViewModel.CurrentHospital.IsActive, Mode=OneWay}"
+                                    RelativePanel.AlignRightWithPanel="True"
+                                    RelativePanel.AlignVerticalCenterWith="Surename_main_doctor"
+                                    Visibility="{x:Bind viewModel:Converters.CollapsedIf(ViewModel.CurrentHospital.IsNew), Mode=OneWay}" />
 
 
-                            <components:ValidationTextBox
-                                x:Name="Surename_main_doctor"
-                                DataContext="{x:Bind ViewModel.CurrentHospital}"
-                                HeaderText="Main doctor's surename"
-                                IsReadOnly="{x:Bind ViewModel.CurrentHospital.IsInEdit, Converter={StaticResource NotConverter}, Mode=OneWay}"
-                                PlaceholderText="Enter name"
-                                PropertyName="Surename_main_doctor"
-                                Text="{x:Bind ViewModel.CurrentHospital.Surename_main_doctor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <components:ValidationTextBox
+                                    x:Name="Surename_main_doctor"
+                                    DataContext="{x:Bind ViewModel.CurrentHospital}"
+                                    HeaderText="Main doctor's surename"
+                                    IsReadOnly="{x:Bind ViewModel.CurrentHospital.IsInEdit, Converter={StaticResource NotConverter}, Mode=OneWay}"
+                                    PlaceholderText="Enter name"
+                                    PropertyName="Surename_main_doctor"
+                                    Text="{x:Bind ViewModel.CurrentHospital.Surename_main_doctor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                            </RelativePanel>
+
 
                             <components:ValidationTextBox
                                 x:Name="Name_main_doctor"
@@ -139,15 +140,15 @@
                                 PropertyName="Middlename_main_doctor"
                                 Text="{x:Bind ViewModel.CurrentHospital.Middlename_main_doctor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                        </RelativePanel>
+                        </StackPanel>
 
                     </muxc:Expander.Content>
 
 
                 </muxc:Expander>
 
-                
-                <!-- Addresses list in expander -->
+
+                <!--  Addresses list in expander  -->
                 <muxc:Expander
                     x:Name="ExpanderAddresses"
                     ExpandDirection="Down"
@@ -249,6 +250,7 @@
 
 
             </StackPanel>
+
 
         </ScrollViewer>
 

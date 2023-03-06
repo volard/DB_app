@@ -32,10 +32,12 @@
                     x:Name="CommandBarAddButton"
                     Icon="Add"
                     Label="Add new"
+                    Click="Add_Click"
                     ToolTipService.ToolTip="Add new" />
                 <AppBarButton
                     x:Name="CommandBarViewButton"
                     Icon="OpenLocal"
+                    Click="View_Click"
                     IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
                     Label="View"
                     ToolTipService.ToolTip="View" />
@@ -43,6 +45,7 @@
                 <AppBarButton
                     x:Name="CommandBarEditButton"
                     Icon="Edit"
+                    Click="Edit_Click"
                     IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
                     Label="Edit"
                     ToolTipService.ToolTip="Edit" />
@@ -50,6 +53,7 @@
                 <AppBarButton
                     x:Name="CommandBarDeleteButton"
                     Icon="Delete"
+                    Click="Delete_Click"
                     IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
                     Label="Delete"
                     ToolTipService.ToolTip="Delete" />
@@ -97,6 +101,7 @@
 
                 </toolkit:DataGrid.Columns>
             </toolkit:DataGrid>
+            
         </Grid>
 
         <toolkit:InAppNotification
@@ -104,8 +109,6 @@
             RelativePanel.AlignBottomWithPanel="True"
             RelativePanel.AlignHorizontalCenterWithPanel="True"
             StackMode="Replace" />
-
-
 
     </Grid>
 

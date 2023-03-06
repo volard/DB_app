@@ -11,16 +11,13 @@
     xmlns:viewModel="using:DB_app.ViewModels"
     mc:Ignorable="d">
 
-
-
-
     <Page.Resources>
         <helpers:NotConverter x:Key="NotConverter" />
         <helpers:VisibleIfConverter x:Key="VisibleIf" />
         <helpers:CollapsedIf x:Key="CollapsedIf" />
     </Page.Resources>
 
-
+    <!--#region Header-->
     <behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
         <DataTemplate x:DataType="viewModel:MedicineDetailsViewModel">
             <CommandBar
@@ -61,8 +58,10 @@
             </CommandBar>
         </DataTemplate>
     </behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
+    <!--#endregion-->
 
-
+    
+    <!--#region  Content -->
     <ScrollViewer
         x:Name="DetailPanel"
         RelativePanel.AlignLeftWithPanel="True"
@@ -71,9 +70,9 @@
         VerticalScrollBarVisibility="Auto"
         VerticalScrollMode="Auto">
 
-        <RelativePanel Margin="8,0,0,12">
-
-
+        <StackPanel Margin="8,0,0,12">
+            
+            <!--Name input -->
             <components:ValidationTextBox
                 x:Name="Name"
                 DataContext="{x:Bind ViewModel.CurrentMedicine}"
@@ -83,6 +82,7 @@
                 PropertyName="Name"
                 Text="{x:Bind ViewModel.CurrentMedicine.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
+            <!-- Type input -->
             <components:ValidationTextBox
                 x:Name="Type"
                 DataContext="{x:Bind ViewModel.CurrentMedicine}"
@@ -92,10 +92,16 @@
                 PropertyName="Type"
                 Text="{x:Bind ViewModel.CurrentMedicine.Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-        </RelativePanel>
-
+            <!-- Notification -->
+            <toolkit:InAppNotification
+                x:Name="Notification"
+                RelativePanel.AlignBottomWithPanel="True"
+                RelativePanel.AlignHorizontalCenterWithPanel="True"
+                StackMode="Replace" />
+        </StackPanel>
 
 
     </ScrollViewer>
+    <!--#endregion-->
 
 </Page>

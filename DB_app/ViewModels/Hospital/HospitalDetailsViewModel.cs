@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
+using DB_app.Contracts.ViewModels;
 using DB_app.Core.Contracts.Services;
 using DB_app.Entities;
 using DB_app.Services.Messages;
@@ -7,30 +8,26 @@ using System.Collections.ObjectModel;
 
 namespace DB_app.ViewModels;
 
-public partial class HospitalDetailsViewModel : ObservableRecipient, IRecipient<ShowRecordDetailsMessage<HospitalWrapper>>
+public partial class HospitalDetailsViewModel : ObservableRecipient, INavigationAware
 {
 
     #region Constructors
 
 
-    public HospitalDetailsViewModel()
+    public HospitalDetailsViewModel(HospitalWrapper? hospital = null)
     {
-        CurrentHospital = new()
+        if (hospital == null)
         {
-            IsNew = true
-        };
-        WeakReferenceMessenger.Default.Register(this);
-        AvailableAddresses = new(getAvailableAddresses());
-        pageTitle = "New hospital";
-    }
-
-
-
-    public HospitalDetailsViewModel(HospitalWrapper HospitalWrapper)
-    {
-        CurrentHospital = HospitalWrapper;
-        WeakReferenceMessenger.Default.Register(this);
-        AvailableAddresses = new(getAvailableAddresses());
+            CurrentHospital = new()
+            {
+                IsNew = true
+            };
+        }
+        else 
+        { 
+            AvailableAddresses = new(getAvailableAddresses());
+            //pageTitle = "New hospital";
+        }
     }
 
 
@@ -39,11 +36,6 @@ public partial class HospitalDetailsViewModel : ObservableRecipient, IRecipient<
 
 
     #region Members
-
-    public void Receive(ShowRecordDetailsMessage<HospitalWrapper> message)
-    {
-        CurrentHospital = message.Value;
-    }
 
     /// <summary>
     /// Saves hospital that was edited or created
@@ -76,7 +68,6 @@ public partial class HospitalDetailsViewModel : ObservableRecipient, IRecipient<
                  Except(_addresses);
     }
 
-    public void NotifyGridAboutChange() => WeakReferenceMessenger.Default.Send(new AddRecordMessage<HospitalWrapper>(CurrentHospital));
 
     #endregion
 
@@ -88,24 +79,33 @@ public partial class HospitalDetailsViewModel : ObservableRecipient, IRecipient<
          = App.GetService<IRepositoryControllerService>();
 
 
+    public void OnNavigatedTo(object? parameter)
+    {
+        if (parameter is HospitalWrapper model)
+        {
+            CurrentHospital = model;
+            //this.PageTitle = "Edit hospital";
+            CurrentHospital.Backup();
+        }
+    }
+
+
+    //private string PageTitle = "New hospital";
+
+    public void OnNavigatedFrom()
+    {
+        // Not used
+    }
+
+
+
     private HospitalWrapper currentHospital;
 
     /// <summary>
     /// Current HospitalWrapper to edit
     /// </summary>
-    public HospitalWrapper CurrentHospital
-    {
-        get
-        {
-            return currentHospital;
-        }
-        set
-        {
-            currentHospital = value;
-            pageTitle = "Hospital #" + currentHospital.Id;
-            AvailableAddresses = new(getAvailableAddresses());
-        }
-    }
+    public HospitalWrapper CurrentHospital { get; set; } = new();
+
 
     public ObservableCollection<Address> AvailableAddresses { get; set; }
 

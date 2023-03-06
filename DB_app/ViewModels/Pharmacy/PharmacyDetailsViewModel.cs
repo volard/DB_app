@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
+using DB_app.Contracts.ViewModels;
 using DB_app.Core.Contracts.Services;
 using DB_app.Entities;
 using DB_app.Services.Messages;
@@ -8,42 +9,25 @@ using System.Collections.ObjectModel;
 
 namespace DB_app.ViewModels;
 
-public partial class PharmacyDetailsViewModel : ObservableRecipient, IRecipient<ShowRecordDetailsMessage<PharmacyWrapper>>
+public partial class PharmacyDetailsViewModel : ObservableRecipient, INavigationAware
 {
-
-    #region Constructors
-
-
-    public PharmacyDetailsViewModel()
-    {
-        CurrentPharmacy = new()
-        {
-            IsNew = true
-        };
-        WeakReferenceMessenger.Default.Register(this);
-        AvailableAddresses = new(getAvailableAddresses());
-        pageTitle = "New pharmacy";
-    }
-
-
-
-    public PharmacyDetailsViewModel(PharmacyWrapper PharmacyWrapper)
-    {
-        CurrentPharmacy = PharmacyWrapper;
-        WeakReferenceMessenger.Default.Register(this);
-        AvailableAddresses = new(getAvailableAddresses());
-    }
-
-
-    #endregion
-
 
 
     #region Members
 
-    public void Receive(ShowRecordDetailsMessage<PharmacyWrapper> message)
+    public void OnNavigatedTo(object? parameter)
     {
-        CurrentPharmacy = message.Value;
+        if (parameter is PharmacyWrapper model)
+        {
+            CurrentPharmacy = model;
+            PageTitle = "Edit " + CurrentPharmacy.Name;
+            CurrentPharmacy.Backup();
+        }
+    }
+
+    public void OnNavigatedFrom()
+    {
+        // Not used
     }
 
     /// <summary>
@@ -81,7 +65,6 @@ public partial class PharmacyDetailsViewModel : ObservableRecipient, IRecipient<
                  Except(_addresses);
     }
 
-    public void NotifyGridAboutChange() => WeakReferenceMessenger.Default.Send(new AddRecordMessage<PharmacyWrapper>(CurrentPharmacy));
 
     #endregion
 
@@ -93,32 +76,18 @@ public partial class PharmacyDetailsViewModel : ObservableRecipient, IRecipient<
          = App.GetService<IRepositoryControllerService>();
 
 
-    private PharmacyWrapper currentPharmacy;
-
     /// <summary>
-    /// Current PharmacyWrapper to edit
+    /// Current AddressWrapper to edit
     /// </summary>
-    public PharmacyWrapper CurrentPharmacy
-    {
-        get
-        {
-            return currentPharmacy;
-        }
-        set
-        {
-            currentPharmacy = value;
-            pageTitle = "Hospital #" + currentPharmacy.Id;
-            AvailableAddresses = new(getAvailableAddresses());
-        }
-    }
+    public PharmacyWrapper CurrentPharmacy { get; set; } = new();
 
     public ObservableCollection<Address> AvailableAddresses { get; set; }
 
     [ObservableProperty]
-    public Address selectedAddress;
+    private Address _selectedAddress;
 
     [ObservableProperty]
-    public string pageTitle;
+    private string _pageTitle = "New pharmacy";
 
     #endregion
 

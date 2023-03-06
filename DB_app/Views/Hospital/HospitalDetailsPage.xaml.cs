@@ -69,8 +69,6 @@ public sealed partial class HospitalDetailsPage : Page
     private async void SaveButton_Click(object sender, RoutedEventArgs e)
     {
         await ViewModel.SaveAsync();
-        ViewModel.NotifyGridAboutChange();
-
         Frame.Navigate(typeof(HospitalsGridPage), null);
     }
 

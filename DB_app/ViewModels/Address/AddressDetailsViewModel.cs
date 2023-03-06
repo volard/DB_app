@@ -43,7 +43,7 @@ public partial class AddressDetailsViewModel : ObservableRecipient, INavigationA
         if (parameter is AddressWrapper model)
         {
             CurrentAddress = model;
-            PageTitle = "Edit address";
+            //this.PageTitle = "Edit address";
             CurrentAddress.Backup();
         }
     }

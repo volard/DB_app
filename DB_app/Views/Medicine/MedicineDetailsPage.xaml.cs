@@ -1,5 +1,7 @@
+using CommunityToolkit.Mvvm.Messaging;
 using DB_app.Behaviors;
 using DB_app.Core.Contracts.Services;
+using DB_app.Services.Messages;
 using DB_app.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -12,11 +14,11 @@ namespace DB_app.Views;
 
 public sealed partial class MedicineDetailsPage : Page
 {
-    public MedicineDetailsPage ViewModel { get; }
+    public MedicineDetailsViewModel ViewModel { get; }
 
     public MedicineDetailsPage()
     {
-        ViewModel = App.GetService<MedicineDetailsPage>();
+        ViewModel = App.GetService<MedicineDetailsViewModel>();
         InitializeComponent();
         SetBinding(NavigationViewHeaderBehavior.HeaderContextProperty, new Binding
         {

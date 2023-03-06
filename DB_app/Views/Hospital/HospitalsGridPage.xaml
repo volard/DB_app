@@ -4,10 +4,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="using:DB_app.Behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:DB_app.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:vm="using:DB_app.ViewModels"
-    xmlns:helpers="using:DB_app.Helpers"
     d:DataContext="{d:DesignInstance Type=vm:HospitalsGridViewModel}"
     mc:Ignorable="d">
 
@@ -29,11 +29,13 @@
 
                 <AppBarButton
                     x:Name="CommandBarAddButton"
+                    Click="Add_Click"
                     Icon="Add"
                     Label="Add new"
                     ToolTipService.ToolTip="Add new" />
                 <AppBarButton
                     x:Name="CommandBarViewButton"
+                    Click="View_Click"
                     Icon="OpenLocal"
                     IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
                     Label="View"
@@ -41,6 +43,7 @@
 
                 <AppBarButton
                     x:Name="CommandBarEditButton"
+                    Click="Edit_Click"
                     Icon="Edit"
                     IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
                     Label="Edit"
@@ -48,6 +51,7 @@
 
                 <AppBarButton
                     x:Name="CommandBarDeleteButton"
+                    Click="Delete_Click"
                     Icon="Delete"
                     IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
                     Label="Delete"
@@ -88,8 +92,7 @@
                     <toolkit:DataGridTextColumn
                         Width="20*"
                         Binding="{Binding Id}"
-                        Header="Number">
-                    </toolkit:DataGridTextColumn>
+                        Header="Number" />
 
                     <toolkit:DataGridTextColumn
                         Width="20*"
@@ -109,7 +112,7 @@
             </toolkit:DataGrid>
         </Grid>
 
-         <toolkit:InAppNotification
+        <toolkit:InAppNotification
             x:Name="Notification"
             RelativePanel.AlignBottomWithPanel="True"
             RelativePanel.AlignHorizontalCenterWithPanel="True"

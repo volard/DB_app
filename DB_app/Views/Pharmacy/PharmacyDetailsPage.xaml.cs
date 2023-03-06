@@ -48,7 +48,7 @@ public sealed partial class PharmacyDetailsPage : Page
     }
 
 
-    public void AddSelectedButton_Clicked(object sender, RoutedEventArgs e)
+    public void AddButton_Click(object sender, RoutedEventArgs e)
     {
         if (ViewModel.SelectedAddress != null)
         {
@@ -58,7 +58,7 @@ public sealed partial class PharmacyDetailsPage : Page
         }
     }
 
-    public void DeleteSelectedButton_Clicked(object sender, RoutedEventArgs e)
+    public void DeleteButton_Click(object sender, RoutedEventArgs e)
     {
         if (ViewModel.SelectedExistingAddress != null)
         {
@@ -71,7 +71,6 @@ public sealed partial class PharmacyDetailsPage : Page
     private async void SaveButton_Click(object sender, RoutedEventArgs e)
     {
         await ViewModel.SaveAsync();
-        ViewModel.NotifyGridAboutChange();
 
         Frame.Navigate(typeof(PharmaciesGridPage), null);
     }

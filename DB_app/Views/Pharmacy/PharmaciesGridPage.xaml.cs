@@ -34,7 +34,7 @@ public sealed partial class PharmaciesGridPage : Page
 
     protected override void OnNavigatedFrom(NavigationEventArgs e)
     {
-        ViewModel.OperationRejected-= ShowNotificationMessage;
+        ViewModel.OperationRejected -= ShowNotificationMessage;
         base.OnNavigatedFrom(e);
     }
 
@@ -46,11 +46,11 @@ public sealed partial class PharmaciesGridPage : Page
     }
 
     private void Add_Click(object sender, RoutedEventArgs e) =>
-        Frame.Navigate(typeof(AddressDetailsPage), new AddressWrapper() { IsInEdit = true }, new DrillInNavigationTransitionInfo());
+        Frame.Navigate(typeof(PharmacyDetailsPage), new PharmacyWrapper() { IsInEdit = true }, new DrillInNavigationTransitionInfo());
 
 
     private void View_Click(object sender, RoutedEventArgs e) =>
-        Frame.Navigate(typeof(AddressDetailsPage), ViewModel.SelectedItem, new DrillInNavigationTransitionInfo());
+        Frame.Navigate(typeof(PharmacyDetailsPage), ViewModel.SelectedItem, new DrillInNavigationTransitionInfo());
 
 
 
@@ -61,6 +61,6 @@ public sealed partial class PharmaciesGridPage : Page
     private void Edit_Click(object sender, RoutedEventArgs e)
     {
         ViewModel.SelectedItem!.IsInEdit = true;
-        App.GetService<INavigationService>().NavigateTo(typeof(AddressDetailsViewModel).FullName!, ViewModel.SelectedItem);
+        App.GetService<INavigationService>().NavigateTo(typeof(PharmacyDetailsViewModel).FullName!, ViewModel.SelectedItem);
     }
 }
