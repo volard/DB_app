@@ -87,8 +87,10 @@
                 <toolkit:DataGrid.Columns>
 
                     
+                    <toolkit:DataGridTextColumn Binding="{Binding IdHospital}" Header="Hospital's id" />
                     <toolkit:DataGridTextColumn Binding="{Binding Surename_main_doctor}" Header="Hospital's main doctor surename" />
-                    <toolkit:DataGridTextColumn Binding="{Binding PharmacyName}" Header="Pharmacy name" />
+                    <toolkit:DataGridTextColumn Binding="{Binding PharmacyName}" Header="Pharmacy's name" />
+                    <toolkit:DataGridTextColumn Binding="{Binding MedicineName}" Header="Medicine's name" />
                     <toolkit:DataGridTemplateColumn Header="Date" Tag="Date Placed">
                         <toolkit:DataGridTemplateColumn.CellTemplate>
                             <DataTemplate x:DataType="vm:OrderWrapper">

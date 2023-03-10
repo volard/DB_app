@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
+using DB_app.Contracts.ViewModels;
 using DB_app.Core.Contracts.Services;
 using DB_app.Entities;
 using DB_app.Services.Messages;
@@ -8,7 +9,7 @@ using System.Diagnostics;
 
 namespace DB_app.ViewModels;
 
-public partial class OrderDetailsViewModel : ObservableRecipient, IRecipient<ShowRecordDetailsMessage<OrderWrapper>>
+public partial class OrderDetailsViewModel : ObservableRecipient, INavigationAware
 {
 
     #region Constructors
@@ -16,28 +17,9 @@ public partial class OrderDetailsViewModel : ObservableRecipient, IRecipient<Sho
 
     public OrderDetailsViewModel()
     {
-        CurrentOrder = new()
-        {
-            IsNew = true
-        };
-        pageTitle = "New order";
-
-        Initialize();
-    }
-
-    public void Initialize()
-    {
-        WeakReferenceMessenger.Default.Register(this);
-        availablePharmacies = new(_repositoryControllerService.Pharmacies.GetAsync().Result);
+        AvailablePharmacies = new(_repositoryControllerService.Pharmacies.GetAsync().Result);
         AvailableHospitals = new(_repositoryControllerService.Hospitals.GetAsync().Result);
         AvailableAddresses = new(getAvailableAddresses());
-    }
-
-    public OrderDetailsViewModel(OrderWrapper OrderWrapper)
-    {
-        CurrentOrder = OrderWrapper;
-
-        Initialize();
     }
 
 
@@ -47,25 +29,7 @@ public partial class OrderDetailsViewModel : ObservableRecipient, IRecipient<Sho
 
     #region Members
 
-    public void Receive(ShowRecordDetailsMessage<OrderWrapper> message)
-    {
-        CurrentOrder = message.Value;
-    }
 
-    /// <summary>
-    /// Saves hospital that was edited or created
-    /// </summary>
-    public async Task SaveAsync()
-    {
-        if (CurrentOrder.IsNew) // Create new productMedicine
-        {
-            await _repositoryControllerService.Orders.InsertAsync(CurrentOrder.OrderData);
-        }
-        else // Update existing productMedicine
-        {
-            await _repositoryControllerService.Orders.UpdateAsync(CurrentOrder.OrderData);
-        }
-    }
 
 
     [ObservableProperty]
@@ -80,7 +44,6 @@ public partial class OrderDetailsViewModel : ObservableRecipient, IRecipient<Sho
             return Enumerable.Empty<Address>();
     }
 
-    public void NotifyGridAboutChange() => WeakReferenceMessenger.Default.Send(new AddRecordMessage<OrderWrapper>(CurrentOrder));
 
     #endregion
 
@@ -92,23 +55,8 @@ public partial class OrderDetailsViewModel : ObservableRecipient, IRecipient<Sho
          = App.GetService<IRepositoryControllerService>();
 
 
-    private OrderWrapper currentOrder;
+    public OrderWrapper CurrentOrder { get; set; } = new();
 
-    /// <summary>
-    /// Current OrderWrapper to edit
-    /// </summary>
-    public OrderWrapper CurrentOrder
-    {
-        get
-        {
-            return currentOrder;
-        }
-        set
-        {
-            currentOrder = value;
-            pageTitle = "Order #" + currentOrder.Id;
-        }
-    }
 
 
     [ObservableProperty]
