@@ -31,15 +31,15 @@ public partial class PharmacyDetailsViewModel : ObservableRecipient, INavigation
     }
 
     /// <summary>
-    /// Saves pharmacy that was edited or created
+    /// Saves productPharmacy that was edited or created
     /// </summary>
     public async Task SaveAsync()
     {
-        if (CurrentPharmacy.IsNew) // Create new medicine
+        if (CurrentPharmacy.IsNew) // Create new productMedicine
         {
             await _repositoryControllerService.Pharmacies.InsertAsync(CurrentPharmacy.PharmacyData);
         }
-        else // Update existing medicine
+        else // Update existing productMedicine
         {
             await _repositoryControllerService.Pharmacies.UpdateAsync(CurrentPharmacy.PharmacyData);
         }

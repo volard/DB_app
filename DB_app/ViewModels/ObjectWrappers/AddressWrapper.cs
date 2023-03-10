@@ -22,7 +22,6 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
         if (address == null)
         {
             IsNew = true;
-            AddressData = new();
         }
         else { AddressData = address; }
     }
@@ -39,7 +38,7 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
     /// <summary>
     /// Underlying <see cref="Address"/> data
     /// </summary>
-    private Address _addressData = null!;
+    private Address _addressData = new();
 
     /// <summary>
     /// Underlying <see cref="Address"/> data

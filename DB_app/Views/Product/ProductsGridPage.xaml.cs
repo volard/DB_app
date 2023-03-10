@@ -46,7 +46,7 @@ public sealed partial class ProductsGridPage : Page
     }
 
     private void Add_Click(object? sender, RoutedEventArgs e) =>
-        Frame.Navigate(typeof(ProductDetailsPage), new ProductWrapper() { IsInEdit = true }, new DrillInNavigationTransitionInfo());
+        App.GetService<INavigationService>().NavigateTo(typeof(ProductDetailsViewModel).FullName!, new ProductWrapper() { IsInEdit = true });
 
 
     private void View_Click(object? sender, RoutedEventArgs e) =>
@@ -60,7 +60,7 @@ public sealed partial class ProductsGridPage : Page
 
     private void Edit_Click(object? sender, RoutedEventArgs e)
     {
-        ViewModel.SelectedItem!.IsInEdit = true;
-        App.GetService<INavigationService>().NavigateTo(typeof(ProductDetailsPage).FullName!, ViewModel.SelectedItem);
+        ViewModel.SelectedItem.IsInEdit = true;
+        App.GetService<INavigationService>().NavigateTo(typeof(ProductDetailsViewModel).FullName!, ViewModel.SelectedItem);
     }
 }

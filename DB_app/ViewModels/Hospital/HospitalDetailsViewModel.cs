@@ -42,11 +42,11 @@ public partial class HospitalDetailsViewModel : ObservableRecipient, INavigation
     /// </summary>
     public async Task SaveAsync()
     {
-        if (CurrentHospital.IsNew) // Create new medicine
+        if (CurrentHospital.IsNew) // Create new productMedicine
         {
             await _repositoryControllerService.Hospitals.InsertAsync(CurrentHospital.HospitalData);
         }
-        else // Update existing medicine
+        else // Update existing productMedicine
         {
             await _repositoryControllerService.Hospitals.UpdateAsync(CurrentHospital.HospitalData);
         }

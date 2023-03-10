@@ -22,21 +22,6 @@ public partial class AddressDetailsViewModel : ObservableRecipient, INavigationA
     private string _pageTitle = "New address";
 
 
-    /// <summary>
-    /// Saves customer data that was edited.
-    /// </summary>
-    public async void SaveCurrent(object? sender, RoutedEventArgs  e)
-    {
-        try
-        {
-            await CurrentAddress.SaveAsync();
-        }
-        catch(Exception ex)
-        {
-
-        }
-    }
-
 
     public void OnNavigatedTo(object? parameter)
     {

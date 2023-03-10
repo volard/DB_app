@@ -12,19 +12,10 @@ public partial class ProductDetailsViewModel : ObservableRecipient, INavigationA
     private readonly IRepositoryControllerService _repositoryControllerService
          = App.GetService<IRepositoryControllerService>();
 
-    public ProductDetailsViewModel(ProductWrapper? product = null)
+    public ProductDetailsViewModel()
     {
-        if (product == null)
-        {
-            CurrentProduct = new()
-            {
-                IsNew = true
-            };
-        }
-        else { CurrentProduct = product; }
-
         AvailablePharmacies = _repositoryControllerService.Pharmacies.GetAsync().Result.ToList();
-        AvailableMedicines = _repositoryControllerService.Medicines.GetAsync().Result.ToList();
+        AvailableMedicines  = _repositoryControllerService.Medicines.GetAsync().Result.ToList();
     }
 
     public void OnNavigatedTo(object? parameter)
@@ -42,7 +33,6 @@ public partial class ProductDetailsViewModel : ObservableRecipient, INavigationA
     }
 
 
-
     public List<Pharmacy> AvailablePharmacies;
     public List<Medicine> AvailableMedicines;
 
@@ -51,22 +41,6 @@ public partial class ProductDetailsViewModel : ObservableRecipient, INavigationA
     /// </summary>
     public ProductWrapper CurrentProduct { get; set; } = new();
 
-
-    /// <summary>
-    /// Saves customer data that was edited.
-    /// </summary>
-    public async Task SaveAsync()
-    {
-
-        if (CurrentProduct.IsNew)
-        {
-            await _repositoryControllerService.Products.InsertAsync(CurrentProduct.ProductData);
-        }
-        else
-        {
-            await _repositoryControllerService.Products.UpdateAsync(CurrentProduct.ProductData);
-        }
-    }
 
 }
 

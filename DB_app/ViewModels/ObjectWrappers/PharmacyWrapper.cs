@@ -56,7 +56,7 @@ public sealed partial class PharmacyWrapper : ObservableValidator, IEditableObje
 
 
     /// <summary>
-    /// Name of pharmacy
+    /// Name of productPharmacy
     /// </summary>
     [ObservableProperty]
     [NotifyDataErrorInfo]

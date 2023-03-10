@@ -20,6 +20,7 @@ public sealed partial class ProductWrapper : ObservableValidator, IEditableObjec
             IsNew = true;
         }
         else { ProductData = product; }
+
     }
 
 
@@ -34,7 +35,7 @@ public sealed partial class ProductWrapper : ObservableValidator, IEditableObjec
         = App.GetService<IRepositoryControllerService>();
 
 
-    private Product _productData = null!;
+    private Product _productData = new();
 
 
     public Product ProductData
@@ -43,59 +44,49 @@ public sealed partial class ProductWrapper : ObservableValidator, IEditableObjec
         set
         {
             _productData = value;
-            Medicine = _productData.Medicine;
-            PharmacyName = _productData.Pharmacy.Name;
-            MedicineName = _productData.Medicine.Name;
-            Medicine = _productData.Medicine;
-            Pharmacy = _productData.Pharmacy;
-            MedicineType = _productData.Medicine.Type;
+            ProductMedicine = _productData.Medicine;
+            ProductPharmacy = _productData.Pharmacy;
+            Quantity = _productData.Quantity;
+            Price = _productData.Price;
         }
     }
-
-
 
 
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required(ErrorMessage = "Medicine is Required")]
-    private Medicine? medicine;
-
-
-    [ObservableProperty]
-    [NotifyDataErrorInfo]
-    [Required]
-    private string? pharmacyName;
-
-    [ObservableProperty]
-    [NotifyDataErrorInfo]
-    [Required]
-    private string? medicineName;
-
-    [ObservableProperty]
-    [NotifyDataErrorInfo]
-    [Required]
-    private string? medicineType;
-
-
-    [ObservableProperty]
-    [NotifyDataErrorInfo]
-    [Required(ErrorMessage = "Quantity is Required")]
-    //[RegularExpression("([1-9]+)", ErrorMessage = "Please enter a Number")]
-    private int? quantity;
-
-
-    [ObservableProperty]
-    [NotifyDataErrorInfo]
-    [Required(ErrorMessage = "Price is Required")]
-    //[RegularExpression("([1-9]+)", ErrorMessage = "Please enter a Number")]
-    private double? price;
+    private Medicine? productMedicine;
 
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required(ErrorMessage = "Pharmacy is Required")]
-    private Pharmacy? pharmacy;
+    private Pharmacy? productPharmacy;
+
+
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required(ErrorMessage = "Quantity is Required")]
+    [Range(1, int.MaxValue, ErrorMessage = "Please enter a value bigger than {1}")]
+    //[RegularExpression("([1-9]+)", ErrorMessage = "Please enter a Number")]
+    private int quantity;
+
+
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required(ErrorMessage = "Price is Required")]
+    [Range(1, int.MaxValue, ErrorMessage = "Please enter a value bigger than {1}")]
+    //[RegularExpression("([1-9]+)", ErrorMessage = "Please enter a Number")]
+    private double price;
+
+
+
+    // These properties needed for grid table
+    public string PharmacyName { get => _productData.Pharmacy.Name; }
+    public string MedicineName { get => _productData.Medicine.Name; }
+    public string MedicineType { get => _productData.Medicine.Type; }
+
 
 
 
@@ -129,8 +120,8 @@ public sealed partial class ProductWrapper : ObservableValidator, IEditableObjec
     #region Members
 
     public bool Equals(ProductWrapper? other) =>
-        Medicine == other?.Medicine &&
-        Pharmacy == other?.Pharmacy &&
+        ProductMedicine == other?.ProductMedicine &&
+        ProductMedicine == other?.ProductMedicine &&
         Price == other?.Price &&
         Quantity == other?.Quantity;
 
@@ -139,9 +130,6 @@ public sealed partial class ProductWrapper : ObservableValidator, IEditableObjec
 
 
     #endregion
-
-
-
 
 
     #region Modification methods
@@ -172,6 +160,7 @@ public sealed partial class ProductWrapper : ObservableValidator, IEditableObjec
         {
             await App.GetService<IRepositoryControllerService>().Products.UpdateAsync(ProductData);
         }
+        IsNew = false;
         return true;
     }
 
@@ -186,23 +175,27 @@ public sealed partial class ProductWrapper : ObservableValidator, IEditableObjec
 
 
 
-
     #region IEditable implementation
     public void BeginEdit()
     {
         IsModified = true;
+        IsInEdit = true;
         Backup();
     }
 
     public void CancelEdit()
     {
-        
+        IsInEdit = false;
         IsModified = false;
     }
 
     public async void EndEdit()
     {
-        await _repositoryControllerService.Products.UpdateAsync(ProductData);
+        IsInEdit= false;
+        _productData.Pharmacy = ProductPharmacy;
+        _productData.Medicine = ProductMedicine;
+        _productData.Price = Price;
+        _productData.Quantity = Quantity; 
     }
 
 

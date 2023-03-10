@@ -1,6 +1,0 @@
-<ResourceDictionary
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:components="using:DB_app.Views.Components"
-    xmlns:local="using:DB_app">
-      </ResourceDictionary>

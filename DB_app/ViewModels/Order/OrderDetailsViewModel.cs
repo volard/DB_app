@@ -57,11 +57,11 @@ public partial class OrderDetailsViewModel : ObservableRecipient, IRecipient<Sho
     /// </summary>
     public async Task SaveAsync()
     {
-        if (CurrentOrder.IsNew) // Create new medicine
+        if (CurrentOrder.IsNew) // Create new productMedicine
         {
             await _repositoryControllerService.Orders.InsertAsync(CurrentOrder.OrderData);
         }
-        else // Update existing medicine
+        else // Update existing productMedicine
         {
             await _repositoryControllerService.Orders.UpdateAsync(CurrentOrder.OrderData);
         }
@@ -192,10 +192,10 @@ public partial class OrderDetailsViewModel : ObservableRecipient, IRecipient<Sho
 
     public ProductWrapper ProductModel { get; set; }
 
-    public string ProductMedicineName { get => ProductModel.Medicine.Name; }
+    public string ProductMedicineName { get => ProductModel.ProductMedicine.Name; }
 
-    public string ProductMedicineType { get => ProductModel.Medicine.Type; }
+    public string ProductMedicineType { get => ProductModel.ProductMedicine.Type; }
 
-    public string ProductPrice { get => ProductModel.Price?.ToString(); }
-    public string ProductQuantity { get => ProductModel.Quantity?.ToString(); }
+    public string ProductPrice { get => ProductModel.Price.ToString(); }
+    public string ProductQuantity { get => ProductModel.Quantity.ToString(); }
 }

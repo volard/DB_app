@@ -15,6 +15,7 @@
         <helpers:NotConverter x:Key="NotConverter" />
         <helpers:VisibleIfConverter x:Key="VisibleIf" />
         <helpers:CollapsedIf x:Key="CollapsedIf" />
+        <helpers:DoubleToIntConverter x:Key="DoubleToIntConverter" />
     </Page.Resources>
 
 
@@ -29,13 +30,13 @@
                 <CommandBar.Content>
                     <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="New Product" />
                 </CommandBar.Content>
-<!--
                 <AppBarButton
                     Click="SaveButton_Click"
                     Icon="Save"
                     IsEnabled="{Binding CurrentProduct.HasErrors, Converter={StaticResource NotConverter}, Mode=OneWay}"
                     Label="Save"
                     Visibility="{Binding CurrentProduct.IsInEdit, Converter={StaticResource VisibleIf}, Mode=OneWay}" />
+                    
                 <AppBarButton
                     Click="{x:Bind CurrentProduct.BeginEdit}"
                     Icon="Edit"
@@ -56,17 +57,15 @@
                     Click="AddButton_Click"
                     Icon="Add"
                     Label="Add new" />
-                    -->
-
+                    
             </CommandBar>
         </DataTemplate>
     </behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
     <!--#endregion-->
 
-<!-- 
     <Grid>
 
-           <ScrollViewer
+        <ScrollViewer
             x:Name="DetailPanel"
             RelativePanel.AlignLeftWithPanel="True"
             RelativePanel.AlignRightWithPanel="True"
@@ -74,111 +73,139 @@
             VerticalScrollBarVisibility="Auto"
             VerticalScrollMode="Auto">
 
-            <RelativePanel>
-            
-                <ComboBox
-                    x:Name="PharmacyComboBox"
-                    Width="380"
-                    Margin="0,20,16,8"
-                    VerticalAlignment="Stretch"
-                    IsEnabled="{x:Bind ViewModel.CurrentProduct.IsNew, Mode=OneWay}"
-                    ItemsSource="{x:Bind ViewModel.AvailablePharmacies, Mode=TwoWay}"
-                    PlaceholderText="Select pharmacy"
-                    SelectedItem="{x:Bind ViewModel.CurrentProduct.Pharmacy, Mode=TwoWay}" />
+            <StackPanel x:Name="StackPanel">
 
-                <SymbolIcon
-                    Margin="0,35,0,0"
-                    Foreground="OrangeRed"
-                    RelativePanel.AlignVerticalCenterWith="PharmacyComboBox"
-                    RelativePanel.RightOf="PharmacyComboBox"
-                    Symbol="ReportHacked">
-                    <ToolTipService.ToolTip>
-                        <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentProduct.MedicineName, Mode=OneWay}" />
-                    </ToolTipService.ToolTip>
-                </SymbolIcon>
+                <!--  Pharmacy selection  -->
+                <RelativePanel>
 
-                <ComboBox
-                    x:Name="MedicineComboBox"
-                    Width="380"
-                    Margin="0,20,16,8"
-                    VerticalAlignment="Stretch"
-                    IsEnabled="{x:Bind ViewModel.CurrentProduct.IsNew, Mode=OneWay}"
-                    ItemsSource="{x:Bind ViewModel.AvailableMedicines, Mode=TwoWay}"
-                    PlaceholderText="Select medicine"
-                    RelativePanel.Below="PharmacyComboBox"
-                    SelectedItem="{x:Bind ViewModel.CurrentProduct.Medicine, Mode=TwoWay}" />
+                    <ComboBox
+                        x:Name="ProductPharmacy"
+                        Width="380"
+                        Margin="0,20,16,8"
+                        VerticalAlignment="Stretch"
+                        DataContext="{x:Bind ViewModel.CurrentProduct, Mode=OneWay}"
+                        DataContextChanged="Element_DataContextChanged"
+                        Header="Pharmacy"
+                        IsEnabled="{x:Bind ViewModel.CurrentProduct.IsInEdit, Mode=OneWay}"
+                        ItemsSource="{x:Bind ViewModel.AvailablePharmacies, Mode=TwoWay}"
+                        PlaceholderText="Select pharmacy"
+                        SelectedItem="{x:Bind ViewModel.CurrentProduct.ProductPharmacy, Mode=TwoWay}"
+                        SelectionChanged="ComboBox_SelectionChanged" />
 
-                <SymbolIcon
-                    x:Name="MedicineIcon"
-                    Margin="0,35,0,0"
-                    Foreground="OrangeRed"
-                    RelativePanel.AlignVerticalCenterWith="MedicineComboBox"
-                    RelativePanel.RightOf="MedicineComboBox"
-                    Symbol="ReportHacked">
-                    <ToolTipService.ToolTip>
-                        <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentProduct.MedicineName, Mode=OneWay}" />
-                    </ToolTipService.ToolTip>
-                </SymbolIcon>
-
-                <NumberBox
-                    x:Name="Price"
-                    MinWidth="300"
-                    Margin="0,20,16,8"
-                    Header="Price"
-                    Minimum="1"
-                    RelativePanel.AlignLeftWithPanel="True"
-                    RelativePanel.Below="MedicineComboBox"
-                    ValueChanged="PriceValue_ValueChanged"
-                    Value="{x:Bind ViewModel.CurrentProduct.Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-                <SymbolIcon
-                    x:Name="PriceIcon"
-                    Margin="0,35,0,0"
-                    Foreground="OrangeRed"
-                    RelativePanel.AlignVerticalCenterWith="Price"
-                    RelativePanel.RightOf="Price"
-                    Symbol="ReportHacked">
-                    <ToolTipService.ToolTip>
-                        <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentProduct.MedicineName, Mode=OneWay}" />
-                    </ToolTipService.ToolTip>
-                </SymbolIcon>
+                    <FontIcon
+                        x:Name="ProductPharmacyIcon"
+                        Margin="0,20,16,8"
+                        FontSize="20"
+                        Foreground="Orange"
+                        Glyph="&#xE814;"
+                        RelativePanel.AlignVerticalCenterWith="ProductPharmacy"
+                        RelativePanel.RightOf="ProductPharmacy"
+                        Visibility="Collapsed" />
+                </RelativePanel>
 
 
-                <NumberBox
-                    x:Name="Quantity"
-                    MinWidth="300"
-                    Margin="0,20,16,8"
-                    Header="Quantity"
-                    Minimum="1"
-                    RelativePanel.AlignLeftWithPanel="True"
-                    RelativePanel.Below="Price"
-                    Text="1"
-                    ValueChanged="QuantityValue_ValueChanged"
-                    Value="{x:Bind ViewModel.CurrentProduct.Quantity, Mode=TwoWay}" />
+                <!--  Medicine selection  -->
+                <RelativePanel>
 
-                <SymbolIcon
-                    x:Name="QuantityIcon"
-                    Margin="0,35,0,0"
-                    Foreground="OrangeRed"
-                    RelativePanel.AlignVerticalCenterWith="Quantity"
-                    RelativePanel.RightOf="Quantity"
-                    Symbol="ReportHacked">
-                    <ToolTipService.ToolTip>
-                        <TextBlock Foreground="OrangeRed" Text="{x:Bind ViewModel.CurrentProduct.MedicineName, Mode=OneWay}" />
-                    </ToolTipService.ToolTip>
-                </SymbolIcon>
-        <toolkit:InAppNotification
+
+                    <ComboBox
+                        x:Name="ProductMedicine"
+                        Width="380"
+                        Margin="0,20,16,8"
+                        VerticalAlignment="Stretch"
+                        DataContext="{x:Bind ViewModel.CurrentProduct, Mode=OneWay}"
+                        DataContextChanged="Element_DataContextChanged"
+                        Header="Medicine"
+                        IsEnabled="{x:Bind ViewModel.CurrentProduct.IsInEdit, Mode=OneWay}"
+                        ItemsSource="{x:Bind ViewModel.AvailableMedicines, Mode=TwoWay}"
+                        PlaceholderText="Select medicine"
+                        SelectedItem="{x:Bind ViewModel.CurrentProduct.ProductMedicine, Mode=TwoWay}"
+                        SelectionChanged="ComboBox_SelectionChanged" />
+
+                    <FontIcon
+                        x:Name="ProductMedicineIcon"
+                        Margin="0,20,16,8"
+                        FontSize="20"
+                        Foreground="Orange"
+                        Glyph="&#xE814;"
+                        RelativePanel.AlignVerticalCenterWith="ProductMedicine"
+                        RelativePanel.RightOf="ProductMedicine"
+                        Visibility="Collapsed" />
+
+
+                </RelativePanel>
+
+                <!--  Price input  -->
+                <RelativePanel>
+
+
+                    <NumberBox
+                        x:Name="Price"
+                        MinWidth="300"
+                        Margin="0,20,16,8"
+                        DataContext="{x:Bind ViewModel.CurrentProduct, Mode=OneWay}"
+                        DataContextChanged="Element_DataContextChanged"
+                        Header="Price"
+                        IsEnabled="{x:Bind ViewModel.CurrentProduct.IsInEdit, Mode=OneWay}"
+                        PlaceholderText="Input price"
+                        ValueChanged="NumberBox_ValueChanged"
+                        Value="{x:Bind ViewModel.CurrentProduct.Price, Mode=TwoWay}" />
+
+                    <FontIcon
+                        x:Name="PriceIcon"
+                        Margin="0,20,16,8"
+                        FontSize="20"
+                        Foreground="Orange"
+                        Glyph="&#xE814;"
+                        RelativePanel.AlignVerticalCenterWith="Price"
+                        RelativePanel.RightOf="Price"
+                        Visibility="Collapsed" />
+
+
+                </RelativePanel>
+
+
+                <!--  Quantity input  -->
+                <RelativePanel>
+
+
+                    <NumberBox
+                        x:Name="Quantity"
+                        MinWidth="300"
+                        Margin="0,20,16,8"
+                        DataContext="{x:Bind ViewModel.CurrentProduct, Mode=OneWay}"
+                        DataContextChanged="Element_DataContextChanged"
+                        ValueChanged="NumberBox_ValueChanged"
+                        IsEnabled="{x:Bind ViewModel.CurrentProduct.IsInEdit, Mode=OneWay}"
+                        Header="Quantity"
+                        PlaceholderText="Input quantity"
+                        Value="{x:Bind ViewModel.CurrentProduct.Quantity, Mode=TwoWay}" />
+
+                    <FontIcon
+                        x:Name="QuantityIcon"
+                        Margin="0,20,16,8"
+                        FontSize="20"
+                        Foreground="Orange"
+                        Glyph="&#xE814;"
+                        RelativePanel.AlignVerticalCenterWith="Quantity"
+                        RelativePanel.RightOf="Quantity"
+                        Visibility="Collapsed" />
+
+
+                </RelativePanel>
+
+                <!--  Notification  -->
+                <toolkit:InAppNotification
                     x:Name="Notification"
                     RelativePanel.AlignBottomWithPanel="True"
                     RelativePanel.AlignHorizontalCenterWithPanel="True"
                     StackMode="Replace" />
 
-        </RelativePanel>
+            </StackPanel>
 
 
 
         </ScrollViewer>
     </Grid>
 
-    -->
 </Page>

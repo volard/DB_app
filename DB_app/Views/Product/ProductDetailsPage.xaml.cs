@@ -8,6 +8,8 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Navigation;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using WinUIEx.Messaging;
 
@@ -16,6 +18,7 @@ namespace DB_app.Views;
 public sealed partial class ProductDetailsPage : Page
 {
     public ProductDetailsViewModel ViewModel { get; }
+    public INotifyDataErrorInfo oldDataContext { get; set; }
 
     public ProductDetailsPage()
     {
@@ -26,55 +29,17 @@ public sealed partial class ProductDetailsPage : Page
             Source = ViewModel,
             Mode = BindingMode.OneWay
         });
-
     }
+
+
+    #region Button handlers
 
     private async void SaveButton_Click(object sender, RoutedEventArgs e)
     {
         bool isOk = await ViewModel.CurrentProduct.SaveAsync();
-        if (!isOk)
-        {
-            ViewModel.CurrentProduct.GetErrors(String.Empty);
-        }
-    }
-
-    /// <summary>
-    /// Navigate to the previous page when the user cancels the creation of a new record.
-    /// </summary>
-    private void CancelEdit_Click(object sender, RoutedEventArgs e) => Frame.GoBack();
-
-    /// <summary>
-    /// Check whether there are unsaved changes and warn the user.
-    /// </summary>
-    protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
-    {
     }
 
 
-    protected override void OnNavigatedTo(NavigationEventArgs e)
-    {
-        ViewModel.CurrentProduct.Backup();
-        base.OnNavigatedTo(e);
-    }
-
-
-    private void PriceValue_ValueChanged(object? sender, NumberBoxValueChangedEventArgs e)
-    {
-        //ViewModel.CurrentProduct.Price = Price.Value is double.NaN ? 1 : Price.Value;
-
-        //ViewModel.CurrentProduct.IsModified = true;
-    }
-
-    private void QuantityValue_ValueChanged(object? sender, NumberBoxValueChangedEventArgs e)
-    {
-        //ViewModel.CurrentProduct.Quantity = Quantity.Value is double.NaN ? 1 : (int)Quantity.Value;
-        //ViewModel.CurrentProduct.IsModified = true;
-    }
-
-
-    /// <summary>
-    /// Navigate to the previous page when the user cancels the creation of a new record.
-    /// </summary>
     private void CancelButton_Click(object? sender, RoutedEventArgs e)
     {
         ViewModel.CurrentProduct.CancelEdit();
@@ -108,10 +73,70 @@ public sealed partial class ProductDetailsPage : Page
         Frame.BackStack.Remove(Frame.BackStack.Last());
     }
 
+    #endregion
+
+
+    
 
 
 
 
+    /// <summary>
+    /// Refreshes the errors currently displayed.
+    /// </summary>
+    private void RefreshErrors(string paramName)
+    {
+        ValidationResult? result = ViewModel.CurrentProduct.GetErrors(paramName).OfType<ValidationResult>().FirstOrDefault();
+        var icon = StackPanel.FindName(paramName + "Icon") as FontIcon;
+        if (icon != null)
+        {
+            icon!.Visibility = result is not null ? Visibility.Visible : Visibility.Collapsed;
+            if (result is not null)
+            {
+                ToolTipService.SetToolTip(icon, result.ErrorMessage);
+            }
+        } 
+    }
 
+
+    /// <summary>
+    /// Updates the bindings whenever the data context changes.
+    /// </summary>
+    private void Element_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
+    {
+        if (oldDataContext is not null)
+        {
+            oldDataContext.ErrorsChanged -= DataContext_ErrorsChanged;
+        }
+
+        if (args.NewValue is INotifyDataErrorInfo dataContext)
+        {
+            oldDataContext = dataContext;
+
+            oldDataContext.ErrorsChanged += DataContext_ErrorsChanged;
+        }
+    }
+
+
+    /// <summary>
+    /// Invokes <see cref="RefreshErrors"/> whenever the data context requires it.
+    /// </summary>
+    private void DataContext_ErrorsChanged(object? sender, DataErrorsChangedEventArgs e)
+    {
+        // sender here is ProductWrapper
+        if (e.PropertyName != null)
+            RefreshErrors(e.PropertyName);
+    }
+
+    private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        RefreshErrors(((ComboBox)sender).Name);
+    }
+
+
+    private void NumberBox_ValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
+    {
+        RefreshErrors(sender.Name);
+    }
 
 }
