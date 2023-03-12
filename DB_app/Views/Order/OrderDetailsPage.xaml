@@ -4,9 +4,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="using:DB_app.Behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:DB_app.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    xmlns:helpers="using:DB_app.Helpers"
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:viewModel="using:DB_app.ViewModels"
     mc:Ignorable="d">
@@ -16,8 +16,11 @@
         <helpers:NotConverter x:Key="NotConverter" />
         <helpers:VisibleIfConverter x:Key="VisibleIf" />
         <helpers:CollapsedIf x:Key="CollapsedIf" />
+        <helpers:VisibleIfNotNull x:Key="VisibleIfNotNull" />
+        <helpers:StringFormatConverter x:Key="StringFormatConterter"/>
     </Page.Resources>
 
+    <!--#region  Header-->
     <behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
         <DataTemplate x:DataType="viewModel:OrderDetailsViewModel">
             <CommandBar
@@ -31,11 +34,33 @@
                 <AppBarButton
                     Click="SaveButton_Click"
                     Icon="Save"
-                    Label="Save" />
+                    IsEnabled="{Binding CurrentOrder.HasErrors, Converter={StaticResource NotConverter}, Mode=OneWay}"
+                    Label="Save"
+                    Visibility="{Binding CurrentOrder.IsInEdit, Converter={StaticResource VisibleIf}, Mode=OneWay}" />
                 <AppBarButton
-                    Click="CancelEdit_Click"
+                    Click="{x:Bind CurrentOrder.BeginEdit}"
+                    Icon="Edit"
+                    Label="Edit"
+                    Visibility="{x:Bind viewModel:Converters.CollapsedIfOneOfTwo(CurrentOrder.IsInEdit, CurrentOrder.IsNew), Mode=OneWay}" />
+                <AppBarButton
+                    Click="{x:Bind CurrentOrder.CancelEdit}"
                     Icon="Cancel"
-                    Label="Cancel" />
+                    Label="Cancel"
+                    Visibility="{x:Bind viewModel:Converters.VisibleIfOneAndNotAnother(CurrentOrder.IsInEdit, CurrentOrder.IsNew), Mode=OneWay}" />
+                <AppBarSeparator />
+                <AppBarButton
+                    Click="DeleteButton_Click"
+                    Icon="Delete"
+                    Label="Delete"
+                    Visibility="{Binding CurrentOrder.IsNew, Converter={StaticResource CollapsedIf}, Mode=OneWay}" />
+                <AppBarButton
+                    Click="AddButton_Click"
+                    Icon="Add"
+                    Label="Add new"
+                    Visibility="{Binding CurrentOrder.IsNew, Converter={StaticResource CollapsedIf}, Mode=OneWay}" />
+
+                <AppBarSeparator Visibility="{Binding CurrentOrder.IsNew, Converter={StaticResource CollapsedIf}, Mode=OneWay}" />
+
 
                 <AppBarButton
                     Click="Tabs_TabDroppedOutside"
@@ -44,36 +69,15 @@
             </CommandBar>
         </DataTemplate>
     </behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
+    <!--#endregion-->
 
 
-    <!--<TabView
-        x:Name="DetailsTabView"
-        Margin="0"
-        Padding="5,0,0,0"
-        VerticalAlignment="Stretch"
-        AllowDrop="False"
-        Background="Transparent"
-        BorderThickness="0,1.5,0,0"
-        CanDragTabs="True"
-        CornerRadius="4"
-        TabDroppedOutside="Tabs_TabDroppedOutside"
-        IsAddTabButtonVisible="False">
 
-        <TabViewItem
-            Background="#323232"
-            CanDrag="False"
-            Header="Current order"
-            IsClosable="False">
-            <TabViewItem.IconSource>
-                <FontIconSource Glyph="&#xE16C;" />
-            </TabViewItem.IconSource>-->
-
-
+    <!--#region Page content-->
     <Grid
         x:Name="RootGrid"
         Padding="10,0"
-        VerticalAlignment="Stretch"
-        Background="#323232">
+        VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition Height="16" />
@@ -83,12 +87,13 @@
         </Grid.ColumnDefinitions>
 
 
+        <!--#region Actual order info section-->
         <ScrollViewer
             Grid.Row="0"
             Grid.Column="0"
             Padding="0,0,10,30"
             HorizontalAlignment="Stretch">
-            <StackPanel>
+            <StackPanel x:Name="StackPanel">
 
                 <StackPanel.Resources>
                     <Style TargetType="muxc:Expander">
@@ -108,31 +113,30 @@
                         Header="Customer"
                         ItemsSource="{x:Bind ViewModel.AvailableHospitals, Mode=OneWay}"
                         PlaceholderText="Select hospital"
-                        SelectedItem="{x:Bind ViewModel.SelectedHospital, Mode=TwoWay}" />
+                        SelectedItem="{x:Bind ViewModel.CurrentOrder.OrderHospital, Mode=TwoWay}" />
 
                     <ComboBox
                         x:Name="ShippingAddressComboBox"
                         Width="380"
                         Margin="0,20,16,8"
                         VerticalAlignment="Stretch"
+                        DataContext="{x:Bind ViewModel.CurrentOrder, Mode=OneWay}"
+                        DataContextChanged="Element_DataContextChanged"
                         Header="Shipping address"
-                        IsEnabled="{x:Bind ViewModel.IsHospitalSelected, Mode=OneWay}"
-                        ItemsSource="{x:Bind ViewModel.AvailableAddresses, Mode=OneWay}"
+                        ItemsSource="{x:Bind ViewModel.CurrentOrder.AvailableAddresses, Mode=OneWay}"
                         PlaceholderText="Select address"
-                        RelativePanel.Below="HospitalCustomerComboBox" />
+                        RelativePanel.Below="HospitalCustomerComboBox"
+                        SelectionChanged="ComboBox_SelectionChanged" />
 
-                    <ComboBox
-                        x:Name="PharmacySellerComboBox"
-                        Width="380"
+                    <FontIcon
+                        x:Name="ShippingAddressComboBoxIcon"
                         Margin="0,20,16,8"
-                        VerticalAlignment="Stretch"
-                        Header="Seller"
-                        ItemsSource="{x:Bind ViewModel.AvailablePharmacies, Mode=TwoWay}"
-                        PlaceholderText="Select pharmacy"
-                        RelativePanel.Below="ShippingAddressComboBox"
-                        SelectedItem="{x:Bind ViewModel.SelectedPharmacy, Mode=OneWay}"
-                        SelectionChanged="{x:Bind GetAvailableProducts, Mode=OneWay}" />
-
+                        FontSize="20"
+                        Foreground="Orange"
+                        Glyph="&#xE814;"
+                        RelativePanel.AlignVerticalCenterWith="ShippingAddressComboBox"
+                        RelativePanel.RightOf="ShippingAddressComboBox"
+                        Visibility="Collapsed" />
 
                     <TextBlock
                         x:Name="DatePlacedHeader"
@@ -140,6 +144,8 @@
                         RelativePanel.AlignVerticalCenterWith="HospitalCustomerComboBox"
                         Style="{ThemeResource SubtitleTextBlockStyle}"
                         Text="Date placed" />
+
+
                     <TextBlock
                         x:Name="DatePlacedTextBox"
                         Margin="0,10,0,0"
@@ -156,15 +162,16 @@
                         RelativePanel.Below="DatePlacedTextBox"
                         Style="{ThemeResource SubtitleTextBlockStyle}"
                         Text="Total" />
+
+
                     <TextBlock
                         Margin="0,10,0,0"
                         FontStyle="Italic"
                         RelativePanel.AlignRightWithPanel="True"
                         RelativePanel.Below="TotalHeader"
-                        Text="{x:Bind ViewModel.CurrentOrder.Total}" />
+                        Text="{x:Bind ViewModel.CurrentOrder.Total, Converter={StaticResource StringFormatConterter}, ConverterParameter='0:0,0.00'}" />
 
                 </RelativePanel>
-
 
 
                 <muxc:Expander
@@ -205,7 +212,8 @@
 
                                 <toolkit:DataGrid.Columns>
 
-                                    <toolkit:DataGridTextColumn Width="30*" Header="Name" />
+                                    <toolkit:DataGridTextColumn Width="30*" Header="Pharmacy name" />
+                                    <toolkit:DataGridTextColumn Width="30*" Header="Medicine name" />
                                     <toolkit:DataGridTextColumn Width="30*" Header="Type" />
                                     <toolkit:DataGridTextColumn Width="30*" Header="Price" />
                                     <toolkit:DataGridTextColumn Width="30*" Header="Quantity" />
@@ -223,25 +231,25 @@
             </StackPanel>
 
         </ScrollViewer>
+        <!--#endregion-->
 
-
-
-
-
+        <!--#region Section splitter-->
         <toolkit:GridSplitter
             Grid.Row="1"
             Grid.ColumnSpan="1"
             Height="16"
+            Visibility="{x:Bind ViewModel.CurrentOrder.IsInEdit, Converter={StaticResource VisibleIf}, Mode=OneWay}"
             VerticalAlignment="Top"
             CursorBehavior="ChangeOnSplitterHover"
             GripperCursor="SizeNorthSouth" />
+        <!--#endregion-->
 
 
 
-
-
+        <!--#region Available products-->
         <RelativePanel
             Grid.Row="1"
+            Visibility="{x:Bind ViewModel.CurrentOrder.IsInEdit, Converter={StaticResource VisibleIf}, Mode=OneWay}"
             Grid.Column="0"
             Padding="0,20,30,0">
 
@@ -250,6 +258,7 @@
                 Margin="0,5,0,0"
                 AutoGenerateColumns="False"
                 CanUserReorderColumns="False"
+                SelectionChanged="MedicineMarketGrid_SelectionChanged"
                 GridLinesVisibility="All"
                 IsReadOnly="True"
                 ItemsSource="{x:Bind ViewModel.AvailableProducts, Mode=OneWay}"
@@ -260,6 +269,11 @@
                 <toolkit:DataGrid.Resources>
                     <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
                 </toolkit:DataGrid.Resources>
+
+                <toolkit:DataGrid.Triggers>
+                    
+                </toolkit:DataGrid.Triggers>
+
 
                 <toolkit:DataGrid.RowStyle>
                     <Style TargetType="toolkit:DataGridRow">
@@ -285,8 +299,6 @@
                                         <Button Content="Add" />
                                     </StackPanel>
                                 </Flyout>
-
-
                             </Setter.Value>
                         </Setter>
 
@@ -301,11 +313,16 @@
 
                     <toolkit:DataGridTextColumn
                         Width="30*"
-                        Binding="{Binding MedicineName}"
+                        Binding="{Binding Pharmacy.Name}"
+                        Header="Pharmacy name" />
+
+                    <toolkit:DataGridTextColumn
+                        Width="30*"
+                        Binding="{Binding Medicine.Name}"
                         Header="Medicine name" />
                     <toolkit:DataGridTextColumn
                         Width="30*"
-                        Binding="{Binding MedicineType}"
+                        Binding="{Binding Medicine.Type}"
                         Header="Medicine type" />
                     <toolkit:DataGridTextColumn
                         Width="30*"
@@ -320,54 +337,10 @@
 
             </toolkit:DataGrid>
         </RelativePanel>
-
-
+        <!--#endregion-->
 
     </Grid>
-    <!--</TabViewItem>
-
-        <TabViewItem
-            Background="#323232"
-            CanDrag="False"
-            Header="Market"
-            IsClosable="False">
-            <TabViewItem.IconSource>
-                <FontIconSource Glyph="&#xE12B;" />
-            </TabViewItem.IconSource>
-
-            <toolkit:DataGrid
-                x:Name="GlobalMarketGrid"
-                Margin="0,5,0,0"
-                AutoGenerateColumns="False"
-                CanUserReorderColumns="False"
-                GridLinesVisibility="All"
-                IsReadOnly="True"
-                SelectionMode="Single"
-                VerticalScrollBarVisibility="Auto"
-                VirtualizingStackPanel.VirtualizationMode="Recycling">
-
-                <toolkit:DataGrid.Resources>
-                    <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
-                </toolkit:DataGrid.Resources>
-
-                <toolkit:DataGrid.Columns>
-
-                    <toolkit:DataGridTextColumn Width="30*" Header="Medicine name" />
-                    <toolkit:DataGridTextColumn Width="30*" Header="Medicine type" />
-                    <toolkit:DataGridTextColumn Width="30*" Header="Price" />
-                    <toolkit:DataGridTextColumn Width="30*" Header="Quantity" />
-                </toolkit:DataGrid.Columns>
-
-            </toolkit:DataGrid>
-
-
-        </TabViewItem>
-
-    </TabView>-->
-
-
-
-
+    <!--#endregion-->
 
 
 </Page>

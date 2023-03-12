@@ -19,7 +19,7 @@
         <Grid
             x:Name="AppTitleBar"
             Height="34"
-            Background="#323232"
+            Background="#272727"
             VerticalAlignment="Top"
             Canvas.ZIndex="1"
             IsHitTestVisible="True">

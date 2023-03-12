@@ -40,7 +40,7 @@ private readonly IRepositoryControllerService _repositoryControllerService
     /// Represents selected by user AddressWrapper object
     /// </summary>
     [ObservableProperty]
-    private OrderWrapper? selectedItem;
+    private OrderWrapper selectedItem;
 
 
 
@@ -49,15 +49,15 @@ private readonly IRepositoryControllerService _repositoryControllerService
 
     public async Task DeleteSelected()
     {
-        if (selectedItem != null)
+        if (SelectedItem != null)
         {
             try
             {
 
-                int id = selectedItem.Id;
+                int id = SelectedItem.Id;
                 await _repositoryControllerService.Orders.DeleteAsync(id);
 
-                Source.Remove(selectedItem);
+                Source.Remove(SelectedItem);
 
                 OperationRejected?.Invoke(this, new ListEventArgs(new List<String>() { "Everything is good" }));
 

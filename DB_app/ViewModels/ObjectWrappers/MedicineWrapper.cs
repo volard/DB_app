@@ -19,7 +19,6 @@ public sealed partial class MedicineWrapper : ObservableValidator, IEditableObje
         if (medicine == null)
         {
             IsNew = true;
-            MedicineData = new();
         }
         else { MedicineData = medicine; }
     }
@@ -36,7 +35,7 @@ public sealed partial class MedicineWrapper : ObservableValidator, IEditableObje
         = App.GetService<IRepositoryControllerService>();
 
 
-    private Medicine _medicineData = null!;
+    private Medicine _medicineData = new();
 
 
     private Medicine? _backupData;

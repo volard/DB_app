@@ -57,7 +57,6 @@
                     Icon="Add"
                     Label="Add new" />
 
-                <AppBarSeparator />
             </CommandBar>
         </DataTemplate>
     </behaviors:NavigationViewHeaderBehavior.HeaderTemplate>

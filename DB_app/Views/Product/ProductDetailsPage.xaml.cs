@@ -17,12 +17,12 @@ namespace DB_app.Views;
 
 public sealed partial class ProductDetailsPage : Page
 {
-    public ProductDetailsViewModel ViewModel { get; }
-    public INotifyDataErrorInfo oldDataContext { get; set; }
+    public ProductDetailsViewModel ViewModel { get; } = App.GetService<ProductDetailsViewModel>();
+
+    public INotifyDataErrorInfo? oldDataContext { get; set; }
 
     public ProductDetailsPage()
     {
-        ViewModel = App.GetService<ProductDetailsViewModel>();
         InitializeComponent();
         SetBinding(NavigationViewHeaderBehavior.HeaderContextProperty, new Binding
         {

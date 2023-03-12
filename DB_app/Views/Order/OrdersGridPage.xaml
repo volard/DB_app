@@ -31,11 +31,13 @@
 
                 <AppBarButton
                     x:Name="CommandBarAddButton"
+                    Click="AddButton_Click"
                     Icon="Add"
                     Label="Add new"
                     ToolTipService.ToolTip="Add new" />
                 <AppBarButton
                     x:Name="CommandBarViewButton"
+                    Click="ViewButton_Click"
                     Icon="OpenLocal"
                     IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
                     Label="View"
@@ -43,6 +45,7 @@
 
                 <AppBarButton
                     x:Name="CommandBarEditButton"
+                    Click="EditButton_Click"
                     Icon="Edit"
                     IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
                     Label="Edit"
@@ -50,6 +53,7 @@
 
                 <AppBarButton
                     x:Name="CommandBarDeleteButton"
+                    Click="DeleteButton_Click"
                     Icon="Delete"
                     IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
                     Label="Delete"
@@ -89,8 +93,6 @@
                     
                     <toolkit:DataGridTextColumn Binding="{Binding IdHospital}" Header="Hospital's id" />
                     <toolkit:DataGridTextColumn Binding="{Binding Surename_main_doctor}" Header="Hospital's main doctor surename" />
-                    <toolkit:DataGridTextColumn Binding="{Binding PharmacyName}" Header="Pharmacy's name" />
-                    <toolkit:DataGridTextColumn Binding="{Binding MedicineName}" Header="Medicine's name" />
                     <toolkit:DataGridTemplateColumn Header="Date" Tag="Date Placed">
                         <toolkit:DataGridTemplateColumn.CellTemplate>
                             <DataTemplate x:DataType="vm:OrderWrapper">

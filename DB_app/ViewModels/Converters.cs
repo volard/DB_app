@@ -6,7 +6,8 @@ namespace DB_app.ViewModels;
 /// <summary>
 /// Provides static methods for use in x:Bind function binding to convert bound values to the required value.
 /// </summary>
-public static class Converters{
+public static class Converters
+{
     /// <summary>
     /// Returns the reverse of the provided value.
     /// </summary>

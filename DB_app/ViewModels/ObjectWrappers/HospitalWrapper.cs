@@ -24,7 +24,6 @@ public sealed partial class HospitalWrapper : ObservableValidator, IEditableObje
        if (hospital == null)
         {
             IsNew = true;
-            HospitalData = new();
         }
         else { HospitalData = hospital; }
     }
@@ -44,7 +43,7 @@ public sealed partial class HospitalWrapper : ObservableValidator, IEditableObje
 
     private Hospital? _backupData;
 
-    private Hospital _hospitalData = null!; 
+    private Hospital _hospitalData = new(); 
 
     public Hospital HospitalData
     {

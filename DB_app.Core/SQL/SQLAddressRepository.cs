@@ -26,6 +26,14 @@ public class SQLAddressRepository : IAddressRepository
     }
 
 
+    public async Task<IEnumerable<Address>> GetHospitalsLocationsAsync()
+    {
+        var locations = await _db.HospitalLocations.Include(l => l.Address).ToListAsync();
+        IEnumerable<Address> output = locations.Select(l => l.Address);
+        return output;
+    }
+
+
 
     /// <inheritdoc/>
     public async Task<Address> GetAsync(int id)

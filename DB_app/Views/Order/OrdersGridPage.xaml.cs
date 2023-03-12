@@ -13,11 +13,10 @@ namespace DB_app.Views;
 
 public sealed partial class OrdersGridPage : Page
 {
-    public OrdersGridViewModel ViewModel { get; }
+    public OrdersGridViewModel ViewModel { get; } = App.GetService<OrdersGridViewModel>();
 
     public OrdersGridPage()
     {
-        ViewModel = App.GetService<OrdersGridViewModel>();
         InitializeComponent();
         SetBinding(NavigationViewHeaderBehavior.HeaderContextProperty, new Binding
         {
@@ -27,8 +26,16 @@ public sealed partial class OrdersGridPage : Page
         
     }
 
-    
-protected override void OnNavigatedTo(NavigationEventArgs e)
+    private void ShowNotificationMessage(object? sender, ListEventArgs e)
+    {
+        var message = e.Data[0];
+        Notification.Content = message;
+        Notification.Show(2000);
+    }
+
+    #region INavigationAware implementation
+
+    protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         ViewModel.OperationRejected += ShowNotificationMessage;
         base.OnNavigatedTo(e);
@@ -40,29 +47,32 @@ protected override void OnNavigatedTo(NavigationEventArgs e)
         base.OnNavigatedFrom(e);
     }
 
-    private void ShowNotificationMessage(object? sender, ListEventArgs e)
-    {
-        var message = e.Data[0];
-        Notification.Content = message;
-        Notification.Show(2000);
-    }
-
-    private void Add_Click(object sender, RoutedEventArgs e) =>
-        Frame.Navigate(typeof(AddressDetailsPage), new AddressWrapper() { IsInEdit = true }, new DrillInNavigationTransitionInfo());
+    #endregion
 
 
-    private void View_Click(object sender, RoutedEventArgs e) =>
+
+    #region Button handlers
+
+
+    private void AddButton_Click(object sender, RoutedEventArgs e) =>
+        App.GetService<INavigationService>().NavigateTo(typeof(OrderDetailsViewModel).FullName!, new OrderWrapper() { IsInEdit = true });
+
+    private void ViewButton_Click(object sender, RoutedEventArgs e) =>
         Frame.Navigate(typeof(AddressDetailsPage), ViewModel, new DrillInNavigationTransitionInfo());
 
 
 
-    private async void Delete_Click(object sender, RoutedEventArgs e) =>
+    private async void DeleteButton_Click(object sender, RoutedEventArgs e) =>
         await ViewModel.DeleteSelected();
 
 
-    private void Edit_Click(object sender, RoutedEventArgs e)
+    private void EditButton_Click(object sender, RoutedEventArgs e)
     {
         //ViewModel.SelectedItem.IsInEdit = true;
-        //App.GetService<INavigationService>().NavigateTo(typeof(AddressDetailsViewModel).FullName!, ViewModel.SelectedItem);
+        //App.GetService<INavigationService>().NavigateTo(typeof(OrderDetailsViewModel).FullName!, ViewModel.SelectedItem);
     }
+
+    #endregion
+
+
 }

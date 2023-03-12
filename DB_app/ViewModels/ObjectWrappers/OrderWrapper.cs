@@ -18,8 +18,11 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
 
     public OrderWrapper(Order? order = null)
     {
-        if (order != null)
-        OrderData = order;
+        if (order == null)
+        {
+            IsNew = true;
+        }
+        else { OrderData = order; }
     }
 
     #endregion
@@ -31,108 +34,65 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
         = App.GetService<IRepositoryControllerService>();
 
 
-    public Order OrderData { get; set; }
+    private Order _orderData = new();
+
+
+    public Order OrderData
+    {
+        get { return _orderData; }
+        set 
+        { 
+            _orderData = value;
+            OrderHospital = _orderData.HospitalCustomer;
+            ShippingAddress = _orderData.ShippingAddress;
+            ObservableItems = new(_orderData.Items);
+        }
+    }
 
 
     [Required(ErrorMessage = "Hospital-customer is Required")]
-    public Hospital HospitalCustomer
-    {
-        get => OrderData.HospitalCustomer;
-        set
-        {
-            ValidateProperty(value);
-            if (!GetErrors(nameof(HospitalCustomer)).Any())
-            {
-                OrderData.HospitalCustomer = value;
-                OnPropertyChanged();
-                IsModified = true;
-            }
-        }
-    }
-
-    /// <summary>
-    /// City of the current OrderWrapper's data object
-    /// </summary>
-    public string Surename_main_doctor { get => OrderData.HospitalCustomer.Surename_main_doctor; }
-
-    /// <summary>
-    /// Street of the current OrderWrapper's data object
-    /// </summary>
-    public string PharmacyName { get => "placeholder"; }
-
-    public DateTime DatePlaced { get => OrderData.DatePlaced; }
-
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(AvailableAddresses))]
+    private Hospital _orderHospital;
 
 
     [Required(ErrorMessage = "Shipping address is Required")]
-    public Address ShippingAddress
-    {
-        get => OrderData.ShippingAddress;
-        set
-        {
-            ValidateProperty(value);
-            if (!GetErrors(nameof(ShippingAddress)).Any())
-            {
-                OrderData.ShippingAddress = value;
-                OnPropertyChanged();
-                IsModified = true;
-            }
-        }
-    }
-
-    private Pharmacy pharmacySeller;
-
-    [Required(ErrorMessage = "Pharmacy-seller is Required")]
-    public Pharmacy PharmacySeller
-    {
-        get => pharmacySeller;
-        set
-        {
-            ValidateProperty(value);
-            if (!GetErrors(nameof(PharmacySeller)).Any())
-            {
-                pharmacySeller = value;
-                OnPropertyChanged();
-                IsModified = true;
-            }
-
-        }
-    }
+    [ObservableProperty]
+    private Address _shippingAddress;
 
 
+    // Required for orders datagrid
     public int Id { get => OrderData.Id; }
+    public string Surename_main_doctor { get => OrderData.HospitalCustomer.Surename_main_doctor; }
+    public string PharmacyName { get => "placeholder"; }
+    public DateTime DatePlaced { get => OrderData.DatePlaced; }
 
-    public ObservableCollection<OrderItem> ObservableItems
-    {
-        get => new(OrderData.Items);
-        set
-        {
-            OrderData.Items = value.ToList();
-            IsModified = true;
-            OnPropertyChanged();
-        }
-    }
+    [ObservableProperty]
+    private ObservableCollection<OrderItem> observableItems;
+
 
     /// <summary>
     /// Gets the order's total price.
     /// </summary>
-    public double Total => ObservableItems.Sum(item => item.Product.Price * item.Quantity);
-
+    public double? Total => ObservableItems != null ? ObservableItems.Sum(item => item.Product.Price * item.Quantity) : 0;
 
 
     private Order? _backupData;
 
-    /// <summary>
-    /// Indicates about changes that is not synced with UI DataGrid
-    /// </summary>
     [ObservableProperty]
     private bool isModified = false;
+
+    /// <summary>
+    /// Indicates whether object in edit mode
+    /// </summary>
+    [ObservableProperty]
+    private bool isInEdit = false;
 
     /// <summary>
     /// Indicates whether its a new object
     /// </summary>
     [ObservableProperty]
-    public bool _isNew = false;
+    private bool isNew = false;
 
     #endregion
 
@@ -141,7 +101,7 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
 
     
 
-    public void Buckup()
+    public void Backup()
     {
         _backupData = OrderData;
     }
@@ -197,22 +157,46 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
 
     public void BeginEdit()
     {
-        isModified = true;
-        Buckup();
+        IsModified = true;
+        Backup();
     }
 
     public void CancelEdit()
     {
-        
-        isModified = false;
+        IsModified = false;
+        IsInEdit= false;
     }
 
-    public async void EndEdit()
+    public void EndEdit()
     {
-        await _repositoryControllerService.Orders.UpdateAsync(OrderData);
+        IsInEdit = false;
+        OrderData.HospitalCustomer = OrderHospital;
+        OrderData.ShippingAddress = ShippingAddress;
+        OrderData.Items = ObservableItems.ToList();
     }
 
- 
+
     #endregion
+
+
+
+    private ObservableCollection<Address> _availableAddresses;
+    
+    public ObservableCollection<Address> AvailableAddresses
+    {
+        get
+        {
+            if (OrderHospital != null)
+            {
+                return new(OrderHospital.Addresses);
+            }
+            return _availableAddresses;
+        }
+        set
+        {
+            _availableAddresses = value;
+        }
+    }
+
 
 }

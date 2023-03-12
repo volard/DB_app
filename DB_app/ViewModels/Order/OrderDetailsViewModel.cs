@@ -5,44 +5,47 @@ using DB_app.Core.Contracts.Services;
 using DB_app.Entities;
 using DB_app.Services.Messages;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 
 namespace DB_app.ViewModels;
 
-public partial class OrderDetailsViewModel : ObservableRecipient, INavigationAware
+public partial class OrderDetailsViewModel : ObservableValidator, INavigationAware
 {
 
-    #region Constructors
 
-
-    public OrderDetailsViewModel()
+    public async void OnNavigatedTo(object? parameter)
     {
-        AvailablePharmacies = new(_repositoryControllerService.Pharmacies.GetAsync().Result);
-        AvailableHospitals = new(_repositoryControllerService.Hospitals.GetAsync().Result);
-        AvailableAddresses = new(getAvailableAddresses());
+        if (parameter is OrderWrapper model) // If we got smth to show
+        {
+            CurrentOrder = model;
+
+            if (model.IsInEdit)
+            {
+                AvailableHospitals = new(await _repositoryControllerService.Hospitals.GetAsync());
+                var temp = await _repositoryControllerService.Addresses.GetHospitalsLocationsAsync();
+                CurrentOrder.AvailableAddresses = new(await _repositoryControllerService.Addresses.GetHospitalsLocationsAsync());
+                AvailableProducts = new(await _repositoryControllerService.Products.GetAsync());
+                CurrentOrder.Backup();
+            }
+            if (!model.IsNew) { PageTitle = "Order " + model.Id; }
+        }
+        else // If we wanna let user to create one
+        {
+            AvailableHospitals = new(await _repositoryControllerService.Hospitals.GetAsync());
+            CurrentOrder.AvailableAddresses = new(await _repositoryControllerService.Addresses.GetHospitalsLocationsAsync());
+            AvailableProducts = new(await _repositoryControllerService.Products.GetAsync());
+        }
     }
 
-
-    #endregion
-
-
+    public void OnNavigatedFrom()
+    { 
+        // Not used
+    }
 
     #region Members
 
 
-
-
-    [ObservableProperty]
-    public Address selectedExistingAddress;
-
-
-    public IEnumerable<Address> getAvailableAddresses()
-    {
-        if (CurrentOrder.HospitalCustomer != null)
-            return CurrentOrder.HospitalCustomer.Addresses;
-        else 
-            return Enumerable.Empty<Address>();
-    }
 
 
     #endregion
@@ -58,79 +61,24 @@ public partial class OrderDetailsViewModel : ObservableRecipient, INavigationAwa
     public OrderWrapper CurrentOrder { get; set; } = new();
 
 
-
-    [ObservableProperty]
-    private ObservableCollection<Pharmacy> availablePharmacies;
-
+    
     [ObservableProperty]
     private ObservableCollection<Hospital> availableHospitals;
 
     [ObservableProperty]
-    private ObservableCollection<Address> availableAddresses;
-
-    [ObservableProperty]
-    private ObservableCollection<ProductWrapper> availableProducts = new();
-
-    public async Task GetAvailableProducts()
-    {
-        var _data = await _repositoryControllerService.Products.GetFromPharmacy(SelectedPharmacy.Id);
-        var _anotherdata = new List<ProductWrapper>();
-        foreach (var item in _data)
-        {
-            _anotherdata.Add(new ProductWrapper(item));
-        }
-
-        AvailableProducts = new(_anotherdata);
-    }
+    private ObservableCollection<Product> availableProducts;
 
 
     [ObservableProperty]
-    private Address selectedAddress;
+    private string pageTitle = "New order";
 
-    public Hospital SelectedHospital
-    {
-        get => CurrentOrder.OrderData.HospitalCustomer;
-        set
-        {
-            if (CurrentOrder.OrderData.HospitalCustomer != value)
-            {
-                CurrentOrder.IsModified = true;
-                CurrentOrder.OrderData.HospitalCustomer = value;
-                OnPropertyChanged();
-                IsHospitalSelected = true;
-                AvailableAddresses = new(getAvailableAddresses());
-            }
-        }
-    }
-
-    public Pharmacy SelectedPharmacy
-    {
-        get => CurrentOrder.PharmacySeller;
-        set
-        {
-            CurrentOrder.IsModified = true;
-            CurrentOrder.PharmacySeller = value;
-            OnPropertyChanged();
-            _ = GetAvailableProducts();
-        }
-    }
-
-    [ObservableProperty]
-    private string pageTitle;
-
-    [ObservableProperty]
-    private bool isHospitalSelected = false;
-
-    [ObservableProperty]
-    private bool _isNew = false;
 
     #endregion
 
 
-    #region Required for OrderItems DataGrid
+    #region Required for DataGrids
 
     public OrderItem OrderItemModel { get; set; }
-
     public string OrderItemMedicineName { get => OrderItemModel.Product.Medicine.Name; }
     public string OrderItemMedicineType { get => OrderItemModel.Product.Medicine.Type; }
     public string OrderItemQuantity { get => OrderItemModel.Product.Quantity.ToString(); }
@@ -138,12 +86,4 @@ public partial class OrderDetailsViewModel : ObservableRecipient, INavigationAwa
 
     #endregion
 
-    public ProductWrapper ProductModel { get; set; }
-
-    public string ProductMedicineName { get => ProductModel.ProductMedicine.Name; }
-
-    public string ProductMedicineType { get => ProductModel.ProductMedicine.Type; }
-
-    public string ProductPrice { get => ProductModel.Price.ToString(); }
-    public string ProductQuantity { get => ProductModel.Quantity.ToString(); }
 }

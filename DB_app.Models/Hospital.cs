@@ -79,8 +79,6 @@ public class Hospital
     public bool          IsActive                  { get; set; } = true;
 
 
-
-
     public List<HospitalLocation> Locations { get; set; } = new();
 
     [NotMapped]

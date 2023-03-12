@@ -1,25 +1,31 @@
 using AppUIBasics.Helper;
+using CommunityToolkit.Mvvm.Messaging;
 using DB_app.Behaviors;
+using DB_app.Core.Contracts.Services;
 using DB_app.Entities;
+using DB_app.Services.Messages;
 using DB_app.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Navigation;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 
 namespace DB_app.Views;
 
-/// <summary>
-/// An empty page that can be used on its own or navigated to within a Frame.
-/// </summary>
 public sealed partial class OrderDetailsPage : Page
 {
-    public OrderDetailsViewModel ViewModel { get; }
+    public OrderDetailsViewModel ViewModel { get; } = App.GetService<OrderDetailsViewModel>();
+
+    public INotifyDataErrorInfo? oldDataContext { get; set; }
+
+
+    #region Constructors
 
     public OrderDetailsPage()
     {
-        ViewModel = App.GetService<OrderDetailsViewModel>();
         InitializeComponent();
         SetBinding(NavigationViewHeaderBehavior.HeaderContextProperty, new Binding
         {
@@ -28,25 +34,18 @@ public sealed partial class OrderDetailsPage : Page
         });
     }
 
-    
-    public OrderDetailsPage(OrderDetailsViewModel viewModel)
+
+    public OrderDetailsPage(OrderDetailsViewModel viewModel) : this()
     {
         ViewModel = viewModel;
-        InitializeComponent();
-        SetBinding(NavigationViewHeaderBehavior.HeaderContextProperty, new Binding
-        {
-            Source = ViewModel,
-            Mode = BindingMode.OneWay
-        });
-
     }
 
-    public void GetAvailableProducts(object sender, SelectionChangedEventArgs e)
-    {
-        ViewModel.SelectedPharmacy = (Pharmacy)PharmacySellerComboBox.SelectedItem;
-    }
 
-    // Create a new Window once the Tab is dragged outside.
+    #endregion
+
+    /// <summary>
+    /// Create a new Window once the Tab is dragged outside.
+    /// </summary>
     private void Tabs_TabDroppedOutside(object sender, RoutedEventArgs args)
     {
         var newPage = new OrderDetailsPage(ViewModel);
@@ -81,31 +80,118 @@ public sealed partial class OrderDetailsPage : Page
 
     private async void SaveButton_Click(object sender, RoutedEventArgs e)
     {
-        await ViewModel.SaveAsync();
-        ViewModel.NotifyGridAboutChange();
-        if (!WindowHelper.ActiveWindows.Any())
-        {
-            Frame.Navigate(typeof(OrdersGridPage), null);
-        }
-        
+        bool isOk = await ViewModel.CurrentOrder.SaveAsync();
     }
 
-    /// <summary>
-    /// Navigate to the previous page when the user cancels the creation of a new record.
-    /// </summary>
-    private void CancelEdit_Click(object sender, RoutedEventArgs e) => Frame.GoBack();
+    private void CancelEdit_Click(object sender, RoutedEventArgs e)
+    {
+        ViewModel.CurrentOrder.CancelEdit();
+    }
 
     /// <summary>
     /// Check whether there are unsaved changes and warn the user.
     /// </summary>
     protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
     {
+        // Not done yet
+    }
+
+    private async void DeleteButton_Click(object? sender, RoutedEventArgs e)
+    {
+        try
+        {
+            await App.GetService<IRepositoryControllerService>().Products.DeleteAsync(ViewModel.CurrentOrder.Id);
+            Frame.GoBack();
+            WeakReferenceMessenger.Default.Send(new DeleteRecordMessage<OrderWrapper>(ViewModel.CurrentOrder));
+        } 
+        catch (Exception)
+        {
+            var message = "жоская ошебка";
+            ////Notification.Content = message;
+            //Notification.Show(2000);
+        }
+    }
+
+    private void AddButton_Click(object? sender, RoutedEventArgs e)
+    {
+        if (ViewModel.CurrentOrder.IsInEdit)
+        {
+            ViewModel.CurrentOrder.IsInEdit = false;
+        }
+        Frame.Navigate(typeof(OrderDetailsPage));
+        Frame.BackStack.Remove(Frame.BackStack.Last());
     }
 
 
-    protected override void OnNavigatedTo(NavigationEventArgs e)
+    /// <summary>
+    /// Refreshes the errors currently displayed.
+    /// </summary>
+    private void RefreshErrors(string paramName)
     {
-        ViewModel.CurrentOrder.Buckup();
-        base.OnNavigatedTo(e);
+        ValidationResult? result = ViewModel.CurrentOrder.GetErrors(paramName).OfType<ValidationResult>().FirstOrDefault();
+        var icon = StackPanel.FindName(paramName + "Icon") as FontIcon;
+        if (icon != null)
+        {
+            icon!.Visibility = result is not null ? Visibility.Visible : Visibility.Collapsed;
+            if (result is not null)
+            {
+                ToolTipService.SetToolTip(icon, result.ErrorMessage);
+            }
+        } 
+    }
+
+    /// <summary>
+    /// Updates the bindings whenever the data context changes.
+    /// </summary>
+    private void Element_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
+    {
+        if (oldDataContext is not null)
+        {
+            oldDataContext.ErrorsChanged -= DataContext_ErrorsChanged;
+        }
+
+        if (args.NewValue is INotifyDataErrorInfo dataContext)
+        {
+            oldDataContext = dataContext;
+
+            oldDataContext.ErrorsChanged += DataContext_ErrorsChanged;
+        }
+    }
+
+    /// <summary>
+    /// Invokes <see cref="RefreshErrors"/> whenever the data context requires it.
+    /// </summary>
+    /// <param name="sender"><see cref="ProductWrapper"/> object</param>
+    /// <param name="e"></param>    
+    private void DataContext_ErrorsChanged(object? sender, DataErrorsChangedEventArgs e)
+    {
+        if (e.PropertyName != null)
+            RefreshErrors(e.PropertyName);
+    }
+
+    /// <summary>
+    /// Refreshes errors on combobox selection changes
+    /// </summary>
+    private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        RefreshErrors(((ComboBox)sender).Name);
+    }
+
+    private async void MedicineMarketGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+           
+        ContentDialog dialog = new ContentDialog();
+
+        // XamlRoot must be set in the case of a ContentDialog running in a Desktop app
+        dialog.XamlRoot = this.XamlRoot;
+        dialog.Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style;
+        dialog.Title = "Save your work?";
+        dialog.PrimaryButtonText = "Save";
+        dialog.SecondaryButtonText = "Don't Save";
+        dialog.CloseButtonText = "Cancel";
+        dialog.DefaultButton = ContentDialogButton.Primary;
+        //dialog.Content = new ContentDialogContent();
+
+        var result = await dialog.ShowAsync();
     }
 }

@@ -23,4 +23,11 @@ public interface IAddressRepository
     /// Updates existing address
     /// </summary>
     public Task UpdateAsync(Address address);
+
+
+
+    /// <summary>
+    /// Get all addresses where hospitals located
+    /// </summary>
+    public Task<IEnumerable<Address>> GetHospitalsLocationsAsync();
 }
