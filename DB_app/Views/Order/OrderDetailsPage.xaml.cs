@@ -5,6 +5,7 @@ using DB_app.Core.Contracts.Services;
 using DB_app.Entities;
 using DB_app.Services.Messages;
 using DB_app.ViewModels;
+using DB_app.Views.Components;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
@@ -179,19 +180,31 @@ public sealed partial class OrderDetailsPage : Page
 
     private async void MedicineMarketGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-           
-        ContentDialog dialog = new ContentDialog();
+        var selected = MedicineMarketGrid.SelectedItem as Product;
 
-        // XamlRoot must be set in the case of a ContentDialog running in a Desktop app
-        dialog.XamlRoot = this.XamlRoot;
-        dialog.Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style;
-        dialog.Title = "Save your work?";
-        dialog.PrimaryButtonText = "Save";
-        dialog.SecondaryButtonText = "Don't Save";
-        dialog.CloseButtonText = "Cancel";
-        dialog.DefaultButton = ContentDialogButton.Primary;
-        //dialog.Content = new ContentDialogContent();
+        if (selected == null) { return; }
+        var content = new ContentDialogContent(selected.Quantity);
 
-        var result = await dialog.ShowAsync();
+        ContentDialog dialog = new()
+        {
+            XamlRoot = this.XamlRoot,
+            Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style,
+            Title = "Select quantity",
+            PrimaryButtonText = "Add",
+            CloseButtonText = "Cancel",
+            DefaultButton = ContentDialogButton.Primary,
+            Content = content
+        };
+
+        ContentDialogResult result = await dialog.ShowAsync();
+        if (result == ContentDialogResult.Primary)
+        {
+            ViewModel.CurrentOrder.AddProduct(selected, content.ViewModel.Current);
+        }
+    }
+
+    private void MedicineMarketGrid_PointerPressed(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+
     }
 }

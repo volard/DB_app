@@ -19,6 +19,11 @@ public class StringFormatConverter : IValueConverter
         if (parameter == null)
             return "";
 
+        if (value is DateTime moment)
+        {
+            return moment.ToString((string)parameter);
+        }
+
         return string.Format(CultureInfo.InvariantCulture,"{" + (string)parameter + "}", value);
     }
 

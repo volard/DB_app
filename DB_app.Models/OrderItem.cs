@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DB_app.Entities;
 
@@ -19,6 +20,7 @@ public class OrderItem
         RepresentingOrder = representingOrder;
         Product           = product;
         Quantity          = quantity;
+        Price             = product.Price;
     }
 
     public OrderItem
@@ -58,6 +60,18 @@ public class OrderItem
 
     [Required]
     public double  Price              { get; set; }
+
+
+    //[NotMapped]
+    public double LocalTotal
+    {
+        get
+        {
+            if (Price != null && Quantity != null)
+                return Price * Quantity;
+            else return 0;
+        }
+    }
 
     #endregion
 

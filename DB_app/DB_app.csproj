@@ -28,6 +28,7 @@
     <None Remove="AddressesGridPage.xaml" />
     <None Remove="Styles\Icons.xaml" />
     <None Remove="Views\Address\AddressDetailsPage.xaml" />
+    <None Remove="Views\Components\ContentDialogContent.xaml" />
     <None Remove="Views\Components\ValidationTextBox.xaml" />
     <None Remove="Views\Hospital\HospitalDetailsPage.xaml" />
     <None Remove="Views\MedicineDetailsPage.xaml" />
@@ -62,6 +63,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Page Update="Views\Components\ContentDialogContent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Views\Components\ValidationTextBox.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

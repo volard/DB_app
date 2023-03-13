@@ -25,7 +25,7 @@ public partial class OrderDetailsViewModel : ObservableValidator, INavigationAwa
                 AvailableHospitals = new(await _repositoryControllerService.Hospitals.GetAsync());
                 var temp = await _repositoryControllerService.Addresses.GetHospitalsLocationsAsync();
                 CurrentOrder.AvailableAddresses = new(await _repositoryControllerService.Addresses.GetHospitalsLocationsAsync());
-                AvailableProducts = new(await _repositoryControllerService.Products.GetAsync());
+                CurrentOrder.AvailableProducts = new(await _repositoryControllerService.Products.GetAsync());
                 CurrentOrder.Backup();
             }
             if (!model.IsNew) { PageTitle = "Order " + model.Id; }
@@ -34,7 +34,7 @@ public partial class OrderDetailsViewModel : ObservableValidator, INavigationAwa
         {
             AvailableHospitals = new(await _repositoryControllerService.Hospitals.GetAsync());
             CurrentOrder.AvailableAddresses = new(await _repositoryControllerService.Addresses.GetHospitalsLocationsAsync());
-            AvailableProducts = new(await _repositoryControllerService.Products.GetAsync());
+            CurrentOrder.AvailableProducts = new(await _repositoryControllerService.Products.GetAsync());
         }
     }
 
@@ -65,24 +65,11 @@ public partial class OrderDetailsViewModel : ObservableValidator, INavigationAwa
     [ObservableProperty]
     private ObservableCollection<Hospital> availableHospitals;
 
-    [ObservableProperty]
-    private ObservableCollection<Product> availableProducts;
 
 
     [ObservableProperty]
     private string pageTitle = "New order";
 
-
-    #endregion
-
-
-    #region Required for DataGrids
-
-    public OrderItem OrderItemModel { get; set; }
-    public string OrderItemMedicineName { get => OrderItemModel.Product.Medicine.Name; }
-    public string OrderItemMedicineType { get => OrderItemModel.Product.Medicine.Type; }
-    public string OrderItemQuantity { get => OrderItemModel.Product.Quantity.ToString(); }
-    public string ItemTotal { get => (OrderItemModel.Quantity * OrderItemModel.Product.Price).ToString(); }
 
     #endregion
 

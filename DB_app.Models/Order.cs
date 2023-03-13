@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DB_app.Entities;
 
@@ -56,6 +57,7 @@ public class Order
 
     #endregion
 
+   
     public override string ToString() => $"Order # {Id} - {Items.Count} medicines to {ShippingAddress}";
 
     public override bool Equals(object? obj)

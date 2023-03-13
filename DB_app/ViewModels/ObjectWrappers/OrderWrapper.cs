@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.WinUI.UI;
 using DB_app.Core.Contracts.Services;
 using DB_app.Entities;
 using System.Collections.ObjectModel;
@@ -64,11 +65,52 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
     // Required for orders datagrid
     public int Id { get => OrderData.Id; }
     public string Surename_main_doctor { get => OrderData.HospitalCustomer.Surename_main_doctor; }
-    public string PharmacyName { get => "placeholder"; }
     public DateTime DatePlaced { get => OrderData.DatePlaced; }
 
     [ObservableProperty]
-    private ObservableCollection<OrderItem> observableItems;
+    private ObservableCollection<OrderItem> observableItems = new();
+
+    public void AddProduct(Product product, int quantity)
+    {
+        ObservableItems.Add(new OrderItem (OrderData, product, quantity) );
+        OnPropertyChanged(nameof(Total));
+        AvailableProducts.First(el => el == product).Quantity -= quantity;
+        OnPropertyChanged(nameof(AvailableProducts));
+    }
+
+    [ObservableProperty]
+    private ObservableCollection<Product> availableProducts
+    {
+        get; set;
+    }
+
+    
+    public bool RemoveProduct(Product product, int quantity)
+    {
+        try
+        {
+            ObservableItems.Remove(ObservableItems.First(el => el.Product== product));
+            OnPropertyChanged(nameof(Total));
+            AvailableProducts.First(el => el == product).Quantity += quantity;
+            OnPropertyChanged(nameof(AvailableProducts));
+            return true;
+        }
+        catch (ArgumentNullException)
+        {
+            return false;
+        }
+    }
+
+    public bool UpdateProduct(Product product, int quantity)
+    {
+        try 
+        { 
+            ObservableItems.First(el => el.Product == product).Quantity = quantity;
+            OnPropertyChanged(nameof(Total));
+            return true;
+        }
+        catch (ArgumentNullException) { return false; }
+    }
 
 
     /// <summary>
