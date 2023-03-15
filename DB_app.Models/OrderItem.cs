@@ -82,12 +82,13 @@ public class OrderItem
             return false;
         }
 
-        if (obj is not OrderItem)
+        if (obj is OrderItem model)
         {
-            return false;
+            return
+                model.RepresentingOrder == RepresentingOrder &&
+                model.Product == Product;
         }
 
-        return
-            ((OrderItem)obj).Id == Id;
+        return false;
     }
 }

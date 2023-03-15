@@ -1,5 +1,6 @@
 using AppUIBasics.Helper;
 using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.WinUI.UI.Controls;
 using DB_app.Behaviors;
 using DB_app.Core.Contracts.Services;
 using DB_app.Entities;
@@ -9,6 +10,7 @@ using DB_app.Views.Components;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
+using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -104,7 +106,7 @@ public sealed partial class OrderDetailsPage : Page
             await App.GetService<IRepositoryControllerService>().Products.DeleteAsync(ViewModel.CurrentOrder.Id);
             Frame.GoBack();
             WeakReferenceMessenger.Default.Send(new DeleteRecordMessage<OrderWrapper>(ViewModel.CurrentOrder));
-        } 
+        }
         catch (Exception)
         {
             var message = "жоская ошебка";
@@ -138,7 +140,7 @@ public sealed partial class OrderDetailsPage : Page
             {
                 ToolTipService.SetToolTip(icon, result.ErrorMessage);
             }
-        } 
+        }
     }
 
     /// <summary>
@@ -178,12 +180,33 @@ public sealed partial class OrderDetailsPage : Page
         RefreshErrors(((ComboBox)sender).Name);
     }
 
-    private async void MedicineMarketGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    
+    // Thanks to https://stackoverflow.com/questions/70429745/how-to-know-when-a-datagridrow-is-clicked
+    public static T? FindParent<T>(DependencyObject childElement) where T : Control
     {
-        var selected = MedicineMarketGrid.SelectedItem as Product;
+        DependencyObject currentElement = childElement;
 
-        if (selected == null) { return; }
-        var content = new ContentDialogContent(selected.Quantity);
+        while (currentElement != null)
+        {
+            if (currentElement is T matchingElement)
+            {
+                return matchingElement;
+            }
+
+            currentElement = VisualTreeHelper.GetParent(currentElement);
+        }
+
+        return null;
+    }
+
+    private async void MedicineMarketGrid_PointerPressed(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+        DataGridRow? clickedRow = FindParent<DataGridRow>((UIElement)e.OriginalSource);
+
+        if (clickedRow == null || clickedRow?.DataContext is not Product selectedProduct) { return; }
+
+
+        var content = new ContentDialogContent(selectedProduct.Quantity);
 
         ContentDialog dialog = new()
         {
@@ -199,12 +222,9 @@ public sealed partial class OrderDetailsPage : Page
         ContentDialogResult result = await dialog.ShowAsync();
         if (result == ContentDialogResult.Primary)
         {
-            ViewModel.CurrentOrder.AddProduct(selected, content.ViewModel.Current);
+            ViewModel.CurrentOrder.AddProduct(selectedProduct, content.ViewModel.Current);
         }
-    }
-
-    private void MedicineMarketGrid_PointerPressed(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
-    {
 
     }
+
 }

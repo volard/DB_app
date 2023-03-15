@@ -67,34 +67,52 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
     public string Surename_main_doctor { get => OrderData.HospitalCustomer.Surename_main_doctor; }
     public DateTime DatePlaced { get => OrderData.DatePlaced; }
 
-    [ObservableProperty]
-    private ObservableCollection<OrderItem> observableItems = new();
+    //[ObservableProperty]
+    public ObservableCollection<OrderItem> ObservableItems = new();
+
 
     public void AddProduct(Product product, int quantity)
-    {
-        ObservableItems.Add(new OrderItem (OrderData, product, quantity) );
+   {
+        var found = null;
+        if (ObservableItems.Count != 0)
+        {
+            found = ObservableItems.First(el => el.Product == product);
+        }
+        if (found != null)
+        {
+            found.Quantity += quantity;
+            var _index = ObservableItems.IndexOf(found);
+            ObservableItems.RemoveAt(_index);
+            ObservableItems.Insert(_index, found);
+        }
+        else 
+        {
+            ObservableItems.Add(new OrderItem (OrderData, product, quantity) );
+        }
         OnPropertyChanged(nameof(Total));
-        AvailableProducts.First(el => el == product).Quantity -= quantity;
-        OnPropertyChanged(nameof(AvailableProducts));
+
+
+        var temp = AvailableProducts.First(el => el == product);
+        temp.Quantity -= quantity;
+        var index = AvailableProducts.IndexOf(temp);
+        AvailableProducts.RemoveAt(index);
+        AvailableProducts.Insert(index, temp);
     }
 
     [ObservableProperty]
-    private ObservableCollection<Product> availableProducts
-    {
-        get; set;
-    }
+    private ObservableCollection<Product> availableProducts;
 
     
     public bool RemoveProduct(Product product, int quantity)
     {
         try
-        {
+       {
             ObservableItems.Remove(ObservableItems.First(el => el.Product== product));
             OnPropertyChanged(nameof(Total));
             AvailableProducts.First(el => el == product).Quantity += quantity;
             OnPropertyChanged(nameof(AvailableProducts));
             return true;
-        }
+       }
         catch (ArgumentNullException)
         {
             return false;

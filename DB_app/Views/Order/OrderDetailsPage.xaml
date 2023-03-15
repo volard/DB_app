@@ -205,7 +205,7 @@
                                 SelectionMode="Single"
                                 Style="{StaticResource DataGridStyle1}"
                                 VerticalScrollBarVisibility="Auto"
-                                VirtualizingStackPanel.VirtualizationMode="Recycling">
+                                >
 
                                 <toolkit:DataGrid.Resources>
                                     <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
@@ -277,15 +277,17 @@
                 GridLinesVisibility="All"
                 IsReadOnly="True"
                 ItemsSource="{x:Bind ViewModel.CurrentOrder.AvailableProducts, Mode=OneWay}"
-                SelectionChanged="MedicineMarketGrid_SelectionChanged"
                 SelectionMode="Single"
+                PointerReleased="MedicineMarketGrid_PointerPressed"
                 VerticalScrollBarVisibility="Auto">
 
                 <toolkit:DataGrid.Resources>
                     <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
                 </toolkit:DataGrid.Resources>
 
-                <toolkit:DataGrid.Triggers />
+                <toolkit:DataGrid.Triggers>
+                    
+                </toolkit:DataGrid.Triggers>
 
 
                 <toolkit:DataGrid.RowStyle>
