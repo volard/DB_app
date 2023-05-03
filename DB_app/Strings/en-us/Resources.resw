@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AppDisplayName" xml:space="preserve">
-    <value>MMS - Medicine management system</value>
+    <value>Medicine management system</value>
   </data>
   <data name="AppDescription" xml:space="preserve">
     <value>Educational project dedicated to developing simple yet modern Windows applications using WinUI 3.0 and Windows App SDK</value>

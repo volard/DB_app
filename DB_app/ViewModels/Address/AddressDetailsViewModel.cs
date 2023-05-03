@@ -9,7 +9,7 @@ public partial class AddressDetailsViewModel : ObservableRecipient, INavigationA
 {
 
     /// <summary>
-    /// Current AddressWrapper to edit
+    /// Current_value AddressWrapper to edit
     /// </summary>
     public AddressWrapper CurrentAddress { get; set; } = new();
 

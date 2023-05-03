@@ -13,7 +13,7 @@ public partial class MedicineDetailsViewModel : ObservableRecipient, INavigation
 {
 
     /// <summary>
-    /// Current AddressWrapper to edit
+    /// Current_value AddressWrapper to edit
     /// </summary>
     public MedicineWrapper CurrentMedicine { get; set; } = new();
 

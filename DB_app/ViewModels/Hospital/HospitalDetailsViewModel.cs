@@ -102,7 +102,7 @@ public partial class HospitalDetailsViewModel : ObservableRecipient, INavigation
     private HospitalWrapper currentHospital;
 
     /// <summary>
-    /// Current HospitalWrapper to edit
+    /// Current_value HospitalWrapper to edit
     /// </summary>
     public HospitalWrapper CurrentHospital { get; set; } = new();
 

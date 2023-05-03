@@ -37,7 +37,7 @@ public partial class ProductDetailsViewModel : ObservableRecipient, INavigationA
     public List<Medicine> AvailableMedicines;
 
     /// <summary>
-    /// Current ProductWrapper to edit
+    /// Current_value ProductWrapper to edit
     /// </summary>
     public ProductWrapper CurrentProduct { get; set; } = new();
 

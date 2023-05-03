@@ -30,6 +30,14 @@ public sealed partial class ContentDialogContent : Page
 
     }
 
+    public ContentDialogContent(int max, int current)
+    {
+        this.InitializeComponent();
+        Max = max;
+        ViewModel.Current = current;
+
+    }
+
     private void Slider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
     {
     }
@@ -38,5 +46,5 @@ public sealed partial class ContentDialogContent : Page
 public partial class ContentDialogContentViewModel : ObservableObject
 {
     [ObservableProperty]
-    private int current = 1;
+    public int current = 1;
 }

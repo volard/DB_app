@@ -6,9 +6,10 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:DB_app.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:models="using:DB_app.Models"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:sys="using:System"
+    xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:viewModel="using:DB_app.ViewModels"
     mc:Ignorable="d">
 
@@ -21,10 +22,41 @@
         <helpers:StringFormatConverter x:Key="StringFormatConterter" />
 
 
-        <!--<DataTemplate x:Key="DefaultLineItemTemplate" x:DataType="models:OrderItem">
+        <DataTemplate x:Key="DefaultLineItemTemplate" x:DataType="models:OrderItem">
+            <Grid Margin="20,8" HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="100" />
+                </Grid.ColumnDefinitions>
+                <TextBlock
+                    Grid.Column="0"
+                    VerticalAlignment="Center"
+                    Text="{x:Bind Product.Pharmacy.Name}" />
+                <TextBlock
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    Text="{x:Bind Product.Medicine.Name}" />
+                <TextBlock
+                    Grid.Column="2"
+                    VerticalAlignment="Center"
+                    Text="{x:Bind Product.Medicine.Type}" />
+                <TextBlock
+                    Grid.Column="3"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Text="{x:Bind sys:String.Format('\{0:c\}', Product.Price)}" />
+                <TextBlock
+                    Grid.Column="4"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Text="{x:Bind Quantity}" />
 
-        </DataTemplate>-->
-  
+            </Grid>
+        </DataTemplate>
+
 
     </Page.Resources>
 
@@ -90,7 +122,7 @@
             <RowDefinition />
             <RowDefinition Height="16" />
         </Grid.RowDefinitions>
-        
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
@@ -200,117 +232,64 @@
 
                     <muxc:Expander.Content>
 
-                        <RelativePanel
-                            HorizontalAlignment="Stretch">
+                        <StackPanel HorizontalAlignment="Stretch">
 
-                            <!--  TODO replace datagrid with list to check if it will help dynamic rerender the data  -->
-                            <!--  Line items section  -->
-                            
 
-                                <!--  Line items header  -->
-                                <Grid
-                                    x:Name="DefaultLineItemsHeader"
-                                    Margin="0,20,0,0"
-                                    HorizontalAlignment="Stretch">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="*" />
+                            <!--  Line items header  -->
+                            <Grid x:Name="DefaultLineItemsHeader" Margin="20,8">
+                                <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="100" />
+                                    <ColumnDefinition Width="100" />
                                 </Grid.ColumnDefinitions>
-                                    <Border
-                                        BorderBrush="LightGray"
-                                        BorderThickness="0,0,0,1" />
-                                    <TextBlock
-                                        Grid.Column="0"
-                                        FontWeight="SemiBold"
-                                        Text="Pharmacy name" />
-                                    <TextBlock
-                                        FontWeight="SemiBold"
-                                        Grid.Column="1"
-                                        Text="Medicine name" />
-                                    <TextBlock
-                                        FontWeight="SemiBold"
-                                        Grid.Column="2"
-                                        Text="Type" />
-                                    <TextBlock
-                                        HorizontalAlignment="Right"
-                                        Grid.Column="3"
-                                        VerticalAlignment="Bottom"
-                                        FontWeight="SemiBold"
-                                        Text="Price" />
-                                    <TextBlock
-                                        HorizontalAlignment="Right"
-                                        Grid.Column="4"
-                                        VerticalAlignment="Bottom"
-                                        FontWeight="SemiBold"
-                                        Text="Quantity" />
-                                </Grid>
+                                <TextBlock
+                                    Grid.Column="0"
+                                    FontWeight="SemiBold"
+                                    Text="Pharmacy name" />
+                                <TextBlock
+                                    Grid.Column="1"
+                                    FontWeight="SemiBold"
+                                    Text="Medicine name" />
+                                <TextBlock
+                                    Grid.Column="2"
+                                    FontWeight="SemiBold"
+                                    Text="Type" />
+                                <TextBlock
+                                    Grid.Column="3"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Bottom"
+                                    FontWeight="SemiBold"
+                                    Text="Price" />
+                                <TextBlock
+                                    Grid.Column="4"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Bottom"
+                                    FontWeight="SemiBold"
+                                    Text="Quantity" />
+                            </Grid>
 
-                                <!--  Line item list  -->
-                                <ListView
-                                    ItemTemplate="{StaticResource DefaultLineItemTemplate}"
-                                    ItemsSource="{x:Bind ViewModel.CurrentOrder.ObservableItems, Mode=OneWay}">
-                                    <!--
-                            <ListView.ItemContainerStyle>
-                                        <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
-                                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                                            <Setter Property="Margin" Value="0,0,0,0" />
-                                            <Setter Property="Padding" Value="0,0,0,0" />
-                                            <Setter Property="MinHeight" Value="0" />
-                                        </Style>
-                                    </ListView.ItemContainerStyle>
-                            -->
-                                </ListView>
-                            
-
-                            <!--
-                            <toolkit:DataGrid
-                                x:Name="ItemsGrid"
-                                Margin="0,5,0,0"
-                                AutoGenerateColumns="False"
-                                CanUserReorderColumns="False"
-                                GridLinesVisibility="All"
-                                IsReadOnly="True"
+                            <!--  Line item list  -->
+                            <ListView
+                                x:Name="OrderList"
+                                SelectionChanged="ListView_SelectionChanged"
+                                ItemTemplate="{StaticResource DefaultLineItemTemplate}"
                                 ItemsSource="{x:Bind ViewModel.CurrentOrder.ObservableItems, Mode=OneWay}"
-                                PointerReleased="ItemsGrid_PointerReleased"
-                                SelectionMode="Single"
-                                Style="{StaticResource DataGridStyle1}"
-                                VerticalScrollBarVisibility="Auto">
+                                SelectionMode="Single">
 
-                                <toolkit:DataGrid.Resources>
-                                    <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
-                                </toolkit:DataGrid.Resources>
+                                <ListView.ItemContainerStyle>
+                                    <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
+                                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                        <Setter Property="Margin" Value="0,0,0,0" />
+                                        <Setter Property="Padding" Value="0,0,0,0" />
+                                        <Setter Property="MinHeight" Value="0" />
+                                    </Style>
+                                </ListView.ItemContainerStyle>
 
-                                <toolkit:DataGrid.Columns>
+                            </ListView>
 
-                                    <toolkit:DataGridTextColumn
-                                        Width="30*"
-                                        Binding="{Binding Product.Pharmacy.Name}"
-                                        Header="Pharmacy name" />
-                                    <toolkit:DataGridTextColumn
-                                        Width="30*"
-                                        Binding="{Binding Product.Medicine.Name}"
-                                        Header="Medicine name" />
-                                    <toolkit:DataGridTextColumn
-                                        Width="30*"
-                                        Binding="{Binding Product.Medicine.Type}"
-                                        Header="Type" />
-                                    <toolkit:DataGridTextColumn
-                                        Width="30*"
-                                        Binding="{Binding Product.Price}"
-                                        Header="Price" />
-                                    <toolkit:DataGridTextColumn
-                                        Width="30*"
-                                        Binding="{Binding Quantity}"
-                                        Header="Quantity" />
-                                </toolkit:DataGrid.Columns> 
-
-                            </toolkit:DataGrid>
-                            -->
-
-                        </RelativePanel>
+                        </StackPanel>
 
                     </muxc:Expander.Content>
 
@@ -322,8 +301,8 @@
         </ScrollViewer>
         <!--#endregion-->
 
-        
-        
+
+
         <!--#region Section splitter-->
         <toolkit:GridSplitter
             Grid.Row="1"
@@ -349,6 +328,8 @@
                 Margin="0,5,0,0"
                 AutoGenerateColumns="False"
                 CanUserReorderColumns="False"
+                CanUserResizeColumns="True"
+                CanUserSortColumns="True"
                 GridLinesVisibility="All"
                 IsReadOnly="True"
                 ItemsSource="{x:Bind ViewModel.CurrentOrder.AvailableProducts, Mode=OneWay}"

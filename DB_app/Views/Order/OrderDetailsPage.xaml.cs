@@ -13,6 +13,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 
 namespace DB_app.Views;
 
@@ -221,6 +222,7 @@ public sealed partial class OrderDetailsPage : Page
         if (result == ContentDialogResult.Primary)
         {
             ViewModel.CurrentOrder.AddProduct(selectedProduct, content.ViewModel.Current);
+            InitializeComponent();
         }
 
     }
@@ -252,4 +254,37 @@ public sealed partial class OrderDetailsPage : Page
         }
 
     }
+
+    private async void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (OrderList.SelectedItem == null) return;
+        var item = OrderList.SelectedItem as OrderItem;
+        OrderList.SelectedItem = null;
+
+       
+        var content = new ContentDialogContent(item.Product.Quantity + item.Quantity, item.Quantity);
+
+        ContentDialog dialog = new()
+        {
+            XamlRoot = this.XamlRoot,
+            Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style,
+            Title = "Select quantity",
+            PrimaryButtonText = "Save",
+            SecondaryButtonText = "Delete",
+            CloseButtonText = "Cancel",
+            DefaultButton = ContentDialogButton.Primary,
+            Content = content
+        };
+
+        ContentDialogResult result = await dialog.ShowAsync();
+        if (result == ContentDialogResult.Primary)
+        {
+            ViewModel.CurrentOrder.UpdateProduct(item.Product, content.ViewModel.Current);
+        }
+        if (result == ContentDialogResult.Secondary)
+        {
+            ViewModel.CurrentOrder.RemoveProduct(item.Product, item.Quantity);
+        }
+    }
+
 }

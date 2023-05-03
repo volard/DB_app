@@ -41,8 +41,8 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
     public Order OrderData
     {
         get { return _orderData; }
-        set 
-        { 
+        set
+        {
             _orderData = value;
             OrderHospital = _orderData.HospitalCustomer;
             ShippingAddress = _orderData.ShippingAddress;
@@ -62,6 +62,8 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
     private Address _shippingAddress;
 
 
+
+
     // Required for orders datagrid
     public int Id { get => OrderData.Id; }
     public string Surename_main_doctor { get => OrderData.HospitalCustomer.Surename_main_doctor; }
@@ -72,11 +74,11 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
 
 
     public void AddProduct(Product product, int quantity)
-   {
-        OrderItem found;
+    {
+        OrderItem? found;
         if (ObservableItems.Count != 0)
         {
-            found = ObservableItems.First(el => el.Product == product);
+            found = ObservableItems.FirstOrDefault(el => el.Product == product);
             if (found != null)
             {
                 found.Quantity += quantity;
@@ -84,35 +86,39 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
                 ObservableItems.RemoveAt(_index);
                 ObservableItems.Insert(_index, found);
             }
+            else
+            {
+                ObservableItems.Add(new OrderItem(OrderData, product, quantity));
+            }
         }
-        else 
+        else
         {
-            ObservableItems.Add(new OrderItem (OrderData, product, quantity) );
+            ObservableItems.Add(new OrderItem(OrderData, product, quantity));
         }
-                OnPropertyChanged(nameof(Total));
+        OnPropertyChanged(nameof(Total));
 
 
-        var temp = AvailableProducts.First(el => el == product);
+        var temp = AvailableProducts.FirstOrDefault(el => el == product);
         temp.Quantity -= quantity;
-        var index = AvailableProducts.IndexOf(temp);
-        AvailableProducts.RemoveAt(index);
-        AvailableProducts.Insert(index, temp);
+        //var index = AvailableProducts.IndexOf(temp);
+        //AvailableProducts.RemoveAt(index);
+        //AvailableProducts.Insert(index, temp);
     }
 
     [ObservableProperty]
     private ObservableCollection<Product> availableProducts;
 
-    
+
     public bool RemoveProduct(Product product, int quantity)
     {
         try
-       {
-            ObservableItems.Remove(ObservableItems.First(el => el.Product== product));
+        {
+            ObservableItems.Remove(ObservableItems.First(el => el.Product == product));
             OnPropertyChanged(nameof(Total));
             AvailableProducts.First(el => el == product).Quantity += quantity;
             OnPropertyChanged(nameof(AvailableProducts));
             return true;
-       }
+        }
         catch (ArgumentNullException)
         {
             return false;
@@ -121,8 +127,8 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
 
     public bool UpdateProduct(Product product, int quantity)
     {
-        try 
-        { 
+        try
+        {
             ObservableItems.First(el => el.Product == product).Quantity = quantity;
             OnPropertyChanged(nameof(Total));
             return true;
@@ -159,7 +165,7 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
 
     #region Modification methods
 
-    
+
 
     public void Backup()
     {
@@ -196,14 +202,14 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
     }
 
 
-        
+
     #endregion
 
 
     #region Members
 
-   public bool Equals(OrderWrapper? other) =>
-        Id == other?.Id;
+    public bool Equals(OrderWrapper? other) =>
+         Id == other?.Id;
 
     public override string ToString()
         => $"OrderWrapper with OrderData - [ {OrderData} ]";
@@ -224,7 +230,7 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
     public void CancelEdit()
     {
         IsModified = false;
-        IsInEdit= false;
+        IsInEdit = false;
     }
 
     public void EndEdit()
@@ -241,7 +247,7 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
 
 
     private ObservableCollection<Address> _availableAddresses;
-    
+
     public ObservableCollection<Address> AvailableAddresses
     {
         get
