@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DB_app.Repository", "DB_app
 		{B1CE6863-23F1-4804-A32B-E1EAD24D266F} = {B1CE6863-23F1-4804-A32B-E1EAD24D266F}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DB_app.Entities", "DB_app.Models\DB_app.Entities.csproj", "{B1CE6863-23F1-4804-A32B-E1EAD24D266F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DB_app.Models", "DB_app.Models\DB_app.Models.csproj", "{B1CE6863-23F1-4804-A32B-E1EAD24D266F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

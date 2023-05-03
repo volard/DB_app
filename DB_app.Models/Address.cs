@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
-namespace DB_app.Entities;
+namespace DB_app.Models;
 
 public class Address
 {

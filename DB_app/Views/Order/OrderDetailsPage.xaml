@@ -8,7 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
-    xmlns:entities="using:DB_app.Entities"
+    xmlns:models="using:DB_app.Models"
     xmlns:viewModel="using:DB_app.ViewModels"
     mc:Ignorable="d">
 
@@ -21,10 +21,10 @@
         <helpers:StringFormatConverter x:Key="StringFormatConterter" />
 
 
-        <DataTemplate x:Key="DefaultLineItemTemplate" x:DataType="veiwModel:">
-            
-        </DataTemplate>
-        
+        <!--<DataTemplate x:Key="DefaultLineItemTemplate" x:DataType="models:OrderItem">
+
+        </DataTemplate>-->
+  
 
     </Page.Resources>
 
@@ -90,10 +90,10 @@
             <RowDefinition />
             <RowDefinition Height="16" />
         </Grid.RowDefinitions>
+        
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-
 
         <!--#region Actual order info section-->
         <ScrollViewer
@@ -250,10 +250,8 @@
 
                                 <!--  Line item list  -->
                                 <ListView
-                                    x:Name="LineItemListView"
                                     ItemTemplate="{StaticResource DefaultLineItemTemplate}"
-                                    ItemsSource="{x:Bind ViewModel.CurrentOrder.ObservableItems, Mode=OneWay}"
-                                    SelectionMode="None">
+                                    ItemsSource="{x:Bind ViewModel.CurrentOrder.ObservableItems, Mode=OneWay}">
                                     <!--
                             <ListView.ItemContainerStyle>
                                         <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
@@ -324,6 +322,8 @@
         </ScrollViewer>
         <!--#endregion-->
 
+        
+        
         <!--#region Section splitter-->
         <toolkit:GridSplitter
             Grid.Row="1"

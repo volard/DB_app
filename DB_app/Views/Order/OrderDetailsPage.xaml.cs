@@ -1,9 +1,8 @@
-using AppUIBasics.Helper;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.WinUI.UI.Controls;
 using DB_app.Behaviors;
 using DB_app.Core.Contracts.Services;
-using DB_app.Entities;
+using DB_app.Models;
 using DB_app.Services.Messages;
 using DB_app.ViewModels;
 using DB_app.Views.Components;
@@ -14,7 +13,6 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
 
 namespace DB_app.Views;
 

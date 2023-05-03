@@ -1,8 +1,8 @@
-﻿using DB_app.Entities;
+﻿using DB_app.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DB_app.Entities;
+namespace DB_app.Models;
 
 public class Pharmacy
 {

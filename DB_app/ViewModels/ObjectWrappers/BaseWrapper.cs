@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using DB_app.Core.Contracts.Services;
-using DB_app.Entities;
+using DB_app.Models;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.UI.Xaml.Data;
 using System;

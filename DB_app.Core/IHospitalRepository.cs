@@ -1,4 +1,4 @@
-﻿using DB_app.Entities;
+﻿using DB_app.Models;
 
 namespace DB_app.Repository;
 public interface IHospitalRepository

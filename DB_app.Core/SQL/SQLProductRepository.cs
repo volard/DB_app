@@ -1,4 +1,4 @@
-﻿using DB_app.Entities;
+﻿using DB_app.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 

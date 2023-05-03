@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 using DB_app.Contracts.ViewModels;
 using DB_app.Core.Contracts.Services;
-using DB_app.Entities;
+using DB_app.Models;
 
 namespace DB_app.ViewModels;
 

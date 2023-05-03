@@ -1,7 +1,7 @@
 using CommunityToolkit.Mvvm.Messaging;
 using DB_app.Behaviors;
 using DB_app.Core.Contracts.Services;
-using DB_app.Entities;
+using DB_app.Models;
 using DB_app.Services.Messages;
 using DB_app.ViewModels;
 using Microsoft.UI.Xaml;

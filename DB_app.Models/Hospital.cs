@@ -1,9 +1,8 @@
-﻿using DB_app.Entities;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 
-namespace DB_app.Entities;
+namespace DB_app.Models;
 
 public class Hospital
 {

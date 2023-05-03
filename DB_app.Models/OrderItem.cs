@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DB_app.Entities;
+namespace DB_app.Models;
 
 /// <summary>
 /// Represents an order item (product + quantity).
