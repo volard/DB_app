@@ -73,23 +73,23 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
 
     public void AddProduct(Product product, int quantity)
    {
-        var found = null;
+        OrderItem found;
         if (ObservableItems.Count != 0)
         {
             found = ObservableItems.First(el => el.Product == product);
-        }
-        if (found != null)
-        {
-            found.Quantity += quantity;
-            var _index = ObservableItems.IndexOf(found);
-            ObservableItems.RemoveAt(_index);
-            ObservableItems.Insert(_index, found);
+            if (found != null)
+            {
+                found.Quantity += quantity;
+                var _index = ObservableItems.IndexOf(found);
+                ObservableItems.RemoveAt(_index);
+                ObservableItems.Insert(_index, found);
+            }
         }
         else 
         {
             ObservableItems.Add(new OrderItem (OrderData, product, quantity) );
         }
-        OnPropertyChanged(nameof(Total));
+                OnPropertyChanged(nameof(Total));
 
 
         var temp = AvailableProducts.First(el => el == product);

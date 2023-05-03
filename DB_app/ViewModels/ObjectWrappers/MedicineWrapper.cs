@@ -7,9 +7,11 @@ using System.ComponentModel.DataAnnotations;
 namespace DB_app.ViewModels;
 
 /// <summary>
-/// Provides wrapper for the <see cref="Medicine"/> model class, encapsulating various services for access by the UI.
+/// Provides wrapper for the <see cref="Medicine"/> model class, 
+/// encapsulating various services for access by the UI.
 /// </summary>
-public sealed partial class MedicineWrapper : ObservableValidator, IEditableObject
+public sealed partial class MedicineWrapper : 
+    ObservableValidator, IEditableObject
 {
 
     #region Constructors
@@ -24,9 +26,6 @@ public sealed partial class MedicineWrapper : ObservableValidator, IEditableObje
     }
 
     #endregion
-
-
-
 
 
     #region Properties
@@ -92,8 +91,6 @@ public sealed partial class MedicineWrapper : ObservableValidator, IEditableObje
     #endregion
 
 
-
-
     #region Members
 
      public bool Equals(object? obj)
@@ -109,9 +106,6 @@ public sealed partial class MedicineWrapper : ObservableValidator, IEditableObje
 
 
     #endregion
-
-
-
 
 
     #region Modification methods
@@ -154,9 +148,6 @@ public sealed partial class MedicineWrapper : ObservableValidator, IEditableObje
 
 
     #endregion
-
-
-
 
 
     #region IEditable implementation

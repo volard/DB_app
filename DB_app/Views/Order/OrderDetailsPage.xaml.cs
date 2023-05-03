@@ -227,4 +227,31 @@ public sealed partial class OrderDetailsPage : Page
 
     }
 
+    private async void ItemsGrid_PointerReleased(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+         DataGridRow? clickedRow = FindParent<DataGridRow>((UIElement)e.OriginalSource);
+
+        if (clickedRow == null || clickedRow?.DataContext is not Product selectedProduct) { return; }
+
+
+        var content = new ContentDialogContent(selectedProduct.Quantity);
+
+        ContentDialog dialog = new()
+        {
+            XamlRoot = this.XamlRoot,
+            Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style,
+            Title = "",
+            PrimaryButtonText = "Add",
+            CloseButtonText = "Cancel",
+            DefaultButton = ContentDialogButton.Primary,
+            Content = content
+        };
+
+        ContentDialogResult result = await dialog.ShowAsync();
+        if (result == ContentDialogResult.Primary)
+        {
+            ViewModel.CurrentOrder.RemoveProduct(selectedProduct, content.ViewModel.Current);
+        }
+
+    }
 }
