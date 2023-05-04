@@ -165,6 +165,7 @@
                         ItemsSource="{x:Bind ViewModel.CurrentOrder.AvailableAddresses, Mode=OneWay}"
                         PlaceholderText="Select address"
                         RelativePanel.Below="HospitalCustomerComboBox"
+                        SelectedItem="{x:Bind ViewModel.CurrentOrder.ShippingAddress, Mode=TwoWay}"
                         SelectionChanged="ComboBox_SelectionChanged" />
 
                     <FontIcon

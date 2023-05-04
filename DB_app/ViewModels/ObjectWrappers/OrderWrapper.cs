@@ -4,6 +4,7 @@ using DB_app.Models;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 
 namespace DB_app.ViewModels;
 
@@ -128,7 +129,11 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
     public async Task<bool> SaveAsync()
     {
         ValidateAllProperties();
-        if (HasErrors) return false;
+        if (HasErrors)
+        {
+            return false;
+        }
+            
         EndEdit();
         if (IsNew)
         {
