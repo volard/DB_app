@@ -100,9 +100,9 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
 
         var temp = AvailableProducts.FirstOrDefault(el => el == product);
         temp.Quantity -= quantity;
-        //var index = AvailableProducts.IndexOf(temp);
-        //AvailableProducts.RemoveAt(index);
-        //AvailableProducts.Insert(index, temp);
+        var index = AvailableProducts.IndexOf(temp);
+        AvailableProducts.RemoveAt(index);
+        AvailableProducts.Insert(index, temp);
     }
 
     [ObservableProperty]
@@ -115,8 +115,13 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
         {
             ObservableItems.Remove(ObservableItems.First(el => el.Product == product));
             OnPropertyChanged(nameof(Total));
-            AvailableProducts.First(el => el == product).Quantity += quantity;
-            OnPropertyChanged(nameof(AvailableProducts));
+
+            var temp = AvailableProducts.FirstOrDefault(el => el == product);
+            temp.Quantity += quantity;
+            var index = AvailableProducts.IndexOf(temp);
+            AvailableProducts.RemoveAt(index);
+            AvailableProducts.Insert(index, temp);
+
             return true;
         }
         catch (ArgumentNullException)
@@ -131,6 +136,13 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
         {
             ObservableItems.First(el => el.Product == product).Quantity = quantity;
             OnPropertyChanged(nameof(Total));
+
+            var temp = AvailableProducts.FirstOrDefault(el => el == product);
+            temp.Quantity = quantity;
+            var index = AvailableProducts.IndexOf(temp);
+            AvailableProducts.RemoveAt(index);
+            AvailableProducts.Insert(index, temp);
+
             return true;
         }
         catch (ArgumentNullException) { return false; }

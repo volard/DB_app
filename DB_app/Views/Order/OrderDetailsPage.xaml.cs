@@ -263,7 +263,7 @@ public sealed partial class OrderDetailsPage : Page
 
        
         var content = new ContentDialogContent(item.Product.Quantity + item.Quantity, item.Quantity);
-
+        var before_value = item.Quantity;
         ContentDialog dialog = new()
         {
             XamlRoot = this.XamlRoot,
@@ -279,7 +279,10 @@ public sealed partial class OrderDetailsPage : Page
         ContentDialogResult result = await dialog.ShowAsync();
         if (result == ContentDialogResult.Primary)
         {
-            ViewModel.CurrentOrder.UpdateProduct(item.Product, content.ViewModel.Current);
+            var new_value = content.ViewModel.Current;
+            item.Quantity = new_value;
+            var result_value = item.Product.Quantity + (new_value - before_value);
+            ViewModel.CurrentOrder.UpdateProduct(item.Product, result_value);
         }
         if (result == ContentDialogResult.Secondary)
         {
