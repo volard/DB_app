@@ -64,6 +64,30 @@ private readonly IRepositoryControllerService _repositoryControllerService
         }
     }
 
+    private bool IsOutOfStockEnabled = false;
+
+    public async Task ToggleOutOfStock()
+    {
+        if (!IsOutOfStockEnabled)
+        {
+            var outOfStockProducts = await _repositoryControllerService.Products.GetOutOfStockAsync();
+            foreach (var item in outOfStockProducts)
+            {
+                Source.Insert(0, new ProductWrapper(item));
+            }
+        }
+        else
+        {
+            int i = 0;
+            while (i < Source.Count)
+            {
+                if (Source[i].ProductData.Quantity == 0) Source.Remove(Source[i]);
+                ++i;
+            }
+        }
+        IsOutOfStockEnabled = !IsOutOfStockEnabled;
+    }
+
 
     public async void OnNavigatedTo(object parameter)
     {

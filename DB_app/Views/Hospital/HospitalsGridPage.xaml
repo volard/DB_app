@@ -27,12 +27,20 @@
                     <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="Hospitals" />
                 </CommandBar.Content>
 
+                <AppBarToggleButton
+                    x:Name="InactiveToggler"
+                    Click="Button_Click"
+                    Content="Show inactive"
+                    Icon="ProtectedDocument" />
+
+
                 <AppBarButton
                     x:Name="CommandBarAddButton"
                     Click="Add_Click"
                     Icon="Add"
                     Label="Add new"
                     ToolTipService.ToolTip="Add new" />
+
                 <AppBarButton
                     x:Name="CommandBarViewButton"
                     Click="View_Click"

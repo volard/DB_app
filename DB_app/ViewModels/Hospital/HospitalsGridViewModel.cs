@@ -6,6 +6,7 @@ using DB_app.Services.Messages;
 using CommunityToolkit.Mvvm.Messaging;
 using DB_app.Helpers;
 using DB_app.Repository;
+using System.Timers;
 
 namespace DB_app.ViewModels;
 
@@ -40,6 +41,30 @@ public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAw
 
 
     public event EventHandler<ListEventArgs>? OperationRejected;
+
+    private bool IsInactiveEnabled = false;
+
+    public async Task ToggleInactive()
+    {
+        if (!IsInactiveEnabled)
+        {
+            var inactiveHospitals = await _repositoryControllerService.Hospitals.GetInactiveAsync();
+            foreach(var item in inactiveHospitals)
+            {
+                Source.Insert(0, new HospitalWrapper(item));
+            }
+        }
+        else 
+        {
+            int i = 0;
+            while(i < Source.Count)
+            {
+                if (!Source[i].IsActive) Source.Remove(Source[i]);
+                ++i;
+            }
+        }
+        IsInactiveEnabled = !IsInactiveEnabled;
+    }
 
 
     public async Task DeleteSelected()

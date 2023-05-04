@@ -28,6 +28,12 @@
                     <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="Products" />
                 </CommandBar.Content>
 
+                <AppBarToggleButton
+                    x:Name="InactiveToggler"
+                    Click="Button_Click"
+                    Content="Show out of stock"
+                    Icon="ProtectedDocument" />
+
                 <AppBarButton
                     x:Name="CommandBarAddButton"
                     Click="Add_Click"

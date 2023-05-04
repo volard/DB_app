@@ -63,4 +63,9 @@ public sealed partial class HospitalsGridPage : Page
         ViewModel.SelectedItem!.IsInEdit = true;
         App.GetService<INavigationService>().NavigateTo(typeof(HospitalDetailsViewModel).FullName!, ViewModel.SelectedItem);
     }
+
+    private async void Button_Click(object sender, RoutedEventArgs e)
+    {
+        await ViewModel.ToggleInactive();
+    }
 }

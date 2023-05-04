@@ -94,7 +94,7 @@
 
                     <FontIcon
                         x:Name="ProductPharmacyIcon"
-                        Margin="0,20,16,8"
+                        Margin="0,40,16,8"
                         FontSize="20"
                         Foreground="Orange"
                         Glyph="&#xE814;"
@@ -124,7 +124,7 @@
 
                     <FontIcon
                         x:Name="ProductMedicineIcon"
-                        Margin="0,20,16,8"
+                        Margin="0,40,16,8"
                         FontSize="20"
                         Foreground="Orange"
                         Glyph="&#xE814;"
@@ -153,7 +153,7 @@
 
                     <FontIcon
                         x:Name="PriceIcon"
-                        Margin="0,20,16,8"
+                        Margin="0,40,16,8"
                         FontSize="20"
                         Foreground="Orange"
                         Glyph="&#xE814;"
@@ -183,7 +183,7 @@
 
                     <FontIcon
                         x:Name="QuantityIcon"
-                        Margin="0,20,16,8"
+                        Margin="0,40,16,8"
                         FontSize="20"
                         Foreground="Orange"
                         Glyph="&#xE814;"

@@ -47,6 +47,30 @@ private readonly IRepositoryControllerService _repositoryControllerService
 
     public event EventHandler<ListEventArgs>? OperationRejected;
 
+    private bool IsInactiveEnabled = false;
+
+    public async Task ToggleInactive()
+    {
+        if (!IsInactiveEnabled)
+        {
+            var inactivePharmacies = await _repositoryControllerService.Pharmacies.GetInactiveAsync();
+            foreach (var item in inactivePharmacies)
+            {
+                Source.Insert(0, new PharmacyWrapper(item));
+            }
+        }
+        else
+        {
+            int i = 0;
+            while (i < Source.Count)
+            {
+                if (!Source[i].IsActive) Source.Remove(Source[i]);
+                ++i;
+            }
+        }
+        IsInactiveEnabled = !IsInactiveEnabled;
+    }
+
 
     public async Task DeleteSelected()
     {

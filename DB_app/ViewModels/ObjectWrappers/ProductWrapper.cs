@@ -68,17 +68,17 @@ public sealed partial class ProductWrapper : ObservableValidator, IEditableObjec
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required(ErrorMessage = "Quantity is Required")]
-    [Range(1, int.MaxValue, ErrorMessage = "Please enter a value bigger than {1}")]
+    [Range(0, int.MaxValue, ErrorMessage = "Please enter a value bigger than {1}")]
     //[RegularExpression("([1-9]+)", ErrorMessage = "Please enter a Number")]
-    private int quantity;
+    private int quantity = 0;
 
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required(ErrorMessage = "Price is Required")]
-    [Range(1, int.MaxValue, ErrorMessage = "Please enter a value bigger than {1}")]
+    [Range(0, int.MaxValue, ErrorMessage = "Please enter a value bigger than {1}")]
     //[RegularExpression("([1-9]+)", ErrorMessage = "Please enter a Number")]
-    private double price;
+    private double price = 0;
 
 
 

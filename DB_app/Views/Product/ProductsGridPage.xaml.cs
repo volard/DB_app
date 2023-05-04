@@ -63,4 +63,9 @@ public sealed partial class ProductsGridPage : Page
         ViewModel.SelectedItem.IsInEdit = true;
         App.GetService<INavigationService>().NavigateTo(typeof(ProductDetailsViewModel).FullName!, ViewModel.SelectedItem);
     }
+
+    private async void Button_Click(object sender, RoutedEventArgs e)
+    {
+        await ViewModel.ToggleOutOfStock();
+    }
 }
