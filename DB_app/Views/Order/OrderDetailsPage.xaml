@@ -60,6 +60,7 @@
 
     </Page.Resources>
 
+
     <!--#region  Header-->
     <behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
         <DataTemplate x:DataType="viewModel:OrderDetailsViewModel">
@@ -112,7 +113,6 @@
     <!--#endregion-->
 
 
-
     <!--#region Page content-->
     <Grid
         x:Name="RootGrid"
@@ -122,10 +122,10 @@
             <RowDefinition />
             <RowDefinition Height="16" />
         </Grid.RowDefinitions>
-
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
+
 
         <!--#region Actual order info section-->
         <ScrollViewer
@@ -134,7 +134,6 @@
             Padding="0,0,10,30"
             HorizontalAlignment="Stretch">
             <StackPanel x:Name="StackPanel">
-
                 <StackPanel.Resources>
                     <Style TargetType="muxc:Expander">
                         <Setter Property="HorizontalAlignment" Value="Stretch" />
@@ -143,8 +142,8 @@
                     </Style>
                 </StackPanel.Resources>
 
+                <!--#region General order data-->
                 <RelativePanel HorizontalAlignment="Stretch">
-
                     <ComboBox
                         x:Name="HospitalCustomerComboBox"
                         Width="380"
@@ -212,8 +211,10 @@
                         Text="{x:Bind ViewModel.CurrentOrder.Total, Converter={StaticResource StringFormatConterter}, ConverterParameter='0:0,0.00', Mode=OneWay}" />
 
                 </RelativePanel>
+                <!--#endregion-->
 
 
+                <!--#region Order items expandable section-->
                 <muxc:Expander
                     x:Name="ExpanderItems"
                     Margin="0,20,0,0"
@@ -226,7 +227,7 @@
                             <TextBlock
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
-                                Text="{x:Bind ViewModel.CurrentOrder.ObservableItems.Count, Mode=OneWay}" />
+                                Text="{x:Bind ViewModel.CurrentOrder.ObservableOrderItems.Count, Mode=OneWay}" />
                         </Grid>
                     </muxc:Expander.Header>
 
@@ -235,7 +236,7 @@
                         <StackPanel HorizontalAlignment="Stretch">
 
 
-                            <!--  Line items header  -->
+                            <!--#region  Order items header-->
                             <Grid x:Name="DefaultLineItemsHeader" Margin="20,8">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
@@ -244,6 +245,7 @@
                                     <ColumnDefinition Width="100" />
                                     <ColumnDefinition Width="100" />
                                 </Grid.ColumnDefinitions>
+
                                 <TextBlock
                                     Grid.Column="0"
                                     FontWeight="SemiBold"
@@ -269,13 +271,15 @@
                                     FontWeight="SemiBold"
                                     Text="Quantity" />
                             </Grid>
+                            <!--#endregion-->
 
-                            <!--  Line item list  -->
+
+                            <!--#region Order list-->
                             <ListView
                                 x:Name="OrderList"
-                                SelectionChanged="ListView_SelectionChanged"
                                 ItemTemplate="{StaticResource DefaultLineItemTemplate}"
-                                ItemsSource="{x:Bind ViewModel.CurrentOrder.ObservableItems, Mode=OneWay}"
+                                ItemsSource="{x:Bind ViewModel.CurrentOrder.ObservableOrderItems, Mode=OneWay}"
+                                SelectionChanged="ListView_SelectionChanged"
                                 SelectionMode="Single">
 
                                 <ListView.ItemContainerStyle>
@@ -288,6 +292,8 @@
                                 </ListView.ItemContainerStyle>
 
                             </ListView>
+                            <!--#endregion-->
+
 
                         </StackPanel>
 
@@ -295,6 +301,8 @@
 
 
                 </muxc:Expander>
+                <!--#endregion-->
+
 
             </StackPanel>
 
@@ -409,8 +417,8 @@
         </RelativePanel>
         <!--#endregion-->
 
+
     </Grid>
     <!--#endregion-->
-
 
 </Page>

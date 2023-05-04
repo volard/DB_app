@@ -13,13 +13,14 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
 
 namespace DB_app.Views;
 
 public sealed partial class OrderDetailsPage : Page
 {
+
     public OrderDetailsViewModel ViewModel { get; } = App.GetService<OrderDetailsViewModel>();
+
 
     public INotifyDataErrorInfo? oldDataContext { get; set; }
 
@@ -45,6 +46,7 @@ public sealed partial class OrderDetailsPage : Page
 
     #endregion
 
+
     /// <summary>
     /// Create a new Window once the Tab is dragged outside.
     /// </summary>
@@ -58,37 +60,17 @@ public sealed partial class OrderDetailsPage : Page
     }
 
 
-    //public void AddSelectedButton_Clicked(object sender, RoutedEventArgs e)
-    //{
-    //    if (ViewModel.SelectedAddress != null)
-    //    {
-    //        ViewModel.CurrentOrder.OrderData.Addresses.Add(ViewModel.SelectedAddress);
-    //        ViewModel.CurrentOrder.IsModified = true;
-    //        ViewModel.CurrentOrder.NotifyAboutAddressesChanged();
-    //        ViewModel.AvailableAddresses.Remove(ViewModel.SelectedAddress);
-    //    }
-    //}
-
-    //public void DeleteSelectedButton_Clicked(object sender, RoutedEventArgs e)
-    //{
-    //    if (ViewModel.SelectedExistingAddress != null)
-    //    {
-    //        ViewModel.AvailableAddresses.Add(ViewModel.SelectedExistingAddress);
-    //        ViewModel.CurrentOrder.OrderData.Addresses.Remove(ViewModel.SelectedExistingAddress);
-    //        ViewModel.CurrentOrder.IsModified = true;
-    //        ViewModel.CurrentOrder.NotifyAboutAddressesChanged();
-    //    }
-    //}
-
     private async void SaveButton_Click(object sender, RoutedEventArgs e)
     {
         bool isOk = await ViewModel.CurrentOrder.SaveAsync();
     }
 
+
     private void CancelEdit_Click(object sender, RoutedEventArgs e)
     {
         ViewModel.CurrentOrder.CancelEdit();
     }
+
 
     /// <summary>
     /// Check whether there are unsaved changes and warn the user.
@@ -97,6 +79,7 @@ public sealed partial class OrderDetailsPage : Page
     {
         // Not done yet
     }
+
 
     private async void DeleteButton_Click(object? sender, RoutedEventArgs e)
     {
@@ -113,6 +96,7 @@ public sealed partial class OrderDetailsPage : Page
             //Notification.Show(2000);
         }
     }
+
 
     private void AddButton_Click(object? sender, RoutedEventArgs e)
     {
@@ -142,6 +126,7 @@ public sealed partial class OrderDetailsPage : Page
         }
     }
 
+
     /// <summary>
     /// Updates the bindings whenever the data context changes.
     /// </summary>
@@ -160,6 +145,7 @@ public sealed partial class OrderDetailsPage : Page
         }
     }
 
+
     /// <summary>
     /// Invokes <see cref="RefreshErrors"/> whenever the data context requires it.
     /// </summary>
@@ -171,6 +157,7 @@ public sealed partial class OrderDetailsPage : Page
             RefreshErrors(e.PropertyName);
     }
 
+
     /// <summary>
     /// Refreshes errors on combobox selection changes
     /// </summary>
@@ -179,8 +166,14 @@ public sealed partial class OrderDetailsPage : Page
         RefreshErrors(((ComboBox)sender).Name);
     }
 
-    
-    // Thanks to https://stackoverflow.com/questions/70429745/how-to-know-when-a-datagridrow-is-clicked
+
+    /// <summary>
+    ///  Finds the DataGridRow that was clicked I traverse the visual tree
+    ///  Thanks to https://stackoverflow.com/questions/70429745/how-to-know-when-a-datagridrow-is-clicked
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="childElement"></param>
+    /// <returns></returns>
     public static T? FindParent<T>(DependencyObject childElement) where T : Control
     {
         DependencyObject currentElement = childElement;
@@ -198,6 +191,12 @@ public sealed partial class OrderDetailsPage : Page
         return null;
     }
 
+
+    /// <summary>
+    /// Handle user's intention to add a product from market's list
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private async void MedicineMarketGrid_PointerPressed(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
     {
         DataGridRow? clickedRow = FindParent<DataGridRow>((UIElement)e.OriginalSource);
@@ -221,49 +220,29 @@ public sealed partial class OrderDetailsPage : Page
         ContentDialogResult result = await dialog.ShowAsync();
         if (result == ContentDialogResult.Primary)
         {
-            ViewModel.CurrentOrder.AddProduct(selectedProduct, content.ViewModel.Current);
+            ViewModel.CurrentOrder.AddOrderItem(selectedProduct, content.ViewModel.Current);
             InitializeComponent();
         }
 
     }
 
-    private async void ItemsGrid_PointerReleased(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
-    {
-         DataGridRow? clickedRow = FindParent<DataGridRow>((UIElement)e.OriginalSource);
 
-        if (clickedRow == null || clickedRow?.DataContext is not Product selectedProduct) { return; }
-
-
-        var content = new ContentDialogContent(selectedProduct.Quantity);
-
-        ContentDialog dialog = new()
-        {
-            XamlRoot = this.XamlRoot,
-            Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style,
-            Title = "",
-            PrimaryButtonText = "Add",
-            CloseButtonText = "Cancel",
-            DefaultButton = ContentDialogButton.Primary,
-            Content = content
-        };
-
-        ContentDialogResult result = await dialog.ShowAsync();
-        if (result == ContentDialogResult.Primary)
-        {
-            ViewModel.CurrentOrder.RemoveProduct(selectedProduct, content.ViewModel.Current);
-        }
-
-    }
-
+    /// <summary>
+    /// Handle user's intention to change or delete order SelectedOrderItem
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private async void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (OrderList.SelectedItem == null) return;
-        var item = OrderList.SelectedItem as OrderItem;
+        if (OrderList.SelectedItem is not OrderItem SelectedOrderItem) return;
         OrderList.SelectedItem = null;
 
-       
-        var content = new ContentDialogContent(item.Product.Quantity + item.Quantity, item.Quantity);
-        var before_value = item.Quantity;
+        var content = new ContentDialogContent(
+            SelectedOrderItem.Product.Quantity + SelectedOrderItem.Quantity, 
+            SelectedOrderItem.Quantity
+        );
+
         ContentDialog dialog = new()
         {
             XamlRoot = this.XamlRoot,
@@ -276,18 +255,16 @@ public sealed partial class OrderDetailsPage : Page
             Content = content
         };
 
-        ContentDialogResult result = await dialog.ShowAsync();
-        if (result == ContentDialogResult.Primary)
+        ContentDialogResult UserDecision = await dialog.ShowAsync();
+
+        if (UserDecision == ContentDialogResult.Primary)
         {
-            var new_value = content.ViewModel.Current;
-            item.Quantity = new_value;
-            var result_value = item.Product.Quantity + (new_value - before_value);
-            ViewModel.CurrentOrder.UpdateProduct(item.Product, result_value);
+            int new_value = content.ViewModel.Current;
+            await ViewModel.CurrentOrder.UpdateOrderItem(SelectedOrderItem, new_value);
         }
-        if (result == ContentDialogResult.Secondary)
+        else if (UserDecision == ContentDialogResult.Secondary)
         {
-            ViewModel.CurrentOrder.RemoveProduct(item.Product, item.Quantity);
+            await ViewModel.CurrentOrder.RemoveOrderItem(SelectedOrderItem);
         }
     }
-
 }
