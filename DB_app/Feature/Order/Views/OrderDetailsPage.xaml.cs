@@ -75,10 +75,7 @@ public sealed partial class OrderDetailsPage : Page
     /// <summary>
     /// Check whether there are unsaved changes and warn the user.
     /// </summary>
-    protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
-    {
-        // Not done yet
-    }
+    protected override void OnNavigatingFrom(NavigatingCancelEventArgs e){  /* Not done yet */ }
 
 
     private async void DeleteButton_Click(object? sender, RoutedEventArgs e)

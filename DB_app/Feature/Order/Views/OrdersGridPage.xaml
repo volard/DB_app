@@ -91,7 +91,7 @@
                 <toolkit:DataGrid.Columns>
 
                     
-                    <toolkit:DataGridTextColumn Binding="{Binding IdHospital}" Header="Hospital's id" />
+                    <toolkit:DataGridTextColumn Binding="{Binding OrderHospital.Id}" Header="Hospital's id" />
                     <toolkit:DataGridTextColumn Binding="{Binding Surename_main_doctor}" Header="Hospital's main doctor surename" />
                     <toolkit:DataGridTemplateColumn Header="Date" Tag="Date Placed">
                         <toolkit:DataGridTemplateColumn.CellTemplate>
@@ -99,7 +99,7 @@
                                 <TextBlock
                                     Margin="12,0"
                                     VerticalAlignment="Center"
-                                    Text="{x:Bind sys:String.Format('\{0:d\}', DatePlaced)}" />
+                                    Text="{x:Bind sys:String.Format('\{0:MM/dd/yy H:mm:ss\}', DatePlaced)}" />
                             </DataTemplate>
                         </toolkit:DataGridTemplateColumn.CellTemplate>
                     </toolkit:DataGridTemplateColumn>

@@ -1,10 +1,12 @@
 using DB_app.Behaviors;
+using DB_app.Contracts.Services;
+using DB_app.Services;
 using DB_app.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
+using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
-using System.Diagnostics;
 
 namespace DB_app.Views;
 
@@ -48,28 +50,27 @@ public sealed partial class HospitalDetailsPage : Page
 
     public void AddSelectedButton_Clicked(object sender, RoutedEventArgs e)
     {
-        if (ViewModel.SelectedAddress != null)
-        {
-            ViewModel.CurrentHospital.HospitalData.AddAddress(ViewModel.SelectedAddress);
-            ViewModel.CurrentHospital.IsModified = true;
-            ViewModel.AvailableAddresses.Remove(ViewModel.SelectedAddress);
-        }
+        if (ViewModel.SelectedAddress == null) return;
+
+        ViewModel.CurrentHospital.ObservableAddresses.Add(ViewModel.SelectedAddress);
+        ViewModel.CurrentHospital.IsModified = true;
+        ViewModel.AvailableAddresses.Remove(ViewModel.SelectedAddress);
     }
 
     public void DeleteSelectedButton_Clicked(object sender, RoutedEventArgs e)
     {
-        if (ViewModel.SelectedExistingAddress != null)
-        {
-            ViewModel.AvailableAddresses.Add(ViewModel.SelectedExistingAddress);
-            ViewModel.CurrentHospital.HospitalData.RemoveAddress(ViewModel.SelectedExistingAddress);
-            ViewModel.CurrentHospital.IsModified = true;
-        }
+        if (ViewModel.SelectedExistingAddress == null) return;
+
+        ViewModel.AvailableAddresses.Add(ViewModel.SelectedExistingAddress);
+        ViewModel.CurrentHospital.ObservableAddresses.Remove(ViewModel.SelectedExistingAddress);
+        ViewModel.CurrentHospital.IsModified = true;
     }
 
     private async void SaveButton_Click(object sender, RoutedEventArgs e)
     {
         await ViewModel.SaveAsync();
-        Frame.Navigate(typeof(HospitalsGridPage), null);
+        //App.GetService<INavigationService>().NavigateTo(typeof(AddressDetailsViewModel).FullName!, ViewModel.SelectedItem);
+        //Frame.Navigate(typeof(HospitalsGridPage), new DrillInNavigationTransitionInfo());
     }
 
     /// <summary>
@@ -90,13 +91,4 @@ public sealed partial class HospitalDetailsPage : Page
         ViewModel.CurrentHospital.Backup();
         base.OnNavigatedTo(e);
     }
-
-    //private void Name_main_doctorText_TextChanged(object sender, TextChangedEventArgs e) =>
-        //ViewModel.CurrentHospital.Name_main_doctor = Name_main_doctor.Text;
-
-    //private void Middlename_main_doctorText_TextChanged(object sender, TextChangedEventArgs e) =>
-        //ViewModel.CurrentHospital.Middlename_main_doctor = Middlename_main_doctor.Text;
-
-    //private void Surename_main_doctorText_TextChanged(object sender, TextChangedEventArgs e) =>
-        //ViewModel.CurrentHospital.Surename_main_doctor = Surename_main_doctor.Text;
 }

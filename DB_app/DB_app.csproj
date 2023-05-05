@@ -25,12 +25,26 @@
     <AppInstallerUri>F:\Kirill\Projects\DB_app_solution\DB_app\bin\x64\Release\net6.0-windows10.0.19041.0\win10-x64\DB_app.exe</AppInstallerUri>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Feature\Address\NewFolder\**" />
+    <Compile Remove="Feature\NewFolder\**" />
+    <Compile Remove="Views\Medicine\**" />
+    <EmbeddedResource Remove="Feature\Address\NewFolder\**" />
+    <EmbeddedResource Remove="Feature\NewFolder\**" />
+    <EmbeddedResource Remove="Views\Medicine\**" />
+    <None Remove="Feature\Address\NewFolder\**" />
+    <None Remove="Feature\NewFolder\**" />
+    <None Remove="Views\Medicine\**" />
+    <Page Remove="Feature\Address\NewFolder\**" />
+    <Page Remove="Feature\NewFolder\**" />
+    <Page Remove="Views\Medicine\**" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="AddressesGridPage.xaml" />
     <None Remove="Styles\Icons.xaml" />
     <None Remove="Views\Address\AddressDetailsPage.xaml" />
     <None Remove="Views\Components\ContentDialogContent.xaml" />
     <None Remove="Views\Components\ValidationTextBox.xaml" />
-    <None Remove="Views\Hospital\HospitalDetailsPage.xaml" />
+    <None Remove="Feature\Hospital\Views\Hospital\HospitalDetailsPage.xaml" />
     <None Remove="Views\MedicineDetailsPage.xaml" />
     <None Remove="Views\OrderDetailsWindow.xaml" />
     <None Remove="Views\Order\OrderDetailsPage.xaml" />
@@ -109,11 +123,25 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Feature\Hospital\Views\" />
+    <Folder Include="Feature\Order\" />
+    <Folder Include="Feature\Pharmacy\" />
     <Folder Include="Themes\" />
-    <Folder Include="Views\Medicine\" />
   </ItemGroup>
   
   <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <PRIResource Remove="Feature\NewFolder\**" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PRIResource Remove="Views\Medicine\**" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PRIResource Remove="Feature\Address\NewFolder\**" />
+  </ItemGroup>
 </Project>

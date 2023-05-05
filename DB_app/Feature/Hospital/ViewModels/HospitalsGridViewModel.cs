@@ -12,14 +12,12 @@ namespace DB_app.ViewModels;
 
 public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAware, IRecipient<DeleteRecordMessage<HospitalWrapper>>
 {
-    private readonly IRepositoryControllerService _repositoryControllerService
-        = App.GetService<IRepositoryControllerService>();
+    private readonly IRepositoryControllerService _repositoryControllerService = App.GetService<IRepositoryControllerService>();
 
     /// <summary>
     /// DataGrid's data collection
     /// </summary>
-    public ObservableCollection<HospitalWrapper> Source { get; set; }
-        = new ObservableCollection<HospitalWrapper>();
+    public ObservableCollection<HospitalWrapper> Source { get; set; } = new ObservableCollection<HospitalWrapper>();
 
     public HospitalsGridViewModel()
     {

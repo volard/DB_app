@@ -28,18 +28,13 @@ public sealed partial class HospitalWrapper : ObservableValidator, IEditableObje
         else { HospitalData = hospital; }
     }
 
-
     #endregion
-
-
-
 
 
 
     #region Properties
 
-    private readonly IRepositoryControllerService _repositoryControllerService
-        = App.GetService<IRepositoryControllerService>();
+    private readonly IRepositoryControllerService _repositoryControllerService = App.GetService<IRepositoryControllerService>();
 
     private Hospital? _backupData;
 
@@ -55,51 +50,37 @@ public sealed partial class HospitalWrapper : ObservableValidator, IEditableObje
             Surename_main_doctor = _hospitalData.Surename_main_doctor;
             Middlename_main_doctor = _hospitalData.Middlename_main_doctor;
             IsActive = _hospitalData.IsActive;
+            ObservableAddresses = new(HospitalData.Addresses);
         }
     }
-
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required(ErrorMessage = "Maindoctor's name is requireed")]
     private string? _name_main_doctor;
 
-
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required(ErrorMessage = "Maindoctor's name is requireed")]
     private string? _middlename_main_doctor;
-
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required(ErrorMessage = "Maindoctor's name is requireed")]
     private string? _surename_main_doctor;
 
-
     [ObservableProperty]
     private bool _isActive;
     
     public int Id { get => HospitalData.Id; }
 
-    public ObservableCollection<Address> ObservableAddresses
-    {
-        get => new(HospitalData.Addresses);
-        set
-        {
-            HospitalData.Addresses = value.ToList();
-            IsModified = true;
-            OnPropertyChanged();
-        }
-    }
+    public ObservableCollection<Address> ObservableAddresses = new();
 
-   
     /// <summary>
     /// Indicates about changes that is not synced with UI DataGrid
     /// </summary>
     [ObservableProperty]
     private bool _isModified = false;
-
 
     /// <summary>
     /// Indicates whether its a new object
@@ -107,25 +88,17 @@ public sealed partial class HospitalWrapper : ObservableValidator, IEditableObje
     [ObservableProperty]
     private bool isNew = false;
 
-
     /// <summary>
     /// Indicate edit mode
     /// </summary>
     [ObservableProperty]
     private bool _isInEdit = false;
 
-
-
     #endregion
 
 
 
-
-
-
     #region Members
-
-
 
     public override string ToString()
         => $"HospitalWrapper with HospitalData - [ {HospitalData} ]";
@@ -140,12 +113,7 @@ public sealed partial class HospitalWrapper : ObservableValidator, IEditableObje
             Middlename_main_doctor == other?.Middlename_main_doctor;
     }
 
-    
-   
     #endregion
-
-
-
 
 
 
@@ -153,6 +121,7 @@ public sealed partial class HospitalWrapper : ObservableValidator, IEditableObje
 
      public void Backup() =>
         _backupData = _hospitalData;
+
 
     /// <summary>
     /// Go back to prevoius data after updating
@@ -173,25 +142,13 @@ public sealed partial class HospitalWrapper : ObservableValidator, IEditableObje
         if (HasErrors) return false;
         EndEdit();
         if (IsNew)
-        {
             await App.GetService<IRepositoryControllerService>().Hospitals.InsertAsync(HospitalData);
-        }
         else
-        {
             await App.GetService<IRepositoryControllerService>().Hospitals.UpdateAsync(HospitalData);
-        }
         return true;
     }
 
-
-
     #endregion
-
-
-
-
-
-
 
 
 
@@ -206,8 +163,6 @@ public sealed partial class HospitalWrapper : ObservableValidator, IEditableObje
     }
 
 
-    
-
     public void CancelEdit()
     {
         Name_main_doctor = _hospitalData.Name_main_doctor;
@@ -217,12 +172,14 @@ public sealed partial class HospitalWrapper : ObservableValidator, IEditableObje
         IsInEdit = false;
     }
 
+
     public async void EndEdit()
     {
         IsInEdit = false;
         _hospitalData.Name_main_doctor = Name_main_doctor;
         _hospitalData.Surename_main_doctor = Surename_main_doctor;
         _hospitalData.Middlename_main_doctor = Middlename_main_doctor;
+        _hospitalData.Addresses = ObservableAddresses.ToList();
     }
 
     

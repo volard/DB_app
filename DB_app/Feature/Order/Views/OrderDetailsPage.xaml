@@ -192,7 +192,7 @@
                         FontStyle="Italic"
                         RelativePanel.AlignRightWithPanel="True"
                         RelativePanel.Below="DatePlacedHeader"
-                        Text="{x:Bind ViewModel.CurrentOrder.DatePlaced, Converter={StaticResource StringFormatConterter}, ConverterParameter='MM-dd-yy', Mode=OneWay}" />
+                        Text="{x:Bind ViewModel.CurrentOrder.DatePlaced, Converter={StaticResource StringFormatConterter}, ConverterParameter='MM-dd-yy -- H:mm:ss', Mode=OneWay}" />
 
 
                     <TextBlock

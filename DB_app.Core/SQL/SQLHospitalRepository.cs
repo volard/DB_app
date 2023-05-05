@@ -62,7 +62,11 @@ public class SQLHospitalRepository : IHospitalRepository
 
         if (foundHospital != null)
         {
-            _db.Entry(foundHospital).CurrentValues.SetValues(hospital);
+            //_db.Entry(foundHospital).CurrentValues.SetValues(hospital);
+
+            _db.Update(foundHospital);
+
+
             await _db.SaveChangesAsync();
             Debug.WriteLine("UpdateAsync - Hospital : " + foundHospital.Id + " was succesfully updated in the Database");
         }

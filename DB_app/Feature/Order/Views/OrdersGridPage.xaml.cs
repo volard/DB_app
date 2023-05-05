@@ -58,7 +58,7 @@ public sealed partial class OrdersGridPage : Page
         App.GetService<INavigationService>().NavigateTo(typeof(OrderDetailsViewModel).FullName!, new OrderWrapper() { IsInEdit = true });
 
     private void ViewButton_Click(object sender, RoutedEventArgs e) =>
-        Frame.Navigate(typeof(AddressDetailsPage), ViewModel, new DrillInNavigationTransitionInfo());
+        Frame.Navigate(typeof(OrderDetailsPage), ViewModel, new DrillInNavigationTransitionInfo());
 
 
 
@@ -68,8 +68,8 @@ public sealed partial class OrdersGridPage : Page
 
     private void EditButton_Click(object sender, RoutedEventArgs e)
     {
-        //ViewModel.SelectedItem.IsInEdit = true;
-        //App.GetService<INavigationService>().NavigateTo(typeof(OrderDetailsViewModel).FullName!, ViewModel.SelectedItem);
+        ViewModel.SelectedItem.IsInEdit = true;
+        App.GetService<INavigationService>().NavigateTo(typeof(OrderDetailsViewModel).FullName!, ViewModel.SelectedItem);
     }
 
     #endregion
