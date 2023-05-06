@@ -1,5 +1,6 @@
 ﻿using DB_app.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 
 namespace DB_app.Repository.SQL;
@@ -45,7 +46,7 @@ public class SQLHospitalRepository : IHospitalRepository
             throw new RecordAlreadyExistsException();
         }
 
-        if (hospital.Addresses == null || hospital.Addresses.Count == 0)
+        if (hospital.Locations == null || hospital.Locations.Count == 0)
         {
             hospital.IsActive = false;
         }
@@ -55,26 +56,23 @@ public class SQLHospitalRepository : IHospitalRepository
     }
 
 
+
     public async Task UpdateAsync(Hospital hospital)
     {
         Hospital foundHospital = await _db.Hospitals
                 .FirstOrDefaultAsync(existHospital => existHospital.Id == hospital.Id);
 
-        if (foundHospital != null)
-        {
-            //_db.Entry(foundHospital).CurrentValues.SetValues(hospital);
 
-            _db.Update(foundHospital);
-
-
-            await _db.SaveChangesAsync();
-            Debug.WriteLine("UpdateAsync - Hospital : " + foundHospital.Id + " was succesfully updated in the Database");
-        }
-        else
+        if (foundHospital == null)
         {
             Debug.WriteLine("UpdateAsync - Hospital : attempt to update hospital failed - no hospital found to update");
+            return;
         }
 
+        _db.Entry(foundHospital).CurrentValues.SetValues(hospital);
+
+        await _db.SaveChangesAsync();
+        Debug.WriteLine("UpdateAsync - Hospital : " + foundHospital.Id + " was succesfully updated in the Database");
     }
 
 
@@ -96,7 +94,7 @@ public class SQLHospitalRepository : IHospitalRepository
     public async Task<IEnumerable<Hospital>> GetAllAsync()
     {
         return await _db.Hospitals
-            .Include(hospital => hospital.Addresses)
+            .Include(hospital => hospital.Locations)
             .ToListAsync();
     }
 

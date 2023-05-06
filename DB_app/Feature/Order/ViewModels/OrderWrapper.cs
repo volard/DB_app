@@ -71,7 +71,7 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
         {
             if (OrderHospital != null)
             {
-                return new(OrderHospital.Addresses);
+                return new(OrderHospital.Locations.Select(el => el.Address));
             }
             return _availableAddresses;
         }

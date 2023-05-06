@@ -1,5 +1,6 @@
 using DB_app.Behaviors;
 using DB_app.Contracts.Services;
+using DB_app.Models;
 using DB_app.Services;
 using DB_app.ViewModels;
 using Microsoft.UI.Xaml;
@@ -52,23 +53,25 @@ public sealed partial class HospitalDetailsPage : Page
     {
         if (ViewModel.SelectedAddress == null) return;
 
-        ViewModel.CurrentHospital.ObservableAddresses.Add(ViewModel.SelectedAddress);
+        ViewModel.CurrentHospital.ObservableLocations.Add(new HospitalLocation(ViewModel.SelectedAddress));
         ViewModel.CurrentHospital.IsModified = true;
         ViewModel.AvailableAddresses.Remove(ViewModel.SelectedAddress);
     }
 
     public void DeleteSelectedButton_Clicked(object sender, RoutedEventArgs e)
     {
-        if (ViewModel.SelectedExistingAddress == null) return;
+        //await ViewModel._repositoryControllerService.Hospitals.UpdateAsync(ViewModel.CurrentHospital.HospitalData);
+        if (ViewModel.SelectedExistingLocation == null) return;
 
-        ViewModel.AvailableAddresses.Add(ViewModel.SelectedExistingAddress);
-        ViewModel.CurrentHospital.ObservableAddresses.Remove(ViewModel.SelectedExistingAddress);
+        ViewModel.AvailableAddresses.Add(ViewModel.SelectedExistingLocation.Address);
+        ViewModel.CurrentHospital.ObservableLocations.Remove(ViewModel.SelectedExistingLocation);
+        ViewModel.CurrentHospital.HospitalData.Locations.Remove(ViewModel.SelectedExistingLocation);
         ViewModel.CurrentHospital.IsModified = true;
     }
 
     private async void SaveButton_Click(object sender, RoutedEventArgs e)
     {
-        await ViewModel.SaveAsync();
+        await ViewModel.CurrentHospital.SaveAsync();
         //App.GetService<INavigationService>().NavigateTo(typeof(AddressDetailsViewModel).FullName!, ViewModel.SelectedItem);
         //Frame.Navigate(typeof(HospitalsGridPage), new DrillInNavigationTransitionInfo());
     }

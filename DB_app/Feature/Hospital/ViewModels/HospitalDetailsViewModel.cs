@@ -12,23 +12,15 @@ public partial class HospitalDetailsViewModel : ObservableRecipient, INavigation
     #region Members
 
     /// <summary>
-    /// Saves hospital that was edited or created
+    /// Get unlinked addresses
     /// </summary>
-    public async Task SaveAsync()
-    {
-        if (CurrentHospital.IsNew)
-            await _repositoryControllerService.Hospitals.InsertAsync(CurrentHospital.HospitalData);
-        else
-            await _repositoryControllerService.Hospitals.UpdateAsync(CurrentHospital.HospitalData);
-    }
-
-
+    /// <returns></returns>
     public IEnumerable<Address> GetAvailableAddresses()
     {
         List<Address> _addresses = new();
 
-        foreach (var item in _repositoryControllerService.Hospitals.GetAsync().Result.Select(a => a.Addresses))
-            _addresses.AddRange(item);
+        foreach (var item in _repositoryControllerService.Hospitals.GetAsync().Result.Select(a => a.Locations))
+            _addresses.AddRange(item.Select(a => a.Address));
 
         return _repositoryControllerService.Addresses.GetAsync().Result.Except(_addresses);
     }
@@ -40,9 +32,9 @@ public partial class HospitalDetailsViewModel : ObservableRecipient, INavigation
     #region Properties
 
     [ObservableProperty]
-    public Address? selectedExistingAddress;
+    public HospitalLocation? selectedExistingLocation;
 
-    private readonly IRepositoryControllerService _repositoryControllerService = App.GetService<IRepositoryControllerService>();
+    public readonly IRepositoryControllerService _repositoryControllerService = App.GetService<IRepositoryControllerService>();
 
     public void OnNavigatedTo(object? parameter)
     {

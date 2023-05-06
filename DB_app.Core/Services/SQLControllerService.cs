@@ -20,9 +20,9 @@ public class SQLControllerService : IRepositoryControllerService
     public SQLControllerService(DbContextOptions<SQLContext> options)
     {
         _db = new SQLContext(options);
+
         _db.Database.EnsureDeleted();
         _db.Database.EnsureCreated();
-
         DataSeeder.Seed(_db);
 
         Hospitals   = new SQLHospitalRepository (_db);

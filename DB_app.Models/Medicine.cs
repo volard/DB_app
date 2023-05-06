@@ -1,9 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DB_app.Models;
 
 public class Medicine
 {
+
+    #region Constructors
     public Medicine (string name, string type)
     {
         Name = name;
@@ -18,13 +21,15 @@ public class Medicine
 
     public Medicine() { }
 
-    [Key]
+    #endregion
+
+    [Required, Key]
     public int    Id           { get; set; }
 
-    [Required]
+    [Required, NotNull]
     public string Name         { get; set; }
 
-    [Required]
+    [Required, NotNull]
     public string Type         { get; set; }
 
     public override string ToString() => $"{Name} - {Type}";

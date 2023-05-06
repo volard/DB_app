@@ -45,16 +45,16 @@ public class Address
     #region Properties
 
     [Key, Required]
-    public int      Id        { get; set; }
+    public int      Id          { get; set; }
 
     [Required, NotNull]
-    public string? City { get; set; }
+    public string? City         { get; set; }
 
     [Required, NotNull]
-    public string?   Street    { get; set; }
+    public string?   Street     { get; set; }
 
     [Required, NotNull]
-    public string?   Building  { get; set; }
+    public string?   Building   { get; set; }
 
     #endregion
 

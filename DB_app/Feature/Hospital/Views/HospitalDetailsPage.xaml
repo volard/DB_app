@@ -213,9 +213,9 @@
                                 CanUserReorderColumns="False"
                                 GridLinesVisibility="All"
                                 IsReadOnly="True"
-                                ItemsSource="{x:Bind ViewModel.CurrentHospital.ObservableAddresses, Mode=OneWay}"
+                                ItemsSource="{x:Bind ViewModel.CurrentHospital.HospitalData.Locations, Mode=OneWay}"
                                 RelativePanel.Below="AddressCommandBar"
-                                SelectedItem="{x:Bind ViewModel.SelectedExistingAddress, Mode=TwoWay}"
+                                SelectedItem="{x:Bind ViewModel.SelectedExistingLocation, Mode=TwoWay}"
                                 SelectionMode="Single"
                                 VerticalScrollBarVisibility="Auto"
                                 VirtualizingStackPanel.VirtualizationMode="Recycling">
@@ -228,15 +228,15 @@
 
                                     <toolkit:DataGridTextColumn
                                         Width="30*"
-                                        Binding="{Binding City}"
+                                        Binding="{Binding Address.City}"
                                         Header="City" />
                                     <toolkit:DataGridTextColumn
                                         Width="30*"
-                                        Binding="{Binding Street}"
+                                        Binding="{Binding Address.Street}"
                                         Header="Street" />
                                     <toolkit:DataGridTextColumn
                                         Width="30*"
-                                        Binding="{Binding Building}"
+                                        Binding="{Binding Address.Building}"
                                         Header="Building" />
                                 </toolkit:DataGrid.Columns>
 

@@ -57,8 +57,8 @@ public partial class PharmacyDetailsViewModel : ObservableRecipient, INavigation
         foreach (var item in _repositoryControllerService.Pharmacies.GetAsync().Result.Select(a => a.Addresses))
             _addresses.AddRange(item);
 
-        foreach (var item in _repositoryControllerService.Hospitals.GetAsync().Result.Select(a => a.Addresses))
-            _addresses.AddRange(item);
+        foreach (var item in _repositoryControllerService.Hospitals.GetAsync().Result.Select(a => a.Locations))
+            _addresses.AddRange(item.Select(el => el.Address));
 
 
         return _repositoryControllerService.Addresses.GetAsync().Result.

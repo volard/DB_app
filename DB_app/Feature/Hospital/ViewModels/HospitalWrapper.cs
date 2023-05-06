@@ -31,7 +31,6 @@ public sealed partial class HospitalWrapper : ObservableValidator, IEditableObje
     #endregion
 
 
-
     #region Properties
 
     private readonly IRepositoryControllerService _repositoryControllerService = App.GetService<IRepositoryControllerService>();
@@ -50,7 +49,7 @@ public sealed partial class HospitalWrapper : ObservableValidator, IEditableObje
             Surename_main_doctor = _hospitalData.Surename_main_doctor;
             Middlename_main_doctor = _hospitalData.Middlename_main_doctor;
             IsActive = _hospitalData.IsActive;
-            ObservableAddresses = new(HospitalData.Addresses);
+            ObservableLocations = new(HospitalData.Locations);
         }
     }
 
@@ -74,7 +73,7 @@ public sealed partial class HospitalWrapper : ObservableValidator, IEditableObje
     
     public int Id { get => HospitalData.Id; }
 
-    public ObservableCollection<Address> ObservableAddresses = new();
+    public ObservableCollection<HospitalLocation> ObservableLocations = new();
 
     /// <summary>
     /// Indicates about changes that is not synced with UI DataGrid
@@ -119,8 +118,7 @@ public sealed partial class HospitalWrapper : ObservableValidator, IEditableObje
 
     #region Modification methods
 
-     public void Backup() =>
-        _backupData = _hospitalData;
+     public void Backup() => _backupData = _hospitalData;
 
 
     /// <summary>
@@ -179,7 +177,6 @@ public sealed partial class HospitalWrapper : ObservableValidator, IEditableObje
         _hospitalData.Name_main_doctor = Name_main_doctor;
         _hospitalData.Surename_main_doctor = Surename_main_doctor;
         _hospitalData.Middlename_main_doctor = Middlename_main_doctor;
-        _hospitalData.Addresses = ObservableAddresses.ToList();
     }
 
     
