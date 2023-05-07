@@ -24,7 +24,15 @@ public partial class ProductDetailsViewModel : ObservableRecipient, INavigationA
         {
             CurrentProduct = model;
             CurrentProduct.Backup();
+
+            if (CurrentProduct.IsInEdit)
+            {
+                PageTitle = "Edit hospital #" + CurrentProduct.Id;
+            }
+            else
+                PageTitle = "Hospital #" + CurrentProduct.Id;
         }
+
     }
 
     public void OnNavigatedFrom()
@@ -40,6 +48,9 @@ public partial class ProductDetailsViewModel : ObservableRecipient, INavigationA
     /// Current_value ProductWrapper to edit
     /// </summary>
     public ProductWrapper CurrentProduct { get; set; } = new();
+
+    [ObservableProperty]
+    private string _pageTitle = "New product";
 
 
 }

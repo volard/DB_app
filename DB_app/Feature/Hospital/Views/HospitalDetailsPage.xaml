@@ -51,7 +51,10 @@
                     Icon="Delete"
                     Label="Delete"
                     Visibility="{Binding CurrentHospital.IsNew, Converter={StaticResource CollapsedIf}, Mode=OneWay}" />
-                <AppBarButton Icon="Add" Label="Add new" />
+                <AppBarButton
+                    Icon="Add"
+                    Label="Add new"
+                    Visibility="{x:Bind viewModel:Converters.CollapsedIfOneOfTwo(CurrentHospital.IsInEdit, CurrentHospital.IsNew), Mode=OneWay}" />
 
                 <AppBarSeparator />
             </CommandBar>
@@ -213,7 +216,7 @@
                                 CanUserReorderColumns="False"
                                 GridLinesVisibility="All"
                                 IsReadOnly="True"
-                                ItemsSource="{x:Bind ViewModel.CurrentHospital.HospitalData.Locations, Mode=OneWay}"
+                                ItemsSource="{x:Bind ViewModel.CurrentHospital.ObservableLocations, Mode=OneWay}"
                                 RelativePanel.Below="AddressCommandBar"
                                 SelectedItem="{x:Bind ViewModel.SelectedExistingLocation, Mode=TwoWay}"
                                 SelectionMode="Single"

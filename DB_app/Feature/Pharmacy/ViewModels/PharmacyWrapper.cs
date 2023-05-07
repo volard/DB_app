@@ -51,6 +51,7 @@ public sealed partial class PharmacyWrapper : ObservableValidator, IEditableObje
         {   
             _pharmacyData = value;
             Name = _pharmacyData.Name;
+            IsActive = _pharmacyData.IsActive;
         } 
     }
 
@@ -87,23 +88,7 @@ public sealed partial class PharmacyWrapper : ObservableValidator, IEditableObje
     private bool isNew = false;
 
 
-    public ObservableCollection<Address> ObservableAddresses
-    {
-        get
-        {   
-            if (PharmacyData.Addresses == null) { return new(); }
-            else
-            {
-                return new(PharmacyData.Addresses);
-            }
-        }
-        set
-        {
-            PharmacyData.Addresses = value.ToList();
-            IsModified = true;
-            OnPropertyChanged();
-        }
-    }
+    public ObservableCollection<PharmacyLocation> ObservableLocations = new();
 
 
     public int Id { get => PharmacyData.Id; }
@@ -137,8 +122,6 @@ public sealed partial class PharmacyWrapper : ObservableValidator, IEditableObje
 
     #region Modification methods
 
-
-   
 
     public void Backup()
     {

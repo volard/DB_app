@@ -46,11 +46,11 @@ public sealed partial class HospitalsGridPage : Page
     }
 
     private void Add_Click(object? _, RoutedEventArgs e) =>
-        Frame.Navigate(typeof(HospitalDetailsPage), new AddressWrapper() { IsInEdit = true }, new DrillInNavigationTransitionInfo());
+        App.GetService<INavigationService>().NavigateTo(typeof(HospitalDetailsViewModel).FullName!, new AddressWrapper() { IsNew = true });
 
 
     private void View_Click(object? _, RoutedEventArgs e) =>
-        Frame.Navigate(typeof(HospitalDetailsPage), ViewModel.SelectedItem, new DrillInNavigationTransitionInfo());
+        App.GetService<INavigationService>().NavigateTo(typeof(HospitalDetailsViewModel).FullName!, ViewModel.SelectedItem);
 
 
 
@@ -60,7 +60,9 @@ public sealed partial class HospitalsGridPage : Page
 
     private void Edit_Click(object? _, RoutedEventArgs e)
     {
-        ViewModel.SelectedItem!.IsInEdit = true;
+        if (ViewModel.SelectedItem == null) return;
+
+        ViewModel.SelectedItem.IsInEdit = true;
         App.GetService<INavigationService>().NavigateTo(typeof(HospitalDetailsViewModel).FullName!, ViewModel.SelectedItem);
     }
 

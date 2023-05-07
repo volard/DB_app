@@ -1,6 +1,7 @@
 ﻿using DB_app.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DB_app.Models;
 
@@ -15,7 +16,9 @@ public class Pharmacy
         )
     {
         Name      = name;
-        Addresses = addresses;
+        var _data = new List<PharmacyLocation>();
+        foreach (var item in addresses) { _data.Add(new PharmacyLocation(item)); }
+        Locations = _data;
     }
 
     public Pharmacy
@@ -60,47 +63,6 @@ public class Pharmacy
 
     public List<PharmacyLocation> Locations { get; set; } = new();
 
-    [NotMapped]
-    public List<Address> Addresses
-    {
-        get
-        {
-            var _data = new List<Address>();
-            foreach (var item in Locations) { _data.Add(item.Address);  }
-            return _data;
-        }
-        set
-        {
-            var _data = new List<PharmacyLocation>();
-            foreach (var item in value) { _data.Add(new PharmacyLocation(item));  }
-            Locations = _data;
-        }
-    }
-
-    public void AddAddress(Address address)
-    {
-        if (address == null)
-        {
-            throw new ArgumentNullException(nameof(address));
-        }
-        Locations.Add(new PharmacyLocation(address));
-    }
-
-    public void RemoveAddress(Address address)
-    {
-        if (address == null)
-        {
-            throw new ArgumentNullException(nameof(address));
-        }
-        var locationToRemove = Locations.FirstOrDefault(a => a.Address == address);
-        if (locationToRemove == null)
-        {
-            throw new InvalidOperationException("Address doesn't exist in locations collection");
-        }
-        Locations.Remove(locationToRemove);
-    }
-
-
     #endregion
 
     public override string ToString() => Name;
@@ -124,16 +86,3 @@ public class Pharmacy
 }
 
 
-public class PharmacyLocation
-{
-    public PharmacyLocation(Address address) { Address = address; }
-
-    public PharmacyLocation() { }
-
-    [Key]
-    [Required]
-    public int Id { get; set; }
-
-    [Required]
-    public Address Address { get; set; }
-}

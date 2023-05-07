@@ -110,18 +110,3 @@ public class Hospital
 }
 
 
-public class HospitalLocation
-{
-    public HospitalLocation(Address address) { Address = address; }
-
-    public HospitalLocation() { }
-
-    [Key, Required]
-    public int Id { get; set; }
-
-    [Required, NotNull]
-    public Hospital Hospital { get; set; }
-
-    [Required, NotNull]
-    public Address Address { get; set; }
-}

@@ -98,7 +98,7 @@
                     Click="AddButton_Click"
                     Icon="Add"
                     Label="Add new"
-                    Visibility="{Binding CurrentOrder.IsNew, Converter={StaticResource CollapsedIf}, Mode=OneWay}" />
+                    Visibility="{x:Bind viewModel:Converters.CollapsedIfOneOfTwo(CurrentOrder.IsInEdit, CurrentOrder.IsNew), Mode=OneWay}" />
 
                 <AppBarSeparator Visibility="{Binding CurrentOrder.IsNew, Converter={StaticResource CollapsedIf}, Mode=OneWay}" />
 

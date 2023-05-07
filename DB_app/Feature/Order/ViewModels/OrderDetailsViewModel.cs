@@ -22,26 +22,23 @@ public partial class OrderDetailsViewModel : ObservableValidator, INavigationAwa
 
             if (model.IsInEdit)
             {
-                AvailableHospitals = new(await _repositoryControllerService.Hospitals.GetAsync());
-                var temp = await _repositoryControllerService.Addresses.GetHospitalsLocationsAsync();
+                AvailableHospitals              = new(await _repositoryControllerService.Hospitals.GetAsync());
                 CurrentOrder.AvailableAddresses = new(await _repositoryControllerService.Addresses.GetHospitalsLocationsAsync());
-                CurrentOrder.AvailableProducts = new(await _repositoryControllerService.Products.GetAsync());
+                CurrentOrder.AvailableProducts  = new(await _repositoryControllerService.Products.GetAsync());
                 CurrentOrder.Backup();
+                PageTitle = "Edit hospital #" + CurrentOrder.Id;
             }
-            if (!model.IsNew) { PageTitle = "Order " + model.Id; }
+            if (!model.IsNew) { PageTitle = "Order #" + model.Id; }
         }
         else // If we wanna let user to create one
         {
-            AvailableHospitals = new(await _repositoryControllerService.Hospitals.GetAsync());
+            AvailableHospitals              = new(await _repositoryControllerService.Hospitals.GetAsync());
             CurrentOrder.AvailableAddresses = new(await _repositoryControllerService.Addresses.GetHospitalsLocationsAsync());
-            CurrentOrder.AvailableProducts = new(await _repositoryControllerService.Products.GetAsync());
+            CurrentOrder.AvailableProducts  = new(await _repositoryControllerService.Products.GetAsync());
         }
     }
 
-    public void OnNavigatedFrom()
-    { 
-        // Not used
-    }
+    public void OnNavigatedFrom() {  /* Not used */ }
 
     #region Members
 
@@ -68,7 +65,7 @@ public partial class OrderDetailsViewModel : ObservableValidator, INavigationAwa
 
 
     [ObservableProperty]
-    private string pageTitle = "New order";
+    private string _pageTitle = "New order";
 
 
     #endregion

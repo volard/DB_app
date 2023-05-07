@@ -58,7 +58,7 @@ public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAw
             while(i < Source.Count)
             {
                 if (!Source[i].IsActive) Source.Remove(Source[i]);
-                ++i;
+                else ++i;
             }
         }
         IsInactiveEnabled = !IsInactiveEnabled;

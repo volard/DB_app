@@ -18,7 +18,6 @@ public partial class MedicineDetailsViewModel : ObservableRecipient, INavigation
     public MedicineWrapper CurrentMedicine { get; set; } = new();
 
 
-
     /// <summary>
     /// Represents the page's title
     /// </summary>
@@ -26,29 +25,19 @@ public partial class MedicineDetailsViewModel : ObservableRecipient, INavigation
     private string _pageTitle = "New meidicne";
 
 
-    /// <summary>
-    /// Saves customer data that was edited.
-    /// </summary>
-    public async void SaveCurrent(object? sender, RoutedEventArgs  e)
-    {
-        try
-        {
-            await CurrentMedicine.SaveAsync();
-        }
-        catch(Exception ex)
-        {
-
-        }
-    }
-
-
     public void OnNavigatedTo(object? parameter)
     {
         if (parameter is MedicineWrapper model)
         {
             CurrentMedicine = model;
-            PageTitle = "Edit address";
             CurrentMedicine.Backup();
+
+            if (CurrentMedicine.IsInEdit)
+            {
+                PageTitle = "Edit medicine #" + CurrentMedicine.Id;
+            }
+            else
+                PageTitle = "Medicine #" + CurrentMedicine.Id;
         }
     }
 

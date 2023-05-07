@@ -54,6 +54,7 @@
                 <AppBarButton
                     Click="AddButton_Click"
                     Icon="Add"
+                    Visibility="{x:Bind viewModel:Converters.CollapsedIfOneOfTwo(CurrentMedicine.IsInEdit, CurrentMedicine.IsNew), Mode=OneWay}"
                     Label="Add new" />
             </CommandBar>
         </DataTemplate>

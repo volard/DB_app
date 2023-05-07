@@ -46,10 +46,10 @@ public partial class HospitalDetailsViewModel : ObservableRecipient, INavigation
             if (CurrentHospital.IsInEdit)
             {
                 AvailableAddresses = new(GetAvailableAddresses());
-                pageTitle = "Edig hospital #" + CurrentHospital.Id;
+                PageTitle = "Edit hospital #" + CurrentHospital.Id;
             }
             else
-                pageTitle = "Hospital #" + CurrentHospital.Id;
+                PageTitle = "Hospital #" + CurrentHospital.Id;
         }
     }
 
@@ -63,7 +63,7 @@ public partial class HospitalDetailsViewModel : ObservableRecipient, INavigation
     public Address selectedAddress;
 
     [ObservableProperty]
-    public string pageTitle = "New hospital";
+    private string _pageTitle = "New hospital";
 
     #endregion
 }

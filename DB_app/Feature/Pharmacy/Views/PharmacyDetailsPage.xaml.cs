@@ -1,4 +1,5 @@
 using DB_app.Behaviors;
+using DB_app.Models;
 using DB_app.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -50,29 +51,29 @@ public sealed partial class PharmacyDetailsPage : Page
 
     public void AddButton_Click(object sender, RoutedEventArgs e)
     {
-        if (ViewModel.SelectedAddress != null)
-        {
-            ViewModel.CurrentPharmacy.PharmacyData.AddAddress(ViewModel.SelectedAddress);
-            ViewModel.CurrentPharmacy.IsModified = true;
-            ViewModel.AvailableAddresses.Remove(ViewModel.SelectedAddress);
-        }
+        if (ViewModel.SelectedAddress == null) return;
+        
+        ViewModel.CurrentPharmacy.ObservableLocations.Add(new PharmacyLocation(ViewModel.SelectedAddress));
+        ViewModel.CurrentPharmacy.IsModified = true;
+        ViewModel.AvailableAddresses.Remove(ViewModel.SelectedAddress);
+        
     }
 
     public void DeleteButton_Click(object sender, RoutedEventArgs e)
     {
-        if (ViewModel.SelectedExistingAddress != null)
-        {
-            ViewModel.AvailableAddresses.Add(ViewModel.SelectedExistingAddress);
-            ViewModel.CurrentPharmacy.PharmacyData.RemoveAddress(ViewModel.SelectedExistingAddress);
-            ViewModel.CurrentPharmacy.IsModified = true;
-        }
+        if (ViewModel.SelectedExistingLocation == null) return;
+        
+        ViewModel.AvailableAddresses.Add(ViewModel.SelectedExistingLocation.Address);
+        ViewModel.CurrentPharmacy.ObservableLocations.Remove(ViewModel.SelectedExistingLocation);
+        ViewModel.CurrentPharmacy.PharmacyData.Locations.Remove(ViewModel.SelectedExistingLocation);
+        ViewModel.CurrentPharmacy.IsModified = true;
     }
 
     private async void SaveButton_Click(object sender, RoutedEventArgs e)
     {
-        await ViewModel.SaveAsync();
-
-        Frame.Navigate(typeof(PharmaciesGridPage), null);
+        await ViewModel.CurrentPharmacy.SaveAsync();
+        //App.GetService<INavigationService>().NavigateTo(typeof(AddressDetailsViewModel).FullName!, ViewModel.SelectedItem);
+        //Frame.Navigate(typeof(PharmaciesGridPage), null);
     }
 
     /// <summary>
@@ -86,7 +87,6 @@ public sealed partial class PharmacyDetailsPage : Page
     protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
     {
     }
-
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {

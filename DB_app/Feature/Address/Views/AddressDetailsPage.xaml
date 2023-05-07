@@ -55,6 +55,7 @@
                 <AppBarButton
                     Click="AddButton_Click"
                     Icon="Add"
+                    Visibility="{x:Bind viewModel:Converters.CollapsedIfOneOfTwo(CurrentAddress.IsInEdit, CurrentAddress.IsNew), Mode=OneWay}"
                     Label="Add new" />
 
             </CommandBar>

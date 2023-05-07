@@ -65,7 +65,7 @@ private readonly IRepositoryControllerService _repositoryControllerService
             while (i < Source.Count)
             {
                 if (!Source[i].IsActive) Source.Remove(Source[i]);
-                ++i;
+                else ++i;
             }
         }
         IsInactiveEnabled = !IsInactiveEnabled;

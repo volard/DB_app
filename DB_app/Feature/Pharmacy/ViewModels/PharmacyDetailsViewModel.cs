@@ -20,8 +20,14 @@ public partial class PharmacyDetailsViewModel : ObservableRecipient, INavigation
         if (parameter is PharmacyWrapper model)
         {
             CurrentPharmacy = model;
-            PageTitle = "Edit " + CurrentPharmacy.Name;
             CurrentPharmacy.Backup();
+
+            if (CurrentPharmacy.IsInEdit)
+            {
+                PageTitle = "Edit hospital #" + CurrentPharmacy.Id;
+            }
+            else
+                PageTitle = "Hospital #" + CurrentPharmacy.Id;
         }
     }
 
@@ -30,32 +36,12 @@ public partial class PharmacyDetailsViewModel : ObservableRecipient, INavigation
         // Not used
     }
 
-    /// <summary>
-    /// Saves productPharmacy that was edited or created
-    /// </summary>
-    public async Task SaveAsync()
-    {
-        if (CurrentPharmacy.IsNew) // Create new productMedicine
-        {
-            await _repositoryControllerService.Pharmacies.InsertAsync(CurrentPharmacy.PharmacyData);
-        }
-        else // Update existing productMedicine
-        {
-            await _repositoryControllerService.Pharmacies.UpdateAsync(CurrentPharmacy.PharmacyData);
-        }
-    }
-
-
-    [ObservableProperty]
-    public Address selectedExistingAddress;
-
-
-    public IEnumerable<Address> getAvailableAddresses()
+    public IEnumerable<Address> GetAvailableAddresses()
     {
         List<Address> _addresses = new();
 
-        foreach (var item in _repositoryControllerService.Pharmacies.GetAsync().Result.Select(a => a.Addresses))
-            _addresses.AddRange(item);
+        foreach (var item in _repositoryControllerService.Pharmacies.GetAsync().Result.Select(a => a.Locations))
+            _addresses.AddRange(item.Select(el => el.Address));
 
         foreach (var item in _repositoryControllerService.Hospitals.GetAsync().Result.Select(a => a.Locations))
             _addresses.AddRange(item.Select(el => el.Address));
@@ -71,6 +57,10 @@ public partial class PharmacyDetailsViewModel : ObservableRecipient, INavigation
 
 
     #region Properties
+
+
+    [ObservableProperty]
+    public PharmacyLocation selectedExistingLocation;
 
     public readonly IRepositoryControllerService _repositoryControllerService
          = App.GetService<IRepositoryControllerService>();

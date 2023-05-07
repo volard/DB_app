@@ -28,8 +28,14 @@ public partial class AddressDetailsViewModel : ObservableRecipient, INavigationA
         if (parameter is AddressWrapper model)
         {
             CurrentAddress = model;
-            //this.PageTitle = "Edit address";
             CurrentAddress.Backup();
+
+            if (CurrentAddress.IsInEdit)
+            {
+                PageTitle = "Edit address #" + CurrentAddress.Id;
+            }
+            else
+                PageTitle = "Address #" + CurrentAddress.Id;
         }
     }
 
