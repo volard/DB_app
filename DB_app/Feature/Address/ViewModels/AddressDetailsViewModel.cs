@@ -11,7 +11,7 @@ public partial class AddressDetailsViewModel : ObservableRecipient, INavigationA
     /// <summary>
     /// Current_value AddressWrapper to edit
     /// </summary>
-    public AddressWrapper CurrentAddress { get; set; } = new();
+    public AddressWrapper CurrentAddress { get; set; } = new AddressWrapper { IsNew = true, IsInEdit = true };
 
 
 

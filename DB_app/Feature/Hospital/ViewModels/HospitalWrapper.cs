@@ -69,7 +69,7 @@ public sealed partial class HospitalWrapper : ObservableValidator, IEditableObje
     private string? _surename_main_doctor;
 
     [ObservableProperty]
-    private bool _isActive;
+    private bool _isActive = true;
     
     public int Id { get => HospitalData.Id; }
 

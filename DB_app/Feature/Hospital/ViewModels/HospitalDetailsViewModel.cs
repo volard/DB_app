@@ -55,7 +55,7 @@ public partial class HospitalDetailsViewModel : ObservableRecipient, INavigation
 
     public void OnNavigatedFrom() { /* Not used */ }
 
-    public HospitalWrapper CurrentHospital { get; set; } = new(){ IsNew = true };
+    public HospitalWrapper CurrentHospital { get; set; } = new HospitalWrapper{ IsNew = true, IsInEdit = true };
 
     public ObservableCollection<Address> AvailableAddresses { get; set; } = new();
 

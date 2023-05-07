@@ -45,7 +45,6 @@
                     Icon="Cancel"
                     Label="Cancel"
                     Visibility="{x:Bind viewModel:Converters.VisibleIfOneAndNotAnother(CurrentPharmacy.IsInEdit, CurrentPharmacy.IsNew), Mode=OneWay}" />
-                <AppBarSeparator />
                 <AppBarButton
                     Click="DeleteButton_Click"
                     Icon="Delete"

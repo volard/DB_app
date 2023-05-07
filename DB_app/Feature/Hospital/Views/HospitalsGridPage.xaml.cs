@@ -17,6 +17,7 @@ public sealed partial class HospitalsGridPage : Page
 {
     public HospitalsGridViewModel ViewModel { get; }
 
+
     public HospitalsGridPage()
     {
         ViewModel = App.GetService<HospitalsGridViewModel>();
@@ -28,11 +29,13 @@ public sealed partial class HospitalsGridPage : Page
         });
     }
 
+
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         ViewModel.OperationRejected += ShowNotificationMessage;
         base.OnNavigatedTo(e);
     }
+
 
     protected override void OnNavigatedFrom(NavigationEventArgs e)
     {
@@ -40,18 +43,19 @@ public sealed partial class HospitalsGridPage : Page
         base.OnNavigatedFrom(e);
     }
 
+
     private void ShowNotificationMessage(object? _, ListEventArgs e)
     {
         var message = e.Data[0];
     }
 
+
     private void Add_Click(object? _, RoutedEventArgs e) =>
-        App.GetService<INavigationService>().NavigateTo(typeof(HospitalDetailsViewModel).FullName!, new AddressWrapper() { IsNew = true });
+        App.GetService<INavigationService>().NavigateTo(typeof(HospitalDetailsViewModel).FullName!, new AddressWrapper() { IsNew = true, IsInEdit = true });
 
 
     private void View_Click(object? _, RoutedEventArgs e) =>
         App.GetService<INavigationService>().NavigateTo(typeof(HospitalDetailsViewModel).FullName!, ViewModel.SelectedItem);
-
 
 
     private async void Delete_Click(object? _, RoutedEventArgs e) =>
@@ -67,7 +71,5 @@ public sealed partial class HospitalsGridPage : Page
     }
 
     private async void Button_Click(object sender, RoutedEventArgs e)
-    {
-        await ViewModel.ToggleInactive();
-    }
+        => await ViewModel.ToggleInactive();
 }

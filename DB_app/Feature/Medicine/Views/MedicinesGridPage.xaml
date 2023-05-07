@@ -90,11 +90,9 @@
 
 
                     <toolkit:DataGridTextColumn
-                        Width="30*"
                         Binding="{Binding Name}"
                         Header="Name" />
                     <toolkit:DataGridTextColumn
-                        Width="30*"
                         Binding="{Binding Type}"
                         Header="Type" />
 

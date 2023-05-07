@@ -88,7 +88,6 @@
                     Icon="Cancel"
                     Label="Cancel"
                     Visibility="{x:Bind viewModel:Converters.VisibleIfOneAndNotAnother(CurrentOrder.IsInEdit, CurrentOrder.IsNew), Mode=OneWay}" />
-                <AppBarSeparator />
                 <AppBarButton
                     Click="DeleteButton_Click"
                     Icon="Delete"
@@ -99,10 +98,6 @@
                     Icon="Add"
                     Label="Add new"
                     Visibility="{x:Bind viewModel:Converters.CollapsedIfOneOfTwo(CurrentOrder.IsInEdit, CurrentOrder.IsNew), Mode=OneWay}" />
-
-                <AppBarSeparator Visibility="{Binding CurrentOrder.IsNew, Converter={StaticResource CollapsedIf}, Mode=OneWay}" />
-
-
                 <AppBarButton
                     Click="Tabs_TabDroppedOutside"
                     Icon="NewWindow"

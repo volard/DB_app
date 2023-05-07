@@ -55,7 +55,7 @@ public partial class OrderDetailsViewModel : ObservableValidator, INavigationAwa
          = App.GetService<IRepositoryControllerService>();
 
 
-    public OrderWrapper CurrentOrder { get; set; } = new();
+    public OrderWrapper CurrentOrder { get; set; } = new OrderWrapper { IsNew = true, IsInEdit = true };
 
 
     

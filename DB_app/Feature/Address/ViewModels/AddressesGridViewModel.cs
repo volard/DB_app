@@ -28,8 +28,8 @@ public partial class AddressesGridViewModel : ObservableRecipient, INavigationAw
 
     public void Receive(DeleteRecordMessage<AddressWrapper> message)
     {
-        var givenAddressWrapper = message.Value;
-        Source.Remove(givenAddressWrapper);
+        var _givenAddressWrapper = message.Value;
+        Source.Remove(_givenAddressWrapper);
     }
 
 

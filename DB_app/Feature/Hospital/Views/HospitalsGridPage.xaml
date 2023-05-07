@@ -98,7 +98,6 @@
 
 
                     <toolkit:DataGridTextColumn
-                        Width="20*"
                         Binding="{Binding Id}"
                         Header="Number" />
 

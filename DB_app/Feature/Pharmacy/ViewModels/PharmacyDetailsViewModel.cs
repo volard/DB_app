@@ -69,7 +69,7 @@ public partial class PharmacyDetailsViewModel : ObservableRecipient, INavigation
     /// <summary>
     /// Current_value AddressWrapper to edit
     /// </summary>
-    public PharmacyWrapper CurrentPharmacy { get; set; } = new();
+    public PharmacyWrapper CurrentPharmacy { get; set; } = new PharmacyWrapper { IsNew = true, IsInEdit = true };
 
     public ObservableCollection<Address> AvailableAddresses { get; set; }
 

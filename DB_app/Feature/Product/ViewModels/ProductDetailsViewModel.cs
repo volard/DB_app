@@ -47,7 +47,7 @@ public partial class ProductDetailsViewModel : ObservableRecipient, INavigationA
     /// <summary>
     /// Current_value ProductWrapper to edit
     /// </summary>
-    public ProductWrapper CurrentProduct { get; set; } = new();
+    public ProductWrapper CurrentProduct { get; set; } = new ProductWrapper{ IsNew = true, IsInEdit = true };
 
     [ObservableProperty]
     private string _pageTitle = "New product";

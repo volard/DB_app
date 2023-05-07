@@ -71,4 +71,9 @@ public static class Converters
     {
         if (lhs && !rhs) return Visibility.Visible; else return Visibility.Collapsed;
     }
+
+    public static Visibility VisibleIfOneOfTwo(bool lhs, bool rhs)
+    {
+        if (lhs || rhs) return Visibility.Visible; else return Visibility.Collapsed;
+    }
 }

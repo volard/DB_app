@@ -27,7 +27,18 @@
                 Background="Transparent"
                 DefaultLabelPosition="Right">
                 <CommandBar.Content>
-                    <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="{x:Bind PageTitle, Mode=OneWay}" />
+                    <Grid>
+                        <TextBlock
+                            Margin="16,0,0,0"
+                            Style="{ThemeResource TitleTextBlockStyle}"
+                            Text="{x:Bind PageTitle, Mode=OneWay}" />
+                        <InfoBadge
+                            Visibility="{Binding CurrentHospital.IsModified, Converter={StaticResource VisibleIf}, Mode=OneWay}" 
+                            Width="13"
+                            Height="13"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"/>
+                    </Grid>
                 </CommandBar.Content>
 
                 <AppBarButton
@@ -46,7 +57,6 @@
                     Icon="Cancel"
                     Label="Cancel"
                     Visibility="{x:Bind viewModel:Converters.VisibleIfOneAndNotAnother(CurrentHospital.IsInEdit, CurrentHospital.IsNew), Mode=OneWay}" />
-                <AppBarSeparator />
                 <AppBarButton
                     Icon="Delete"
                     Label="Delete"
@@ -56,7 +66,6 @@
                     Label="Add new"
                     Visibility="{x:Bind viewModel:Converters.CollapsedIfOneOfTwo(CurrentHospital.IsInEdit, CurrentHospital.IsNew), Mode=OneWay}" />
 
-                <AppBarSeparator />
             </CommandBar>
         </DataTemplate>
     </behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
@@ -110,7 +119,7 @@
                                     IsEnabled="{x:Bind ViewModel.CurrentHospital.IsActive, Mode=OneWay}"
                                     RelativePanel.AlignRightWithPanel="True"
                                     RelativePanel.AlignVerticalCenterWith="Surename_main_doctor"
-                                    Visibility="{x:Bind viewModel:Converters.CollapsedIf(ViewModel.CurrentHospital.IsNew), Mode=OneWay}" />
+                                    Visibility="{x:Bind viewModel:Converters.VisibleIfOneAndNotAnother(ViewModel.CurrentHospital.IsInEdit, ViewModel.CurrentHospital.IsNew), Mode=OneWay}" />
 
 
                                 <components:ValidationTextBox
@@ -179,7 +188,8 @@
                                 VerticalContentAlignment="Center"
                                 Background="Transparent"
                                 DefaultLabelPosition="Right"
-                                RelativePanel.AlignRightWithPanel="True">
+                                RelativePanel.AlignRightWithPanel="True"
+                                Visibility="{x:Bind viewModel:Converters.VisibleIf(ViewModel.CurrentHospital.IsInEdit), Mode=OneWay}">
 
 
                                 <CommandBar.Content>

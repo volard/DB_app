@@ -92,15 +92,12 @@
 
 
                     <toolkit:DataGridTextColumn
-                        Width="30*"
                         Binding="{Binding City}"
                         Header="City" />
                     <toolkit:DataGridTextColumn
-                        Width="30*"
                         Binding="{Binding Street}"
                         Header="Street" />
                     <toolkit:DataGridTextColumn
-                        Width="30*"
                         Binding="{Binding Building}"
                         Header="Building" />
 
