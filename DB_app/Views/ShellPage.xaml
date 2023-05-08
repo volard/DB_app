@@ -12,6 +12,7 @@
 
 
     <Grid>
+        <!--#region  Custom AppTitleBar -->
         <Grid
             x:Name="AppTitleBar"
             Height="{Binding ElementName=NavigationViewControl, Path=CompactPaneLength}"
@@ -31,6 +32,8 @@
                 Style="{StaticResource CaptionTextBlockStyle}"
                 TextWrapping="NoWrap" />
         </Grid>
+        <!--#endregion-->
+        
         <NavigationView
             x:Name="NavigationViewControl"
             Canvas.ZIndex="0"
@@ -40,9 +43,8 @@
             IsBackEnabled="{x:Bind ViewModel.IsBackEnabled, Mode=OneWay}"
             IsSettingsVisible="True"
             SelectedItem="{x:Bind ViewModel.Selected, Mode=OneWay}">
+            
             <NavigationView.MenuItems>
-
-
 
                 <NavigationViewItem x:Uid="Shell_Greeting" helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.GreetingViewModel">
                     <NavigationViewItem.Icon>
@@ -104,7 +106,6 @@
 
             </NavigationView.MenuItems>
 
-
             <NavigationView.HeaderTemplate>
                 <DataTemplate>
                     <Grid>
@@ -124,7 +125,6 @@
                     </behaviors:NavigationViewHeaderBehavior.DefaultHeaderTemplate>
                 </behaviors:NavigationViewHeaderBehavior>
             </i:Interaction.Behaviors>
-
 
 
             <Grid Margin="{StaticResource NavigationViewPageContentMargin}">

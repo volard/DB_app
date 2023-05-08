@@ -121,13 +121,13 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-
         <!--#region Actual order info section-->
         <ScrollViewer
             Grid.Row="0"
             Grid.Column="0"
             Padding="0,0,10,30"
             HorizontalAlignment="Stretch">
+            
             <StackPanel x:Name="StackPanel">
                 <StackPanel.Resources>
                     <Style TargetType="muxc:Expander">
@@ -180,7 +180,6 @@
                         Style="{ThemeResource SubtitleTextBlockStyle}"
                         Text="Date placed" />
 
-
                     <TextBlock
                         x:Name="DatePlacedTextBox"
                         Margin="0,10,0,0"
@@ -189,7 +188,6 @@
                         RelativePanel.Below="DatePlacedHeader"
                         Text="{x:Bind ViewModel.CurrentOrder.DatePlaced, Converter={StaticResource StringFormatConterter}, ConverterParameter='MM-dd-yy -- H:mm:ss', Mode=OneWay}" />
 
-
                     <TextBlock
                         x:Name="TotalHeader"
                         Margin="0,15,0,0"
@@ -197,7 +195,6 @@
                         RelativePanel.Below="DatePlacedTextBox"
                         Style="{ThemeResource SubtitleTextBlockStyle}"
                         Text="Total" />
-
 
                     <TextBlock
                         Margin="0,10,0,0"
@@ -228,9 +225,7 @@
                     </muxc:Expander.Header>
 
                     <muxc:Expander.Content>
-
                         <StackPanel HorizontalAlignment="Stretch">
-
 
                             <!--#region  Order items header-->
                             <Grid x:Name="DefaultLineItemsHeader" Margin="20,8">
@@ -289,22 +284,13 @@
 
                             </ListView>
                             <!--#endregion-->
-
-
                         </StackPanel>
-
                     </muxc:Expander.Content>
-
-
                 </muxc:Expander>
                 <!--#endregion-->
-
-
             </StackPanel>
-
         </ScrollViewer>
         <!--#endregion-->
-
 
 
         <!--#region Section splitter-->
@@ -317,7 +303,6 @@
             GripperCursor="SizeNorthSouth"
             Visibility="{x:Bind ViewModel.CurrentOrder.IsInEdit, Converter={StaticResource VisibleIf}, Mode=OneWay}" />
         <!--#endregion-->
-
 
 
         <!--#region Available products-->
@@ -347,7 +332,7 @@
 
                 <toolkit:DataGrid.Triggers />
 
-
+                <!-- Experiments
                 <toolkit:DataGrid.RowStyle>
                     <Style TargetType="toolkit:DataGridRow">
 
@@ -378,18 +363,20 @@
 
                     </Style>
                 </toolkit:DataGrid.RowStyle>
+                
+                
                 <FlyoutBase.AttachedFlyout>
                     <Flyout>
                         <TextBlock Text="This is some text in a flyout." />
                     </Flyout>
                 </FlyoutBase.AttachedFlyout>
-                <toolkit:DataGrid.Columns>
+                -->
 
+                <toolkit:DataGrid.Columns>
                     <toolkit:DataGridTextColumn
                         Width="30*"
                         Binding="{Binding Pharmacy.Name}"
                         Header="Pharmacy name" />
-
                     <toolkit:DataGridTextColumn
                         Width="30*"
                         Binding="{Binding Medicine.Name}"
@@ -412,9 +399,6 @@
             </toolkit:DataGrid>
         </RelativePanel>
         <!--#endregion-->
-
-
     </Grid>
     <!--#endregion-->
-
 </Page>

@@ -183,4 +183,31 @@
   <data name="RecordForDeletionNotFoundException" xml:space="preserve">
     <value>The record for deletion doesn't found in the database. Try to sync data.</value>
   </data>
+  <data name="Address.Text" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="Hospital.Text" xml:space="preserve">
+    <value>Hospital</value>
+  </data>
+  <data name="Medicine.Text" xml:space="preserve">
+    <value>Medicine</value>
+  </data>
+  <data name="Order.Text" xml:space="preserve">
+    <value>Order</value>
+  </data>
+  <data name="Pharmacy.Text" xml:space="preserve">
+    <value>Pharmacy</value>
+  </data>
+  <data name="Product.Text" xml:space="preserve">
+    <value>Product</value>
+  </data>
+  <data name="Settings.Text" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Edit.Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="New.Text" xml:space="preserve">
+    <value>New</value>
+  </data>
 </root>

@@ -16,8 +16,10 @@
     </Page.Resources>
 
     <!--#region Header-->
+    <!--
     <behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
-        <DataTemplate x:DataType="vm:HospitalsGridViewModel">
+        <DataTemplate x:DataType="vm:HospitalsGridViewModel"> -->
+    <StackPanel>
             <CommandBar
                 HorizontalAlignment="Stretch"
                 Background="Transparent"
@@ -66,8 +68,9 @@
                     ToolTipService.ToolTip="Delete" />
 
             </CommandBar>
+            <!--
         </DataTemplate>
-    </behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
+    </behaviors:NavigationViewHeaderBehavior.HeaderTemplate> -->
     <!--#endregion-->
 
     <Grid
@@ -127,5 +130,5 @@
 
 
     </Grid>
-
+</StackPanel>
 </Page>

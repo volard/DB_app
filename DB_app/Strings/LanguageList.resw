@@ -117,79 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Address.Text" xml:space="preserve">
-    <value>Адрес</value>
+  <data name="en-US" xml:space="preserve">
+    <value>English</value>
   </data>
-  <data name="AppDescription" xml:space="preserve">
-    <value>Образовательный проект, посвященный разработке простых, но современных Windows-приложений с использованием WinUI 3.0 и Windows App SDK</value>
-  </data>
-  <data name="AppDisplayName" xml:space="preserve">
-    <value>MMS - Система менеджмента лекарств</value>
-  </data>
-  <data name="Hospital.Text" xml:space="preserve">
-    <value>Больница</value>
-  </data>
-  <data name="Medicine.Text" xml:space="preserve">
-    <value>Медикамент</value>
-  </data>
-  <data name="Order.Text" xml:space="preserve">
-    <value>Заказ</value>
-  </data>
-  <data name="Pharmacy.Text" xml:space="preserve">
-    <value>Аптека</value>
-  </data>
-  <data name="Product.Text" xml:space="preserve">
-    <value>Продукт</value>
-  </data>
-  <data name="Settings.Text" xml:space="preserve">
-    <value>Настройки</value>
-  </data>
-  <data name="Settings_About.Text" xml:space="preserve">
-    <value>О приложении</value>
-  </data>
-  <data name="Settings_AboutDescription.Text" xml:space="preserve">
-    <value>Учебное приложение, которое старается быть максимально enterprise</value>
-  </data>
-  <data name="Settings_Personalization.Text" xml:space="preserve">
-    <value>Персонализация</value>
-  </data>
-  <data name="Settings_Theme.Text" xml:space="preserve">
-    <value>Тема</value>
-  </data>
-  <data name="Settings_Theme_Dark.Content" xml:space="preserve">
-    <value>Темная</value>
-  </data>
-  <data name="Settings_Theme_Default.Content" xml:space="preserve">
-    <value>Системная</value>
-  </data>
-  <data name="Settings_Theme_Light.Content" xml:space="preserve">
-    <value>Светлая</value>
-  </data>
-  <data name="Shell_AddressesGrid.Content" xml:space="preserve">
-    <value>Адреса</value>
-  </data>
-  <data name="Shell_Greeting.Content" xml:space="preserve">
-    <value>Мои поздравления, вы на месте</value>
-  </data>
-  <data name="Shell_HospitalReportGrid.Content" xml:space="preserve">
-    <value>Отчет по больницам</value>
-  </data>
-  <data name="Shell_HospitalsGrid.Content" xml:space="preserve">
-    <value>Больницы</value>
-  </data>
-  <data name="Shell_MedicinesGrid.Content" xml:space="preserve">
-    <value>Медикаманты</value>
-  </data>
-  <data name="Shell_OrdersGrid.Content" xml:space="preserve">
-    <value>Заказы</value>
-  </data>
-  <data name="Shell_PharmaciesGrid.Content" xml:space="preserve">
-    <value>Аптеки</value>
-  </data>
-  <data name="Shell_PharmacyReportGrid.Content" xml:space="preserve">
-    <value>Отчет по аптекам</value>
-  </data>
-  <data name="Shell_ProductsGrid.Content" xml:space="preserve">
-    <value>Продукты</value>
+  <data name="ru-RU" xml:space="preserve">
+    <value>Russian</value>
   </data>
 </root>

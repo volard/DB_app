@@ -2,7 +2,7 @@
 using DB_app.Contracts.Services;
 using DB_app.Core.Contracts.Services;
 using DB_app.Core.Services;
-using DB_app.Entities;
+using DB_app.Models;
 using DB_app.Repository.Services;
 using DB_app.Services;
 using DB_app.ViewModels;
@@ -59,6 +59,7 @@ public partial class App : Application
 
         var Builder = Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder();
 
+
         Host = Builder.UseContentRoot(AppContext.BaseDirectory).
         ConfigureServices((context, services) =>
         {
@@ -73,6 +74,7 @@ public partial class App : Application
             // --------------------------------
             //register a class as the interface in the DI IServiceCollection container
             services.AddSingleton<ILocalSettingsService, LocalSettingsService>();
+            services.AddSingleton<ILocalizationService, LocalizationService>();
             services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
             services.AddTransient<INavigationViewService, NavigationViewService>();
 
@@ -196,9 +198,8 @@ public partial class App : Application
 
     private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
     {
-        // TODO: Log and handle exceptions as appropriate.
-        // https://docs.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.application.unhandledexception.
-        Debug.Write(e.Message);
+        Debug.WriteLine("========= Error occured =========");
+        Debug.WriteLine(e.Message);
     }
 
     /// <summary>

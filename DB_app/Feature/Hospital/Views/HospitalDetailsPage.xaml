@@ -25,20 +25,25 @@
             <CommandBar
                 HorizontalAlignment="Stretch"
                 Background="Transparent"
-                DefaultLabelPosition="Right">
+                DefaultLabelPosition="Right"><!--
                 <CommandBar.Content>
                     <Grid>
+                        
                         <TextBlock
-                            Margin="16,0,0,0"
+                            x:Name="Title"
+                            
+                            Margin="10,0,0,0"
                             Style="{ThemeResource TitleTextBlockStyle}"
-                            Text="{x:Bind PageTitle, Mode=OneWay}" />
+                            Text="{Binding PageTitle, Mode=OneWay}" />
+
                         <InfoBadge
-                            Visibility="{Binding CurrentHospital.IsModified, Converter={StaticResource VisibleIf}, Mode=OneWay}" 
-                            Width="13"
-                            Height="13"
+                            Width="11"
+                            
+                            Height="11"
                             HorizontalAlignment="Left"
-                            VerticalAlignment="Top"/>
+                            VerticalAlignment="Top" />
                     </Grid>
+                        
                 </CommandBar.Content>
 
                 <AppBarButton
@@ -65,7 +70,7 @@
                     Icon="Add"
                     Label="Add new"
                     Visibility="{x:Bind viewModel:Converters.CollapsedIfOneOfTwo(CurrentHospital.IsInEdit, CurrentHospital.IsNew), Mode=OneWay}" />
-
+-->
             </CommandBar>
         </DataTemplate>
     </behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
@@ -73,7 +78,6 @@
 
 
     <RelativePanel>
-
         <ScrollViewer
             x:Name="DetailPanel"
             RelativePanel.AlignLeftWithPanel="True"
@@ -91,27 +95,18 @@
                     </Style>
                 </StackPanel.Resources>
 
-                <!--  Full name and hospital info in expander  -->
-                <muxc:Expander
-                    x:Name="ExpanderFullName"
-                    ExpandDirection="Down"
-                    IsExpanded="True">
+                <!--#region Full name and hospital info-->
+                <muxc:Expander ExpandDirection="Down" IsExpanded="True">
 
                     <muxc:Expander.Header>
-                        <Grid>
-                            <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="FullName" />
-                            <TextBlock
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Center"
-                                Text="{x:Bind ViewModel.CurrentHospital.Surename_main_doctor, Mode=OneWay}" />
-                        </Grid>
+                        <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="FullName" />
                     </muxc:Expander.Header>
 
                     <muxc:Expander.Content>
-
                         <StackPanel>
 
                             <RelativePanel HorizontalAlignment="Stretch">
+
                                 <Button
                                     Background="Red"
                                     Click="MakeInactiveButton_ButtonClicked"
@@ -121,7 +116,7 @@
                                     RelativePanel.AlignVerticalCenterWith="Surename_main_doctor"
                                     Visibility="{x:Bind viewModel:Converters.VisibleIfOneAndNotAnother(ViewModel.CurrentHospital.IsInEdit, ViewModel.CurrentHospital.IsNew), Mode=OneWay}" />
 
-
+                                <!--  Surename doctor name  -->
                                 <components:ValidationTextBox
                                     x:Name="Surename_main_doctor"
                                     DataContext="{x:Bind ViewModel.CurrentHospital}"
@@ -133,7 +128,7 @@
 
                             </RelativePanel>
 
-
+                            <!--  Main doctor name  -->
                             <components:ValidationTextBox
                                 x:Name="Name_main_doctor"
                                 DataContext="{x:Bind ViewModel.CurrentHospital}"
@@ -143,6 +138,7 @@
                                 PropertyName="Name_main_doctor"
                                 Text="{x:Bind ViewModel.CurrentHospital.Name_main_doctor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
+                            <!--  Middle doctor name  -->
                             <components:ValidationTextBox
                                 x:Name="Middlename_main_doctor"
                                 DataContext="{x:Bind ViewModel.CurrentHospital}"
@@ -153,14 +149,11 @@
                                 Text="{x:Bind ViewModel.CurrentHospital.Middlename_main_doctor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                         </StackPanel>
-
                     </muxc:Expander.Content>
-
-
                 </muxc:Expander>
+                <!--#endregion-->
 
-
-                <!--  Addresses list in expander  -->
+                <!--#region Addresses list in expander-->
                 <muxc:Expander
                     x:Name="ExpanderAddresses"
                     ExpandDirection="Down"
@@ -260,14 +253,9 @@
                     </muxc:Expander.Content>
 
                 </muxc:Expander>
-
+                <!--#endregion-->
 
             </StackPanel>
-
-
         </ScrollViewer>
-
     </RelativePanel>
-
-
 </Page>

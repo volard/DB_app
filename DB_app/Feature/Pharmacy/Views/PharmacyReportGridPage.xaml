@@ -13,7 +13,6 @@
                 <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
             </toolkit:DataGrid.Resources>
             <toolkit:DataGrid.Columns>
-                <!--  TODO: Replace column definitions to match real data. Consider adding Header values to Resources.resw.  -->
                 <toolkit:DataGridTextColumn Binding="{Binding OrderID}" Header="OrderID" />
                 <toolkit:DataGridTextColumn Binding="{Binding OrderDate}" Header="OrderDate" />
                 <toolkit:DataGridTextColumn Binding="{Binding Company}" Header="Company" />

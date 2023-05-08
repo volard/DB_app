@@ -42,14 +42,10 @@ public partial class HospitalDetailsViewModel : ObservableRecipient, INavigation
         {
             CurrentHospital = model;
             CurrentHospital.Backup();
+            PageTitle = "Hospital #" + CurrentHospital.Id;
 
             if (CurrentHospital.IsInEdit)
-            {
                 AvailableAddresses = new(GetAvailableAddresses());
-                PageTitle = "Edit hospital #" + CurrentHospital.Id;
-            }
-            else
-                PageTitle = "Hospital #" + CurrentHospital.Id;
         }
     }
 
@@ -57,13 +53,14 @@ public partial class HospitalDetailsViewModel : ObservableRecipient, INavigation
 
     public HospitalWrapper CurrentHospital { get; set; } = new HospitalWrapper{ IsNew = true, IsInEdit = true };
 
+
     public ObservableCollection<Address> AvailableAddresses { get; set; } = new();
 
     [ObservableProperty]
     public Address selectedAddress;
 
     [ObservableProperty]
-    private string _pageTitle = "New hospital";
+    private string pageTitle = "sadfasdf";
 
     #endregion
 }

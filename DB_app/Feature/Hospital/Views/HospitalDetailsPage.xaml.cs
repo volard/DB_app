@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Navigation;
+using Windows.ApplicationModel.Resources;
 
 namespace DB_app.Views;
 
@@ -15,6 +16,8 @@ public sealed partial class HospitalDetailsPage : Page
 {
     public HospitalDetailsViewModel ViewModel { get; }
 
+    public ResourceLoader ResourceLoader { get; set; } = ResourceLoader.GetForCurrentView();
+
     public HospitalDetailsPage()
     {
         ViewModel = App.GetService<HospitalDetailsViewModel>();
@@ -24,7 +27,7 @@ public sealed partial class HospitalDetailsPage : Page
             Source = ViewModel,
             Mode = BindingMode.OneWay
         });
-
+        //rl.GetString("Hospital.Text");
     }
 
     private async void MakeInactiveButton_ButtonClicked(object sender, RoutedEventArgs e)
