@@ -23,7 +23,7 @@ public partial class OrderDetailsViewModel : ObservableValidator, INavigationAwa
             if (model.IsInEdit)
             {
                 AvailableHospitals              = new(await _repositoryControllerService.Hospitals.GetAsync());
-                CurrentOrder.AvailableAddresses = new(await _repositoryControllerService.Addresses.GetHospitalsLocationsAsync());
+                CurrentOrder.AvailableAddresses = new(await _repositoryControllerService.Addresses.GetHospitalsAddressesAsync());
                 CurrentOrder.AvailableProducts  = new(await _repositoryControllerService.Products.GetAsync());
                 CurrentOrder.Backup();
                 PageTitle = "Edit hospital #" + CurrentOrder.Id;
@@ -33,7 +33,7 @@ public partial class OrderDetailsViewModel : ObservableValidator, INavigationAwa
         else // If we wanna let user to create one
         {
             AvailableHospitals              = new(await _repositoryControllerService.Hospitals.GetAsync());
-            CurrentOrder.AvailableAddresses = new(await _repositoryControllerService.Addresses.GetHospitalsLocationsAsync());
+            CurrentOrder.AvailableAddresses = new(await _repositoryControllerService.Addresses.GetHospitalsAddressesAsync());
             CurrentOrder.AvailableProducts  = new(await _repositoryControllerService.Products.GetAsync());
         }
     }

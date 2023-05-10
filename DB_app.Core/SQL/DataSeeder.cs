@@ -92,7 +92,19 @@ public class DataSeeder
             new Address( 66, "Лотошино" , "въезд 1905 года", "11" ),
             new Address( 67, "Коломна" , "бульвар Ленина", "85" ),
             new Address( 68, "Сергиев Посад" , "пер. Будапештсткая", "21" ),
-            new Address( 69, "Воскресенск" , "пр. Косиора", "79" ),
+            new Address( 69, "Indiana(IN)" , "Downey St", "316 S" ),
+            new Address( 70, "Maryland(MD)" , "Capitol Heights", "823 Booker Pl" ),
+            new Address( 71, "Wisconsin(WI)" , "15420 Bald Eagle Blvd", "15420 Bald Eagle Blvd" ),
+            new Address( 72, "Arizona(AZ)" , "Coolidge", "79" ),
+            new Address( 73, "North Carolina(NC)" , "Green Park Ln", "101" ),
+            new Address( 74, "California(CA)" , "Tamarisk Ln", "71138" ),
+            new Address( 75, "Michigan(MI)" , "Dequindre Rd", "21544" ),
+            new Address( 76, "Oklahoma(OK)" , "Redwood Ave", "522 E" ),
+            new Address( 77, "Iowa(IA)" , "Fork Hollow Rd", "702 N" ),
+            new Address( 78, "Missouri(MO)" , "37th Te Ct", "19400 E" ),
+            new Address( 79, "California(CA)" , "Amberton Ln", "1151" ),
+            new Address( 80, "Minnesota(MN)" , "County 1 Hwy", "3371" ),
+            new Address( 81, "Mississippi(MS)" , "Southwest Ln", "212" )
         };
 
         dbContext.Addresses.AddRange(addresses);

@@ -6,12 +6,27 @@ using DB_app.Services.Messages;
 using CommunityToolkit.Mvvm.Messaging;
 using DB_app.Helpers;
 using DB_app.Repository;
-using System.Timers;
+using DB_app.Contracts.Services;
+using Microsoft.UI.Dispatching;
+using Microsoft.Windows.ApplicationModel.Resources;
+using CommunityToolkit.WinUI;
 
 namespace DB_app.ViewModels;
 
-public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAware, IRecipient<DeleteRecordMessage<HospitalWrapper>>
+public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAware,
+    IRecipient<DeleteRecordMessage<HospitalWrapper>>
 {
+
+    public HospitalsGridViewModel()
+    {
+        WeakReferenceMessenger.Default.Register(this);
+    }
+
+    #region Properties
+
+    /// <summary>
+    /// Dependency representing Data Repository
+    /// </summary>
     private readonly IRepositoryControllerService _repositoryControllerService = App.GetService<IRepositoryControllerService>();
 
     /// <summary>
@@ -19,10 +34,34 @@ public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAw
     /// </summary>
     public ObservableCollection<HospitalWrapper> Source { get; set; } = new ObservableCollection<HospitalWrapper>();
 
-    public HospitalsGridViewModel()
-    {
-        WeakReferenceMessenger.Default.Register(this);
-    }
+    /// <summary>
+    /// Gets or sets a value that indicates whether to show a progress bar. 
+    /// </summary>
+    [ObservableProperty]
+    private bool _isLoading;
+
+    private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
+
+    /// <summary>
+    /// Dependency representing Resource loader
+    /// </summary>
+    public readonly ResourceLoader _resourceLoader = App.GetService<ILocalizationService>().ResourceLoader;
+
+    /// <summary>
+    /// Represents selected by user HospitalWrapper object
+    /// </summary>
+    [ObservableProperty]
+    private HospitalWrapper? _selectedItem;
+
+    public event EventHandler<ListEventArgs>? OperationRejected;
+
+    private bool IsInactiveEnabled = false;
+
+    #endregion
+
+
+    #region Members
+
 
     public void Receive(DeleteRecordMessage<HospitalWrapper> message)
     {
@@ -32,15 +71,29 @@ public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAw
 
 
     /// <summary>
-    /// Represents selected by user HospitalWrapper object
+    /// Retrieves items from the data source.
     /// </summary>
-    [ObservableProperty]
-    private HospitalWrapper? _selectedItem;
+    public async void LoadItems()
+    {
+        await _dispatcherQueue.EnqueueAsync(() =>
+        {
+            IsLoading = true;
+            Source.Clear();
+        });
 
+        var items = await Task.Run(_repositoryControllerService.Hospitals.GetAsync);
 
-    public event EventHandler<ListEventArgs>? OperationRejected;
+        await _dispatcherQueue.EnqueueAsync(() =>
+        {
+            foreach (var item in items)
+            {
+                Source.Add(new HospitalWrapper(item));
+            }
 
-    private bool IsInactiveEnabled = false;
+            IsLoading = false;
+        });
+    }
+
 
     public async Task ToggleInactive()
     {
@@ -92,17 +145,11 @@ public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAw
     {
         if (Source.Count < 1)
         {
-            Source.Clear();
-            var data = await _repositoryControllerService.Hospitals.GetAsync();
-
-            foreach (var item in data)
-            {
-                Source.Add(new HospitalWrapper(item));
-            }
+            LoadItems();
         }
     }
 
-    public void OnNavigatedFrom()
-    {
-    }
+    public void OnNavigatedFrom(){}
+
+    #endregion
 }

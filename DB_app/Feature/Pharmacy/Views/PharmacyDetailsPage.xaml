@@ -138,7 +138,7 @@
                             <TextBlock
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
-                                Text="not done yet" />
+                                Text="{x:Bind ViewModel.CurrentPharmacy.ObservableLocations.Count, Mode=OneWay}" />
                         </Grid>
                     </muxc:Expander.Header>
 

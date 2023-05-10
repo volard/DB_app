@@ -167,7 +167,7 @@
                                 <TextBlock
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Center"
-                                    Text="not done yet" />
+                                    Text="{x:Bind ViewModel.CurrentHospital.ObservableLocations.Count, Mode=OneWay}" />
                             </Grid>
                         </muxc:Expander.Header>
 
@@ -213,41 +213,51 @@
 
                                 </CommandBar>
 
-                                <toolkit:DataGrid
-                                    x:Name="AddressGrid"
-                                    Margin="0,20,0,0"
-                                    AutoGenerateColumns="False"
-                                    CanUserReorderColumns="False"
-                                    GridLinesVisibility="All"
-                                    IsReadOnly="True"
-                                    ItemsSource="{x:Bind ViewModel.CurrentHospital.ObservableLocations, Mode=OneWay}"
-                                    RelativePanel.Below="AddressCommandBar"
-                                    SelectedItem="{x:Bind ViewModel.SelectedExistingLocation, Mode=TwoWay}"
-                                    SelectionMode="Single"
-                                    VerticalScrollBarVisibility="Auto"
-                                    VirtualizingStackPanel.VirtualizationMode="Recycling">
+                                <Grid Margin="0,20,0,0" RelativePanel.Below="AddressCommandBar">
 
-                                    <toolkit:DataGrid.Resources>
-                                        <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
-                                    </toolkit:DataGrid.Resources>
+                                    <toolkit:DataGrid
+                                        x:Name="AddressGrid"
+                                        AutoGenerateColumns="False"
+                                        CanUserReorderColumns="False"
+                                        GridLinesVisibility="All"
+                                        IsReadOnly="True"
+                                        ItemsSource="{x:Bind ViewModel.CurrentHospital.ObservableLocations, Mode=OneWay}"
+                                        SelectedItem="{x:Bind ViewModel.SelectedExistingLocation, Mode=TwoWay}"
+                                        SelectionMode="Single"
+                                        VerticalScrollBarVisibility="Auto"
+                                        VirtualizingStackPanel.VirtualizationMode="Recycling">
 
-                                    <toolkit:DataGrid.Columns>
+                                        <toolkit:DataGrid.Resources>
+                                            <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
+                                        </toolkit:DataGrid.Resources>
 
-                                        <toolkit:DataGridTextColumn
-                                            Width="30*"
-                                            Binding="{Binding Address.City}"
-                                            Header="City" />
-                                        <toolkit:DataGridTextColumn
-                                            Width="30*"
-                                            Binding="{Binding Address.Street}"
-                                            Header="Street" />
-                                        <toolkit:DataGridTextColumn
-                                            Width="30*"
-                                            Binding="{Binding Address.Building}"
-                                            Header="Building" />
-                                    </toolkit:DataGrid.Columns>
+                                        <toolkit:DataGrid.Columns>
 
-                                </toolkit:DataGrid>
+                                            <toolkit:DataGridTextColumn
+                                                Width="30*"
+                                                Binding="{Binding Address.City}"
+                                                Header="City" />
+                                            <toolkit:DataGridTextColumn
+                                                Width="30*"
+                                                Binding="{Binding Address.Street}"
+                                                Header="Street" />
+                                            <toolkit:DataGridTextColumn
+                                                Width="30*"
+                                                Binding="{Binding Address.Building}"
+                                                Header="Building" />
+                                        </toolkit:DataGrid.Columns>
+
+                                    </toolkit:DataGrid>
+
+
+                                    <muxc:ProgressBar
+                                        Margin="0,0,0,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Top"
+                                        IsIndeterminate="True"
+                                        Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
+                                </Grid>
+
 
                             </RelativePanel>
 

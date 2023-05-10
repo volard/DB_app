@@ -1,8 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.WinUI;
 using DB_app.Contracts.Services;
 using DB_app.Contracts.ViewModels;
 using DB_app.Core.Contracts.Services;
 using DB_app.Models;
+using Microsoft.UI.Dispatching;
 using Microsoft.Windows.ApplicationModel.Resources;
 using System.Collections.ObjectModel;
 
@@ -14,7 +16,7 @@ public partial class HospitalDetailsViewModel : ObservableRecipient, INavigation
     #region Members
 
     /// <summary>
-    /// Get unlinked addresses
+    /// Gets unlinked addresses.
     /// </summary>
     /// <returns></returns>
     public IEnumerable<Address> GetAvailableAddresses()
@@ -33,25 +35,62 @@ public partial class HospitalDetailsViewModel : ObservableRecipient, INavigation
 
     #region Properties
 
+
+    /// <summary>
+    /// Location object that binded to hospital and selected by user. 
+    /// </summary>
     [ObservableProperty]
-    public HospitalLocation? selectedExistingLocation;
+    private HospitalLocation? selectedExistingLocation;
+
+
+    /// <summary>
+    /// Gets or sets a value that indicates whether to show a progress bar. 
+    /// </summary>
+    [ObservableProperty]
+    private bool _isLoading;
+
+    private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
+
+    public readonly ResourceLoader _resourceLoader = App.GetService<ILocalizationService>().ResourceLoader;
 
     public readonly IRepositoryControllerService _repositoryControllerService = App.GetService<IRepositoryControllerService>();
-
-    public ResourceLoader resourceLoader = App.GetService<ILocalizationService>().ResourceLoader;
     
     public void OnNavigatedTo(object? parameter)
     {
-        PageTitle = resourceLoader.GetString("New_Hospital");
+        PageTitle = _resourceLoader.GetString("New_Hospital");
         if (parameter is HospitalWrapper model)
         {
             CurrentHospital = model;
             CurrentHospital.Backup();
-            PageTitle = resourceLoader.GetString("Hospital/Text") + " #" + CurrentHospital.Id;
+            PageTitle = _resourceLoader.GetString("Hospital/Text") + " #" + CurrentHospital.Id;
 
-            if (CurrentHospital.IsInEdit)
-                AvailableAddresses = new(GetAvailableAddresses());
+            if (CurrentHospital.IsInEdit) { Task.Run(LoadAvailableAddressesAsync); }
+               
         }
+    }
+
+    /// <summary>
+    /// Loads the addresses data.
+    /// </summary>
+    public async Task LoadAvailableAddressesAsync()
+    {
+        await _dispatcherQueue.EnqueueAsync(() =>
+        {
+            IsLoading = true;
+        });
+
+        var addresses = await _repositoryControllerService.Addresses.GetFreeAddressesAsync();
+
+        await _dispatcherQueue.EnqueueAsync(() =>
+        {
+            AvailableAddresses.Clear();
+            foreach (var address in addresses)
+            {
+                AvailableAddresses.Add(address);
+            }
+
+            IsLoading = false;
+        });
     }
 
     public void OnNavigatedFrom() { /* Not used */ }

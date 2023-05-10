@@ -17,6 +17,9 @@ public sealed partial class HospitalDetailsPage : Page
 {
     public HospitalDetailsViewModel ViewModel { get; } = App.GetService<HospitalDetailsViewModel>();
 
+    /// <summary>
+    /// Initializes the page and header template
+    /// </summary>
     public HospitalDetailsPage()
     {
         NavigationViewHeaderBehavior.SetHeaderMode(this, NavigationViewHeaderMode.Never);

@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:DB_app.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:vm="using:DB_app.ViewModels"
     d:DataContext="{d:DesignInstance Type=vm:HospitalsGridViewModel}"
@@ -118,6 +119,14 @@
 
                 </toolkit:DataGrid.Columns>
             </toolkit:DataGrid>
+
+            <muxc:ProgressBar
+                Margin="0,0,0,0"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Top"
+                IsIndeterminate="True"
+                Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
+
         </Grid>
 
         <toolkit:InAppNotification

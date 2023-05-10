@@ -14,12 +14,14 @@ public class SQLHospitalRepository : IHospitalRepository
 
     private readonly SQLContext _db;
 
+
     public SQLHospitalRepository(SQLContext db)
     {
         _db = db;
     }
 
 
+    /// <inheritdoc/>
     public async Task<IEnumerable<Hospital>> GetAsync()
     {
         return await _db.Hospitals
@@ -29,6 +31,7 @@ public class SQLHospitalRepository : IHospitalRepository
     }
 
 
+    /// <inheritdoc/>
     public async Task<Hospital> GetAsync(int id)
     {
         return await _db.Hospitals
@@ -36,6 +39,8 @@ public class SQLHospitalRepository : IHospitalRepository
            .FirstOrDefaultAsync(hospital => hospital.Id == id);
     }
 
+
+    /// <inheritdoc/>
     public async Task InsertAsync(Hospital hospital)
     {
         Hospital foundHospital = await _db.Hospitals
@@ -56,7 +61,7 @@ public class SQLHospitalRepository : IHospitalRepository
     }
 
 
-
+    /// <inheritdoc/>
     public async Task UpdateAsync(Hospital hospital)
     {
         Hospital foundHospital = await _db.Hospitals
@@ -76,6 +81,7 @@ public class SQLHospitalRepository : IHospitalRepository
     }
 
 
+    /// <inheritdoc/>
     public async Task DeleteAsync(int id)
     {
         var foundHospital = await _db.Hospitals.FirstOrDefaultAsync(_hospital => _hospital.Id == id);
@@ -91,6 +97,8 @@ public class SQLHospitalRepository : IHospitalRepository
         }
     }
 
+
+    /// <inheritdoc/>
     public async Task<IEnumerable<Hospital>> GetAllAsync()
     {
         return await _db.Hospitals
@@ -98,6 +106,8 @@ public class SQLHospitalRepository : IHospitalRepository
             .ToListAsync();
     }
 
+
+    /// <inheritdoc/>
     public async Task<IEnumerable<Hospital>> GetInactiveAsync()
     {
         return await _db.Hospitals
