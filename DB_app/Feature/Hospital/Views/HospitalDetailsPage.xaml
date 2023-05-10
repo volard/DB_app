@@ -18,244 +18,246 @@
         <helpers:CollapsedIf x:Key="CollapsedIf" />
     </Page.Resources>
 
+    <StackPanel>
+        <!--#region Header-->
+        <CommandBar
+            HorizontalAlignment="Stretch"
+            Background="Transparent"
+            DefaultLabelPosition="Right">
+            <CommandBar.Content>
+                <Grid>
 
-    <!--#region Header-->
-    <behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
-        <DataTemplate x:DataType="viewModel:HospitalDetailsViewModel">
-            <CommandBar
-                HorizontalAlignment="Stretch"
-                Background="Transparent"
-                DefaultLabelPosition="Right"><!--
-                <CommandBar.Content>
-                    <Grid>
-                        
-                        <TextBlock
-                            x:Name="Title"
-                            
-                            Margin="10,0,0,0"
-                            Style="{ThemeResource TitleTextBlockStyle}"
-                            Text="{Binding PageTitle, Mode=OneWay}" />
+                    <TextBlock
+                        x:Name="Title"
+                        Margin="10,0,0,0"
+                        Style="{ThemeResource TitleTextBlockStyle}"
+                        Text="{x:Bind ViewModel.PageTitle, Mode=OneWay}" />
 
-                        <InfoBadge
-                            Width="11"
-                            
-                            Height="11"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top" />
-                    </Grid>
-                        
-                </CommandBar.Content>
+                    <InfoBadge
+                        Width="11"
+                        Height="11"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Visibility="{x:Bind viewModel:Converters.VisibleIfOneOfTwo(ViewModel.CurrentHospital.IsNew, ViewModel.CurrentHospital.IsModified), Mode=OneWay}">
 
-                <AppBarButton
-                    Click="SaveButton_Click"
-                    Icon="Save"
-                    IsEnabled="{Binding CurrentHospital.HasErrors, Converter={StaticResource NotConverter}, Mode=OneWay}"
-                    Label="Save"
-                    Visibility="{Binding CurrentHospital.IsInEdit, Converter={StaticResource VisibleIf}, Mode=OneWay}" />
-                <AppBarButton
-                    Click="{x:Bind CurrentHospital.BeginEdit}"
-                    Icon="Edit"
-                    Label="Edit"
-                    Visibility="{x:Bind viewModel:Converters.CollapsedIfOneOfTwo(CurrentHospital.IsInEdit, CurrentHospital.IsNew), Mode=OneWay}" />
-                <AppBarButton
-                    Click="{x:Bind CurrentHospital.EndEdit}"
-                    Icon="Cancel"
-                    Label="Cancel"
-                    Visibility="{x:Bind viewModel:Converters.VisibleIfOneAndNotAnother(CurrentHospital.IsInEdit, CurrentHospital.IsNew), Mode=OneWay}" />
-                <AppBarButton
-                    Icon="Delete"
-                    Label="Delete"
-                    Visibility="{Binding CurrentHospital.IsNew, Converter={StaticResource CollapsedIf}, Mode=OneWay}" />
-                <AppBarButton
-                    Icon="Add"
-                    Label="Add new"
-                    Visibility="{x:Bind viewModel:Converters.CollapsedIfOneOfTwo(CurrentHospital.IsInEdit, CurrentHospital.IsNew), Mode=OneWay}" />
--->
-            </CommandBar>
-        </DataTemplate>
-    </behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
-    <!--#endregion-->
+                        <InfoBadge.IconSource>
+                            <SymbolIconSource Symbol="ReShare" />
+                        </InfoBadge.IconSource>
+
+                    </InfoBadge>
+                </Grid>
+
+            </CommandBar.Content>
+
+            <AppBarButton
+                Click="SaveButton_Click"
+                Icon="Save"
+                IsEnabled="{Binding CurrentHospital.HasErrors, Converter={StaticResource NotConverter}, Mode=OneWay}"
+                Label="Save"
+                Visibility="{Binding CurrentHospital.IsInEdit, Converter={StaticResource VisibleIf}, Mode=OneWay}" />
+            <AppBarButton
+                Click="{x:Bind ViewModel.CurrentHospital.BeginEdit}"
+                Icon="Edit"
+                Label="Edit"
+                Visibility="{x:Bind viewModel:Converters.CollapsedIfOneOfTwo(ViewModel.CurrentHospital.IsInEdit, ViewModel.CurrentHospital.IsNew), Mode=OneWay}" />
+            <AppBarButton
+                Click="{x:Bind ViewModel.CurrentHospital.EndEdit}"
+                Icon="Cancel"
+                Label="Cancel"
+                Visibility="{x:Bind viewModel:Converters.VisibleIfOneAndNotAnother(ViewModel.CurrentHospital.IsInEdit, ViewModel.CurrentHospital.IsNew), Mode=OneWay}" />
+            <AppBarButton
+                Icon="Delete"
+                Label="Delete"
+                Visibility="{Binding CurrentHospital.IsNew, Converter={StaticResource CollapsedIf}, Mode=OneWay}" />
+            <AppBarButton
+                Icon="Add"
+                Label="Add new"
+                Visibility="{x:Bind viewModel:Converters.CollapsedIfOneOfTwo(ViewModel.CurrentHospital.IsInEdit, ViewModel.CurrentHospital.IsNew), Mode=OneWay}" />
+        </CommandBar>
+
+        <!--#endregion-->
 
 
-    <RelativePanel>
-        <ScrollViewer
-            x:Name="DetailPanel"
-            RelativePanel.AlignLeftWithPanel="True"
-            RelativePanel.AlignRightWithPanel="True"
-            VerticalScrollBarVisibility="Auto"
-            VerticalScrollMode="Auto">
+        <RelativePanel>
+            <ScrollViewer
+                x:Name="DetailPanel"
+                RelativePanel.AlignLeftWithPanel="True"
+                RelativePanel.AlignRightWithPanel="True"
+                VerticalScrollBarVisibility="Auto"
+                VerticalScrollMode="Auto">
 
-            <StackPanel>
+                <StackPanel>
 
-                <StackPanel.Resources>
-                    <Style TargetType="muxc:Expander">
-                        <Setter Property="HorizontalAlignment" Value="Stretch" />
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                        <Setter Property="Margin" Value="0,10,0,0" />
-                    </Style>
-                </StackPanel.Resources>
+                    <StackPanel.Resources>
+                        <Style TargetType="muxc:Expander">
+                            <Setter Property="HorizontalAlignment" Value="Stretch" />
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                            <Setter Property="Margin" Value="0,10,0,0" />
+                        </Style>
+                    </StackPanel.Resources>
 
-                <!--#region Full name and hospital info-->
-                <muxc:Expander ExpandDirection="Down" IsExpanded="True">
+                    <!--#region Full name and hospital info-->
+                    <muxc:Expander ExpandDirection="Down" IsExpanded="True">
 
-                    <muxc:Expander.Header>
-                        <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="FullName" />
-                    </muxc:Expander.Header>
+                        <muxc:Expander.Header>
+                            <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="FullName" />
+                        </muxc:Expander.Header>
 
-                    <muxc:Expander.Content>
-                        <StackPanel>
+                        <muxc:Expander.Content>
+                            <StackPanel>
 
-                            <RelativePanel HorizontalAlignment="Stretch">
+                                <RelativePanel HorizontalAlignment="Stretch">
 
-                                <Button
-                                    Background="Red"
-                                    Click="MakeInactiveButton_ButtonClicked"
-                                    Content="Make inactive"
-                                    IsEnabled="{x:Bind ViewModel.CurrentHospital.IsActive, Mode=OneWay}"
-                                    RelativePanel.AlignRightWithPanel="True"
-                                    RelativePanel.AlignVerticalCenterWith="Surename_main_doctor"
-                                    Visibility="{x:Bind viewModel:Converters.VisibleIfOneAndNotAnother(ViewModel.CurrentHospital.IsInEdit, ViewModel.CurrentHospital.IsNew), Mode=OneWay}" />
+                                    <Button
+                                        Background="Red"
+                                        Click="MakeInactiveButton_ButtonClicked"
+                                        Content="Make inactive"
+                                        IsEnabled="{x:Bind ViewModel.CurrentHospital.IsActive, Mode=OneWay}"
+                                        RelativePanel.AlignRightWithPanel="True"
+                                        RelativePanel.AlignVerticalCenterWith="Surename_main_doctor"
+                                        Visibility="{x:Bind viewModel:Converters.VisibleIfOneAndNotAnother(ViewModel.CurrentHospital.IsInEdit, ViewModel.CurrentHospital.IsNew), Mode=OneWay}" />
 
-                                <!--  Surename doctor name  -->
+                                    <!--  Surename doctor name  -->
+                                    <components:ValidationTextBox
+                                        x:Name="Surename_main_doctor"
+                                        DataContext="{x:Bind ViewModel.CurrentHospital}"
+                                        HeaderText="Main doctor's surename"
+                                        IsReadOnly="{x:Bind ViewModel.CurrentHospital.IsInEdit, Converter={StaticResource NotConverter}, Mode=OneWay}"
+                                        PlaceholderText="Enter name"
+                                        PropertyName="Surename_main_doctor"
+                                        Text="{x:Bind ViewModel.CurrentHospital.Surename_main_doctor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                                </RelativePanel>
+
+                                <!--  Main doctor name  -->
                                 <components:ValidationTextBox
-                                    x:Name="Surename_main_doctor"
+                                    x:Name="Name_main_doctor"
                                     DataContext="{x:Bind ViewModel.CurrentHospital}"
-                                    HeaderText="Main doctor's surename"
+                                    HeaderText="Main doctor's name"
                                     IsReadOnly="{x:Bind ViewModel.CurrentHospital.IsInEdit, Converter={StaticResource NotConverter}, Mode=OneWay}"
                                     PlaceholderText="Enter name"
-                                    PropertyName="Surename_main_doctor"
-                                    Text="{x:Bind ViewModel.CurrentHospital.Surename_main_doctor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    PropertyName="Name_main_doctor"
+                                    Text="{x:Bind ViewModel.CurrentHospital.Name_main_doctor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                                <!--  Middle doctor name  -->
+                                <components:ValidationTextBox
+                                    x:Name="Middlename_main_doctor"
+                                    DataContext="{x:Bind ViewModel.CurrentHospital}"
+                                    HeaderText="Main doctor's middlename"
+                                    IsReadOnly="{x:Bind ViewModel.CurrentHospital.IsInEdit, Converter={StaticResource NotConverter}, Mode=OneWay}"
+                                    PlaceholderText="Enter name"
+                                    PropertyName="Middlename_main_doctor"
+                                    Text="{x:Bind ViewModel.CurrentHospital.Middlename_main_doctor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                            </StackPanel>
+                        </muxc:Expander.Content>
+                    </muxc:Expander>
+                    <!--#endregion-->
+
+                    <!--#region Addresses list in expander-->
+                    <muxc:Expander
+                        x:Name="ExpanderAddresses"
+                        ExpandDirection="Down"
+                        IsExpanded="True"
+                        Visibility="{x:Bind viewModel:Converters.VisibleIf(ViewModel.CurrentHospital.IsActive), Mode=OneWay}">
+
+                        <muxc:Expander.Header>
+                            <Grid>
+                                <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="Addresses" />
+                                <TextBlock
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    Text="not done yet" />
+                            </Grid>
+                        </muxc:Expander.Header>
+
+                        <muxc:Expander.Content>
+
+                            <RelativePanel>
+
+                                <CommandBar
+                                    x:Name="AddressCommandBar"
+                                    Margin="0,30,0,0"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalContentAlignment="Center"
+                                    Background="Transparent"
+                                    DefaultLabelPosition="Right"
+                                    RelativePanel.AlignRightWithPanel="True"
+                                    Visibility="{x:Bind viewModel:Converters.VisibleIf(ViewModel.CurrentHospital.IsInEdit), Mode=OneWay}">
+
+
+                                    <CommandBar.Content>
+
+                                        <ComboBox
+                                            Width="380"
+                                            VerticalAlignment="Stretch"
+                                            ItemsSource="{x:Bind ViewModel.AvailableAddresses}"
+                                            PlaceholderText="Select new address"
+                                            SelectedItem="{x:Bind ViewModel.SelectedAddress, Mode=TwoWay}" />
+
+                                    </CommandBar.Content>
+
+                                    <AppBarButton
+                                        x:Name="AddressCommandBarAddButton"
+                                        Click="{x:Bind AddSelectedButton_Clicked}"
+                                        Icon="Add"
+                                        Label="Add selected"
+                                        ToolTipService.ToolTip="Add selected" />
+
+                                    <AppBarButton
+                                        x:Name="AddressCommandBarDeleteButton"
+                                        Click="{x:Bind DeleteSelectedButton_Clicked}"
+                                        Icon="Delete"
+                                        Label="Delete"
+                                        ToolTipService.ToolTip="Delete" />
+
+                                </CommandBar>
+
+                                <toolkit:DataGrid
+                                    x:Name="AddressGrid"
+                                    Margin="0,20,0,0"
+                                    AutoGenerateColumns="False"
+                                    CanUserReorderColumns="False"
+                                    GridLinesVisibility="All"
+                                    IsReadOnly="True"
+                                    ItemsSource="{x:Bind ViewModel.CurrentHospital.ObservableLocations, Mode=OneWay}"
+                                    RelativePanel.Below="AddressCommandBar"
+                                    SelectedItem="{x:Bind ViewModel.SelectedExistingLocation, Mode=TwoWay}"
+                                    SelectionMode="Single"
+                                    VerticalScrollBarVisibility="Auto"
+                                    VirtualizingStackPanel.VirtualizationMode="Recycling">
+
+                                    <toolkit:DataGrid.Resources>
+                                        <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
+                                    </toolkit:DataGrid.Resources>
+
+                                    <toolkit:DataGrid.Columns>
+
+                                        <toolkit:DataGridTextColumn
+                                            Width="30*"
+                                            Binding="{Binding Address.City}"
+                                            Header="City" />
+                                        <toolkit:DataGridTextColumn
+                                            Width="30*"
+                                            Binding="{Binding Address.Street}"
+                                            Header="Street" />
+                                        <toolkit:DataGridTextColumn
+                                            Width="30*"
+                                            Binding="{Binding Address.Building}"
+                                            Header="Building" />
+                                    </toolkit:DataGrid.Columns>
+
+                                </toolkit:DataGrid>
 
                             </RelativePanel>
 
-                            <!--  Main doctor name  -->
-                            <components:ValidationTextBox
-                                x:Name="Name_main_doctor"
-                                DataContext="{x:Bind ViewModel.CurrentHospital}"
-                                HeaderText="Main doctor's name"
-                                IsReadOnly="{x:Bind ViewModel.CurrentHospital.IsInEdit, Converter={StaticResource NotConverter}, Mode=OneWay}"
-                                PlaceholderText="Enter name"
-                                PropertyName="Name_main_doctor"
-                                Text="{x:Bind ViewModel.CurrentHospital.Name_main_doctor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </muxc:Expander.Content>
 
-                            <!--  Middle doctor name  -->
-                            <components:ValidationTextBox
-                                x:Name="Middlename_main_doctor"
-                                DataContext="{x:Bind ViewModel.CurrentHospital}"
-                                HeaderText="Main doctor's middlename"
-                                IsReadOnly="{x:Bind ViewModel.CurrentHospital.IsInEdit, Converter={StaticResource NotConverter}, Mode=OneWay}"
-                                PlaceholderText="Enter name"
-                                PropertyName="Middlename_main_doctor"
-                                Text="{x:Bind ViewModel.CurrentHospital.Middlename_main_doctor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </muxc:Expander>
+                    <!--#endregion-->
 
-                        </StackPanel>
-                    </muxc:Expander.Content>
-                </muxc:Expander>
-                <!--#endregion-->
-
-                <!--#region Addresses list in expander-->
-                <muxc:Expander
-                    x:Name="ExpanderAddresses"
-                    ExpandDirection="Down"
-                    IsExpanded="True"
-                    Visibility="{x:Bind viewModel:Converters.VisibleIf(ViewModel.CurrentHospital.IsActive), Mode=OneWay}">
-
-                    <muxc:Expander.Header>
-                        <Grid>
-                            <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="Addresses" />
-                            <TextBlock
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Center"
-                                Text="not done yet" />
-                        </Grid>
-                    </muxc:Expander.Header>
-
-                    <muxc:Expander.Content>
-
-                        <RelativePanel>
-
-                            <CommandBar
-                                x:Name="AddressCommandBar"
-                                Margin="0,30,0,0"
-                                HorizontalAlignment="Stretch"
-                                VerticalContentAlignment="Center"
-                                Background="Transparent"
-                                DefaultLabelPosition="Right"
-                                RelativePanel.AlignRightWithPanel="True"
-                                Visibility="{x:Bind viewModel:Converters.VisibleIf(ViewModel.CurrentHospital.IsInEdit), Mode=OneWay}">
-
-
-                                <CommandBar.Content>
-
-                                    <ComboBox
-                                        Width="380"
-                                        VerticalAlignment="Stretch"
-                                        ItemsSource="{x:Bind ViewModel.AvailableAddresses}"
-                                        PlaceholderText="Select new address"
-                                        SelectedItem="{x:Bind ViewModel.SelectedAddress, Mode=TwoWay}" />
-
-                                </CommandBar.Content>
-
-                                <AppBarButton
-                                    x:Name="AddressCommandBarAddButton"
-                                    Click="{x:Bind AddSelectedButton_Clicked}"
-                                    Icon="Add"
-                                    Label="Add selected"
-                                    ToolTipService.ToolTip="Add selected" />
-
-                                <AppBarButton
-                                    x:Name="AddressCommandBarDeleteButton"
-                                    Click="{x:Bind DeleteSelectedButton_Clicked}"
-                                    Icon="Delete"
-                                    Label="Delete"
-                                    ToolTipService.ToolTip="Delete" />
-
-                            </CommandBar>
-
-                            <toolkit:DataGrid
-                                x:Name="AddressGrid"
-                                Margin="0,20,0,0"
-                                AutoGenerateColumns="False"
-                                CanUserReorderColumns="False"
-                                GridLinesVisibility="All"
-                                IsReadOnly="True"
-                                ItemsSource="{x:Bind ViewModel.CurrentHospital.ObservableLocations, Mode=OneWay}"
-                                RelativePanel.Below="AddressCommandBar"
-                                SelectedItem="{x:Bind ViewModel.SelectedExistingLocation, Mode=TwoWay}"
-                                SelectionMode="Single"
-                                VerticalScrollBarVisibility="Auto"
-                                VirtualizingStackPanel.VirtualizationMode="Recycling">
-
-                                <toolkit:DataGrid.Resources>
-                                    <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
-                                </toolkit:DataGrid.Resources>
-
-                                <toolkit:DataGrid.Columns>
-
-                                    <toolkit:DataGridTextColumn
-                                        Width="30*"
-                                        Binding="{Binding Address.City}"
-                                        Header="City" />
-                                    <toolkit:DataGridTextColumn
-                                        Width="30*"
-                                        Binding="{Binding Address.Street}"
-                                        Header="Street" />
-                                    <toolkit:DataGridTextColumn
-                                        Width="30*"
-                                        Binding="{Binding Address.Building}"
-                                        Header="Building" />
-                                </toolkit:DataGrid.Columns>
-
-                            </toolkit:DataGrid>
-
-                        </RelativePanel>
-
-                    </muxc:Expander.Content>
-
-                </muxc:Expander>
-                <!--#endregion-->
-
-            </StackPanel>
-        </ScrollViewer>
-    </RelativePanel>
+                </StackPanel>
+            </ScrollViewer>
+        </RelativePanel>
+    </StackPanel>
 </Page>

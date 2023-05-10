@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Navigation;
+using System.Diagnostics;
 using Windows.ApplicationModel.Resources;
 
 namespace DB_app.Views;
@@ -14,41 +15,34 @@ namespace DB_app.Views;
 /// </summary>
 public sealed partial class HospitalDetailsPage : Page
 {
-    public HospitalDetailsViewModel ViewModel { get; }
-
-    public ResourceLoader ResourceLoader { get; set; } = ResourceLoader.GetForCurrentView();
+    public HospitalDetailsViewModel ViewModel { get; } = App.GetService<HospitalDetailsViewModel>();
 
     public HospitalDetailsPage()
     {
-        ViewModel = App.GetService<HospitalDetailsViewModel>();
+        NavigationViewHeaderBehavior.SetHeaderMode(this, NavigationViewHeaderMode.Never);
         InitializeComponent();
-        SetBinding(NavigationViewHeaderBehavior.HeaderContextProperty, new Binding
-        {
-            Source = ViewModel,
-            Mode = BindingMode.OneWay
-        });
-        //rl.GetString("Hospital.Text");
     }
 
     private async void MakeInactiveButton_ButtonClicked(object sender, RoutedEventArgs e)
     {
-        ContentDialog dialog = new();
-
-        // XamlRoot must be set in the case of a ContentDialog running in a Desktop app
-        dialog.XamlRoot = this.XamlRoot;
-        dialog.Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style;
-        dialog.Title = "Are you sure?";
-        dialog.PrimaryButtonText = "Confirm";
-        dialog.CloseButtonText = "Cancel";
-        dialog.DefaultButton = ContentDialogButton.Primary;
-        dialog.Content = "When you disable hospital, it will be unlinked from its addresses and become read only.";
+        ContentDialog dialog = new()
+        {
+            XamlRoot = this.XamlRoot,
+            Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style,
+            Title = "Are you sure?",
+            PrimaryButtonText = "Confirm",
+            CloseButtonText = "Cancel",
+            DefaultButton = ContentDialogButton.Primary,
+            Content = "When you disable hospital, it will be unlinked from its addresses and become read only."
+        };
 
         var result = await dialog.ShowAsync();
+
         if (result == ContentDialogResult.Primary)
         {
         }
     }
-
+    
     public void AddSelectedButton_Clicked(object sender, RoutedEventArgs e)
     {
         if (ViewModel.SelectedAddress == null) return;
@@ -60,7 +54,6 @@ public sealed partial class HospitalDetailsPage : Page
 
     public void DeleteSelectedButton_Clicked(object sender, RoutedEventArgs e)
     {
-        //await ViewModel._repositoryControllerService.Hospitals.UpdateAsync(ViewModel.CurrentHospital.HospitalData);
         if (ViewModel.SelectedExistingLocation == null) return;
 
         ViewModel.AvailableAddresses.Add(ViewModel.SelectedExistingLocation.Address);

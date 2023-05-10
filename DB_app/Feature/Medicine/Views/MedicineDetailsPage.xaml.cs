@@ -20,11 +20,6 @@ public sealed partial class MedicineDetailsPage : Page
     {
         ViewModel = App.GetService<MedicineDetailsViewModel>();
         InitializeComponent();
-        SetBinding(NavigationViewHeaderBehavior.HeaderContextProperty, new Binding
-        {
-            Source = ViewModel,
-            Mode = BindingMode.OneWay
-        });
     }
 
     private async void SaveButton_Click(object sender, RoutedEventArgs e)

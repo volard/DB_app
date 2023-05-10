@@ -210,4 +210,7 @@
   <data name="New.Text" xml:space="preserve">
     <value>New</value>
   </data>
+  <data name="New_Hospital" xml:space="preserve">
+    <value>New hospital</value>
+  </data>
 </root>

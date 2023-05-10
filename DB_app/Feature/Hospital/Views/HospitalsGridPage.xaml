@@ -16,17 +16,18 @@
     </Page.Resources>
 
     <!--#region Header-->
-    <!--
     <behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
-        <DataTemplate x:DataType="vm:HospitalsGridViewModel"> -->
-    <StackPanel>
+        <DataTemplate x:DataType="vm:HospitalsGridViewModel">
             <CommandBar
                 HorizontalAlignment="Stretch"
                 Background="Transparent"
                 DefaultLabelPosition="Right">
 
                 <CommandBar.Content>
-                    <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="Hospitals" />
+                    <TextBlock
+                        x:Name="Title"
+                        Style="{ThemeResource TitleTextBlockStyle}"
+                        Text="Hospital" />
                 </CommandBar.Content>
 
                 <AppBarToggleButton
@@ -68,9 +69,8 @@
                     ToolTipService.ToolTip="Delete" />
 
             </CommandBar>
-            <!--
         </DataTemplate>
-    </behaviors:NavigationViewHeaderBehavior.HeaderTemplate> -->
+    </behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
     <!--#endregion-->
 
     <Grid
@@ -100,9 +100,7 @@
                 <toolkit:DataGrid.Columns>
 
 
-                    <toolkit:DataGridTextColumn
-                        Binding="{Binding Id}"
-                        Header="Number" />
+                    <toolkit:DataGridTextColumn Binding="{Binding Id}" Header="Number" />
 
                     <toolkit:DataGridTextColumn
                         Width="20*"
@@ -130,5 +128,4 @@
 
 
     </Grid>
-</StackPanel>
 </Page>

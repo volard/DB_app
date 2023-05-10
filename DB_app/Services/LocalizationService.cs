@@ -10,6 +10,8 @@ public class LocalizationService : ILocalizationService
 
     private readonly ILocalSettingsService _localSettingsService;
 
+    public ResourceLoader ResourceLoader { get; private set; } = new ResourceLoader();
+
     private readonly ResourceManager _resourceManager;
     private readonly ResourceContext _resourceContext;
 

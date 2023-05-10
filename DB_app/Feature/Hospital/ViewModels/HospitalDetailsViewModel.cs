@@ -1,7 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using DB_app.Contracts.Services;
 using DB_app.Contracts.ViewModels;
 using DB_app.Core.Contracts.Services;
 using DB_app.Models;
+using Microsoft.Windows.ApplicationModel.Resources;
 using System.Collections.ObjectModel;
 
 namespace DB_app.ViewModels;
@@ -36,13 +38,16 @@ public partial class HospitalDetailsViewModel : ObservableRecipient, INavigation
 
     public readonly IRepositoryControllerService _repositoryControllerService = App.GetService<IRepositoryControllerService>();
 
+    public ResourceLoader resourceLoader = App.GetService<ILocalizationService>().ResourceLoader;
+    
     public void OnNavigatedTo(object? parameter)
     {
+        PageTitle = resourceLoader.GetString("New_Hospital");
         if (parameter is HospitalWrapper model)
         {
             CurrentHospital = model;
             CurrentHospital.Backup();
-            PageTitle = "Hospital #" + CurrentHospital.Id;
+            PageTitle = resourceLoader.GetString("Hospital/Text") + " #" + CurrentHospital.Id;
 
             if (CurrentHospital.IsInEdit)
                 AvailableAddresses = new(GetAvailableAddresses());
@@ -53,14 +58,13 @@ public partial class HospitalDetailsViewModel : ObservableRecipient, INavigation
 
     public HospitalWrapper CurrentHospital { get; set; } = new HospitalWrapper{ IsNew = true, IsInEdit = true };
 
-
     public ObservableCollection<Address> AvailableAddresses { get; set; } = new();
 
     [ObservableProperty]
-    public Address selectedAddress;
+    private Address selectedAddress;
 
     [ObservableProperty]
-    private string pageTitle = "sadfasdf";
+    private string _pageTitle;
 
     #endregion
 }

@@ -25,7 +25,9 @@
                 Background="Transparent"
                 DefaultLabelPosition="Right">
                 <CommandBar.Content>
-                    <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="New medicine" />
+                    <Grid>
+                       
+                    </Grid>
                 </CommandBar.Content>
 
 
@@ -53,15 +55,15 @@
                 <AppBarButton
                     Click="AddButton_Click"
                     Icon="Add"
-                    Visibility="{x:Bind viewModel:Converters.CollapsedIfOneOfTwo(CurrentMedicine.IsInEdit, CurrentMedicine.IsNew), Mode=OneWay}"
-                    Label="Add new" />
+                    Label="Add new"
+                    Visibility="{x:Bind viewModel:Converters.CollapsedIfOneOfTwo(CurrentMedicine.IsInEdit, CurrentMedicine.IsNew), Mode=OneWay}" />
             </CommandBar>
         </DataTemplate>
     </behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
     <!--#endregion-->
 
-    
-    <!--#region  Content -->
+
+    <!--#region  Content-->
     <ScrollViewer
         x:Name="DetailPanel"
         RelativePanel.AlignLeftWithPanel="True"
@@ -71,8 +73,8 @@
         VerticalScrollMode="Auto">
 
         <StackPanel Margin="8,0,0,12">
-            
-            <!--Name input -->
+
+            <!--  Name input  -->
             <components:ValidationTextBox
                 x:Name="Name"
                 DataContext="{x:Bind ViewModel.CurrentMedicine}"
@@ -82,7 +84,7 @@
                 PropertyName="Name"
                 Text="{x:Bind ViewModel.CurrentMedicine.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-            <!-- Type input -->
+            <!--  Type input  -->
             <components:ValidationTextBox
                 x:Name="Type"
                 DataContext="{x:Bind ViewModel.CurrentMedicine}"
@@ -92,7 +94,7 @@
                 PropertyName="Type"
                 Text="{x:Bind ViewModel.CurrentMedicine.Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-            <!-- Notification -->
+            <!--  Notification  -->
             <toolkit:InAppNotification
                 x:Name="Notification"
                 RelativePanel.AlignBottomWithPanel="True"

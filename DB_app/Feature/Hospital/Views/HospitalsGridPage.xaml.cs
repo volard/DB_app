@@ -4,6 +4,7 @@ using DB_app.Helpers;
 using DB_app.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Navigation;
 
 namespace DB_app.Views;
@@ -18,7 +19,11 @@ public sealed partial class HospitalsGridPage : Page
     {
         ViewModel = App.GetService<HospitalsGridViewModel>();
         InitializeComponent();
-        NavigationViewHeaderBehavior.SetHeaderMode(this, NavigationViewHeaderMode.Never);
+        SetBinding(NavigationViewHeaderBehavior.HeaderContextProperty, new Binding
+        {
+            Source = ViewModel,
+            Mode = BindingMode.OneWay
+        });
     }
 
 
