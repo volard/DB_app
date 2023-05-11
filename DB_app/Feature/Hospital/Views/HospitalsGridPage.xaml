@@ -9,6 +9,7 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:vm="using:DB_app.ViewModels"
+    NavigationCacheMode="Enabled"
     d:DataContext="{d:DesignInstance Type=vm:HospitalsGridViewModel}"
     mc:Ignorable="d">
 
@@ -28,7 +29,7 @@
                     <TextBlock
                         x:Name="Title"
                         Style="{ThemeResource TitleTextBlockStyle}"
-                        Text="Hospital" />
+                        x:Uid="Hospitals" />
                 </CommandBar.Content>
 
                 <AppBarToggleButton
@@ -36,7 +37,6 @@
                     Click="Button_Click"
                     Content="Show inactive"
                     Icon="ProtectedDocument" />
-
 
                 <AppBarButton
                     x:Name="CommandBarAddButton"
@@ -91,7 +91,7 @@
                 SelectionMode="Single"
                 Style="{StaticResource DataGridStyle1}"
                 VerticalScrollBarVisibility="Auto"
-                VirtualizingStackPanel.VirtualizationMode="Recycling">
+                >
 
 
                 <toolkit:DataGrid.Resources>

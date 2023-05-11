@@ -12,6 +12,9 @@ using WinUIEx.Messaging;
 
 namespace DB_app.Views;
 
+// Reduces warning noise on parameters that are needed for signature requirements
+#pragma warning disable IDE0060
+
 public sealed partial class MedicineDetailsPage : Page
 {
     public MedicineDetailsViewModel ViewModel { get; }
@@ -123,3 +126,5 @@ public sealed partial class MedicineDetailsPage : Page
 
 
 }
+
+#pragma warning restore IDE0060

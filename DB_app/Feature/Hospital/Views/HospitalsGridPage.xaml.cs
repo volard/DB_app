@@ -7,17 +7,17 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Navigation;
 
+
 namespace DB_app.Views;
 
 
 public sealed partial class HospitalsGridPage : Page
 {
-    public HospitalsGridViewModel ViewModel { get; }
+    public HospitalsGridViewModel ViewModel { get; } = App.GetService<HospitalsGridViewModel>();
 
 
     public HospitalsGridPage()
     {
-        ViewModel = App.GetService<HospitalsGridViewModel>();
         InitializeComponent();
         SetBinding(NavigationViewHeaderBehavior.HeaderContextProperty, new Binding
         {
@@ -36,36 +36,37 @@ public sealed partial class HospitalsGridPage : Page
 
     protected override void OnNavigatedFrom(NavigationEventArgs e)
     {
-        ViewModel.OperationRejected-= ShowNotificationMessage;
+        ViewModel.OperationRejected -= ShowNotificationMessage;
         base.OnNavigatedFrom(e);
     }
 
 
-    private void ShowNotificationMessage(object? _, ListEventArgs e)
+    private void ShowNotificationMessage(object? sender, ListEventArgs e)
     {
         var message = e.Data[0];
     }
 
 
-    private void Add_Click(object? _, RoutedEventArgs e) =>
-        App.GetService<INavigationService>().NavigateTo(typeof(HospitalDetailsViewModel).FullName!, new AddressWrapper() { IsNew = true, IsInEdit = true });
+    private void Add_Click(object? sender, RoutedEventArgs e) =>
+        App.GetService<INavigationService>().NavigateTo(typeof(HospitalDetailsViewModel).FullName!, new HospitalWrapper() { IsNew = true, IsInEdit = true });
 
 
-    private void View_Click(object? _, RoutedEventArgs e) =>
+    private void View_Click(object? sender, RoutedEventArgs e) =>
         App.GetService<INavigationService>().NavigateTo(typeof(HospitalDetailsViewModel).FullName!, ViewModel.SelectedItem);
 
 
-    private async void Delete_Click(object? _, RoutedEventArgs e) =>
+    private async void Delete_Click(object? sender, RoutedEventArgs e) =>
         await ViewModel.DeleteSelected();
 
 
-    private void Edit_Click(object? _, RoutedEventArgs e)
+    private void Edit_Click(object? sender, RoutedEventArgs e)
     {
         if (ViewModel.SelectedItem == null) return;
 
         ViewModel.SelectedItem.IsInEdit = true;
         App.GetService<INavigationService>().NavigateTo(typeof(HospitalDetailsViewModel).FullName!, ViewModel.SelectedItem);
     }
+
 
     private async void Button_Click(object sender, RoutedEventArgs e)
         => await ViewModel.ToggleInactive();

@@ -10,13 +10,15 @@ using Microsoft.UI.Xaml.Navigation;
 
 namespace DB_app.Views;
 
+// Reduces warning noise on parameters that are needed for signature requirements
+#pragma warning disable IDE0060
+
 public sealed partial class AddressDetailsPage : Page
 {
-    public AddressDetailsViewModel ViewModel { get; }
+    public AddressDetailsViewModel ViewModel { get; }= App.GetService<AddressDetailsViewModel>();
 
     public AddressDetailsPage()
     {
-        ViewModel = App.GetService<AddressDetailsViewModel>();
         InitializeComponent();
         SetBinding(NavigationViewHeaderBehavior.HeaderContextProperty, new Binding
         {
@@ -29,10 +31,9 @@ public sealed partial class AddressDetailsPage : Page
         Building.CustomTextChanged += new TextChangedEventHandler(Text_TextChanged);
     }
 
-    private async void SaveButton_Click(object sender, RoutedEventArgs e)
+    private void SaveButton_Click(object sender, RoutedEventArgs e)
     {
-        bool result = await ViewModel.CurrentAddress.SaveAsync();
-
+        _ = ViewModel.CurrentAddress.SaveAsync();
     }
 
     /// <summary>
@@ -41,7 +42,6 @@ public sealed partial class AddressDetailsPage : Page
     private void CancelButton_Click(object? sender, RoutedEventArgs e)
     {
         ViewModel.CurrentAddress.CancelEdit();
-        ViewModel.CurrentAddress.IsInEdit = false;
     }
 
 
@@ -50,6 +50,8 @@ public sealed partial class AddressDetailsPage : Page
         try
         {
             await App.GetService<IRepositoryControllerService>().Addresses.DeleteAsync(ViewModel.CurrentAddress.Id);
+
+            // Sync with grid
             Frame.GoBack();
             WeakReferenceMessenger.Default.Send(new DeleteRecordMessage<AddressWrapper>(ViewModel.CurrentAddress));
         } 
@@ -72,7 +74,7 @@ public sealed partial class AddressDetailsPage : Page
     }
 
 
-
+    
     /// <summary>
     /// Check whether there are unsaved changes and warn the user.
     /// </summary>
@@ -121,8 +123,6 @@ public sealed partial class AddressDetailsPage : Page
 
     private void Text_TextChanged(object sender, TextChangedEventArgs e)
     {
-        // NOTE this is useless actually. Every time current address changes - text become in modified state but its 
-        // not modified actually
         if (ViewModel.CurrentAddress.IsInEdit) 
         {
             ViewModel.CurrentAddress.IsModified = true;
@@ -131,3 +131,5 @@ public sealed partial class AddressDetailsPage : Page
 
 
 }
+
+#pragma warning restore IDE0060

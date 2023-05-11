@@ -4,6 +4,8 @@ Dumb-ass native application for Windows to control turnover of medicines on a ma
 
 ## ⚡️ Requirements
 - Windows 10 ver. 1809 or higher
+- [Fonts](https://learn.microsoft.com/ru-ru/windows/apps/design/downloads/#fonts)
+
 
 ## 🛠️ Development
 - .NET 7
@@ -12,7 +14,9 @@ Dumb-ass native application for Windows to control turnover of medicines on a ma
 - WinUI 3
 - MVVM Toolkit
 
+
 ## 🌍 References
+
 
 ### Docs
 - [CI Pipelines for Template Studio projects](https://github.com/microsoft/TemplateStudio/blob/main/docs/WinUI/pipelines/README.md)

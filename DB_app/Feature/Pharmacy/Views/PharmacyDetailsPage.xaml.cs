@@ -14,18 +14,16 @@ namespace DB_app.Views;
 /// </summary>
 public sealed partial class PharmacyDetailsPage : Page
 {
-    public PharmacyDetailsViewModel ViewModel { get; }
+    public PharmacyDetailsViewModel ViewModel { get; } = App.GetService<PharmacyDetailsViewModel>();
 
     public PharmacyDetailsPage()
     {
-        ViewModel = App.GetService<PharmacyDetailsViewModel>();
         InitializeComponent();
         SetBinding(NavigationViewHeaderBehavior.HeaderContextProperty, new Binding
         {
             Source = ViewModel,
             Mode = BindingMode.OneWay
         });
-
     }
 
     private async void MakeInactiveButton_ButtonClicked(object sender, RoutedEventArgs e)

@@ -67,6 +67,11 @@ public static class Converters
         if (lhs || rhs) return Visibility.Collapsed; else return Visibility.Visible;
     }
 
+    public static Visibility VisibleItNotNull(object obj)
+    {
+        if (obj is null) return Visibility.Collapsed; else return Visibility.Visible;
+    }
+
     public static Visibility VisibleIfOneAndNotAnother(bool lhs, bool rhs)
     {
         if (lhs && !rhs) return Visibility.Visible; else return Visibility.Collapsed;

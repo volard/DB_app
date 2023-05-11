@@ -10,6 +10,8 @@ using DB_app.Contracts.Services;
 using Microsoft.UI.Dispatching;
 using Microsoft.Windows.ApplicationModel.Resources;
 using CommunityToolkit.WinUI;
+using System.Diagnostics;
+using System.Collections.Specialized;
 
 namespace DB_app.ViewModels;
 
@@ -19,7 +21,14 @@ public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAw
 
     public HospitalsGridViewModel()
     {
-        WeakReferenceMessenger.Default.Register(this);
+        WeakReferenceMessenger.Default.Register<AddRecordMessage<HospitalWrapper>>(this, (r, m) =>
+        {
+            if (r is HospitalsGridViewModel hospitalViewModel)
+            {
+                hospitalViewModel.Source.Insert(0, m.Value);
+                OnPropertyChanged(nameof(Source));
+            }
+        });
     }
 
     #region Properties
@@ -57,10 +66,10 @@ public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAw
 
     private bool IsInactiveEnabled = false;
 
-    #endregion
+#endregion
 
 
-    #region Members
+#region Members
 
 
     public void Receive(DeleteRecordMessage<HospitalWrapper> message)
@@ -68,6 +77,10 @@ public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAw
         var givenHospitalWrapper = message.Value;
         Source.Remove(givenHospitalWrapper);
     }
+
+    // Register a message in some module
+    
+
 
 
     /// <summary>
@@ -125,7 +138,7 @@ public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAw
             try
             {
 
-                int id = SelectedItem.HospitalData.Id;
+                int id = SelectedItem.Id;
                 await _repositoryControllerService.Addresses.DeleteAsync(id);
 
                 Source.Remove(SelectedItem);
@@ -151,5 +164,6 @@ public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAw
 
     public void OnNavigatedFrom(){}
 
-    #endregion
+#endregion
+
 }

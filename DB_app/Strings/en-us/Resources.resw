@@ -213,4 +213,7 @@
   <data name="New_Hospital" xml:space="preserve">
     <value>New hospital</value>
   </data>
+  <data name="Hospitals.Text" xml:space="preserve">
+    <value>Hospitals</value>
+  </data>
 </root>

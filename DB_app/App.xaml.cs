@@ -18,6 +18,7 @@ using Windows.Storage;
 using System.Diagnostics;
 using CommunityToolkit.Mvvm.Messaging;
 
+
 namespace DB_app;
 
 /// <summary>
@@ -196,10 +197,18 @@ public partial class App : Application
         UnhandledException += App_UnhandledException;
     }
 
+    /// <summary>
+    /// Deals with XAML unhandled exceptions that can be handled by app code, 
+    /// as forwarded from a native-level Windows Runtime error. Apps can mark the occurrence as handled in event data.
+    /// </summary>
+    /// <remarks>
+    /// To get more details: <seealso href="https://learn.microsoft.com/en-us/uwp/api/windows.ui.xaml.application.unhandledexception?view=winrt-22621"/>
+    /// </remarks>
     private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
     {
-        Debug.WriteLine("========= Error occured =========");
+        Debug.WriteLine("\n========= Microsoft.UI.Xaml.UnhandledException occured =========");
         Debug.WriteLine(e.Message);
+        Debug.WriteLine("================================================================\n");
     }
 
     /// <summary>
@@ -209,6 +218,6 @@ public partial class App : Application
     {
         base.OnLaunched(args);
 
-        await App.GetService<IActivationService>().ActivateAsync(args);
+        await GetService<IActivationService>().ActivateAsync(args);
     }
 }

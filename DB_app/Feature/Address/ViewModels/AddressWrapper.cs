@@ -11,7 +11,8 @@ namespace DB_app.ViewModels;
 /// </summary>
 public sealed partial class AddressWrapper : ObservableValidator, IEditableObject
 {
-    #region Constructors
+
+#region Constructors
 
     /// <summary>
     /// Initialize new AddressWrapper object
@@ -26,14 +27,14 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
         else { AddressData = address; }
     }
 
-    #endregion
+#endregion
 
 
 
 
 
 
-    #region Properties
+#region Properties
 
     /// <summary>
     /// Underlying <see cref="Address"/> data
@@ -81,14 +82,14 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
     /// Indicates about changes that is not synced with UI DataGrid
     /// </summary>
     [ObservableProperty]
-    private bool isModified = false;
+    private bool _isModified = false;
 
 
     /// <summary>
     /// Indicate edit mode
     /// </summary>
     [ObservableProperty]
-    private bool isInEdit = false;
+    private bool _isInEdit = false;
 
 
     /// <summary>
@@ -97,7 +98,7 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
     [ObservableProperty]
     private bool _isNew = false;
 
-    #endregion
+#endregion
 
 
 
@@ -118,7 +119,7 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
 
 
 
-    #region Modification methods
+#region Modification methods
 
 
     /// <summary>
@@ -146,6 +147,7 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
         {
             await App.GetService<IRepositoryControllerService>().Addresses.UpdateAsync(AddressData);
         }
+        IsNew = false;
         return true;
     }
 
@@ -155,20 +157,20 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
     public void Backup() =>
         _backupData = _addressData;
 
-    #endregion
+
+#endregion
 
 
 
 
 
 
-    #region IEditable implementation
+#region IEditable implementation
 
 
     public void BeginEdit()
     {
-        this.IsInEdit = true;
-        OnPropertyChanged(nameof(IsInEdit));
+        IsInEdit = true;
         Backup();
     }
 
@@ -199,7 +201,8 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
             Building == other?.Building;
     }
 
-    // TODO GetHashCode() implementation
     
-    #endregion
+#endregion
+
+
 }
