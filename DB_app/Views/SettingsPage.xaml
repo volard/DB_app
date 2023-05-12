@@ -15,9 +15,9 @@
     
     <Grid>
         <StackPanel x:Name="ContentArea">
-            
+
             <TextBlock x:Uid="Settings_Personalization" Style="{ThemeResource SubtitleTextBlockStyle}" />
-            
+
             <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
                 <TextBlock x:Uid="Settings_Theme" />
 
@@ -55,7 +55,6 @@
                 </StackPanel>
             </StackPanel>
 
-            </StackPanel>
         </StackPanel>
     </Grid>
 </Page>

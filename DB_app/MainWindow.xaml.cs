@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.WinUI;
+using Microsoft.Windows.ApplicationModel.Resources;
 
 namespace DB_app;
 
@@ -10,6 +11,9 @@ public sealed partial class MainWindow : WindowEx
 
         AppWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/WindowIcon.ico"));
         Content = null;
-        Title = "AppDisplayName".GetLocalized();
+
+        ResourceLoader _resourceLoader = new();
+
+        Title = _resourceLoader.GetString("AppDisplayName");
     }
 }

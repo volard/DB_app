@@ -3,9 +3,9 @@ using CommunityToolkit.WinUI;
 using DB_app.Contracts.Services;
 using DB_app.Contracts.ViewModels;
 using DB_app.Core.Contracts.Services;
+using DB_app.Helpers;
 using DB_app.Models;
 using Microsoft.UI.Dispatching;
-using Microsoft.Windows.ApplicationModel.Resources;
 using System.Collections.ObjectModel;
 
 namespace DB_app.ViewModels;
@@ -51,9 +51,9 @@ public partial class HospitalDetailsViewModel : ObservableRecipient, INavigation
         }
 
         if (CurrentHospital.IsNew)
-            PageTitle = "New_Hospital".GetLocalized();
+            PageTitle = "New_Hospital".GetLocalizedValue();
         else
-            PageTitle = "Hospital/Text".GetLocalized() + " #" + CurrentHospital.Id;
+            PageTitle = "Hospital/Text".GetLocalizedValue() + " #" + CurrentHospital.Id;
     }
 
    
