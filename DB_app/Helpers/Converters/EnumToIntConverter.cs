@@ -1,5 +1,5 @@
-﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Data;
+﻿using Microsoft.UI.Xaml.Data;
+using Microsoft.UI.Xaml;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,24 +8,20 @@ using System.Threading.Tasks;
 
 namespace DB_app.Helpers;
 
-public class DoubleToIntConverter : IValueConverter
+public class EnumToIntConverter : IValueConverter
 {
+    public EnumToIntConverter()
+    {
+    }
+
     public object Convert(object value, Type targetType, object parameter, string language)
     {
-        if (value is double num)
-        {
-            return (int)num;
-        }
-        else { return (int)0; }
+        return (int)value;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, string language)
     {
-        if (value is int num)
-        {
-            return (double)num;
-        }
-        else { return (double)0; }
+        return 0; // Not used
     }
-
 }
+

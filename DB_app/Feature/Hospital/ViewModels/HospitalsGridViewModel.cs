@@ -138,12 +138,12 @@ public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAw
 
                 Source.Remove(SelectedItem);
 
-                DisplayInAppNotification?.Invoke(this, new NotificationConfigurationEventArgs("Операция успешно выполнена", ApperienceType.Success));
+                DisplayInAppNotification?.Invoke(this, new NotificationConfigurationEventArgs("Операция успешно выполнена", NotificationType.Success));
 
             }
             catch (LinkedRecordOperationException)
             {
-                DisplayInAppNotification?.Invoke(this, new NotificationConfigurationEventArgs("Адресс связан с организацией. Удалите связанную организацию, чтобы удалить адрес", ApperienceType.Error));
+                DisplayInAppNotification?.Invoke(this, new NotificationConfigurationEventArgs("Адресс связан с организацией. Удалите связанную организацию, чтобы удалить адрес", NotificationType.Error));
             }
         }
     }

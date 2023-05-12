@@ -7,52 +7,64 @@ using DB_app.Contracts.Services;
 using DB_app.Helpers;
 
 using Microsoft.UI.Xaml;
-
+using Microsoft.UI.Xaml.Controls;
 using Windows.ApplicationModel;
 
 namespace DB_app.ViewModels;
 
-public class SettingsViewModel : ObservableRecipient
+public partial class SettingsViewModel : ObservableRecipient
 {
+    private ElementTheme _appElementTheme;
 
-    private ElementTheme _elementTheme;
-    public ElementTheme ElementTheme
+    public ElementTheme AppElementTheme
     {
-        get => _elementTheme;
-        set => SetProperty(ref _elementTheme, value);
+        get => _appElementTheme;
+        set => SetProperty(ref _appElementTheme, value);
     }
 
-    private string _versionDescription;
+
+    private string _version = GetVersion();
+    public string Version
+    {
+        get => _versionDescription;
+        set => SetProperty(ref _version, value);
+    }
+
+    private string _versionDescription = GetVersionDescription();
     public string VersionDescription
     {
         get => _versionDescription;
         set => SetProperty(ref _versionDescription, value);
     }
+    private readonly IThemeSelectorService _themeSelectorService = App.GetService<IThemeSelectorService>();
 
-    public ICommand SwitchThemeCommand
-    {
-        get;
-    }
 
-    private readonly IThemeSelectorService _themeSelectorService;
+    
+
     public SettingsViewModel(IThemeSelectorService themeSelectorService)
     {
-        _themeSelectorService = themeSelectorService;
-        _elementTheme = _themeSelectorService.Theme;
-        _versionDescription = GetVersionDescription();
-
-        SwitchThemeCommand = new RelayCommand<ElementTheme>(
-            async (param) =>
-            {
-                if (ElementTheme != param)
-                {
-                    ElementTheme = param;
-                    await _themeSelectorService.SetThemeAsync(param);
-                }
-            });
+        AppElementTheme = _themeSelectorService.Theme;
     }
 
-    private static string GetVersionDescription()
+    public async void theme_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        var comboBox = sender as ComboBox;
+        if (comboBox == null || comboBox.SelectedIndex == -1) { return; }
+        var item = comboBox.SelectedItem as ComboBoxItem;
+        if (item == null) { return; }
+        var tag = item.Tag.ToString();
+        if (string.IsNullOrEmpty(tag)) {  return; }
+        ElementTheme param = (ElementTheme)Enum.Parse(typeof(ElementTheme), tag);
+
+        if (AppElementTheme != param)
+        {
+            AppElementTheme = param;
+            await _themeSelectorService.SetThemeAsync(param);
+        }
+    }
+
+
+    private static string GetVersion()
     {
         Version version;
 
@@ -67,6 +79,11 @@ public class SettingsViewModel : ObservableRecipient
             version = Assembly.GetExecutingAssembly().GetName().Version!;
         }
 
-        return $"{"AppDisplayName".GetLocalizedValue()} - {version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
+        return $"{version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
+    }
+
+    private static string GetVersionDescription()
+    {
+        return $"{"AppDisplayName".GetLocalizedValue()} - {GetVersion()}";
     }
 }

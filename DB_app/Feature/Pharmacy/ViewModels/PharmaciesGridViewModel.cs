@@ -84,12 +84,12 @@ private readonly IRepositoryControllerService _repositoryControllerService
 
                 Source.Remove(SelectedItem);
 
-                OperationRejected?.Invoke(this, new NotificationConfigurationEventArgs("Everything is good", ApperienceType.Success));
+                OperationRejected?.Invoke(this, new NotificationConfigurationEventArgs("Everything is good", NotificationType.Success));
 
             }
             catch (LinkedRecordOperationException)
             {
-                OperationRejected?.Invoke(this, new NotificationConfigurationEventArgs("Адресс связан с организацией. Удалите связанную организацию, чтобы удалить адрес", ApperienceType.Error));
+                OperationRejected?.Invoke(this, new NotificationConfigurationEventArgs("Адресс связан с организацией. Удалите связанную организацию, чтобы удалить адрес", NotificationType.Error));
             }
         }
     }

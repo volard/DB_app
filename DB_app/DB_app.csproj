@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="AddressesGridPage.xaml" />
+    <None Remove="Assets\icons8-pharmacy-shop-48.png" />
     <None Remove="Fonts\Segoe Fluent Icons.ttf" />
     <None Remove="Styles\Icons.xaml" />
     <None Remove="Styles\NotificationStyle.xaml" />

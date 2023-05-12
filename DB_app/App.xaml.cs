@@ -65,13 +65,15 @@ public partial class App : Application
         ConfigureServices((context, services) =>
         {
             // --------------------------------
-            // Default Activation Handler
+            #region Default Activation Handler
             // --------------------------------
             services.AddTransient<ActivationHandler<LaunchActivatedEventArgs>, DefaultActivationHandler>();
 
+            #endregion
+
 
             // --------------------------------
-            // Services
+            #region Services
             // --------------------------------
             //register a class as the interface in the DI IServiceCollection container
             services.AddSingleton<ILocalSettingsService, LocalSettingsService>();
@@ -85,21 +87,21 @@ public partial class App : Application
 
             services.AddSingleton<IMessenger>(WeakReferenceMessenger.Default);
 
+            #endregion
+
 
             // --------------------------------
-            // Repository Services
+            #region Repository Services
             // --------------------------------
 
             services.AddSingleton<IFileService, FileService>();
 
+            #endregion
+
 
             // --------------------------------
-            // Views and ViewModels
+            #region Views and ViewModels
             // --------------------------------
-
-            // === Address
-            services.AddTransient<AddressDetailsViewModel>();
-
 
             // === Medicine
             services.AddTransient<MedicineDetailsPage>();
@@ -164,17 +166,17 @@ public partial class App : Application
             services.AddTransient<ShellPage>();
             services.AddTransient<ShellViewModel>();
 
+            #endregion
+
 
             // --------------------------------
-            // Configuration
+            #region Configuration
             // --------------------------------
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
 
 
-            var connectionString = context.Configuration.GetValue<string>("ConnectionStrings:Default");
-
-            var optionsBuilder = new DbContextOptionsBuilder<SQLContext>();
-
+            var connectionString    = context.Configuration.GetValue<string>("ConnectionStrings:Default");
+            var optionsBuilder      = new DbContextOptionsBuilder<SQLContext>();
             string demoDatabasePath = Package.Current.InstalledLocation.Path   + @"\Assets\SQLiteDatabase.db";
             string databasePath     = ApplicationData.Current.LocalFolder.Path + @"\SQLiteDatabase.db";
             
@@ -191,6 +193,8 @@ public partial class App : Application
             var options = optionsBuilder.EnableSensitiveDataLogging().UseSqlite("Data Source=Database.db").Options;
 
             services.AddSingleton<IRepositoryControllerService>(new SQLControllerService(options));
+
+            #endregion
         }).
         Build();
 

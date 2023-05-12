@@ -11,21 +11,21 @@ public class NotificationConfigurationEventArgs : EventArgs
 
     public Style? Style { get; }
 
-    public NotificationConfigurationEventArgs(string message, ApperienceType type)
+    public NotificationConfigurationEventArgs(string message, NotificationType type)
     {
         Message = message;
         Style = type switch
         {
-            ApperienceType.Success => Application.Current.Resources["SuccessInAppNavigationStyle"] as Style,
-            ApperienceType.Error   => Application.Current.Resources["ErrorInAppNavigationStyle"] as Style,
-            ApperienceType.Info    => Application.Current.Resources["InfoInAppNavigationStyle"] as Style,
+            NotificationType.Success => Application.Current.Resources["SuccessInAppNavigationStyle"] as Style,
+            NotificationType.Error   => Application.Current.Resources["ErrorInAppNavigationStyle"] as Style,
+            NotificationType.Info    => Application.Current.Resources["InfoInAppNavigationStyle"] as Style,
             _                      => throw new ArgumentException($"{nameof(type)} not expected ApperienceType value: {type}"),
         };
         if (Style is null) throw new Exception("Provided InAppNotification style not found in the project");
     }
 }
 
-public enum ApperienceType
+public enum NotificationType
 {
     Success,
     Error,

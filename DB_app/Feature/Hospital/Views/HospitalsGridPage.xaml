@@ -132,10 +132,7 @@
             x:Name="Notification"
             RelativePanel.AlignBottomWithPanel="True"
             RelativePanel.AlignHorizontalCenterWithPanel="True"
-            StackMode="Replace">
-            
-
-        </toolkit:InAppNotification>
+            StackMode="Replace" />
 
 
     </Grid>

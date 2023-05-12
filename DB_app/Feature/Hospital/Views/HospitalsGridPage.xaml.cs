@@ -10,7 +10,8 @@ using Microsoft.UI.Xaml.Navigation;
 
 namespace DB_app.Views;
 
-
+// Reduces warning noise on parameters that are needed for signature requirements
+#pragma warning disable IDE0060
 public sealed partial class HospitalsGridPage : Page
 {
     public HospitalsGridViewModel ViewModel { get; } = App.GetService<HospitalsGridViewModel>();
@@ -32,11 +33,6 @@ public sealed partial class HospitalsGridPage : Page
     public HospitalsGridPage()
     {
         InitializeComponent();
-
-        //Uri resourceLocater = new Uri("pack://application:DB_app/;component/Styles/CustomStyle.xaml", System.UriKind.Absolute);
-        //Uri resourceLocater = new Uri("/Shared;component/Styles/CustomStyle.xaml", System.UriKind.Relative);
-        //ResourceDictionary resourceDictionary = (ResourceDictionary)Application.LoadComponent(resourceLocater);
-        //var debug = Application.Current.Resources[""];
 
         SetBinding(NavigationViewHeaderBehavior.HeaderContextProperty, new Binding
         {
@@ -97,3 +93,5 @@ public sealed partial class HospitalsGridPage : Page
 
 
 }
+
+#pragma warning restore IDE0060
