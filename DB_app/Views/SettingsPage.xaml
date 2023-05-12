@@ -4,21 +4,47 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:DB_app.Helpers"
+    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:xaml="using:Microsoft.UI.Xaml"
     mc:Ignorable="d">
-    
+
     <Page.Resources>
         <helpers:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
+
+        <!--  These styles can be referenced to create a consistent SettingsPage layout  -->
+
+        <!--  Spacing between cards  -->
+        <x:Double x:Key="SettingsCardSpacing">3</x:Double>
+
+        <!--  Style (inc. the correct spacing) of a section header  -->
+        <Style
+            x:Key="SettingsSectionHeaderTextBlockStyle"
+            BasedOn="{StaticResource BodyStrongTextBlockStyle}"
+            TargetType="TextBlock">
+            <Style.Setters>
+                <Setter Property="Margin" Value="1,29,0,5" />
+            </Style.Setters>
+        </Style>
     </Page.Resources>
+
+
+    <TextBlock
+            x:Name="PageHeader"
+            Margin="36,24,36,0"
+            Style="{StaticResource TitleTextBlockStyle}"
+            Text="Settings" />
+    <ScrollViewer
+            x:Name="contentSV"
     
-    
+
     <Grid>
         <StackPanel x:Name="ContentArea">
 
             <TextBlock x:Uid="Settings_Personalization" Style="{ThemeResource SubtitleTextBlockStyle}" />
 
             <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
+                
                 <TextBlock x:Uid="Settings_Theme" />
 
                 <StackPanel Margin="{StaticResource XSmallTopMargin}">
@@ -52,6 +78,72 @@
                             <xaml:ElementTheme>Default</xaml:ElementTheme>
                         </RadioButton.CommandParameter>
                     </RadioButton>
+
+                    <!--  Apperance & behaviour  -->
+                    <labs:SettingsCard Description="Select which app theme to display" Header="App theme">
+
+                        <labs:SettingsCard.HeaderIcon>
+                            <FontIcon Glyph="&#xE790;" />
+                        </labs:SettingsCard.HeaderIcon>
+
+                        <ComboBox SelectedIndex="0">
+                            <ComboBoxItem Content="Use system setting" Tag="Default" ></ComboBoxItem>
+                            <ComboBoxItem Content="Dark" Tag="Dark" ></ComboBoxItem>
+                            <ComboBoxItem Content="Light" Tag="Light" ></ComboBoxItem>
+                        </ComboBox>
+                    </labs:SettingsCard>
+
+                    <!--  About  -->
+                    <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="About" />
+                    <labs:SettingsExpander Description="© 2023 Microsoft. All rights reserved." Header="{StaticResource AppTitleName}">
+                        <labs:SettingsExpander.HeaderIcon>
+                            <BitmapIcon ShowAsMonochrome="False" UriSource="/Assets/Tiles/SmallTile-sdk.png" />
+                        </labs:SettingsExpander.HeaderIcon>
+                        <TextBlock
+                            Margin="0,-2,0,0"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            IsTextSelectionEnabled="True"
+                            Text="{x:Bind Version}" />
+                        <labs:SettingsExpander.Items>
+                            <labs:SettingsCard Header="To clone this repository">
+                                <TextBlock
+                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                    IsTextSelectionEnabled="True"
+                                    Text="git clone https://github.com/microsoft/WinUI-Gallery" />
+                            </labs:SettingsCard>
+                            <labs:SettingsCard
+                                x:Name="bugRequestCard"
+                                Click="bugRequestCard_Click"
+                                Header="File a bug or request new sample"
+                                IsClickEnabled="True">
+                                <labs:SettingsCard.ActionIcon>
+                                    <FontIcon Glyph="&#xE8A7;" />
+                                </labs:SettingsCard.ActionIcon>
+                            </labs:SettingsCard>
+                            <labs:SettingsCard
+                                HorizontalContentAlignment="Left"
+                                ContentAlignment="Vertical"
+                                Header="Dependencies &amp; references">
+                                <StackPanel Margin="-12,0,0,0" Orientation="Vertical">
+                                    <HyperlinkButton Content="{x:Bind WinAppSdkRuntimeDetails}" NavigateUri="https://aka.ms/windowsappsdk" />
+                                    <HyperlinkButton Content="Windows UI Library" NavigateUri="https://aka.ms/winui" />
+                                    <HyperlinkButton Content="Windows Community Toolkit" NavigateUri="https://github.com/CommunityToolkit/WindowsCommunityToolkit" />
+                                    <HyperlinkButton Content="ColorCode-Universal" NavigateUri="https://github.com/WilliamABradley/ColorCode-Universal" />
+                                    <HyperlinkButton Content="Win2D" NavigateUri="https://github.com/Microsoft/Win2D" />
+                                </StackPanel>
+                            </labs:SettingsCard>
+                            <labs:SettingsCard
+                                HorizontalContentAlignment="Left"
+                                ContentAlignment="Vertical"
+                                Header="THIS CODE AND INFORMATION IS PROVIDED ‘AS IS’ WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.">
+                                <StackPanel Margin="-12,0,0,0" Orientation="Vertical">
+                                    <HyperlinkButton Content="Microsoft Services Agreement" NavigateUri="https://go.microsoft.com/fwlink/?LinkId=822631" />
+                                    <HyperlinkButton Content="Microsoft Privacy Statement" NavigateUri="https://go.microsoft.com/fwlink/?LinkId=521839" />
+                                </StackPanel>
+                            </labs:SettingsCard>
+                        </labs:SettingsExpander.Items>
+                    </labs:SettingsExpander>
+
                 </StackPanel>
             </StackPanel>
 
