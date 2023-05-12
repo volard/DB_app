@@ -6,9 +6,7 @@ using DB_app.Services.Messages;
 using CommunityToolkit.Mvvm.Messaging;
 using DB_app.Helpers;
 using DB_app.Repository;
-using DB_app.Contracts.Services;
 using Microsoft.UI.Dispatching;
-using Microsoft.Windows.ApplicationModel.Resources;
 using CommunityToolkit.WinUI;
 using System.Diagnostics;
 using System.Collections.Specialized;
@@ -52,17 +50,10 @@ public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAw
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
     /// <summary>
-    /// Dependency representing Resource loader
-    /// </summary>
-    public readonly ResourceLoader _resourceLoader = App.GetService<ILocalizationService>().ResourceLoader;
-
-    /// <summary>
     /// Represents selected by user HospitalWrapper object
     /// </summary>
     [ObservableProperty]
     private HospitalWrapper? _selectedItem;
-
-    public event EventHandler<ListEventArgs>? OperationRejected;
 
     private bool IsInactiveEnabled = false;
 
@@ -130,6 +121,11 @@ public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAw
         IsInactiveEnabled = !IsInactiveEnabled;
     }
 
+    /// <summary>
+    /// Occurs when <c><see cref="CommunityToolkit.WinUI.UI.Controls.InAppNotification"/></c> is displaying
+    /// </summary>
+    public event EventHandler<NotificationConfigurationEventArgs>? DisplayInAppNotification;
+
 
     public async Task DeleteSelected()
     {
@@ -137,18 +133,17 @@ public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAw
         {
             try
             {
-
                 int id = SelectedItem.Id;
-                await _repositoryControllerService.Addresses.DeleteAsync(id);
+                await _repositoryControllerService.Hospitals.DeleteAsync(id);
 
                 Source.Remove(SelectedItem);
 
-                OperationRejected?.Invoke(this, new ListEventArgs(new List<String>() { "Everything is good" }));
+                DisplayInAppNotification?.Invoke(this, new NotificationConfigurationEventArgs("Операция успешно выполнена", ApperienceType.Success));
 
             }
             catch (LinkedRecordOperationException)
             {
-                OperationRejected?.Invoke(this, new ListEventArgs(new List<String>() { "Адресс связан с организацией. Удалите связанную организацию, чтобы удалить адрес" }));
+                DisplayInAppNotification?.Invoke(this, new NotificationConfigurationEventArgs("Адресс связан с организацией. Удалите связанную организацию, чтобы удалить адрес", ApperienceType.Error));
             }
         }
     }

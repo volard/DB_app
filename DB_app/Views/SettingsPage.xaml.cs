@@ -7,15 +7,10 @@ namespace DB_app.Views;
 
 public sealed partial class SettingsPage : Page
 {
-    // TODO Add settigns panes to enhance UI with modern stuff
-    public SettingsViewModel ViewModel
-    {
-        get;
-    }
+    public SettingsViewModel ViewModel { get; } = App.GetService<SettingsViewModel>();
 
     public SettingsPage()
     {
-        ViewModel = App.GetService<SettingsViewModel>();
         InitializeComponent();
     }
 }

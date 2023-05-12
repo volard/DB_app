@@ -7,8 +7,6 @@ public interface ILocalizationService
 {
     List<LanguageItem> Languages { get; }
 
-    public ResourceLoader ResourceLoader { get; }
-
     LanguageItem GetCurrentLanguageItem();
     Task InitializeAsync();
     Task SetLanguageAsync(LanguageItem languageItem);

@@ -26,10 +26,10 @@ public sealed partial class OrdersGridPage : Page
         
     }
 
-    private void ShowNotificationMessage(object? sender, ListEventArgs e)
+    private void ShowNotificationMessage(object? sender, NotificationConfigurationEventArgs e)
     {
-        var message = e.Data[0];
-        Notification.Content = message;
+        Notification.Content = e.Message;
+        Notification.Style = e.Style;
         Notification.Show(2000);
     }
 

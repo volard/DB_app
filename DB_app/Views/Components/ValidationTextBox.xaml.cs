@@ -2,6 +2,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 
 namespace DB_app.Views.Components;
 
@@ -15,7 +16,6 @@ public sealed partial class ValidationTextBox : UserControl
     {
         this.InitializeComponent();
         DataContextChanged += ValidationTextBox_DataContextChanged;
-
     }
 
 

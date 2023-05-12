@@ -8,6 +8,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <controls:XamlControlsResources>
                     <controls:XamlControlsResources.MergedDictionaries>
+                        <ResourceDictionary Source="/Styles/NotificationStyle.xaml" />
                         <ResourceDictionary Source="/Styles/FontSizes.xaml" />
                         <ResourceDictionary Source="/Styles/Thickness.xaml" />
                         <ResourceDictionary Source="/Styles/TextBlock.xaml" />
@@ -28,7 +29,16 @@
                     </controls:XamlControlsResources.MergedDictionaries>
                 </controls:XamlControlsResources>
             </ResourceDictionary.MergedDictionaries>
+            <!-- 
+                Not all icons available in WinUi 3 are in Fluent UI System Icons. Some of them require the Segoe Fluent Icons font.
+                NOTE According to the EULA of Segoe Fluent Icons shipping a copy of it with this dll is not allowed :)
+            
+                Segoe Fluent Icons is installed by default on Windows 11, but to enable icons in an application 
+                for Windows 10, I have to manually add the font to application's resources.
+            -->
+            <FontFamily x:Key="SegoeFluentIcons">pack://application:DB_app/;component/Fonts/#Segoe Fluent Icons</FontFamily>
         </ResourceDictionary>
         
     </Application.Resources>
+    
 </Application>

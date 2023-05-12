@@ -48,7 +48,7 @@
 
                 <NavigationViewItem x:Uid="Shell_Greeting" helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.GreetingViewModel">
                     <NavigationViewItem.Icon>
-                        <PathIcon HorizontalAlignment="Stretch" Data="{StaticResource Home}" />
+                        <FontIcon FontFamily="{StaticResource SegoeFluentIcons}" Glyph="&#xEA8A;" ></FontIcon>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
 

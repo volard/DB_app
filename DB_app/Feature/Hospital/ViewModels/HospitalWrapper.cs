@@ -64,27 +64,9 @@ public sealed partial class HospitalWrapper : ObservableValidator, IEditableObje
         Middlename_main_doctor = HospitalData.Middlename_main_doctor;
         IsActive = HospitalData.IsActive;
         ObservableLocations = new(HospitalData.Locations);
-        OnPropertyChanged(string.Empty);
     }
 
     public Hospital HospitalData { get; set; } = new();
-
-
-
-    //public Hospital HospitalData
-    //{
-    //    get => _hospitalData;
-    //    set
-    //    {
-    //        _hospitalData = value;
-    //        Name_main_doctor = _hospitalData.Name_main_doctor;
-    //        Surename_main_doctor = _hospitalData.Surename_main_doctor;
-    //        Middlename_main_doctor = _hospitalData.Middlename_main_doctor;
-    //        IsActive = _hospitalData.IsActive;
-    //        ObservableLocations = new(HospitalData.Locations);
-    //    }
-    //}
-
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
@@ -115,10 +97,11 @@ public sealed partial class HospitalWrapper : ObservableValidator, IEditableObje
     [NotifyPropertyChangedFor(nameof(IsModified))]
     [ObservableProperty]
     private ObservableCollection<HospitalLocation> _observableLocations = new();
-
+    
 
     [ObservableProperty]
-    private bool _isActive = true;
+    [NotifyPropertyChangedFor(nameof(IsModified))]
+    private bool _isActive;
 
 
     public int Id { get => HospitalData.Id; }
@@ -245,10 +228,6 @@ public sealed partial class HospitalWrapper : ObservableValidator, IEditableObje
     public void CancelEdit()
     {
         InitFields();
-        //Name_main_doctor = _hospitalData.Name_main_doctor;
-        //Surename_main_doctor = _hospitalData.Surename_main_doctor;
-        //Middlename_main_doctor = _hospitalData.Middlename_main_doctor;
-        //IsModified = false;
         IsInEdit = false;
     }
 
@@ -262,6 +241,7 @@ public sealed partial class HospitalWrapper : ObservableValidator, IEditableObje
         HospitalData.Name_main_doctor = Name_main_doctor!;
         HospitalData.Surename_main_doctor = Surename_main_doctor!;
         HospitalData.Middlename_main_doctor = Middlename_main_doctor!;
+        HospitalData.IsActive = IsActive;
         HospitalData.Locations = ObservableLocations.ToList();
     }
 

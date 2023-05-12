@@ -40,7 +40,7 @@ public partial class AddressesGridViewModel : ObservableRecipient, INavigationAw
     private AddressWrapper? selectedItem;
 
 
-    public event EventHandler<ListEventArgs>? OperationRejected;
+    public event EventHandler<NotificationConfigurationEventArgs>? OperationRejected;
 
 
     public async Task DeleteSelected()
@@ -55,12 +55,12 @@ public partial class AddressesGridViewModel : ObservableRecipient, INavigationAw
 
                 Source.Remove(SelectedItem);
 
-                OperationRejected?.Invoke(this, new ListEventArgs(new List<String>() { "Everything is good" }));
+                OperationRejected?.Invoke(this, new NotificationConfigurationEventArgs("Everything is good", ApperienceType.Success));
 
             }
             catch (LinkedRecordOperationException)
             {
-                OperationRejected?.Invoke(this, new ListEventArgs(new List<String>() { "Адресс связан с организацией. Удалите связанную организацию, чтобы удалить адрес" }));
+                OperationRejected?.Invoke(this, new NotificationConfigurationEventArgs("Адресс связан с организацией. Удалите связанную организацию, чтобы удалить адрес", ApperienceType.Error));
             }
         }
     }

@@ -109,9 +109,7 @@
 
                     <muxc:Expander.Content>
                         <StackPanel>
-
                             <RelativePanel HorizontalAlignment="Stretch">
-
                                 <Button
                                     Background="Red"
                                     Click="MakeInactiveButton_ButtonClicked"
@@ -121,6 +119,7 @@
                                     RelativePanel.AlignVerticalCenterWith="Surename_main_doctor"
                                     Visibility="{x:Bind viewModel:Converters.VisibleIfOneAndNotAnother(ViewModel.CurrentHospital.IsInEdit, ViewModel.CurrentHospital.IsNew), Mode=OneWay}" />
 
+                                
                                 <!--  Surename doctor name  -->
                                 <components:ValidationTextBox
                                     x:Name="Surename_main_doctor"
@@ -192,7 +191,7 @@
 
                                 <CommandBar.Content>
                                     <StackPanel Orientation="Horizontal">
-                                        <FontIcon Margin="0,0,20,0" FontFamily="Segoe MDL2 Assets" Foreground="Orange" Glyph="&#xE946;">
+                                        <FontIcon Margin="0,0,20,0" FontFamily="Segoe MDL2 Assets" Foreground="DodgerBlue" Glyph="&#xE946;">
                                             <ToolTipService.ToolTip>
                                                 <ToolTip Content="At least one address have to be provided otherwise organisation becomes inactive"/>
                                             </ToolTipService.ToolTip>

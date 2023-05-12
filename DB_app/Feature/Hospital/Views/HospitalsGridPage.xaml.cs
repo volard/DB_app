@@ -15,10 +15,29 @@ public sealed partial class HospitalsGridPage : Page
 {
     public HospitalsGridViewModel ViewModel { get; } = App.GetService<HospitalsGridViewModel>();
 
+    /// <summary>
+    /// Raises the <see cref="ViewModel.DisplayInAppNotification"/> event.
+    /// </summary>
+    /// <param name="e">The input <see cref="NotificationConfigurationEventArgs"/> instance.</param>
+    private void ShowNotificationMessage(object? sender, NotificationConfigurationEventArgs e)
+    {
+        Notification.Content = e.Message;
+        Notification.Style = e.Style;
+        Notification.Show(2000);
+    }
 
+    /// <summary>
+    /// Initializes the page.
+    /// </summary>
     public HospitalsGridPage()
     {
         InitializeComponent();
+
+        //Uri resourceLocater = new Uri("pack://application:DB_app/;component/Styles/CustomStyle.xaml", System.UriKind.Absolute);
+        //Uri resourceLocater = new Uri("/Shared;component/Styles/CustomStyle.xaml", System.UriKind.Relative);
+        //ResourceDictionary resourceDictionary = (ResourceDictionary)Application.LoadComponent(resourceLocater);
+        //var debug = Application.Current.Resources[""];
+
         SetBinding(NavigationViewHeaderBehavior.HeaderContextProperty, new Binding
         {
             Source = ViewModel,
@@ -26,26 +45,30 @@ public sealed partial class HospitalsGridPage : Page
         });
     }
 
+    /**************************************/
+    #region Navigation Handlers
+    /**************************************/
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
-        ViewModel.OperationRejected += ShowNotificationMessage;
+        ViewModel.DisplayInAppNotification += ShowNotificationMessage;
         base.OnNavigatedTo(e);
     }
 
 
     protected override void OnNavigatedFrom(NavigationEventArgs e)
     {
-        ViewModel.OperationRejected -= ShowNotificationMessage;
+        ViewModel.DisplayInAppNotification -= ShowNotificationMessage;
         base.OnNavigatedFrom(e);
     }
 
 
-    private void ShowNotificationMessage(object? sender, ListEventArgs e)
-    {
-        var message = e.Data[0];
-    }
+    #endregion
 
+
+    /**************************************/
+    #region AppBar button click handlers
+    /**************************************/
 
     private void Add_Click(object? sender, RoutedEventArgs e) =>
         App.GetService<INavigationService>().NavigateTo(typeof(HospitalDetailsViewModel).FullName!, new HospitalWrapper() { IsNew = true, IsInEdit = true });
@@ -55,8 +78,8 @@ public sealed partial class HospitalsGridPage : Page
         App.GetService<INavigationService>().NavigateTo(typeof(HospitalDetailsViewModel).FullName!, ViewModel.SelectedItem);
 
 
-    private async void Delete_Click(object? sender, RoutedEventArgs e) =>
-        await ViewModel.DeleteSelected();
+    private void Delete_Click(object? sender, RoutedEventArgs e) =>
+        _ = ViewModel.DeleteSelected();
 
 
     private void Edit_Click(object? sender, RoutedEventArgs e)
@@ -67,7 +90,10 @@ public sealed partial class HospitalsGridPage : Page
         App.GetService<INavigationService>().NavigateTo(typeof(HospitalDetailsViewModel).FullName!, ViewModel.SelectedItem);
     }
 
-
-    private async void Button_Click(object sender, RoutedEventArgs e)
+    private async void ToggleInactive_Click(object sender, RoutedEventArgs e)
         => await ViewModel.ToggleInactive();
+
+    #endregion
+
+
 }

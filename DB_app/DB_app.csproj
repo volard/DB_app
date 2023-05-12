@@ -40,7 +40,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="AddressesGridPage.xaml" />
+    <None Remove="Fonts\Segoe Fluent Icons.ttf" />
     <None Remove="Styles\Icons.xaml" />
+    <None Remove="Styles\NotificationStyle.xaml" />
     <None Remove="Views\Address\AddressDetailsPage.xaml" />
     <None Remove="Views\Components\ContentDialogContent.xaml" />
     <None Remove="Views\Components\ValidationTextBox.xaml" />
@@ -77,6 +79,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Page Update="Styles\NotificationStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Views\Components\ContentDialogContent.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -170,5 +175,11 @@
   
   <ItemGroup>
     <PRIResource Remove="Feature\Address\NewFolder\**" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Resource Include="Fonts\Segoe Fluent Icons.ttf">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 </Project>

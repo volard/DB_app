@@ -51,9 +51,9 @@ public partial class HospitalDetailsViewModel : ObservableRecipient, INavigation
         }
 
         if (CurrentHospital.IsNew)
-            PageTitle = _resourceLoader.GetString("New_Hospital");
+            PageTitle = "New_Hospital".GetLocalized();
         else
-            PageTitle = _resourceLoader.GetString("Hospital/Text") + " #" + CurrentHospital.Id;
+            PageTitle = "Hospital/Text".GetLocalized() + " #" + CurrentHospital.Id;
     }
 
    
@@ -66,8 +66,6 @@ public partial class HospitalDetailsViewModel : ObservableRecipient, INavigation
 #region Properties
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-
-    public readonly ResourceLoader _resourceLoader = App.GetService<ILocalizationService>().ResourceLoader;
 
     public readonly IRepositoryControllerService _repositoryControllerService = App.GetService<IRepositoryControllerService>();
 

@@ -9,8 +9,8 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:vm="using:DB_app.ViewModels"
-    NavigationCacheMode="Enabled"
     d:DataContext="{d:DesignInstance Type=vm:HospitalsGridViewModel}"
+    NavigationCacheMode="Enabled"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -28,13 +28,13 @@
                 <CommandBar.Content>
                     <TextBlock
                         x:Name="Title"
-                        Style="{ThemeResource TitleTextBlockStyle}"
-                        x:Uid="Hospitals" />
+                        x:Uid="Hospitals"
+                        Style="{ThemeResource TitleTextBlockStyle}" />
                 </CommandBar.Content>
 
                 <AppBarToggleButton
                     x:Name="InactiveToggler"
-                    Click="Button_Click"
+                    Click="ToggleInactive_Click"
                     Content="Show inactive"
                     Icon="ProtectedDocument" />
 
@@ -90,8 +90,7 @@
                 SelectedItem="{x:Bind ViewModel.SelectedItem, Mode=TwoWay}"
                 SelectionMode="Single"
                 Style="{StaticResource DataGridStyle1}"
-                VerticalScrollBarVisibility="Auto"
-                >
+                VerticalScrollBarVisibility="Auto">
 
 
                 <toolkit:DataGrid.Resources>
@@ -133,7 +132,10 @@
             x:Name="Notification"
             RelativePanel.AlignBottomWithPanel="True"
             RelativePanel.AlignHorizontalCenterWithPanel="True"
-            StackMode="Replace" />
+            StackMode="Replace">
+            
+
+        </toolkit:InAppNotification>
 
 
     </Grid>

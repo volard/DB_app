@@ -32,10 +32,6 @@ public sealed partial class HospitalDetailsPage : Page
             Source = ViewModel,
             Mode = BindingMode.OneWay
         });
-
-        Surename_main_doctor.CustomTextChanged += new TextChangedEventHandler(Field_FieldChanged<TextChangedEventArgs>);
-        Name_main_doctor.CustomTextChanged += new TextChangedEventHandler(Field_FieldChanged<TextChangedEventArgs>);
-        Middlename_main_doctor.CustomTextChanged += new TextChangedEventHandler(Field_FieldChanged<TextChangedEventArgs>);
     }
 
     private async void MakeInactiveButton_ButtonClicked(object sender, RoutedEventArgs e)
@@ -63,7 +59,6 @@ public sealed partial class HospitalDetailsPage : Page
         if (ViewModel.SelectedAddress == null) return;
 
         ViewModel.CurrentHospital.ObservableLocations.Add(new HospitalLocation(ViewModel.SelectedAddress));
-        //ViewModel.CurrentHospital.IsModified = true;
         ViewModel.AvailableAddresses.Remove(ViewModel.SelectedAddress);
     }
 
@@ -76,7 +71,6 @@ public sealed partial class HospitalDetailsPage : Page
         ViewModel.CurrentHospital.ObservableLocations.Remove(ViewModel.SelectedExistingLocation);
         ViewModel.CurrentHospital.HospitalData.Locations.Remove(ViewModel.SelectedExistingLocation);
         ViewModel.SelectedExistingLocation = null;
-        //ViewModel.CurrentHospital.IsModified = true;
     }
 
     private async void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -99,20 +93,6 @@ public sealed partial class HospitalDetailsPage : Page
     /// </summary>
     protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
     {
-    }
-
-    private void Field_FieldChanged<T>(object sender, T e)
-    {
-        //if (ViewModel.CurrentHospital.IsInEdit)
-            //ViewModel.CurrentHospital.IsModified = true;
-    }
-
-    private void Text_TextChanged(object sender, TextChangedEventArgs e)
-    {
-        if (ViewModel.CurrentHospital.IsInEdit)
-        {
-            //ViewModel.CurrentHospital.IsModified = true;
-        }
     }
 
     protected override void OnNavigatedTo(NavigationEventArgs e){ /* not used */ }

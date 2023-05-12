@@ -25,7 +25,7 @@
             IsSpellCheckEnabled="False"
             IsReadOnly="{Binding IsReadOnly, ElementName=self}"
             PlaceholderText="{x:Bind PlaceholderText}"
-            Text="{x:Bind Text}"
+            Text="{x:Bind Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             TextChanged="PART_TextBox_TextChanged" />
         <FontIcon
             x:Name="PART_WarningIcon"

@@ -19,8 +19,6 @@ public partial class MedicineDetailsViewModel : ObservableRecipient, INavigation
     /// </summary>
     public MedicineWrapper CurrentMedicine { get; set; } = new MedicineWrapper { IsNew = true, IsInEdit = true };
 
-    public ResourceLoader resourceLoader = App.GetService<ILocalizationService>().ResourceLoader;
-
 
     /// <summary>
     /// Represents the page's title
