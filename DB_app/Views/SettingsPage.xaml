@@ -6,7 +6,6 @@
     xmlns:helpers="using:DB_app.Helpers"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:xaml="using:Microsoft.UI.Xaml"
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:xaml="using:Microsoft.UI.Xaml"
     mc:Ignorable="d">
@@ -58,6 +57,29 @@
                 </labs:SettingsCard>
 
 
+
+                <!--  Language  -->
+                <labs:SettingsCard Description="Select which language to display" Header="Language">
+
+                    <labs:SettingsCard.HeaderIcon>
+                        <FontIcon Glyph="&#xF2B7;" />
+                    </labs:SettingsCard.HeaderIcon>
+                    
+                    <ComboBox
+                        ItemsSource="{x:Bind ViewModel.AvailableLanguages, Mode=OneWay}"
+                        SelectedItem="{x:Bind ViewModel.SelectedLanguage, Mode=OneWay}"
+                        SelectionChanged="{x:Bind ViewModel.language_SelectionChanged, Mode=OneWay}" />
+
+                </labs:SettingsCard>
+
+                
+                <InfoBar
+                    Title="One more step to do"
+                    IsOpen="{x:Bind ViewModel.IsLocalizationChanged, Mode=OneWay}"
+                    Message="Please, restart the app to apply language changes"
+                    Severity="Informational" />
+
+                
                 <!--  Enable sound  -->
                 <labs:SettingsCard Description="Controls provide audible feedback" Header="Sound">
                     <labs:SettingsCard.HeaderIcon>

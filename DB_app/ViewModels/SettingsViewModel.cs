@@ -5,10 +5,12 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DB_app.Contracts.Services;
 using DB_app.Helpers;
-
+using DB_app.Models;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Newtonsoft.Json.Linq;
 using Windows.ApplicationModel;
+using Windows.Media.Capture;
 
 namespace DB_app.ViewModels;
 
@@ -45,13 +47,16 @@ public partial class SettingsViewModel : ObservableRecipient
 
 
     private readonly IThemeSelectorService _themeSelectorService = App.GetService<IThemeSelectorService>();
+    private readonly ILocalizationService _localizationService;
 
 
-    
 
     public SettingsViewModel(IThemeSelectorService themeSelectorService)
     {
         AppElementTheme = _themeSelectorService.Theme;
+        _localizationService = App.GetService<ILocalizationService>();
+        AvailableLanguages = _localizationService.Languages;
+        SelectedLanguage = _localizationService.GetCurrentLanguageItem();
     }
 
 
@@ -72,6 +77,41 @@ public partial class SettingsViewModel : ObservableRecipient
         }
     }
 
+
+    private LanguageItem _selectedLanguage;
+    public LanguageItem SelectedLanguage
+    {
+        get { return _selectedLanguage; }
+        set { SetProperty(ref _selectedLanguage, value); }
+    }
+
+
+    private bool _isLocalizationChanged = false;
+    public bool IsLocalizationChanged
+    {
+        get { return _isLocalizationChanged; }
+        set { SetProperty(ref _isLocalizationChanged, value); }
+    }
+
+
+    private List<LanguageItem> _availableLanguages;
+    public List<LanguageItem> AvailableLanguages
+    {
+        get { return _availableLanguages; }
+        set { SetProperty(ref _availableLanguages, value); }
+    }
+
+
+    public void language_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        //DisplayInAppNotification?.Invoke(this, new("Not implemented yet", NotificationType.Info));
+        if (sender is not ComboBox comboBox)                          { return; }
+        if(comboBox.SelectedItem is not LanguageItem language)        { return; }
+        if(language == _localizationService.GetCurrentLanguageItem()) { return; }
+
+        IsLocalizationChanged = true;
+        _localizationService.SetLanguageAsync(language);
+    }
 
 
     /// <summary>
