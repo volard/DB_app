@@ -27,4 +27,6 @@ public interface IOrderRepository
     /// Updates existing order
     /// </summary>
     public Task UpdateAsync(Order order);
+
+    public Task<IEnumerable<Order>> GetHospitalOrders(int hospitalId);
 }

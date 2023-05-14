@@ -39,7 +39,7 @@ public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAw
     /// <summary>
     /// DataGrid's data collection
     /// </summary>
-    public ObservableCollection<HospitalWrapper> Source { get; set; } = new ObservableCollection<HospitalWrapper>();
+    public ObservableCollection<HospitalWrapper> Source { get; set; } = new();
 
     /// <summary>
     /// Gets or sets a value that indicates whether to show a progress bar. 

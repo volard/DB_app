@@ -1,0 +1,111 @@
+﻿<Page
+    x:Class="DB_app.Views.MedicineInHospitalReportPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="using:DB_app.Behaviors"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:viewModel="using:DB_app.ViewModels"
+    mc:Ignorable="d">
+
+
+    <!--#region Header-->
+    <behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
+        <DataTemplate x:DataType="viewModel:MedicineInHospitalReportViewModel">
+            <RelativePanel HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                <TextBlock
+                    RelativePanel.AlignLeftWithPanel="True"
+                    Style="{ThemeResource TitleTextBlockStyle}"
+                    Text="Products" />
+                <CommandBar
+                    VerticalContentAlignment="Center"
+                    Background="Transparent"
+                    DefaultLabelPosition="Right"
+                    RelativePanel.AlignRightWithPanel="True">
+
+                    <CommandBar.Content>
+                        <StackPanel Orientation="Horizontal">
+
+                            <ProgressRing IsActive="{x:Bind IsHospitalsLoading, Mode=OneWay}" />
+
+                            <ComboBox
+                                x:Name="HospitalsComboBox"
+                                Height="38"
+                                MinWidth="400"
+                                SelectionChanged="HospitalComboBox_SelectionChanged"
+                                ItemsSource="{x:Bind AvailableHospitals, Mode=OneWay}"
+                                SelectedItem="{x:Bind SelectedHospital, Mode=TwoWay}"
+                               />
+
+
+                        </StackPanel>
+
+                    </CommandBar.Content>
+
+
+                    <AppBarButton
+                        x:Name="CommandBarExportButton"
+                        Margin="20,0,0,0"
+                        Background="Green"
+                        Icon="Manage"
+                        Label="Export"
+                        ToolTipService.ToolTip="Export" />
+
+
+                </CommandBar>
+            </RelativePanel>
+
+        </DataTemplate>
+    </behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
+    <!--#endregion-->
+
+
+    <StackPanel x:Name="ContentArea" Orientation="Vertical">
+
+        <InfoBar
+            Title="Title"
+            Margin="0,20,0,20"
+            IsClosable="False"
+            IsOpen="True"
+            Message="Essential app message for your users to be informed of, acknowledge, or take action on."
+            Severity="Informational" />
+
+        <Grid>
+
+
+
+            <toolkit:DataGrid
+                AutoGenerateColumns="False"
+                CanUserResizeColumns="True"
+                GridLinesVisibility="Horizontal"
+                ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
+                IsReadOnly="True"
+                >
+
+                <toolkit:DataGrid.Resources>
+                    <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
+                </toolkit:DataGrid.Resources>
+
+
+                <toolkit:DataGrid.Columns>
+
+                    <toolkit:DataGridTextColumn Binding="{Binding Pro}" Header="OrderID" />
+                    <toolkit:DataGridTextColumn Binding="{Binding OrderDate}" Header="OrderDate" />
+                    <toolkit:DataGridTextColumn Binding="{Binding Company}" Header="Company" />
+
+                </toolkit:DataGrid.Columns>
+
+
+            </toolkit:DataGrid>
+
+            <muxc:ProgressBar
+                Margin="0,0,0,0"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Top"
+                IsIndeterminate="True"
+                />
+        </Grid>
+    </StackPanel>
+</Page>

@@ -12,7 +12,6 @@ namespace DB_app.ViewModels;
 public partial class PharmacyDetailsViewModel : ObservableRecipient, INavigationAware
 {
 
-
     #region Members
 
     public void OnNavigatedTo(object? parameter)

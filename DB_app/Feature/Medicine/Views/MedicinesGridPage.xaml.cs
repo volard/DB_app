@@ -115,7 +115,6 @@ public sealed partial class MedicinesGridPage : Page
                 List<string> line = new();
                 for (int col = 0; col < MedicineGrid.Columns.Count; col++) // for every col of current row
                 {
-                    ViewModel.Source.ElementAt(2).F
                     var value = (MedicineGrid.Columns.ElementAt(col).GetCellContent(ViewModel.Source.ElementAt(row)) as TextBlock)?.Text ?? " ";
                     line.Add(value);
                 }

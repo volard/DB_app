@@ -13,11 +13,10 @@ namespace DB_app.Views;
 
 public sealed partial class PharmaciesGridPage : Page
 {
-    public PharmaciesGridViewModel ViewModel { get; }
+    public PharmaciesGridViewModel ViewModel { get; } = App.GetService<PharmaciesGridViewModel>();
 
     public PharmaciesGridPage()
     {
-        ViewModel = App.GetService<PharmaciesGridViewModel>();
         InitializeComponent();
         SetBinding(NavigationViewHeaderBehavior.HeaderContextProperty, new Binding
         {

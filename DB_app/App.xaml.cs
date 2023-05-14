@@ -17,9 +17,6 @@ using Windows.ApplicationModel;
 using Windows.Storage;
 using System.Diagnostics;
 using CommunityToolkit.Mvvm.Messaging;
-using AppUIBasics.Helper;
-using DB_app.Feature.Report1;
-using DB_app.Feature.Report2;
 
 namespace DB_app;
 
@@ -108,6 +105,7 @@ public partial class App : Application
             // === Medicine
             services.AddTransient<MedicineDetailsPage>();
             services.AddTransient<MedicinesGridViewModel>();
+
             services.AddTransient<MedicinesGridPage>();
             services.AddTransient<MedicineDetailsViewModel>();
 
@@ -121,9 +119,6 @@ public partial class App : Application
 
 
             // === Pharmacy
-            services.AddTransient<PharmacyReportGridViewModel>();
-            services.AddTransient<PharmacyReportGridPage>();
-
             services.AddTransient<PharmacyDetailsViewModel>();
             services.AddTransient<PharmacyDetailsPage>();
 
@@ -148,14 +143,19 @@ public partial class App : Application
 
 
             // === Hospital
-            services.AddTransient<HospitalReportGridViewModel>();
-            services.AddTransient<HospitalReportGridPage>();
-
             services.AddTransient<HospitalsGridViewModel>();
             services.AddTransient<HospitalsGridPage>();
 
             services.AddTransient<HospitalDetailsViewModel>();
             services.AddTransient<HospitalDetailsPage>();
+
+
+            // === Reports
+            services.AddTransient<MedicineInHospitalReportViewModel>();
+            services.AddTransient<MedicineInHospitalReportPage>();
+
+            services.AddTransient<MedicineInPharmacyReportViewModel>();
+            services.AddTransient<MedicineInPharmacyReportPage>();
 
 
             // === Misc
@@ -214,6 +214,8 @@ public partial class App : Application
     {
         Debug.WriteLine("\n========= Microsoft.UI.Xaml.UnhandledException occured =========");
         Debug.WriteLine(e.Message);
+        Debug.WriteLine("");
+        Debug.WriteLine(e.Exception.StackTrace);
         Debug.WriteLine("================================================================\n");
     }
 

@@ -36,8 +36,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="AddressesGridPage.xaml" />
-    <None Remove="Assets\icons8-pharmacy-shop-48.png" />
     <None Remove="Assets\secret.mp4" />
+    <None Remove="Feature\HospitalsWithMedicineReport\HospitalsWithMedicineReportPage.xaml" />
+    <None Remove="Feature\MedicineInHospitalReport\MedicineInHospitalReportPage.xaml" />
+    <None Remove="Feature\PharmacyBudgetReport\PharmacyBudgetReportPage.xaml" />
+    <None Remove="Feature\PharmacyWithMedicineReport\PharmacyWithMedicineReportPage.xaml" />
     <None Remove="Fonts\Segoe Fluent Icons.ttf" />
     <None Remove="MediaWindow.xaml" />
     <None Remove="Styles\Icons.xaml" />
@@ -80,6 +83,18 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Page Update="Feature\PharmacyWithMedicineReport\PharmacyWithMedicineReportPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Feature\HospitalsWithMedicineReport\HospitalsWithMedicineReportPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Feature\PharmacyBudgetReport\PharmacyBudgetReportPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Feature\MedicineInHospitalReport\MedicineInHospitalReportPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="MediaWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -133,8 +148,6 @@
 
   <ItemGroup>
     <Folder Include="Feature\Hospital\Views\" />
-    <Folder Include="Feature\Report4\" />
-    <Folder Include="Feature\Report3\" />
     <Folder Include="Feature\Order\" />
     <Folder Include="Feature\Pharmacy\" />
     <Folder Include="Themes\" />
@@ -145,30 +158,30 @@
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
-    <NoWarn>0103</NoWarn>
+    <NoWarn>CS0103</NoWarn>
     <DefineConstants>$(DefineConstants);DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION</DefineConstants>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
-    <NoWarn>0103</NoWarn>
+    <NoWarn>CS0103</NoWarn>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <NoWarn>0103</NoWarn>
+    <NoWarn>CS0103</NoWarn>
     <DefineConstants>$(DefineConstants);DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION</DefineConstants>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <NoWarn>0103</NoWarn>
+    <NoWarn>CS0103</NoWarn>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|arm64'">
-    <NoWarn>0103</NoWarn>
+    <NoWarn>CS0103</NoWarn>
     <DefineConstants>$(DefineConstants);DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION</DefineConstants>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|arm64'">
-    <NoWarn>0103</NoWarn>
+    <NoWarn>CS0103</NoWarn>
   </PropertyGroup>
   
   <ItemGroup>

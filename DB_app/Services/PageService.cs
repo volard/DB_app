@@ -1,12 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-
 using DB_app.Contracts.Services;
-using DB_app.Feature.Report1;
-using DB_app.Feature.Report2;
 using DB_app.ViewModels;
 using DB_app.Views;
 using Microsoft.UI.Xaml.Controls;
-using System.Collections.Generic;
 
 namespace DB_app.Services;
 
@@ -26,7 +22,7 @@ public class PageService : IPageService
         Configure<GreetingViewModel, GreetingPage>();
 
         // ====================
-        // DataGrids
+        #region DataGrids
         // ====================
 
         // === Hospitals
@@ -53,11 +49,16 @@ public class PageService : IPageService
         Configure<OrdersGridViewModel, OrdersGridPage>();
         Configure<OrderDetailsViewModel, OrderDetailsPage>();
 
+        #endregion
+
+
         // ====================
-        // === Reports
+        #region Reports
         // ====================
-        Configure<PharmacyReportGridViewModel, PharmacyReportGridPage>();
-        Configure<HospitalReportGridViewModel, HospitalReportGridPage>();
+        Configure<MedicineInHospitalReportViewModel, MedicineInHospitalReportPage>();
+        Configure<MedicineInPharmacyReportViewModel, MedicineInPharmacyReportPage>();
+
+        #endregion
 
         // ====================
         // === Settings

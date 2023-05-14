@@ -94,7 +94,7 @@ public class SQLProductRepository : IProductRepository
         return await _db.Products
                 .Include(product => product.Pharmacy)
                 .Include(product => product.Medicine)
-                .Where(product => product.Pharmacy.Id == id)
+                .Where(product => product.Pharmacy.Id == id && product.Quantity != 0)
                 .ToListAsync();
     }
 

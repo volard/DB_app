@@ -1,13 +1,9 @@
-﻿
-using DB_app.Repository;
-using Microsoft.EntityFrameworkCore;
+﻿using DB_app.Repository;
 
 namespace DB_app.Core.Contracts.Services;
 
-
 public interface IRepositoryControllerService
 {
-
     IAddressRepository  Addresses  { get; }
     IOrderRepository    Orders     { get; }
     IProductRepository  Products   { get; }

@@ -81,4 +81,15 @@ public class SQLOrderRepository : IOrderRepository
             Debug.WriteLine("UpdateAsync - Order : attempt to update Order failed - no Order found to update");
         }
     }
+
+    public async Task<IEnumerable<Order>> GetHospitalOrders(int hospitalId)
+    {
+        return await _db.Orders
+                .Include(order => order.HospitalCustomer)
+                .Include(order => order.Items)
+                .ThenInclude(item => item.Product)
+                .ThenInclude(product => product.Medicine)
+                .Where(order => order.HospitalCustomer.Id == hospitalId)
+                .ToListAsync();
+    }
 }
