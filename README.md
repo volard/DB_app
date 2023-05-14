@@ -1,32 +1,33 @@
-﻿<div Style="text-align: center; margin-top: 30px;">
-<image src="/SolutionItems/logo.svg" width="150"/>
-</div>
-
-<h1 Style="text-align: center;" >
-<span Style="color: #79D2FA;">MMS</span>
-<br>
-<span Style="color: #79D2FA;">M</span>edicine 
-<span Style="color: #79D2FA;">M</span>anagement 
-<span Style="color: #79D2FA;">S</span>ystem</h1>
-
-
-<h4 Style="text-align: center;" >Dumb-ass Windows native application to control turnover of medicines on a market</h3>
+<p align="center">
+    <picture>
+      <img src="/SolutionItems/logo.svg" height="156">
+    </picture>
+  <br/>
+    <h1 size= font-weight="bold" color="#000205" align="center">MMS
+      <br/>
+      Medicine Management System</h1>
+      <h4 align="center">Dumb-ass Windows native application to control turnover of medicines on a market</h3>
+</p>
 
 
-<div Style="text-align: center; margin-top: 10px;">
-<img src="https://img.shields.io/badge/%20-≥ 6.0-green?logo=.net"/>
-<img src="https://img.shields.io/badge/%20-≥ 10 Build 1809-critical?logo=windows11"/>
-<img src="https://img.shields.io/badge/%20-2022-blue?logo=visualstudio"/>
-<img href="https://learn.microsoft.com/en-us/windows/apps/design/downloads/#fonts" src="https://img.shields.io/badge/%20-Segoe Fluent Icons-yellowgreen"/>
-</div>
+<p align="center">
+    <img src="https://img.shields.io/badge/%20-≥ 6.0-green?logo=.net">
+    <img alt="" src="https://img.shields.io/badge/%20-≥ 10 Build 1809-critical?logo=windows11">
+  <a aria-label="License" href="https://visualstudio.microsoft.com/ru/">
+    <img alt="" src="https://img.shields.io/badge/%20-2022-blue?logo=visualstudio">
+  </a>
+  <a aria-label="Join the community on GitHub" href="https://learn.microsoft.com/en-us/windows/apps/design/downloads/#fonts">
+    <img alt="" src="https://img.shields.io/badge/%20-Segoe Fluent Icons-yellowgreen">
+  </a>
+</p>   
 
-</br>
+
 
 <details>
-  <summary>🌍 References</summary>
+  <summary><h4>🌍 References</h4></summary>
 
 
-### Docs
+#### Docs
 - [CI Pipelines for Template Studio projects](https://github.com/microsoft/TemplateStudio/blob/main/docs/WinUI/pipelines/README.md)
 - [Template Studio docs for WinUI 3 apps](https://github.com/microsoft/TemplateStudio/blob/main/docs/WinUI/readme.md)
 - [Guidance about building desktop apps for Windows 10/11](https://learn.microsoft.com/en-us/windows/apps/desktop/)
@@ -42,7 +43,7 @@
 - [XAMLLlama's Learnings series on twitch](https://www.twitch.tv/collections/xbkwqgT9QRbxUw)
 
 
-### Samples
+#### Samples
 - [Windows App SDK Samples](https://github.com/microsoft/WindowsAppSDK-Samples)
 - [Categorized Windows App SDK Samples](https://learn.microsoft.com/en-us/windows/apps/get-started/samples)
 - [Customers-orders-database](https://github.com/Microsoft/Windows-appsample-customers-orders-database)
