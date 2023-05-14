@@ -10,10 +10,10 @@
                     <controls:XamlControlsResources.MergedDictionaries>
                         <ResourceDictionary Source="/Styles/NotificationStyle.xaml" />
                         <ResourceDictionary Source="/Styles/FontSizes.xaml" />
-                        <ResourceDictionary Source="/Styles/Thickness.xaml" />
                         <ResourceDictionary Source="/Styles/TextBlock.xaml" />
                         <ResourceDictionary Source="/Styles/DataGrids.xaml" />
                         <ResourceDictionary Source="/Styles/Icons.xaml" />
+                        <ResourceDictionary Source="/Styles/Thickness.xaml" />
                         <ResourceDictionary>
                             <Style
                                 x:Key="PageTitleTextBlockStyle"
@@ -37,6 +37,9 @@
                 for Windows 10, I have to manually add the font to application's resources.
             -->
             <FontFamily x:Key="SegoeFluentIcons">pack://application:DB_app/;component/Fonts/#Segoe Fluent Icons</FontFamily>
+
+            <!-- For some reason it works only if I declare it here -->
+            <Thickness x:Key="NavigationViewContentMargin">0,48,0,0</Thickness>
         </ResourceDictionary>
         
     </Application.Resources>

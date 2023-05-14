@@ -17,14 +17,15 @@
             x:Name="AppTitleBar"
             Height="{Binding ElementName=NavigationViewControl, Path=CompactPaneLength}"
             VerticalAlignment="Top"
+            Margin="48,0,0,0"
             Canvas.ZIndex="1"
             IsHitTestVisible="True">
             <Image
-                Width="16"
-                Height="16"
+                Width="20"
+                Height="20"
                 Margin="5,0,0,0"
                 HorizontalAlignment="Left"
-                Source="/Assets/WindowIcon.ico" />
+                Source="/Assets/Square44x44Logo.png" />
             <TextBlock
                 x:Name="AppTitleBarText"
                 Margin="28,0,0,0"
@@ -43,6 +44,7 @@
             IsBackEnabled="{x:Bind ViewModel.IsBackEnabled, Mode=OneWay}"
             IsSettingsVisible="True"
             SelectedItem="{x:Bind ViewModel.Selected, Mode=OneWay}">
+           
             
             <NavigationView.MenuItems>
 

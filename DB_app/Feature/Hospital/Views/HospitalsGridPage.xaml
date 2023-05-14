@@ -10,7 +10,6 @@
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:vm="using:DB_app.ViewModels"
     d:DataContext="{d:DesignInstance Type=vm:HospitalsGridViewModel}"
-    NavigationCacheMode="Enabled"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -23,6 +22,7 @@
             <CommandBar
                 HorizontalAlignment="Stretch"
                 Background="Transparent"
+                
                 DefaultLabelPosition="Right">
 
                 <CommandBar.Content>
@@ -105,7 +105,9 @@
                     <toolkit:DataGridTextColumn
                         Width="20*"
                         Binding="{Binding Surename_main_doctor}"
-                        Header="Maindoctor's surename" />
+                        Header="Maindoctor's surename">
+                       
+                    </toolkit:DataGridTextColumn>
                     <toolkit:DataGridTextColumn
                         Width="20*"
                         Binding="{Binding Name_main_doctor}"

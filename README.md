@@ -1,21 +1,29 @@
-﻿# 💊 MMS - Medicine management system
-Dumb-ass native application for Windows to control turnover of medicines on a market.
+﻿<div Style="text-align: center; margin-top: 30px;">
+<image src="/SolutionItems/logo.svg" width="150"/>
+</div>
+
+<h1 Style="text-align: center;" >
+<span Style="color: #79D2FA;">MMS</span>
+<br>
+<span Style="color: #79D2FA;">M</span>edicine 
+<span Style="color: #79D2FA;">M</span>anagement 
+<span Style="color: #79D2FA;">S</span>ystem</h1>
 
 
-## ⚡️ Requirements
-- Windows 10 ver. 1809 or higher
-- [Fonts](https://learn.microsoft.com/ru-ru/windows/apps/design/downloads/#fonts)
+<h4 Style="text-align: center;" >Dumb-ass Windows native application to control turnover of medicines on a market</h3>
 
 
-## 🛠️ Development
-- .NET 7
-- Windows App SDK
-- Entity Framework Core
-- WinUI 3
-- MVVM Toolkit
+<div Style="text-align: center; margin-top: 10px;">
+<img src="https://img.shields.io/badge/%20-≥ 6.0-green?logo=.net"/>
+<img src="https://img.shields.io/badge/%20-≥ 10 Build 1809-critical?logo=windows11"/>
+<img src="https://img.shields.io/badge/%20-2022-blue?logo=visualstudio"/>
+<img href="https://learn.microsoft.com/en-us/windows/apps/design/downloads/#fonts" src="https://img.shields.io/badge/%20-Segoe Fluent Icons-yellowgreen"/>
+</div>
 
+</br>
 
-## 🌍 References
+<details>
+  <summary>🌍 References</summary>
 
 
 ### Docs
@@ -45,3 +53,4 @@ Dumb-ass native application for Windows to control turnover of medicines on a ma
 
 - [Windows Community Toolkit Sample App](https://www.microsoft.com/store/productId/9NBLGGH4TLCQ)
 - [WinUI3 Controls Gallery](https://www.microsoft.com/store/productId/9P3JFPWWDZRC)
+</details>

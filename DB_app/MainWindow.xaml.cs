@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.WinUI;
-using Microsoft.Windows.ApplicationModel.Resources;
+﻿using Microsoft.Windows.ApplicationModel.Resources;
 
 namespace DB_app;
 
@@ -9,7 +8,9 @@ public sealed partial class MainWindow : WindowEx
     {
         InitializeComponent();
 
-        AppWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/WindowIcon.ico"));
+        //AppWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/WindowIcon.ico"));
+        AppWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/Square44x44Logo.png"));
+        
         Content = null;
 
         ResourceLoader _resourceLoader = new();

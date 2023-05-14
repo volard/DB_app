@@ -1,12 +1,11 @@
 ﻿using DB_app.Core.Contracts.Services;
-﻿using DB_app.Helpers;
+using DB_app.Helpers;
 using DB_app.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.System;
-using Windows.UI.Notifications;
 
 namespace DB_app.Views;
 using WASDK = Microsoft.WindowsAppSDK;
@@ -17,6 +16,8 @@ using WASDK = Microsoft.WindowsAppSDK;
 public sealed partial class SettingsPage : Page
 {
     public SettingsViewModel ViewModel { get; } = App.GetService<SettingsViewModel>();
+
+    private MediaWindow? _mediaWindow;
 
     /// <summary>
     /// Initializes the page.
@@ -136,7 +137,26 @@ public sealed partial class SettingsPage : Page
         Notification.Style = GetNotificationStyle(NotificationType.Success);
         Notification.Show(1500);
     }
-    
+
+    private void supportCard_Click(object sender, RoutedEventArgs e)
+    {
+        if(soundToggle.IsOn)
+        {
+            _mediaWindow = new()
+            {
+                IsMinimizable = false,
+                IsAlwaysOnTop = true,
+                IsResizable = false,
+                IsShownInSwitchers = false,
+                IsMaximizable = false,
+                IsTitleBarVisible = false
+            };
+            _mediaWindow.Maximize();
+            _mediaWindow.Activate();
+            //_mediaWindow.Closed += MediaWindow_Closed;
+        }
+    }
+
 }
 
 

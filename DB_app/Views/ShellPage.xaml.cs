@@ -35,6 +35,7 @@ public sealed partial class ShellPage : Page
         App.MainWindow.Activated += MainWindow_Activated;
         ResourceLoader resourceLoader = new();
         AppTitleBarText.Text = resourceLoader.GetString("AppDisplayName");
+        NavigationViewControl.IsTitleBarAutoPaddingEnabled = true;
     }
 
     private void OnLoaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)

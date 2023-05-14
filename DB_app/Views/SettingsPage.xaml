@@ -8,6 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:xaml="using:Microsoft.UI.Xaml"
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:xaml="using:Microsoft.UI.Xaml"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -52,8 +53,17 @@
                     <ComboBox SelectedIndex="{x:Bind ViewModel.AppElementTheme, Converter={StaticResource EnumToIntConverter}}" SelectionChanged="{x:Bind ViewModel.theme_SelectionChanged}">
                         <ComboBoxItem Content="Use system setting" Tag="Default" />
                         <ComboBoxItem Content="Light" Tag="Light" />
-                        <ComboBoxItem Content="Dark" Tag="Dark"/>
+                        <ComboBoxItem Content="Dark" Tag="Dark" />
                     </ComboBox>
+                </labs:SettingsCard>
+
+
+                <!--  Enable sound  -->
+                <labs:SettingsCard Description="Controls provide audible feedback" Header="Sound">
+                    <labs:SettingsCard.HeaderIcon>
+                        <FontIcon Glyph="&#xEC4F;" />
+                    </labs:SettingsCard.HeaderIcon>
+                    <ToggleSwitch x:Name="soundToggle" />
                 </labs:SettingsCard>
 
 
@@ -75,7 +85,7 @@
                 <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="About" />
                 <labs:SettingsExpander Description="Volard. Some right should be reserved." Header="{x:Bind AppTitleName}">
                     <labs:SettingsExpander.HeaderIcon>
-                        <BitmapIcon ShowAsMonochrome="False" UriSource="/Assets/icons8-pharmacy-shop-48.png" />
+                        <BitmapIcon ShowAsMonochrome="False" UriSource="/Assets/Square44x44Logo.png" />
                     </labs:SettingsExpander.HeaderIcon>
                     <TextBlock
                         Margin="0,-2,0,0"
@@ -102,6 +112,15 @@
                             IsClickEnabled="True">
                             <labs:SettingsCard.ActionIcon>
                                 <FontIcon Glyph="&#xE8A7;" />
+                            </labs:SettingsCard.ActionIcon>
+                        </labs:SettingsCard>
+                        <labs:SettingsCard
+                            x:Name="supportCard"
+                            Click="supportCard_Click"
+                            Header="Support author"
+                            IsClickEnabled="True">
+                            <labs:SettingsCard.ActionIcon>
+                                <FontIcon Glyph="&#xE719;" />
                             </labs:SettingsCard.ActionIcon>
                         </labs:SettingsCard>
                         <labs:SettingsCard

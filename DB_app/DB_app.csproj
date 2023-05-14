@@ -43,6 +43,7 @@
     <None Remove="Assets\icons8-pharmacy-shop-48.png" />
     <None Remove="Assets\secret.mp4" />
     <None Remove="Fonts\Segoe Fluent Icons.ttf" />
+    <None Remove="MediaWindow.xaml" />
     <None Remove="Styles\Icons.xaml" />
     <None Remove="Styles\NotificationStyle.xaml" />
     <None Remove="Views\Address\AddressDetailsPage.xaml" />
@@ -82,6 +83,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Page Update="MediaWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Styles\NotificationStyle.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

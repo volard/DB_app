@@ -12,9 +12,14 @@ using Windows.ApplicationModel;
 
 namespace DB_app.ViewModels;
 
+
+// Reduces warning noise on parameters that are needed for signature requirements
+#pragma warning disable IDE0060
+
 public partial class SettingsViewModel : ObservableRecipient
 {
     private ElementTheme _appElementTheme;
+
 
     public ElementTheme AppElementTheme
     {
@@ -30,12 +35,15 @@ public partial class SettingsViewModel : ObservableRecipient
         set => SetProperty(ref _version, value);
     }
 
+
     private string _versionDescription = GetVersionDescription();
     public string VersionDescription
     {
         get => _versionDescription;
         set => SetProperty(ref _versionDescription, value);
     }
+
+
     private readonly IThemeSelectorService _themeSelectorService = App.GetService<IThemeSelectorService>();
 
 
@@ -45,6 +53,7 @@ public partial class SettingsViewModel : ObservableRecipient
     {
         AppElementTheme = _themeSelectorService.Theme;
     }
+
 
     public async void theme_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
@@ -62,6 +71,13 @@ public partial class SettingsViewModel : ObservableRecipient
             await _themeSelectorService.SetThemeAsync(param);
         }
     }
+
+
+
+    /// <summary>
+    /// Occurs when <c><see cref="CommunityToolkit.WinUI.UI.Controls.InAppNotification"/></c> is displaying
+    /// </summary>
+    public event EventHandler<NotificationConfigurationEventArgs>? DisplayInAppNotification;
 
 
     private static string GetVersion()
@@ -87,3 +103,5 @@ public partial class SettingsViewModel : ObservableRecipient
         return $"{"AppDisplayName".GetLocalizedValue()} - {GetVersion()}";
     }
 }
+
+#pragma warning restore IDE0060
