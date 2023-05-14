@@ -1,16 +1,8 @@
-﻿using System;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Diagnostics.Metrics;
-using System.Reflection.Metadata;
-using DB_app.Activation;
+﻿using DB_app.Activation;
 using DB_app.Contracts.Services;
 using DB_app.Views;
-
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Documents;
-using static ABI.System.Windows.Input.ICommand_Delegates;
 
 namespace DB_app.Services;
 
@@ -34,9 +26,11 @@ public class ActivationService : IActivationService
         _localizationService = localizationService;
     }
 
-    /**
-     * The entry point for the application lifecycle event `OnLaunched`
-     */
+
+    /// <summary>
+    /// The entry point for the application lifecycle event <c>OnLaunched</c>
+    /// </summary>
+    /// <param name="activationArgs"></param>
     public async Task ActivateAsync(object activationArgs)
     {
         // Execute tasks before activation.
@@ -59,10 +53,13 @@ public class ActivationService : IActivationService
         await StartupAsync();
     }
 
-    /**
-     * Gets the first ActivationHandler that can handle the arguments of the current activation 
-     * otherwise it returns default one
-     */
+
+    /// <summary>
+    /// Gets the first ActivationHandler that can handle the arguments of the current activation 
+    /// otherwise it returns default one
+    /// </summary>
+    /// <param name="activationArgs"></param>
+    /// <returns></returns>
     private async Task HandleActivationAsync(object activationArgs)
     {
         var activationHandler = _activationHandlers.FirstOrDefault(h => h.CanHandle(activationArgs));
@@ -85,7 +82,6 @@ public class ActivationService : IActivationService
     /// This method is called before the window is activated.Only code that needs to be executed before app
     /// activation should be placed here, as the splash screen is shown while this code is executed.
     /// </summary>
-    /// <returns></returns>
     private async Task InitializeAsync()
     {
         await _localizationService.InitializeAsync().ConfigureAwait(false);
@@ -99,7 +95,6 @@ public class ActivationService : IActivationService
     /// Contains initializations of other classes that do not need to happen before app activation 
     /// and starts processes that will be run after the Window is activated.
     /// </summary>
-    /// <returns></returns>
     private async Task StartupAsync()
     {
         await _themeSelectorService.SetRequestedThemeAsync();

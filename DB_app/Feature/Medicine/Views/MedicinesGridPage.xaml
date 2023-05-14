@@ -28,11 +28,20 @@
                 </CommandBar.Content>
 
                 <AppBarButton
+                    x:Name="CommandBarExportButton"
+                    Icon="Manage"
+                    Click="CommandBarExportButton_Click"
+                    Label="Export"
+                    Background="Green"
+                    ToolTipService.ToolTip="Export" />
+
+                <AppBarButton
                     x:Name="CommandBarAddButton"
                     Icon="Add"
                     Click="Add_Click"
                     Label="Add new"
                     ToolTipService.ToolTip="Add new" />
+                
                 <AppBarButton
                     x:Name="CommandBarViewButton"
                     Icon="OpenLocal"
@@ -87,7 +96,6 @@
                 </toolkit:DataGrid.Resources>
 
                 <toolkit:DataGrid.Columns>
-
 
                     <toolkit:DataGridTextColumn
                         Binding="{Binding Name}"

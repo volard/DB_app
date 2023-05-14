@@ -26,16 +26,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Feature\Address\NewFolder\**" />
-    <Compile Remove="Feature\NewFolder\**" />
     <Compile Remove="Views\Medicine\**" />
     <EmbeddedResource Remove="Feature\Address\NewFolder\**" />
-    <EmbeddedResource Remove="Feature\NewFolder\**" />
     <EmbeddedResource Remove="Views\Medicine\**" />
     <None Remove="Feature\Address\NewFolder\**" />
-    <None Remove="Feature\NewFolder\**" />
     <None Remove="Views\Medicine\**" />
     <Page Remove="Feature\Address\NewFolder\**" />
-    <Page Remove="Feature\NewFolder\**" />
     <Page Remove="Views\Medicine\**" />
   </ItemGroup>
   <ItemGroup>
@@ -65,6 +61,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.101.0" />
     <PackageReference Include="CommunityToolkit.Labs.WinUI.SettingsControls" Version="0.0.18" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
     <PackageReference Include="CommunityToolkit.WinUI.UI.Animations" Version="7.1.2" />
@@ -136,6 +133,8 @@
 
   <ItemGroup>
     <Folder Include="Feature\Hospital\Views\" />
+    <Folder Include="Feature\Report4\" />
+    <Folder Include="Feature\Report3\" />
     <Folder Include="Feature\Order\" />
     <Folder Include="Feature\Pharmacy\" />
     <Folder Include="Themes\" />
@@ -171,10 +170,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|arm64'">
     <NoWarn>0103</NoWarn>
   </PropertyGroup>
-  
-  <ItemGroup>
-    <PRIResource Remove="Feature\NewFolder\**" />
-  </ItemGroup>
   
   <ItemGroup>
     <PRIResource Remove="Views\Medicine\**" />

@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
 using DB_app.Contracts.Services;
+using DB_app.Feature.Report1;
+using DB_app.Feature.Report2;
 using DB_app.ViewModels;
 using DB_app.Views;
 using Microsoft.UI.Xaml.Controls;

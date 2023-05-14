@@ -17,7 +17,9 @@ using Windows.ApplicationModel;
 using Windows.Storage;
 using System.Diagnostics;
 using CommunityToolkit.Mvvm.Messaging;
-
+using AppUIBasics.Helper;
+using DB_app.Feature.Report1;
+using DB_app.Feature.Report2;
 
 namespace DB_app;
 

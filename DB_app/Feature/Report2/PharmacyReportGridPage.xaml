@@ -1,11 +1,40 @@
 ﻿<Page
-    x:Class="DB_app.Views.HospitalReportGridPage"
+    x:Class="DB_app.Views.PharmacyReportGridPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:viewModel="using:DB_app.ViewModels"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls" 
+    xmlns:behaviors="using:DB_app.Behaviors"
     mc:Ignorable="d">
+
+
+    <!--#region Header-->
+    <behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
+        <DataTemplate x:DataType="viewModel:PharmacyReportGridViewModel">
+            <CommandBar
+                HorizontalAlignment="Stretch"
+                Background="Transparent"
+                DefaultLabelPosition="Right">
+
+                <CommandBar.Content>
+                    <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="Products" />
+                </CommandBar.Content>
+
+                <AppBarButton
+                    x:Name="CommandBarExportButton"
+                    Icon="Manage"
+                    Label="Export"
+                    Background="Green"
+                    ToolTipService.ToolTip="Export" />
+
+
+            </CommandBar>
+        </DataTemplate>
+    </behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
+    <!--#endregion-->
+
 
     <Grid x:Name="ContentArea">
         <toolkit:DataGrid AutoGenerateColumns="False" GridLinesVisibility="Horizontal">
@@ -13,7 +42,6 @@
                 <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
             </toolkit:DataGrid.Resources>
             <toolkit:DataGrid.Columns>
-                <!--  TODO: Replace column definitions to match real data. Consider adding Header values to Resources.resw.  -->
                 <toolkit:DataGridTextColumn Binding="{Binding OrderID}" Header="OrderID" />
                 <toolkit:DataGridTextColumn Binding="{Binding OrderDate}" Header="OrderDate" />
                 <toolkit:DataGridTextColumn Binding="{Binding Company}" Header="Company" />

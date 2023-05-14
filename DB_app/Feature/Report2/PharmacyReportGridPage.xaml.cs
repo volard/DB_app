@@ -6,14 +6,10 @@ namespace DB_app.Views;
 
 public sealed partial class PharmacyReportGridPage : Page
 {
-    public PharmacyReportGridViewModel ViewModel
-    {
-        get;
-    }
+    public PharmacyReportGridViewModel ViewModel { get; }= App.GetService<PharmacyReportGridViewModel>();
 
     public PharmacyReportGridPage()
     {
-        ViewModel = App.GetService<PharmacyReportGridViewModel>();
         InitializeComponent();
     }
 }

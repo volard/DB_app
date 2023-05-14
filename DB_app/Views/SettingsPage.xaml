@@ -155,7 +155,9 @@
                                 <HyperlinkButton Content="Windows App SDK" NavigateUri="https://github.com/microsoft/WindowsAppSDK" />
                                 <HyperlinkButton Content="Template Studio for WinUI (C#)" NavigateUri="https://github.com/microsoft/TemplateStudio" />
                                 <HyperlinkButton Content="Entity Framework Core" NavigateUri="https://github.com/dotnet/efcore" />
+                                <HyperlinkButton Content="WinUI Extensions" NavigateUri="https://dotmorten.github.io/WinUIEx/" />
                                 
+
                             </StackPanel>
                         </labs:SettingsCard>
                     </labs:SettingsExpander.Items>
