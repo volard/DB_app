@@ -62,7 +62,7 @@ public class OrderItem
     public double  Price              { get; set; }
 
 
-    //[NotMapped]
+    [NotMapped]
     public double LocalTotal
     {
         get

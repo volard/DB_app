@@ -3,8 +3,10 @@ using CommunityToolkit.WinUI;
 using DB_app.Contracts.ViewModels;
 using DB_app.Core.Contracts.Services;
 using DB_app.Models;
+using DocumentFormat.OpenXml.Office.CustomUI;
 using Microsoft.UI.Dispatching;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace DB_app.ViewModels;
 
@@ -65,20 +67,82 @@ public partial class MedicineInHospitalReportViewModel : ObservableRecipient, IN
             Source.Clear();
         });
 
-        var items = await _repositoryControllerService.Orders.GetHospitalOrders(hospital.Id);
+        var orders = await _repositoryControllerService.Orders.GetHospitalOrders(hospital.Id);
 
+        List<string> types = new();
 
-
-        await _dispatcherQueue.EnqueueAsync(() =>
+        foreach (var order in orders)
         {
-            foreach (var item in items)
+            foreach(var item in order.Items)
             {
-                Source.Add(item);
-            }
+                if(!types.Contains(item.Product.Medicine.Type))
+                {
+                    types.Add(item.Product.Medicine.Type);
+                }
 
-            IsSourceLoading = false;
-        });
+            }
+        }
+
+        List<double> sumsPertype = new();
+
+        foreach (var type in types)
+        {
+            var money = orders.Select(order => order.Items).Select(items => items.Select(item =>
+            {
+                if (item.Product.Medicine.Type == type) return item.Price;
+                return 0;
+            }
+            )).Select(item => item.First());
+
+            sumsPertype.Add(money.Sum(money => money));
+        }
+
+        Debug.WriteLine("asht");
+
+        //await _dispatcherQueue.EnqueueAsync(() =>
+        //{
+        //    foreach (var item in items)
+        //    {
+        //        Source.Add(item);
+        //    }
+
+        //    IsSourceLoading = false;
+        //});
     }
+
+
+    //public CollectionViewSource GroupData(string groupBy = "Range")
+    //{
+    //    ObservableCollection<GroupInfoCollection<DataGridDataItem>> groups = new ObservableCollection<GroupInfoCollection<DataGridDataItem>>();
+    //    var query = from item in _items
+    //                orderby item
+    //                group item by item.Range into g
+    //                select new { GroupName = g.Key, Items = g };
+    //    if (groupBy == "Parent_Mountain")
+    //    {
+    //        query = from item in _items
+    //                orderby item
+    //                group item by item.Parent_mountain into g
+    //                select new { GroupName = g.Key, Items = g };
+    //    }
+    //    foreach (var g in query)
+    //    {
+    //        GroupInfoCollection<DataGridDataItem> info = new GroupInfoCollection<DataGridDataItem>();
+    //        info.Key = g.GroupName;
+    //        foreach (var item in g.Items)
+    //        {
+    //            info.Add(item);
+    //        }
+
+    //        groups.Add(info);
+    //    }
+
+    //    groupedItems = new CollectionViewSource();
+    //    groupedItems.IsSourceGrouped = true;
+    //    groupedItems.Source = groups;
+
+    //    return groupedItems;
+    //}
 
 
 
