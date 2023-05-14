@@ -16,21 +16,26 @@ public class SQLControllerService : IRepositoryControllerService
     public IPharmacyRepository  Pharmacies  { get; private set; }
     public IMedicineRepository  Medicines   { get; private set; }
 
+    public void SetupDataBase()
+    {
+        DataSeeder.ClearData(_db);
+        _db.Database.EnsureDeleted();
+        _db.Database.EnsureCreated();
+        DataSeeder.Seed(_db);
+
+        Hospitals = new SQLHospitalRepository(_db);
+        Orders = new SQLOrderRepository(_db);
+        Products = new SQLProductRepository(_db);
+        Addresses = new SQLAddressRepository(_db);
+        Pharmacies = new SQLPharmacyRepository(_db);
+        Medicines = new SQLMedicineRepository(_db);
+    }
+
 
     public SQLControllerService(DbContextOptions<SQLContext> options)
     {
         _db = new SQLContext(options);
 
-        _db.Database.EnsureDeleted();
-        _db.Database.EnsureCreated();
-        DataSeeder.Seed(_db);
-
-        Hospitals   = new SQLHospitalRepository (_db);
-        Orders      = new SQLOrderRepository    (_db);
-        Products    = new SQLProductRepository  (_db);
-        Addresses   = new SQLAddressRepository  (_db);
-        Pharmacies  = new SQLPharmacyRepository (_db);
-        Medicines   = new SQLMedicineRepository (_db);
-
+        SetupDataBase();
     }
 }

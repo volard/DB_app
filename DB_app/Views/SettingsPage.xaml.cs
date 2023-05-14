@@ -1,3 +1,4 @@
+﻿using DB_app.Core.Contracts.Services;
 ﻿using DB_app.Helpers;
 using DB_app.ViewModels;
 using Microsoft.UI.Xaml;
@@ -17,6 +18,9 @@ public sealed partial class SettingsPage : Page
 {
     public SettingsViewModel ViewModel { get; } = App.GetService<SettingsViewModel>();
 
+    /// <summary>
+    /// Initializes the page.
+    /// </summary>
     public SettingsPage()
     {
         InitializeComponent();
@@ -60,6 +64,78 @@ public sealed partial class SettingsPage : Page
         return output!;
     }
 
+    /// <summary>
+    /// Raises the <see cref="ViewModel.DisplayInAppNotification"/> event.
+    /// </summary>
+    /// <param name="e">The input <see cref="NotificationConfigurationEventArgs"/> instance.</param>
+    private void ShowNotificationMessage(object? sender, NotificationConfigurationEventArgs e)
+    {
+        Notification.Content = e.Message;
+        Notification.Style = e.Style;
+        Notification.Show(1500);
+    }
+
+    /**************************************/
+    #region Navigation Handlers
+    /**************************************/
+
+    protected override void OnNavigatedTo(NavigationEventArgs e)
+    {
+        ViewModel.DisplayInAppNotification += ShowNotificationMessage;
+        base.OnNavigatedTo(e);
+    }
+
+
+    //private void MediaWindow_Closed(object sender, WindowEventArgs args)
+    //{
+    //    _mediaWindow = new()
+    //    {
+    //        IsMinimizable = false,
+    //        IsAlwaysOnTop = true,
+    //        IsResizable = false,
+    //        IsShownInSwitchers = false,
+    //        IsMaximizable = false,
+    //        IsTitleBarVisible = false
+    //    };
+    //    _mediaWindow.Maximize();
+    //    _mediaWindow.Activate();
+    //}
+
+    protected override void OnNavigatedFrom(NavigationEventArgs e)
+    {
+        ViewModel.DisplayInAppNotification -= ShowNotificationMessage;
+        //if ( _mediaWindow  != null )
+        //{
+        //    _mediaWindow.Closed -= MediaWindow_Closed;
+        //    _mediaWindow.Close();
+        //}
+        base.OnNavigatedFrom(e);
+    }
+
+
+    #endregion
+
+
+
+
+    private void SettingsCard_Click_1(object sender, RoutedEventArgs e)
+    {
+
+        // Restart UI and push VMs to use new data
+        App.GetService<HospitalsGridViewModel>().Source.Clear();
+        App.GetService<AddressesGridViewModel>().Source.Clear();
+        App.GetService<OrdersGridViewModel>().Source.Clear();
+        App.GetService<ProductsGridViewModel>().Source.Clear();
+        App.GetService<MedicinesGridViewModel>().Source.Clear();
+        App.GetService<PharmaciesGridViewModel>().Source.Clear();
+
+
+        App.GetService<IRepositoryControllerService>().SetupDataBase();
+
+        Notification.Content = "Data restored";
+        Notification.Style = GetNotificationStyle(NotificationType.Success);
+        Notification.Show(1500);
+    }
     
 }
 

@@ -56,6 +56,21 @@
                     </ComboBox>
                 </labs:SettingsCard>
 
+
+                <!--  Reset data  -->
+                <labs:SettingsCard
+                    Background="Red"
+                    Click="SettingsCard_Click_1"
+                    Description="Force overwrite all changes with default data"
+                    Header="Reset data"
+                    IsClickEnabled="True">
+
+                    <labs:SettingsCard.HeaderIcon>
+                        <FontIcon Glyph="&#xEBC4;" />
+                    </labs:SettingsCard.HeaderIcon>
+
+                </labs:SettingsCard>
+
                 <!--  About  -->
                 <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="About" />
                 <labs:SettingsExpander Description="Volard. Some right should be reserved." Header="{x:Bind AppTitleName}">
@@ -97,6 +112,9 @@
                                 <HyperlinkButton Content="Windows UI Library" NavigateUri="https://aka.ms/winui" />
                                 <HyperlinkButton Content="Windows Community Toolkit" NavigateUri="https://github.com/CommunityToolkit/WindowsCommunityToolkit" />
                                 <HyperlinkButton Content="Windows App SDK" NavigateUri="https://github.com/microsoft/WindowsAppSDK" />
+                                <HyperlinkButton Content="Template Studio for WinUI (C#)" NavigateUri="https://github.com/microsoft/TemplateStudio" />
+                                <HyperlinkButton Content="Entity Framework Core" NavigateUri="https://github.com/dotnet/efcore" />
+                                
                             </StackPanel>
                         </labs:SettingsCard>
                     </labs:SettingsExpander.Items>

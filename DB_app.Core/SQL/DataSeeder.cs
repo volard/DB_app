@@ -7,13 +7,34 @@ public class DataSeeder
     public static void ClearData(SQLContext dbContext)
     {
         // NOTE be careful with deletion order...
-        dbContext.Orders.RemoveRange(dbContext.Orders);
-        dbContext.OrderItems.RemoveRange(dbContext.OrderItems);
-        dbContext.Products.RemoveRange(dbContext.Products);
-        dbContext.Pharmacies.RemoveRange(dbContext.Pharmacies);
-        dbContext.Hospitals.RemoveRange(dbContext.Hospitals);
-        dbContext.Medicines.RemoveRange(dbContext.Medicines);
-        dbContext.Addresses.RemoveRange(dbContext.Addresses);
+        if(dbContext is null) return;
+
+        if(dbContext.OrderItems.Any() && dbContext.OrderItems is not null)
+            dbContext.OrderItems.RemoveRange(dbContext.OrderItems);
+
+        if (dbContext.Orders.Any() && dbContext.Orders is not null)
+            dbContext.Orders.RemoveRange(dbContext.Orders);
+
+        if (dbContext.Products.Any() && dbContext.Products is not null)
+            dbContext.Products.RemoveRange(dbContext.Products);
+
+        if (dbContext.Pharmacies.Any() && dbContext.Pharmacies is not null)
+            dbContext.Pharmacies.RemoveRange(dbContext.Pharmacies);
+
+        if (dbContext.Hospitals.Any() && dbContext.Hospitals is not null)
+            dbContext.Hospitals.RemoveRange(dbContext.Hospitals);
+
+        if (dbContext.Medicines.Any() && dbContext.Medicines is not null)
+            dbContext.Medicines.RemoveRange(dbContext.Medicines);
+
+        if (dbContext.Addresses.Any() && dbContext.Addresses is not null)
+            dbContext.Addresses.RemoveRange(dbContext.Addresses);
+
+        if (dbContext.PharmacyLocations.Any() && dbContext.PharmacyLocations is not null)
+            dbContext.PharmacyLocations.RemoveRange(dbContext.PharmacyLocations);
+
+        if (dbContext.HospitalLocations.Any() && dbContext.HospitalLocations is not null)
+            dbContext.HospitalLocations.RemoveRange(dbContext.HospitalLocations);
 
         dbContext.SaveChanges();
 
