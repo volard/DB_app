@@ -65,7 +65,7 @@ public partial class OrderDetailsViewModel : ObservableValidator, INavigationAwa
 
 
     [ObservableProperty]
-    private string _pageTitle = "New order";
+    private string _pageTitle;
 
 
     #endregion

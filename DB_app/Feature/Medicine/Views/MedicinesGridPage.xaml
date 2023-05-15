@@ -4,9 +4,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="using:DB_app.Behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:helpers="using:DB_app.Helpers"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:vm="using:DB_app.ViewModels"
     d:DataContext="{d:DesignInstance Type=vm:MedicinesGridViewModel}"
     mc:Ignorable="d">
@@ -29,39 +30,39 @@
 
                 <AppBarButton
                     x:Name="CommandBarExportButton"
-                    Icon="Manage"
-                    Click="CommandBarExportButton_Click"
-                    Label="Export"
                     Background="Green"
+                    Click="CommandBarExportButton_Click"
+                    Icon="Manage"
+                    Label="Export"
                     ToolTipService.ToolTip="Export" />
 
                 <AppBarButton
                     x:Name="CommandBarAddButton"
-                    Icon="Add"
                     Click="Add_Click"
+                    Icon="Add"
                     Label="Add new"
                     ToolTipService.ToolTip="Add new" />
-                
+
                 <AppBarButton
                     x:Name="CommandBarViewButton"
-                    Icon="OpenLocal"
                     Click="View_Click"
+                    Icon="OpenLocal"
                     IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
                     Label="View"
                     ToolTipService.ToolTip="View" />
 
                 <AppBarButton
                     x:Name="CommandBarEditButton"
+                    Click="Edit_Click"
                     Icon="Edit"
                     IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
-                    Click="Edit_Click"
                     Label="Edit"
                     ToolTipService.ToolTip="Edit" />
 
                 <AppBarButton
                     x:Name="CommandBarDeleteButton"
-                    Icon="Delete"
                     Click="Delete_Click"
+                    Icon="Delete"
                     IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
                     Label="Delete"
                     ToolTipService.ToolTip="Delete" />
@@ -97,15 +98,18 @@
 
                 <toolkit:DataGrid.Columns>
 
-                    <toolkit:DataGridTextColumn
-                        Binding="{Binding Name}"
-                        Header="Name" />
-                    <toolkit:DataGridTextColumn
-                        Binding="{Binding Type}"
-                        Header="Type" />
+                    <toolkit:DataGridTextColumn Binding="{Binding Name}" Header="Name" />
+                    <toolkit:DataGridTextColumn Binding="{Binding Type}" Header="Type" />
 
                 </toolkit:DataGrid.Columns>
             </toolkit:DataGrid>
+
+            <muxc:ProgressBar
+                Margin="0,0,0,0"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Top"
+                IsIndeterminate="True"
+                Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
         </Grid>
 
 

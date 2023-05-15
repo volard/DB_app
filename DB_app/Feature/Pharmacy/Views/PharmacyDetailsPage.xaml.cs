@@ -9,13 +9,15 @@ using System.Diagnostics;
 
 namespace DB_app.Views;
 
-/// <summary>
-/// An empty page that can be used on its own or navigated to within a Frame.
-/// </summary>
+
 public sealed partial class PharmacyDetailsPage : Page
 {
     public PharmacyDetailsViewModel ViewModel { get; } = App.GetService<PharmacyDetailsViewModel>();
 
+
+    /// <summary>
+    /// Initializes the page.
+    /// </summary>
     public PharmacyDetailsPage()
     {
         InitializeComponent();
@@ -52,7 +54,6 @@ public sealed partial class PharmacyDetailsPage : Page
         if (ViewModel.SelectedAddress == null) return;
         
         ViewModel.CurrentPharmacy.ObservableLocations.Add(new PharmacyLocation(ViewModel.SelectedAddress));
-        ViewModel.CurrentPharmacy.IsModified = true;
         ViewModel.AvailableAddresses.Remove(ViewModel.SelectedAddress);
         
     }
@@ -64,7 +65,8 @@ public sealed partial class PharmacyDetailsPage : Page
         ViewModel.AvailableAddresses.Add(ViewModel.SelectedExistingLocation.Address);
         ViewModel.CurrentPharmacy.ObservableLocations.Remove(ViewModel.SelectedExistingLocation);
         ViewModel.CurrentPharmacy.PharmacyData.Locations.Remove(ViewModel.SelectedExistingLocation);
-        ViewModel.CurrentPharmacy.IsModified = true;
+
+        ViewModel.SelectedExistingLocation = null;
     }
 
     private async void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -74,24 +76,20 @@ public sealed partial class PharmacyDetailsPage : Page
         //Frame.Navigate(typeof(PharmaciesGridPage), null);
     }
 
-    /// <summary>
-    /// Navigate to the previous page when the user cancels the creation of a new record.
-    /// </summary>
-    private void CancelEdit_Click(object sender, RoutedEventArgs e) => Frame.GoBack();
 
     /// <summary>
     /// Check whether there are unsaved changes and warn the user.
     /// </summary>
-    protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
-    {
-    }
+    protected override void OnNavigatingFrom(NavigatingCancelEventArgs e) { /* not used */ }
 
-    protected override void OnNavigatedTo(NavigationEventArgs e)
-    {
-        ViewModel.CurrentPharmacy.Backup();
-        base.OnNavigatedTo(e);
-    }
+    protected override void OnNavigatedTo(NavigationEventArgs e) { /* not used */ }
 
     private void NameText_TextChanged(object sender, TextChangedEventArgs e) =>
         ViewModel.CurrentPharmacy.Name = Name.Text;
+
+    private void BeginEdit_Click(object sender, RoutedEventArgs e)
+    {
+        _ = ViewModel.LoadAvailableAddressesAsync();
+        ViewModel.CurrentPharmacy.BeginEdit();
+    }
 }

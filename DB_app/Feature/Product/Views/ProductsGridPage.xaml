@@ -4,11 +4,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="using:DB_app.Behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:DB_app.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:vm="using:DB_app.ViewModels"
     d:DataContext="{d:DesignInstance Type=vm:ProductsGridViewModel}"
-    xmlns:helpers="using:DB_app.Helpers"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -74,6 +75,7 @@
         Padding="0,0,0,10"
         HorizontalAlignment="Stretch"
         VerticalAlignment="Stretch">
+
         <Grid Padding="0,0,0,50">
 
             <toolkit:DataGrid
@@ -96,7 +98,7 @@
 
                 <toolkit:DataGrid.Columns>
 
-                    
+
                     <toolkit:DataGridTextColumn
                         Width="30*"
                         Binding="{Binding PharmacyName}"
@@ -120,9 +122,16 @@
 
                 </toolkit:DataGrid.Columns>
             </toolkit:DataGrid>
+
+            <muxc:ProgressBar
+                Margin="0,0,0,0"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Top"
+                IsIndeterminate="True"
+                Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
         </Grid>
 
-         <toolkit:InAppNotification
+        <toolkit:InAppNotification
             x:Name="Notification"
             RelativePanel.AlignBottomWithPanel="True"
             RelativePanel.AlignHorizontalCenterWithPanel="True"

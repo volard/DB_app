@@ -7,6 +7,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
+using DB_app.Helpers;
+using System.Collections.Specialized;
 
 namespace DB_app.ViewModels;
 
@@ -37,14 +39,13 @@ public sealed partial class HospitalWrapper : ObservableValidator, IEditableObje
         }
 
         InitFields();
-        ObservableLocations.CollectionChanged += ObservableLocations_CollectionChanged;
+        ObservableLocations.CollectionChanged += (object? sender, NotifyCollectionChangedEventArgs e) =>
+        {
+            ValidateProperty(ObservableLocations, nameof(ObservableLocations));
+            OnPropertyChanged(nameof(IsModified));
+        };
     }
 
-    public void ObservableLocations_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-    {
-        ValidateProperty(ObservableLocations, nameof(ObservableLocations));
-        OnPropertyChanged(nameof(IsModified));
-    }
 
     #endregion
 
@@ -107,16 +108,6 @@ public sealed partial class HospitalWrapper : ObservableValidator, IEditableObje
     public int Id { get => HospitalData.Id; }
 
 
-    // TODO allocate this in new Collecion extension class
-    static public bool IsDifferent<T>(List<T> lhs, List<T> rhs)
-    {
-        if(lhs.Count != rhs.Count) return true;
-        for(int i = 0; i < lhs.Count; i++)
-        {
-            if (!lhs.ElementAt(i).Equals(rhs.ElementAt(i))) return true;
-        }
-        return false;
-    }
 
 
     /// <summary>
@@ -126,7 +117,7 @@ public sealed partial class HospitalWrapper : ObservableValidator, IEditableObje
     {
         get
         {
-            bool isDifferent = IsDifferent(ObservableLocations.ToList(), HospitalData.Locations);
+            bool isDifferent = CollectionsHelper.IsDifferent(ObservableLocations.ToList(), HospitalData.Locations);
 
             return
                 Name_main_doctor != HospitalData.Name_main_doctor ||

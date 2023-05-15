@@ -5,9 +5,11 @@ namespace DB_app.Models;
 
 public class HospitalLocation : IEquatable<HospitalLocation>
 {
-    public HospitalLocation(Address address) { Address = address; }
+    public HospitalLocation(Address address)
+    { Address = address; }
 
-    public HospitalLocation() { }
+    public HospitalLocation()
+    { }
 
     [Key, Required]
     public int Id { get; set; }
@@ -28,4 +30,3 @@ public class HospitalLocation : IEquatable<HospitalLocation>
         return Equals(obj as HospitalLocation);
     }
 }
-

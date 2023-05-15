@@ -29,7 +29,9 @@ public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAw
         });
     }
 
+    /**************************************/
     #region Properties
+    /**************************************/
 
     /// <summary>
     /// Dependency representing Data Repository
@@ -57,10 +59,12 @@ public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAw
 
     private bool IsInactiveEnabled = false;
 
-#endregion
+    #endregion
 
 
-#region Members
+    /**************************************/
+    #region Members
+    /**************************************/
 
 
     public void Receive(DeleteRecordMessage<HospitalWrapper> message)
@@ -136,12 +140,12 @@ public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAw
 
                 Source.Remove(SelectedItem);
 
-                DisplayInAppNotification?.Invoke(this, new NotificationConfigurationEventArgs("Операция успешно выполнена", NotificationType.Success));
+                DisplayInAppNotification?.Invoke(this, new NotificationConfigurationEventArgs("Операция успешно выполнена", NotificationHelper.SuccessStyle));
 
             }
             catch (LinkedRecordOperationException)
             {
-                DisplayInAppNotification?.Invoke(this, new NotificationConfigurationEventArgs("Адресс связан с организацией. Удалите связанную организацию, чтобы удалить адрес", NotificationType.Error));
+                DisplayInAppNotification?.Invoke(this, new NotificationConfigurationEventArgs("Адресс связан с организацией. Удалите связанную организацию, чтобы удалить адрес", NotificationHelper.ErrorStyle));
             }
         }
     }
@@ -157,6 +161,6 @@ public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAw
 
     public void OnNavigatedFrom(){}
 
-#endregion
+    #endregion
 
 }

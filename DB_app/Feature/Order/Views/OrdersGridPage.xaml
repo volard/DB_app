@@ -4,15 +4,16 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="using:DB_app.Behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:DB_app.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:sys="using:System"
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:vm="using:DB_app.ViewModels"
-    xmlns:helpers="using:DB_app.Helpers"
     d:DataContext="{d:DesignInstance Type=vm:OrdersGridViewModel}"
     mc:Ignorable="d">
 
-     <Page.Resources>
+    <Page.Resources>
         <helpers:IsNotNullConverter x:Key="IsNotNullConverter" />
     </Page.Resources>
 
@@ -90,7 +91,7 @@
 
                 <toolkit:DataGrid.Columns>
 
-                    
+
                     <toolkit:DataGridTextColumn Binding="{Binding OrderHospital.Id}" Header="Hospital's id" />
                     <toolkit:DataGridTextColumn Binding="{Binding Surename_main_doctor}" Header="Hospital's main doctor surename" />
                     <toolkit:DataGridTemplateColumn Header="Date" Tag="Date Placed">
@@ -106,9 +107,16 @@
 
                 </toolkit:DataGrid.Columns>
             </toolkit:DataGrid>
+
+            <muxc:ProgressBar
+                Margin="0,0,0,0"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Top"
+                IsIndeterminate="True"
+                Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
         </Grid>
 
-         <toolkit:InAppNotification
+        <toolkit:InAppNotification
             x:Name="Notification"
             RelativePanel.AlignBottomWithPanel="True"
             RelativePanel.AlignHorizontalCenterWithPanel="True"

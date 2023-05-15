@@ -7,6 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:DB_app.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:viewModel="using:DB_app.ViewModels"
     mc:Ignorable="d">
@@ -28,37 +29,61 @@
                 Background="Transparent"
                 DefaultLabelPosition="Right">
                 <CommandBar.Content>
-                    <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="New Product" />
+                    <Grid>
+
+                        <TextBlock
+                            x:Name="Title"
+                            Margin="10,0,0,0"
+                            Style="{ThemeResource TitleTextBlockStyle}"
+                            Text="{x:Bind PageTitle, Mode=OneWay}" />
+
+                        <InfoBadge
+                            Width="11"
+                            Height="11"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Visibility="{x:Bind CurrentProduct.IsModified, Mode=OneWay}">
+
+                            <InfoBadge.IconSource>
+                                <FontIconSource FontFamily="Segoe Fluent Icons" Glyph="&#xEB52;" />
+                            </InfoBadge.IconSource>
+
+                        </InfoBadge>
+                    </Grid>
+
                 </CommandBar.Content>
+
                 <AppBarButton
                     Click="SaveButton_Click"
                     Icon="Save"
                     IsEnabled="{Binding CurrentProduct.HasErrors, Converter={StaticResource NotConverter}, Mode=OneWay}"
                     Label="Save"
                     Visibility="{Binding CurrentProduct.IsInEdit, Converter={StaticResource VisibleIf}, Mode=OneWay}" />
-                    
+
                 <AppBarButton
-                    Click="{x:Bind CurrentProduct.BeginEdit}"
+                    Click="BeginEdit_Click"
                     Icon="Edit"
                     Label="Edit"
                     Visibility="{x:Bind viewModel:Converters.CollapsedIfOneOfTwo(CurrentProduct.IsInEdit, CurrentProduct.IsNew), Mode=OneWay}" />
+
                 <AppBarButton
-                    Click="{x:Bind CurrentProduct.EndEdit}"
+                    Click="{x:Bind CurrentProduct.CancelEdit}"
                     Icon="Cancel"
                     Label="Cancel"
                     Visibility="{x:Bind viewModel:Converters.VisibleIfOneAndNotAnother(CurrentProduct.IsInEdit, CurrentProduct.IsNew), Mode=OneWay}" />
-                <AppBarSeparator />
+
                 <AppBarButton
                     Click="DeleteButton_Click"
                     Icon="Delete"
                     Label="Delete"
                     Visibility="{Binding CurrentProduct.IsNew, Converter={StaticResource CollapsedIf}, Mode=OneWay}" />
+
                 <AppBarButton
                     Click="AddButton_Click"
                     Icon="Add"
-                    Visibility="{x:Bind viewModel:Converters.CollapsedIfOneOfTwo(CurrentProduct.IsInEdit, CurrentProduct.IsNew), Mode=OneWay}"
-                    Label="Add new" />
-                    
+                    Label="Add new"
+                    Visibility="{x:Bind viewModel:Converters.CollapsedIfOneOfTwo(CurrentProduct.IsInEdit, CurrentProduct.IsNew), Mode=OneWay}" />
+
             </CommandBar>
         </DataTemplate>
     </behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
@@ -76,12 +101,18 @@
 
             <StackPanel x:Name="StackPanel">
 
-                <!--  Pharmacy selection  -->
+                <!--#region Pharmacy selection-->
                 <RelativePanel>
+
+                    <muxc:ProgressBar
+                        Margin="0,0,0,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Top"
+                        IsIndeterminate="True" />
 
                     <ComboBox
                         x:Name="ProductPharmacy"
-                        Width="380"
+                        MinWidth="380"
                         Margin="0,20,16,8"
                         VerticalAlignment="Stretch"
                         DataContext="{x:Bind ViewModel.CurrentProduct, Mode=OneWay}"
@@ -102,12 +133,19 @@
                         RelativePanel.AlignVerticalCenterWith="ProductPharmacy"
                         RelativePanel.RightOf="ProductPharmacy"
                         Visibility="Collapsed" />
+
                 </RelativePanel>
+                <!--#endregion-->
 
 
-                <!--  Medicine selection  -->
+                <!--#region Medicine selection-->
                 <RelativePanel>
 
+                    <muxc:ProgressBar
+                        Margin="0,0,0,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Top"
+                        IsIndeterminate="True" />
 
                     <ComboBox
                         x:Name="ProductMedicine"
@@ -135,10 +173,11 @@
 
 
                 </RelativePanel>
+                <!--#endregion-->
 
-                <!--  Price input  -->
+
+                <!--#region Price input-->
                 <RelativePanel>
-
 
                     <NumberBox
                         x:Name="Price"
@@ -162,12 +201,13 @@
                         RelativePanel.RightOf="Price"
                         Visibility="Collapsed" />
 
-
                 </RelativePanel>
+                <!--#endregion-->
 
 
-                <!--  Quantity input  -->
+                <!--#region Quantity input-->
                 <RelativePanel>
+
 
 
                     <NumberBox
@@ -176,10 +216,10 @@
                         Margin="0,20,16,8"
                         DataContext="{x:Bind ViewModel.CurrentProduct, Mode=OneWay}"
                         DataContextChanged="Element_DataContextChanged"
-                        ValueChanged="NumberBox_ValueChanged"
-                        IsEnabled="{x:Bind ViewModel.CurrentProduct.IsInEdit, Mode=OneWay}"
                         Header="Quantity"
+                        IsEnabled="{x:Bind ViewModel.CurrentProduct.IsInEdit, Mode=OneWay}"
                         PlaceholderText="Input quantity"
+                        ValueChanged="NumberBox_ValueChanged"
                         Value="{x:Bind ViewModel.CurrentProduct.Quantity, Mode=TwoWay}" />
 
                     <FontIcon
@@ -192,21 +232,20 @@
                         RelativePanel.RightOf="Quantity"
                         Visibility="Collapsed" />
 
-
                 </RelativePanel>
-
-                <!--  Notification  -->
-                <toolkit:InAppNotification
-                    x:Name="Notification"
-                    RelativePanel.AlignBottomWithPanel="True"
-                    RelativePanel.AlignHorizontalCenterWithPanel="True"
-                    StackMode="Replace" />
+                <!--#endregion-->
 
             </StackPanel>
 
-
-
         </ScrollViewer>
+
+
+        <!--  Notification  -->
+        <toolkit:InAppNotification
+            x:Name="Notification"
+            RelativePanel.AlignBottomWithPanel="True"
+            RelativePanel.AlignHorizontalCenterWithPanel="True"
+            StackMode="Replace" />
     </Grid>
 
 </Page>

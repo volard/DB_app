@@ -24,11 +24,11 @@ public partial class AddressesGridViewModel : ObservableRecipient, INavigationAw
 
     public AddressesGridViewModel()
     {
-        WeakReferenceMessenger.Default.Register<AddRecordMessage<HospitalWrapper>>(this, (r, m) =>
+        WeakReferenceMessenger.Default.Register<AddRecordMessage<AddressWrapper>>(this, (r, m) =>
         {
-            if (r is HospitalsGridViewModel hospitalViewModel)
+            if (r is AddressesGridViewModel addressViewModel)
             {
-                hospitalViewModel.Source.Insert(0, m.Value);
+                addressViewModel.Source.Insert(0, m.Value);
                 OnPropertyChanged(nameof(Source));
             }
         });
@@ -69,12 +69,12 @@ public partial class AddressesGridViewModel : ObservableRecipient, INavigationAw
 
                 Source.Remove(SelectedItem);
 
-                OperationRejected?.Invoke(this, new NotificationConfigurationEventArgs("Everything is good", NotificationType.Success));
+                OperationRejected?.Invoke(this, new NotificationConfigurationEventArgs("Everything is good", NotificationHelper.SuccessStyle));
 
             }
             catch (LinkedRecordOperationException)
             {
-                OperationRejected?.Invoke(this, new NotificationConfigurationEventArgs("Адресс связан с организацией. Удалите связанную организацию, чтобы удалить адрес", NotificationType.Error));
+                OperationRejected?.Invoke(this, new NotificationConfigurationEventArgs("Адресс связан с организацией. Удалите связанную организацию, чтобы удалить адрес", NotificationHelper.ErrorStyle));
             }
         }
     }

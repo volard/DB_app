@@ -35,13 +35,11 @@ public partial class ProductDetailsViewModel : ObservableRecipient, INavigationA
 
     }
 
-    public void OnNavigatedFrom()
-    {
-        // Not used
-    }
+    public void OnNavigatedFrom(){ /* Not used */ }
 
 
     public List<Pharmacy> AvailablePharmacies;
+
     public List<Medicine> AvailableMedicines;
 
     /// <summary>

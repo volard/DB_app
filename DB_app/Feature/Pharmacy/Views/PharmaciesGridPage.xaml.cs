@@ -25,6 +25,17 @@ public sealed partial class PharmaciesGridPage : Page
         });
     }
 
+    private void ShowNotificationMessage(object? sender, NotificationConfigurationEventArgs e)
+    {
+        Notification.Content = e.Message;
+        Notification.Style = e.Style;
+        Notification.Show(2000);
+    }
+
+    /**************************************/
+    #region Navigation Handlers
+    /**************************************/
+
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         ViewModel.OperationRejected += ShowNotificationMessage;
@@ -37,12 +48,12 @@ public sealed partial class PharmaciesGridPage : Page
         base.OnNavigatedFrom(e);
     }
 
-    private void ShowNotificationMessage(object? sender, NotificationConfigurationEventArgs e)
-    {
-        Notification.Content = e.Message;
-        Notification.Style = e.Style;
-        Notification.Show(2000);
-    }
+    #endregion
+
+
+    /**************************************/
+    #region AppBar button click handlers
+    /**************************************/
 
     private void Add_Click(object sender, RoutedEventArgs e) =>
         Frame.Navigate(typeof(PharmacyDetailsPage), new PharmacyWrapper() { IsInEdit = true }, new DrillInNavigationTransitionInfo());
@@ -59,6 +70,8 @@ public sealed partial class PharmaciesGridPage : Page
 
     private void Edit_Click(object sender, RoutedEventArgs e)
     {
+        if (ViewModel.SelectedItem == null) return;
+
         ViewModel.SelectedItem!.IsInEdit = true;
         App.GetService<INavigationService>().NavigateTo(typeof(PharmacyDetailsViewModel).FullName!, ViewModel.SelectedItem);
     }
@@ -67,4 +80,6 @@ public sealed partial class PharmaciesGridPage : Page
     {
         await ViewModel.ToggleInactive();
     }
+
+    #endregion
 }

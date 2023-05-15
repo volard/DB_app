@@ -8,26 +8,11 @@ namespace DB_app.Helpers;
 public class NotificationConfigurationEventArgs : EventArgs
 {
     public string Message { get; set; }
+    public Style Style   { get; }
 
-    public Style? Style { get; }
-
-    public NotificationConfigurationEventArgs(string message, NotificationType type)
+    public NotificationConfigurationEventArgs(string message, Style style)
     {
         Message = message;
-        Style = type switch
-        {
-            NotificationType.Success => Application.Current.Resources["SuccessInAppNavigationStyle"] as Style,
-            NotificationType.Error   => Application.Current.Resources["ErrorInAppNavigationStyle"] as Style,
-            NotificationType.Info    => Application.Current.Resources["InfoInAppNavigationStyle"] as Style,
-            _                      => throw new ArgumentException($"{nameof(type)} not expected ApperienceType value: {type}"),
-        };
-        if (Style is null) throw new Exception("Provided InAppNotification style not found in the project");
+        Style   = style;
     }
-}
-
-public enum NotificationType
-{
-    Success,
-    Error,
-    Info
 }

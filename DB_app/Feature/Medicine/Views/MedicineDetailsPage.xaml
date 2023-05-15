@@ -26,8 +26,27 @@
                 DefaultLabelPosition="Right">
                 <CommandBar.Content>
                     <Grid>
-                       
+
+                        <TextBlock
+                            x:Name="Title"
+                            Margin="10,0,0,0"
+                            Style="{ThemeResource TitleTextBlockStyle}"
+                            Text="{x:Bind PageTitle, Mode=OneWay}" />
+
+                        <InfoBadge
+                            Width="11"
+                            Height="11"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Visibility="{x:Bind CurrentMedicine.IsModified, Mode=OneWay}">
+
+                            <InfoBadge.IconSource>
+                                <FontIconSource FontFamily="Segoe Fluent Icons" Glyph="&#xEB52;" />
+                            </InfoBadge.IconSource>
+
+                        </InfoBadge>
                     </Grid>
+
                 </CommandBar.Content>
 
 
@@ -37,21 +56,25 @@
                     IsEnabled="{Binding CurrentMedicine.HasErrors, Converter={StaticResource NotConverter}, Mode=OneWay}"
                     Label="Save"
                     Visibility="{Binding CurrentMedicine.IsInEdit, Converter={StaticResource VisibleIf}, Mode=OneWay}" />
+                
                 <AppBarButton
-                    Click="{x:Bind CurrentMedicine.BeginEdit}"
+                    Click="BeginEdit_Click"
                     Icon="Edit"
                     Label="Edit"
                     Visibility="{x:Bind viewModel:Converters.CollapsedIfOneOfTwo(CurrentMedicine.IsInEdit, CurrentMedicine.IsNew), Mode=OneWay}" />
+                
                 <AppBarButton
-                    Click="{x:Bind CurrentMedicine.EndEdit}"
+                    Click="{x:Bind CurrentMedicine.CancelEdit}"
                     Icon="Cancel"
                     Label="Cancel"
                     Visibility="{x:Bind viewModel:Converters.VisibleIfOneAndNotAnother(CurrentMedicine.IsInEdit, CurrentMedicine.IsNew), Mode=OneWay}" />
+                
                 <AppBarButton
                     Click="DeleteButton_Click"
                     Icon="Delete"
                     Label="Delete"
                     Visibility="{Binding CurrentMedicine.IsNew, Converter={StaticResource CollapsedIf}, Mode=OneWay}" />
+                
                 <AppBarButton
                     Click="AddButton_Click"
                     Icon="Add"

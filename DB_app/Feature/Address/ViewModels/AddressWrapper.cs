@@ -3,8 +3,6 @@ using CommunityToolkit.Mvvm.Messaging;
 using DB_app.Core.Contracts.Services;
 using DB_app.Models;
 using DB_app.Services.Messages;
-
-using Microsoft.UI.Xaml.Data;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -52,18 +50,19 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
     public Address AddressData { get; set; } = new();
 
 
-
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [NotifyPropertyChangedFor(nameof(IsModified))]
     [Required(ErrorMessage = "City is Required")]
     private string? _city;
 
+
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [NotifyPropertyChangedFor(nameof(IsModified))]
     [Required(ErrorMessage = "Street is Required")]
     private string? _street;
+
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
@@ -73,6 +72,7 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
     
 
     public int Id { get => AddressData.Id; }
+
 
     private Address? _backupData;
 
@@ -105,8 +105,8 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
     [ObservableProperty]
     private bool _isNew = false;
 
-    #endregion
 
+    #endregion
 
 
 
@@ -118,6 +118,7 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
     public override string ToString() => 
         $"AddressWrapper with addressData {AddressData}";
 
+
     public override bool Equals(object? obj)
     {
         if (obj is not AddressWrapper other) return false;
@@ -127,18 +128,16 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
             Building == other?.Building;
     }
 
+
     private void InitFields()
     {
-        City = _addressData.City;
-        Street = _addressData.Street;
-        Building = _addressData.Building;
+        City = AddressData.City;
+        Street = AddressData.Street;
+        Building = AddressData.Building;
     }
 
 
     #endregion
-
-
-
 
 
 
@@ -192,7 +191,6 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
 
 
 
-
     /**************************************/
     #region IEditable implementation
     /**************************************/
@@ -204,11 +202,14 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
         Backup();
     }
 
+
     public void CancelEdit()
     {
         InitFields();
+        OnPropertyChanged(nameof(IsModified));
         IsInEdit = false;
     }
+
 
     public void EndEdit()
     {
@@ -222,10 +223,5 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
     }
 
 
-    
-
-    
     #endregion
-
-
 }

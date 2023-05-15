@@ -264,4 +264,9 @@ public sealed partial class OrderDetailsPage : Page
             await ViewModel.CurrentOrder.RemoveOrderItem(SelectedOrderItem);
         }
     }
+
+    private void BeginEdit_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
 }

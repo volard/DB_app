@@ -13,8 +13,10 @@ namespace DB_app.ViewModels;
 public sealed partial class MedicineWrapper : 
     ObservableValidator, IEditableObject
 {
-
+    /**************************************/
     #region Constructors
+    /**************************************/
+
 
     public MedicineWrapper(Medicine? medicine = null)
     {
@@ -23,57 +25,57 @@ public sealed partial class MedicineWrapper :
             IsNew = true;
         }
         else { MedicineData = medicine; }
+
+        InitFields();
     }
 
     #endregion
 
 
+
+
+    /**************************************/
     #region Properties
+    /**************************************/
 
-    private readonly IRepositoryControllerService _repositoryControllerService
-        = App.GetService<IRepositoryControllerService>();
-
-
-    private Medicine _medicineData = new();
-
+    private readonly IRepositoryControllerService _repositoryControllerService = App.GetService<IRepositoryControllerService>();
 
     private Medicine? _backupData;
 
-    public Medicine MedicineData
-    {
-        get => _medicineData;
-        set
-        {
-            _medicineData = value;
-            Name = _medicineData.Name;
-            Type = _medicineData.Type;
-        }
-    }
-
+    public Medicine MedicineData { get; set; } = new();
 
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
+    [NotifyPropertyChangedFor(nameof(IsModified))]
     [Required(ErrorMessage = "Name is Required")]
     private string? _name;
 
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
+    [NotifyPropertyChangedFor(nameof(IsModified))]
     [Required(ErrorMessage = "Type is Required")]
     private string? _type;
 
 
     public int Id { get => MedicineData.Id; }
 
-    private Medicine? BackupData;
-
 
     /// <summary>
     /// Indicates about changes that is not synced with UI DataGrid
     /// </summary>
-    [ObservableProperty]
-    private bool _isModified = false;
+    public bool IsModified
+    {
+        get
+        {
+            return
+                Name != MedicineData.Name ||
+                // Note Type name is subject to change because it can be messed up wiht System.Type
+                Type != MedicineData.Type;
+        }
+    }
+
 
     /// <summary>
     /// indicates whether its a new object
@@ -89,11 +91,15 @@ public sealed partial class MedicineWrapper :
     private bool _isInEdit = false;
 
     #endregion
+    
 
 
+
+    /**************************************/
     #region Members
+    /**************************************/
 
-     public bool Equals(object? obj)
+    public bool Equals(object? obj)
     {
         if (obj is not MedicineWrapper other) return false;
         return 
@@ -104,12 +110,22 @@ public sealed partial class MedicineWrapper :
 
     public override string ToString() => $"MedicineWrapper with MedicineData '{Name}' under '{Type}' type";
 
+    public void InitFields()
+    {
+        Name = MedicineData.Name;
+        // Note Type name is subject to change because it can be messed up wiht System.Type
+        Type = MedicineData.Type;
+    }
+
 
     #endregion
 
 
-    #region Modification methods
 
+
+    /**************************************/
+    #region Modification methods
+    /**************************************/
 
 
     /// <summary>
@@ -120,7 +136,7 @@ public sealed partial class MedicineWrapper :
         if (_backupData != null)
         {
             MedicineData = _backupData;
-            await App.GetService<IRepositoryControllerService>().Medicines.UpdateAsync(_medicineData);
+            await App.GetService<IRepositoryControllerService>().Medicines.UpdateAsync(MedicineData);
         }
     }
 
@@ -144,35 +160,40 @@ public sealed partial class MedicineWrapper :
 
 
     public void Backup() =>
-        _backupData = _medicineData;
+        _backupData = MedicineData;
 
 
     #endregion
 
 
+
+
+    /**************************************/
     #region IEditable implementation
+    /**************************************/
 
 
     public void BeginEdit()
     {
-        this.IsInEdit = true;
-        OnPropertyChanged(nameof(IsInEdit));
+        IsInEdit = true;
+        OnPropertyChanged(nameof(IsModified));
         Backup();
     }
 
     public void CancelEdit()
     {
-        Name = _medicineData.Name;
-        Type = _medicineData.Type;
-        IsModified = false;
-        IsModified = false;
+        InitFields();
+        IsInEdit = false;
     }
 
-    public async void EndEdit()
+    public void EndEdit()
     {
         IsInEdit = false;
-        _medicineData.Name = Name;
-        _medicineData.Type = Type;
+        OnPropertyChanged(nameof(IsModified));
+
+        // NOTE the underlying code relays on preliminary data validation
+        MedicineData.Name = Name;
+        MedicineData.Type = Type;
     }
 
 

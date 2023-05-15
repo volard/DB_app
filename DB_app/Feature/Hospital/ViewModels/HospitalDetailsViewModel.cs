@@ -11,8 +11,9 @@ namespace DB_app.ViewModels;
 
 public partial class HospitalDetailsViewModel : ObservableRecipient, INavigationAware
 {
-
-#region Members
+    /**************************************/
+    #region Members
+    /**************************************/
 
     /// <summary>
     /// Loads the addresses data.
@@ -59,10 +60,12 @@ public partial class HospitalDetailsViewModel : ObservableRecipient, INavigation
 
     public void OnNavigatedFrom() { /* Not used */ }
 
-#endregion
+    #endregion
 
 
-#region Properties
+    /**************************************/
+    #region Properties
+    /**************************************/
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
@@ -90,6 +93,6 @@ public partial class HospitalDetailsViewModel : ObservableRecipient, INavigation
     [ObservableProperty]
     private string? _pageTitle;
 
-#endregion
+    #endregion
 
 }

@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using DB_app.Contracts.Services;
 using DB_app.Contracts.ViewModels;
 using DB_app.Core.Contracts.Services;
+using DB_app.Helpers;
 using DB_app.Models;
 using DB_app.Services.Messages;
 using Microsoft.UI.Xaml;
@@ -33,19 +34,14 @@ public partial class MedicineDetailsViewModel : ObservableRecipient, INavigation
         {
             CurrentMedicine = model;
             CurrentMedicine.Backup();
-
-            if (CurrentMedicine.IsInEdit)
-            {
-                PageTitle = "Edit medicine #" + CurrentMedicine.Id;
-            }
-            else
-                PageTitle = "Medicine #" + CurrentMedicine.Id;
         }
+
+        if (CurrentMedicine.IsNew)
+            PageTitle = "New_Medicine".GetLocalizedValue();
+        else
+            PageTitle = "Medicine/Text".GetLocalizedValue() + " #" + CurrentMedicine.Id;
     }
 
-    public void OnNavigatedFrom()
-    {
-        // Not used
-    }
+    public void OnNavigatedFrom() { /* Not used */ }
 }
 

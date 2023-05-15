@@ -1,19 +1,18 @@
 using CommunityToolkit.Mvvm.Messaging;
 using DB_app.Behaviors;
 using DB_app.Core.Contracts.Services;
-using DB_app.Models;
 using DB_app.Services.Messages;
 using DB_app.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Navigation;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
-using WinUIEx.Messaging;
 
 namespace DB_app.Views;
+
+// Reduces warning noise on parameters that are needed for signature requirements
+#pragma warning disable IDE0060
 
 public sealed partial class ProductDetailsPage : Page
 {
@@ -31,12 +30,14 @@ public sealed partial class ProductDetailsPage : Page
         });
     }
 
-
+    /**************************************/
     #region Button handlers
+    /**************************************/
+
 
     private async void SaveButton_Click(object sender, RoutedEventArgs e)
     {
-        bool isOk = await ViewModel.CurrentProduct.SaveAsync();
+        await ViewModel.CurrentProduct.SaveAsync();
     }
 
 
@@ -58,8 +59,8 @@ public sealed partial class ProductDetailsPage : Page
         catch (Exception)
         {
             var message = "жоская ошебка";
-            ////Notification.Content = message;
-            //Notification.Show(2000);
+            Notification.Content = message;
+            Notification.Show(2000);
         }
     }
 
@@ -77,9 +78,6 @@ public sealed partial class ProductDetailsPage : Page
 
 
     
-
-
-
 
     /// <summary>
     /// Refreshes the errors currently displayed.
@@ -112,7 +110,6 @@ public sealed partial class ProductDetailsPage : Page
         if (args.NewValue is INotifyDataErrorInfo dataContext)
         {
             oldDataContext = dataContext;
-
             oldDataContext.ErrorsChanged += DataContext_ErrorsChanged;
         }
     }
@@ -139,4 +136,10 @@ public sealed partial class ProductDetailsPage : Page
         RefreshErrors(sender.Name);
     }
 
+    private void BeginEdit_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
 }
+
+#pragma warning restore IDE0060

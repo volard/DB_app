@@ -8,6 +8,7 @@ using Windows.ApplicationModel.DataTransfer;
 using Windows.System;
 
 namespace DB_app.Views;
+
 using WASDK = Microsoft.WindowsAppSDK;
 
 // Reduces warning noise on parameters that are needed for signature requirements
@@ -47,23 +48,10 @@ public sealed partial class SettingsPage : Page
 
 
         Notification.Content = "Copied to clipboard";
-        Notification.Style = GetNotificationStyle(NotificationType.Success);
+        Notification.Style = NotificationHelper.SuccessStyle;
         Notification.Show(1500);
     }
 
-
-    public static Style GetNotificationStyle(NotificationType type)
-    {
-        var output = type switch
-        {
-            NotificationType.Success => Application.Current.Resources["SuccessInAppNavigationStyle"] as Style,
-            NotificationType.Error => Application.Current.Resources["ErrorInAppNavigationStyle"] as Style,
-            NotificationType.Info => Application.Current.Resources["InfoInAppNavigationStyle"] as Style,
-            _ => throw new ArgumentException($"{nameof(type)} not expected ApperienceType value: {type}"),
-        };
-
-        return output!;
-    }
 
     /// <summary>
     /// Raises the <see cref="ViewModel.DisplayInAppNotification"/> event.
@@ -134,7 +122,7 @@ public sealed partial class SettingsPage : Page
         App.GetService<IRepositoryControllerService>().SetupDataBase();
 
         Notification.Content = "Data restored";
-        Notification.Style = GetNotificationStyle(NotificationType.Success);
+        Notification.Style = NotificationHelper.SuccessStyle;
         Notification.Show(1500);
     }
 

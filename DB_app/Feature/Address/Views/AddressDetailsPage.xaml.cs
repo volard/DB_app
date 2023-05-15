@@ -117,6 +117,10 @@ public sealed partial class AddressDetailsPage : Page
         base.OnNavigatingFrom(e);
     }
 
+    private void BeginEdit_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
 }
 
 #pragma warning restore IDE0060

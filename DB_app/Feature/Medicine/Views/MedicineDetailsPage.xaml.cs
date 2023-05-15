@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.Messaging;
 using DB_app.Behaviors;
 using DB_app.Core.Contracts.Services;
+using DB_app.Helpers;
 using DB_app.Services.Messages;
 using DB_app.ViewModels;
 using Microsoft.UI.Xaml;
@@ -17,26 +18,21 @@ namespace DB_app.Views;
 
 public sealed partial class MedicineDetailsPage : Page
 {
-    public MedicineDetailsViewModel ViewModel { get; }
+    public MedicineDetailsViewModel ViewModel { get; } = App.GetService<MedicineDetailsViewModel>();
 
     public MedicineDetailsPage()
     {
-        ViewModel = App.GetService<MedicineDetailsViewModel>();
         InitializeComponent();
+        SetBinding(NavigationViewHeaderBehavior.HeaderContextProperty, new Binding
+        {
+            Source = ViewModel,
+            Mode = BindingMode.OneWay
+        });
     }
 
     private async void SaveButton_Click(object sender, RoutedEventArgs e)
     {
-        bool result = await ViewModel.CurrentMedicine.SaveAsync();
-    }
-
-    /// <summary>
-    /// Navigate to the previous page when the user cancels the creation of a new record.
-    /// </summary>
-    private void CancelButton_Click(object? sender, RoutedEventArgs e)
-    {
-        ViewModel.CurrentMedicine.CancelEdit();
-        ViewModel.CurrentMedicine.IsInEdit = false;
+        await ViewModel.CurrentMedicine.SaveAsync();
     }
 
 
@@ -47,12 +43,16 @@ public sealed partial class MedicineDetailsPage : Page
             await App.GetService<IRepositoryControllerService>().Addresses.DeleteAsync(ViewModel.CurrentMedicine.Id);
             Frame.GoBack();
             WeakReferenceMessenger.Default.Send(new DeleteRecordMessage<MedicineWrapper>(ViewModel.CurrentMedicine));
+
+            Notification.Content = "Success";
+            Notification.Style = NotificationHelper.SuccessStyle;
+            Notification.Show(1500);
         } 
         catch (Exception)
         {
-            var message = "жоская ошебка";
-            Notification.Content = message;
-            Notification.Show(2000);
+            Notification.Content = "Error occured";
+            Notification.Style = NotificationHelper.ErrorStyle;
+            Notification.Show(1500);
         }
     }
 
@@ -114,17 +114,10 @@ public sealed partial class MedicineDetailsPage : Page
         base.OnNavigatingFrom(e);
     }
 
-    private void Text_TextChanged(object sender, TextChangedEventArgs e)
+    private void BeginEdit_Click(object sender, RoutedEventArgs e)
     {
-        // NOTE this is useless actually. Every time current address changes - text become in modified state but its 
-        // not modified actually
-        if (ViewModel.CurrentMedicine.IsInEdit) 
-        {
-            ViewModel.CurrentMedicine.IsModified = true;
-        }
+        ViewModel.CurrentMedicine.BeginEdit();
     }
-
-
 }
 
 #pragma warning restore IDE0060

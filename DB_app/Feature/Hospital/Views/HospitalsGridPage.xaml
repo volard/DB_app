@@ -22,7 +22,6 @@
             <CommandBar
                 HorizontalAlignment="Stretch"
                 Background="Transparent"
-                
                 DefaultLabelPosition="Right">
 
                 <CommandBar.Content>
@@ -105,9 +104,7 @@
                     <toolkit:DataGridTextColumn
                         Width="20*"
                         Binding="{Binding Surename_main_doctor}"
-                        Header="Maindoctor's surename">
-                       
-                    </toolkit:DataGridTextColumn>
+                        Header="Maindoctor's surename" />
                     <toolkit:DataGridTextColumn
                         Width="20*"
                         Binding="{Binding Name_main_doctor}"

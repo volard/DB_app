@@ -58,20 +58,24 @@
                     IsEnabled="{Binding CurrentHospital.HasErrors, Converter={StaticResource NotConverter}, Mode=OneWay}"
                     Label="Save"
                     Visibility="{Binding CurrentHospital.IsInEdit, Converter={StaticResource VisibleIf}, Mode=OneWay}" />
+
                 <AppBarButton
                     Click="BeginEdit_Click"
                     Icon="Edit"
                     Label="Edit"
                     Visibility="{x:Bind viewModel:Converters.CollapsedIfOneOfTwo(CurrentHospital.IsInEdit, CurrentHospital.IsNew), Mode=OneWay}" />
+
                 <AppBarButton
                     Click="{x:Bind CurrentHospital.CancelEdit}"
                     Icon="Cancel"
                     Label="Cancel"
                     Visibility="{x:Bind viewModel:Converters.VisibleIfOneAndNotAnother(CurrentHospital.IsInEdit, CurrentHospital.IsNew), Mode=OneWay}" />
+
                 <AppBarButton
                     Icon="Delete"
                     Label="Delete"
                     Visibility="{Binding CurrentHospital.IsNew, Converter={StaticResource CollapsedIf}, Mode=OneWay}" />
+
                 <AppBarButton
                     Icon="Add"
                     Label="Add new"
@@ -119,7 +123,7 @@
                                     RelativePanel.AlignVerticalCenterWith="Surename_main_doctor"
                                     Visibility="{x:Bind viewModel:Converters.VisibleIfOneAndNotAnother(ViewModel.CurrentHospital.IsInEdit, ViewModel.CurrentHospital.IsNew), Mode=OneWay}" />
 
-                                
+
                                 <!--  Surename doctor name  -->
                                 <components:ValidationTextBox
                                     x:Name="Surename_main_doctor"
@@ -191,9 +195,13 @@
 
                                 <CommandBar.Content>
                                     <StackPanel Orientation="Horizontal">
-                                        <FontIcon Margin="0,0,20,0" FontFamily="Segoe MDL2 Assets" Foreground="DodgerBlue" Glyph="&#xE946;">
+                                        <FontIcon
+                                            Margin="0,0,20,0"
+                                            FontFamily="Segoe MDL2 Assets"
+                                            Foreground="DodgerBlue"
+                                            Glyph="&#xE946;">
                                             <ToolTipService.ToolTip>
-                                                <ToolTip Content="At least one address have to be provided otherwise organisation becomes inactive"/>
+                                                <ToolTip Content="At least one address have to be provided otherwise organisation becomes inactive" />
                                             </ToolTipService.ToolTip>
 
                                         </FontIcon>
@@ -211,16 +219,16 @@
                                     x:Name="AddressCommandBarAddButton"
                                     Click="{x:Bind AddSelectedButton_Clicked}"
                                     Icon="Add"
-                                    Label="Add selected"
                                     IsEnabled="{x:Bind ViewModel.SelectedAddress, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
+                                    Label="Add selected"
                                     ToolTipService.ToolTip="Add selected" />
 
                                 <AppBarButton
                                     x:Name="AddressCommandBarDeleteButton"
                                     Click="{x:Bind DeleteSelectedButton_Clicked}"
                                     Icon="Delete"
-                                    Label="Delete"
                                     IsEnabled="{x:Bind ViewModel.SelectedExistingLocation, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
+                                    Label="Delete"
                                     ToolTipService.ToolTip="Delete" />
 
                             </CommandBar>
@@ -274,7 +282,15 @@
                     </muxc:Expander.Content>
                 </muxc:Expander>
                 <!--#endregion-->
+
             </StackPanel>
         </ScrollViewer>
+
+        <toolkit:InAppNotification
+            x:Name="Notification"
+            RelativePanel.AlignBottomWithPanel="True"
+            RelativePanel.AlignHorizontalCenterWithPanel="True"
+            StackMode="Replace" />
+
     </RelativePanel>
 </Page>

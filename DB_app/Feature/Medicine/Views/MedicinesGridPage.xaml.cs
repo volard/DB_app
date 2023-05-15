@@ -34,13 +34,13 @@ public sealed partial class MedicinesGridPage : Page
 
    protected override void OnNavigatedTo(NavigationEventArgs e)
     {
-        ViewModel.OperationRejected += ShowNotificationMessage;
+        ViewModel.DisplayNotification += ShowNotificationMessage;
         base.OnNavigatedTo(e);
     }
 
     protected override void OnNavigatedFrom(NavigationEventArgs e)
     {
-        ViewModel.OperationRejected-= ShowNotificationMessage;
+        ViewModel.DisplayNotification-= ShowNotificationMessage;
         base.OnNavigatedFrom(e);
     }
 

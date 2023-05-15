@@ -1,4 +1,3 @@
-using CommunityToolkit.Mvvm.ComponentModel;
 using DB_app.Behaviors;
 using DB_app.Models;
 using DB_app.ViewModels;
@@ -6,8 +5,6 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Navigation;
-using System.Diagnostics;
-using Windows.ApplicationModel.Resources;
 
 namespace DB_app.Views;
 
@@ -52,6 +49,7 @@ public sealed partial class HospitalDetailsPage : Page
         }
     }
     
+
     public void AddSelectedButton_Clicked(object sender, RoutedEventArgs e)
     {
         if (ViewModel.SelectedAddress == null) return;
@@ -59,6 +57,7 @@ public sealed partial class HospitalDetailsPage : Page
         ViewModel.CurrentHospital.ObservableLocations.Add(new HospitalLocation(ViewModel.SelectedAddress));
         ViewModel.AvailableAddresses.Remove(ViewModel.SelectedAddress);
     }
+
 
     public void DeleteSelectedButton_Clicked(object sender, RoutedEventArgs e)
     {
@@ -71,25 +70,17 @@ public sealed partial class HospitalDetailsPage : Page
         ViewModel.SelectedExistingLocation = null;
     }
 
+
     private async void SaveButton_Click(object sender, RoutedEventArgs e)
     {
         await ViewModel.CurrentHospital.SaveAsync();
     }
 
-    /// <summary>
-    /// Navigate to the previous page when the user cancels the creation of a new record.
-    /// </summary>
-    private void CancelEdit_Click(object sender, RoutedEventArgs e)
-    {
-        Frame.GoBack();
-    }
 
     /// <summary>
     /// Check whether there are unsaved changes and warn the user.
     /// </summary>
-    protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
-    {
-    }
+    protected override void OnNavigatingFrom(NavigatingCancelEventArgs e) { /* not used */ }
 
     protected override void OnNavigatedTo(NavigationEventArgs e){ /* not used */ }
 

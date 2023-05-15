@@ -18,7 +18,7 @@
         <helpers:CollapsedIf x:Key="CollapsedIf" />
     </Page.Resources>
 
-    <!--#region Header -->
+    <!--#region Header-->
     <behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
         <DataTemplate x:DataType="viewModel:PharmacyDetailsViewModel">
             <CommandBar
@@ -26,7 +26,28 @@
                 Background="Transparent"
                 DefaultLabelPosition="Right">
                 <CommandBar.Content>
-                    <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="{x:Bind PageTitle, Mode=OneWay}" />
+                    <Grid>
+
+                        <TextBlock
+                            x:Name="Title"
+                            Margin="10,0,0,0"
+                            Style="{ThemeResource TitleTextBlockStyle}"
+                            Text="{x:Bind PageTitle, Mode=OneWay}" />
+
+                        <InfoBadge
+                            Width="11"
+                            Height="11"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Visibility="{x:Bind CurrentPharmacy.IsModified, Mode=OneWay}">
+
+                            <InfoBadge.IconSource>
+                                <FontIconSource FontFamily="Segoe Fluent Icons" Glyph="&#xEB52;" />
+                            </InfoBadge.IconSource>
+
+                        </InfoBadge>
+                    </Grid>
+
                 </CommandBar.Content>
 
                 <AppBarButton
@@ -35,27 +56,31 @@
                     IsEnabled="{Binding CurrentPharmacy.HasErrors, Converter={StaticResource NotConverter}, Mode=OneWay}"
                     Label="Save"
                     Visibility="{Binding CurrentPharmacy.IsInEdit, Converter={StaticResource VisibleIf}, Mode=OneWay}" />
+
                 <AppBarButton
-                    Click="{x:Bind CurrentPharmacy.BeginEdit}"
+                    Click="BeginEdit_Click"
                     Icon="Edit"
                     Label="Edit"
                     Visibility="{x:Bind viewModel:Converters.CollapsedIfOneOfTwo(CurrentPharmacy.IsInEdit, CurrentPharmacy.IsNew), Mode=OneWay}" />
+
                 <AppBarButton
-                    Click="{x:Bind CurrentPharmacy.EndEdit}"
+                    Click="{x:Bind CurrentPharmacy.CancelEdit}"
                     Icon="Cancel"
                     Label="Cancel"
                     Visibility="{x:Bind viewModel:Converters.VisibleIfOneAndNotAnother(CurrentPharmacy.IsInEdit, CurrentPharmacy.IsNew), Mode=OneWay}" />
+
                 <AppBarButton
                     Click="DeleteButton_Click"
                     Icon="Delete"
                     Label="Delete"
                     Visibility="{Binding CurrentPharmacy.IsNew, Converter={StaticResource CollapsedIf}, Mode=OneWay}" />
+
                 <AppBarButton
                     Click="AddButton_Click"
                     Icon="Add"
-                    Visibility="{x:Bind viewModel:Converters.CollapsedIfOneOfTwo(CurrentPharmacy.IsInEdit, CurrentPharmacy.IsNew), Mode=OneWay}"
-                    Label="Add new" />
-           </CommandBar>
+                    Label="Add new"
+                    Visibility="{x:Bind viewModel:Converters.CollapsedIfOneOfTwo(CurrentPharmacy.IsInEdit, CurrentPharmacy.IsNew), Mode=OneWay}" />
+            </CommandBar>
         </DataTemplate>
     </behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
     <!--#endregion-->
@@ -80,7 +105,7 @@
                     </Style>
                 </StackPanel.Resources>
 
-
+                <!--#region Full name and pharmacy info-->
                 <muxc:Expander
                     x:Name="ExpanderName"
                     ExpandDirection="Down"
@@ -125,7 +150,9 @@
 
 
                 </muxc:Expander>
+                <!--#endregion-->
 
+                <!--#region Addresses list in expander-->
                 <muxc:Expander
                     x:Name="ExpanderAddresses"
                     ExpandDirection="Down"
@@ -153,25 +180,38 @@
                                 VerticalContentAlignment="Center"
                                 Background="Transparent"
                                 DefaultLabelPosition="Right"
-                                RelativePanel.AlignRightWithPanel="True">
+                                RelativePanel.AlignRightWithPanel="True"
+                                Visibility="{x:Bind viewModel:Converters.VisibleIf(ViewModel.CurrentPharmacy.IsInEdit), Mode=OneWay}">
 
 
                                 <CommandBar.Content>
 
-                                    <ComboBox
-                                        Width="380"
-                                        VerticalAlignment="Stretch"
-                                        ItemsSource="{x:Bind ViewModel.AvailableAddresses}"
-                                        PlaceholderText="Select new address"
-                                        SelectedItem="{x:Bind ViewModel.SelectedAddress, Mode=TwoWay}" 
-                                        />
+                                    <StackPanel Orientation="Horizontal">
+                                        <FontIcon
+                                            Margin="0,0,20,0"
+                                            FontFamily="Segoe MDL2 Assets"
+                                            Foreground="DodgerBlue"
+                                            Glyph="&#xE946;">
+                                            <ToolTipService.ToolTip>
+                                                <ToolTip Content="At least one address have to be provided otherwise organisation becomes inactive" />
+                                            </ToolTipService.ToolTip>
 
+                                        </FontIcon>
+
+                                        <ComboBox
+                                            Width="380"
+                                            VerticalAlignment="Stretch"
+                                            ItemsSource="{x:Bind ViewModel.AvailableAddresses}"
+                                            PlaceholderText="Select new address"
+                                            SelectedItem="{x:Bind ViewModel.SelectedAddress, Mode=TwoWay}" />
+                                    </StackPanel>
                                 </CommandBar.Content>
 
                                 <AppBarButton
                                     x:Name="AddressCommandBarAddButton"
                                     Click="{x:Bind AddButton_Click}"
                                     Icon="Add"
+                                    IsEnabled="{x:Bind ViewModel.SelectedAddress, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
                                     Label="Add selected"
                                     ToolTipService.ToolTip="Add selected" />
 
@@ -179,58 +219,75 @@
                                     x:Name="AddressCommandBarDeleteButton"
                                     Click="{x:Bind DeleteButton_Click}"
                                     Icon="Delete"
+                                    IsEnabled="{x:Bind ViewModel.SelectedExistingLocation, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
                                     Label="Delete"
                                     ToolTipService.ToolTip="Delete" />
 
                             </CommandBar>
 
-                            <toolkit:DataGrid
-                                x:Name="AddressGrid"
-                                Margin="0,20,0,0"
-                                AutoGenerateColumns="False"
-                                CanUserReorderColumns="False"
-                                GridLinesVisibility="All"
-                                IsReadOnly="True"
-                                ItemsSource="{x:Bind ViewModel.CurrentPharmacy.ObservableLocations, Mode=OneWay}"
-                                RelativePanel.Below="AddressCommandBar"
-                                SelectedItem="{x:Bind ViewModel.SelectedExistingLocation, Mode=TwoWay}"
-                                SelectionMode="Single"
-                                Style="{StaticResource DataGridStyle1}"
-                                VerticalScrollBarVisibility="Auto"
-                                VirtualizingStackPanel.VirtualizationMode="Recycling">
+                            <Grid Margin="0,20,0,0" RelativePanel.Below="AddressCommandBar">
 
-                                <toolkit:DataGrid.Resources>
-                                    <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
-                                </toolkit:DataGrid.Resources>
+                                <toolkit:DataGrid
+                                    x:Name="AddressGrid"
+                                    Margin="0,20,0,0"
+                                    AutoGenerateColumns="False"
+                                    CanUserReorderColumns="False"
+                                    GridLinesVisibility="All"
+                                    IsReadOnly="True"
+                                    ItemsSource="{x:Bind ViewModel.CurrentPharmacy.ObservableLocations, Mode=OneWay}"
+                                    RelativePanel.Below="AddressCommandBar"
+                                    SelectedItem="{x:Bind ViewModel.SelectedExistingLocation, Mode=TwoWay}"
+                                    SelectionMode="Single"
+                                    Style="{StaticResource DataGridStyle1}"
+                                    VerticalScrollBarVisibility="Auto"
+                                    VirtualizingStackPanel.VirtualizationMode="Recycling">
 
-                                <toolkit:DataGrid.Columns>
+                                    <toolkit:DataGrid.Resources>
+                                        <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
+                                    </toolkit:DataGrid.Resources>
 
-                                    <toolkit:DataGridTextColumn
-                                        Width="30*"
-                                        Binding="{Binding Address.City}"
-                                        Header="City" />
-                                    <toolkit:DataGridTextColumn
-                                        Width="30*"
-                                        Binding="{Binding Address.Street}"
-                                        Header="Street" />
-                                    <toolkit:DataGridTextColumn
-                                        Width="30*"
-                                        Binding="{Binding Address.Building}"
-                                        Header="Building" />
-                                </toolkit:DataGrid.Columns>
+                                    <toolkit:DataGrid.Columns>
 
-                            </toolkit:DataGrid>
+                                        <toolkit:DataGridTextColumn
+                                            Width="30*"
+                                            Binding="{Binding Address.City}"
+                                            Header="City" />
+                                        <toolkit:DataGridTextColumn
+                                            Width="30*"
+                                            Binding="{Binding Address.Street}"
+                                            Header="Street" />
+                                        <toolkit:DataGridTextColumn
+                                            Width="30*"
+                                            Binding="{Binding Address.Building}"
+                                            Header="Building" />
+                                    </toolkit:DataGrid.Columns>
+
+                                </toolkit:DataGrid>
+
+                                <muxc:ProgressBar
+                                    Margin="0,0,0,0"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Top"
+                                    IsIndeterminate="True"
+                                    Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
+                            </Grid>
 
                         </RelativePanel>
 
                     </muxc:Expander.Content>
 
                 </muxc:Expander>
-
+                <!--#endregion-->
 
             </StackPanel>
 
         </ScrollViewer>
+
+        <toolkit:InAppNotification
+            x:Name="Notification"
+            RelativePanel.AlignBottomWithPanel="True"
+            RelativePanel.AlignHorizontalCenterWithPanel="True"
+            StackMode="Replace" />
 
     </RelativePanel>
 
