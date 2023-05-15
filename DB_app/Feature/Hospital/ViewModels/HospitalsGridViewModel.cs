@@ -68,8 +68,6 @@ public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAw
         var givenHospitalWrapper = message.Value;
         Source.Remove(givenHospitalWrapper);
     }
-
-    // Register a message in some module
     
 
 

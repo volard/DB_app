@@ -107,7 +107,6 @@ public sealed partial class HospitalWrapper : ObservableValidator, IEditableObje
     public int Id { get => HospitalData.Id; }
 
 
-    //private bool? _isModified;
 
     static public bool IsDifferent<T>(List<T> lhs, List<T> rhs)
     {
@@ -127,13 +126,12 @@ public sealed partial class HospitalWrapper : ObservableValidator, IEditableObje
     {
         get
         {
-            bool isDifferent = ObservableLocations.ToList().Any(e => HospitalData.Locations.IndexOf(e) != -1);
-            bool isAgainDifferent = IsDifferent(ObservableLocations.ToList(), HospitalData.Locations);
+            bool isDifferent = IsDifferent(ObservableLocations.ToList(), HospitalData.Locations);
 
             return
                 Name_main_doctor != HospitalData.Name_main_doctor ||
                 Surename_main_doctor != HospitalData.Surename_main_doctor ||
-                Middlename_main_doctor != HospitalData.Middlename_main_doctor || isAgainDifferent;
+                Middlename_main_doctor != HospitalData.Middlename_main_doctor || isDifferent;
         }
     }        
     /// <summary>

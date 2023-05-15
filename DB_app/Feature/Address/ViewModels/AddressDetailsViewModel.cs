@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using DB_app.Contracts.ViewModels;
-using DB_app.Core.Contracts.Services;
-using Microsoft.UI.Xaml;
+using DB_app.Helpers;
 
 namespace DB_app.ViewModels;
 
@@ -19,7 +18,7 @@ public partial class AddressDetailsViewModel : ObservableRecipient, INavigationA
     /// Represents the page's title
     /// </summary>
     [ObservableProperty]
-    private string _pageTitle = "New address";
+    private string _pageTitle;
 
 
 
@@ -29,19 +28,14 @@ public partial class AddressDetailsViewModel : ObservableRecipient, INavigationA
         {
             CurrentAddress = model;
             CurrentAddress.Backup();
-
-            if (CurrentAddress.IsInEdit)
-            {
-                PageTitle = "Edit address #" + CurrentAddress.Id;
-            }
-            else
-                PageTitle = "Address #" + CurrentAddress.Id;
         }
+
+        if (CurrentAddress.IsNew)
+            PageTitle = "New_Hospital".GetLocalizedValue();
+        else
+            PageTitle = "Address/Text".GetLocalizedValue() + " #" + CurrentAddress.Id;
     }
 
-    public void OnNavigatedFrom()
-    {
-        // Not used
-    }
+    public void OnNavigatedFrom() { /* Not used */ }
 }
 

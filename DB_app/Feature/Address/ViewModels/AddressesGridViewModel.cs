@@ -1,29 +1,37 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.WinUI;
 using DB_app.Contracts.ViewModels;
 using DB_app.Core.Contracts.Services;
 using DB_app.Helpers;
 using DB_app.Repository;
 using DB_app.Services.Messages;
+using Microsoft.UI.Dispatching;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 
 namespace DB_app.ViewModels;
 
 public partial class AddressesGridViewModel : ObservableRecipient, INavigationAware, IRecipient<DeleteRecordMessage<AddressWrapper>>
 {
-    private readonly IRepositoryControllerService _repositoryControllerService
-        = App.GetService<IRepositoryControllerService>();
+    private readonly IRepositoryControllerService _repositoryControllerService = App.GetService<IRepositoryControllerService>();
 
     /// <summary>
     /// DataGrid's data collection
     /// </summary>
-    public ObservableCollection<AddressWrapper> Source { get; set; }
-        = new ObservableCollection<AddressWrapper>();
+    public ObservableCollection<AddressWrapper> Source { get; set; } = new();
+
+    private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
     public AddressesGridViewModel()
     {
-        WeakReferenceMessenger.Default.Register(this);
+        WeakReferenceMessenger.Default.Register<AddRecordMessage<HospitalWrapper>>(this, (r, m) =>
+        {
+            if (r is HospitalsGridViewModel hospitalViewModel)
+            {
+                hospitalViewModel.Source.Insert(0, m.Value);
+                OnPropertyChanged(nameof(Source));
+            }
+        });
     }
 
     public void Receive(DeleteRecordMessage<AddressWrapper> message)
@@ -31,6 +39,12 @@ public partial class AddressesGridViewModel : ObservableRecipient, INavigationAw
         var _givenAddressWrapper = message.Value;
         Source.Remove(_givenAddressWrapper);
     }
+
+    /// <summary>
+    /// Gets or sets a value that indicates whether to show a progress bar. 
+    /// </summary>
+    [ObservableProperty]
+    private bool _isLoading;
 
 
     /// <summary>
@@ -66,17 +80,36 @@ public partial class AddressesGridViewModel : ObservableRecipient, INavigationAw
     }
 
 
+    /// <summary>
+    /// Retrieves items from the data source.
+    /// </summary>
+    public async void LoadItems()
+    {
+        await _dispatcherQueue.EnqueueAsync(() =>
+        {
+            IsLoading = true;
+            Source.Clear();
+        });
+
+        var items = await Task.Run(_repositoryControllerService.Addresses.GetAsync);
+
+        await _dispatcherQueue.EnqueueAsync(() =>
+        {
+            foreach (var item in items)
+            {
+                Source.Add(new AddressWrapper(item));
+            }
+
+            IsLoading = false;
+        });
+    }
+
+
     public async void OnNavigatedTo(object parameter)
     {
         if (Source.Count < 1)
         {
-            Source.Clear();
-            var data = await _repositoryControllerService.Addresses.GetAsync();
-
-            foreach (var item in data)
-            {
-                Source.Add(new AddressWrapper(item));
-            }
+            LoadItems();
         }
     }
 

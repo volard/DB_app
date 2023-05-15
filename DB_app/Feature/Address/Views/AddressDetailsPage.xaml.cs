@@ -25,10 +25,6 @@ public sealed partial class AddressDetailsPage : Page
             Source = ViewModel,
             Mode = BindingMode.OneWay
         });
-
-        City.CustomTextChanged += new TextChangedEventHandler(Text_TextChanged);
-        Street.CustomTextChanged += new TextChangedEventHandler(Text_TextChanged);
-        Building.CustomTextChanged += new TextChangedEventHandler(Text_TextChanged);
     }
 
     private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -120,15 +116,6 @@ public sealed partial class AddressDetailsPage : Page
 
         base.OnNavigatingFrom(e);
     }
-
-    private void Text_TextChanged(object sender, TextChangedEventArgs e)
-    {
-        if (ViewModel.CurrentAddress.IsInEdit) 
-        {
-            ViewModel.CurrentAddress.IsModified = true;
-        }
-    }
-
 
 }
 

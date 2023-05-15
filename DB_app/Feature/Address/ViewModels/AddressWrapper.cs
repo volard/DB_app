@@ -1,6 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
 using DB_app.Core.Contracts.Services;
 using DB_app.Models;
+using DB_app.Services.Messages;
+
+using Microsoft.UI.Xaml.Data;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -11,8 +15,10 @@ namespace DB_app.ViewModels;
 /// </summary>
 public sealed partial class AddressWrapper : ObservableValidator, IEditableObject
 {
+    /**************************************/
+    #region Constructors
+    /**************************************/
 
-#region Constructors
 
     /// <summary>
     /// Initialize new AddressWrapper object
@@ -24,56 +30,49 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
         {
             IsNew = true;
         }
-        else { AddressData = address; }
+        else 
+        { 
+            AddressData = address; 
+        }
+
+        InitFields();
     }
 
-#endregion
+    #endregion
 
 
 
-
-
-
-#region Properties
+    /**************************************/
+    #region Properties
+    /**************************************/
 
     /// <summary>
     /// Underlying <see cref="Address"/> data
     /// </summary>
-    private Address _addressData = new();
+    public Address AddressData { get; set; } = new();
 
-    /// <summary>
-    /// Underlying <see cref="Address"/> data
-    /// </summary>
-    public Address AddressData 
-    {
-        get => _addressData;
-        set 
-        {   
-            _addressData = value;
-            City = _addressData.City;
-            Street = _addressData.Street;
-            Building = _addressData.Building;
-        } 
-    }
 
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
+    [NotifyPropertyChangedFor(nameof(IsModified))]
     [Required(ErrorMessage = "City is Required")]
     private string? _city;
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
+    [NotifyPropertyChangedFor(nameof(IsModified))]
     [Required(ErrorMessage = "Street is Required")]
     private string? _street;
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
+    [NotifyPropertyChangedFor(nameof(IsModified))]
     [Required(ErrorMessage = "Building is Required")]
     private string? _building;
     
 
-    public int Id { get => _addressData.Id; }
+    public int Id { get => AddressData.Id; }
 
     private Address? _backupData;
 
@@ -81,8 +80,16 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
     /// <summary>
     /// Indicates about changes that is not synced with UI DataGrid
     /// </summary>
-    [ObservableProperty]
-    private bool _isModified = false;
+    public bool IsModified
+    {
+        get
+        {
+            return
+                City != AddressData.City ||
+                Street != AddressData.Street ||
+                Building != AddressData.Building;
+        }
+    }
 
 
     /// <summary>
@@ -98,17 +105,35 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
     [ObservableProperty]
     private bool _isNew = false;
 
-#endregion
+    #endregion
 
 
 
 
 
-
+    /**************************************/
     #region Members
+    /**************************************/
 
     public override string ToString() => 
         $"AddressWrapper with addressData {AddressData}";
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is not AddressWrapper other) return false;
+        return
+            City == other?.City &&
+            Street == other?.Street &&
+            Building == other?.Building;
+    }
+
+    private void InitFields()
+    {
+        City = _addressData.City;
+        Street = _addressData.Street;
+        Building = _addressData.Building;
+    }
+
 
     #endregion
 
@@ -118,8 +143,9 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
 
 
 
-
-#region Modification methods
+    /**************************************/
+    #region Modification methods
+    /**************************************/
 
 
     /// <summary>
@@ -130,7 +156,7 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
         if (_backupData != null)
         {
             AddressData = _backupData;
-            await App.GetService<IRepositoryControllerService>().Addresses.UpdateAsync(_addressData);
+            await App.GetService<IRepositoryControllerService>().Addresses.UpdateAsync(AddressData);
         }
     }
 
@@ -148,6 +174,9 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
             await App.GetService<IRepositoryControllerService>().Addresses.UpdateAsync(AddressData);
         }
         IsNew = false;
+
+        // Sync with grid
+        WeakReferenceMessenger.Default.Send(new AddRecordMessage<AddressWrapper>(this));
         return true;
     }
 
@@ -155,54 +184,48 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
 
 
     public void Backup() =>
-        _backupData = _addressData;
+        _backupData = AddressData;
 
 
-#endregion
-
-
-
+    #endregion
 
 
 
-#region IEditable implementation
 
+
+    /**************************************/
+    #region IEditable implementation
+    /**************************************/
 
     public void BeginEdit()
     {
         IsInEdit = true;
+        OnPropertyChanged(nameof(IsModified));
         Backup();
     }
 
     public void CancelEdit()
     {
-        City = _addressData.City;
-        Street = _addressData.Street;
-        Building = _addressData.Building;
-        IsModified = false;
-        IsInEdit= false;
+        InitFields();
+        IsInEdit = false;
     }
 
     public void EndEdit()
     {
         IsInEdit= false;
-        _addressData.City = City;
-        _addressData.Street = Street;
-        _addressData.Building = Building;
+        OnPropertyChanged(nameof(IsModified));
+
+        // NOTE the underlying code relays on preliminary data validation
+        AddressData.City = City;
+        AddressData.Street = Street;
+        AddressData.Building = Building;
     }
 
-
-    public override bool Equals(object? obj)
-    {
-        if (obj is not AddressWrapper other) return false;
-        return
-            City == other?.City &&
-            Street == other?.Street &&
-            Building == other?.Building;
-    }
 
     
-#endregion
+
+    
+    #endregion
 
 
 }

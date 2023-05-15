@@ -14,9 +14,7 @@ namespace DB_app.Views;
 // Reduces warning noise on parameters that are needed for signature requirements
 #pragma warning disable IDE0060
 
-/// <summary>
-/// An empty page that can be used on its own or navigated to within a Frame.
-/// </summary>
+
 public sealed partial class HospitalDetailsPage : Page
 {
     public HospitalDetailsViewModel ViewModel { get; } = App.GetService<HospitalDetailsViewModel>();
@@ -76,8 +74,6 @@ public sealed partial class HospitalDetailsPage : Page
     private async void SaveButton_Click(object sender, RoutedEventArgs e)
     {
         await ViewModel.CurrentHospital.SaveAsync();
-        //App.GetService<INavigationService>().NavigateTo(typeof(AddressDetailsViewModel).FullName!, ViewModel.SelectedItem);
-        //Frame.Navigate(typeof(HospitalsGridPage), new DrillInNavigationTransitionInfo()); 
     }
 
     /// <summary>
