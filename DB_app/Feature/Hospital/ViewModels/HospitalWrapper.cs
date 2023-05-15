@@ -107,7 +107,7 @@ public sealed partial class HospitalWrapper : ObservableValidator, IEditableObje
     public int Id { get => HospitalData.Id; }
 
 
-
+    // TODO allocate this in new Collecion extension class
     static public bool IsDifferent<T>(List<T> lhs, List<T> rhs)
     {
         if(lhs.Count != rhs.Count) return true;
@@ -133,7 +133,9 @@ public sealed partial class HospitalWrapper : ObservableValidator, IEditableObje
                 Surename_main_doctor != HospitalData.Surename_main_doctor ||
                 Middlename_main_doctor != HospitalData.Middlename_main_doctor || isDifferent;
         }
-    }        
+    }
+
+    
     /// <summary>
     /// Indicates whether its a new object
     /// </summary>
