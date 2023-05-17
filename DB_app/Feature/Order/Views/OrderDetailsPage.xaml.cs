@@ -87,7 +87,7 @@ public sealed partial class OrderDetailsPage : Page
     {
         try
         {
-            await _repositoryControllerService.Products.DeleteAsync(ViewModel.CurrentOrder.Id);
+            await App.GetService<IRepositoryControllerService>().Products.DeleteAsync(ViewModel.CurrentOrder.Id);
             Frame.GoBack();
             WeakReferenceMessenger.Default.Send(new DeleteRecordMessage<OrderWrapper>(ViewModel.CurrentOrder));
         }
@@ -268,7 +268,7 @@ public sealed partial class OrderDetailsPage : Page
     
     private void BeginEdit_Click(object sender, RoutedEventArgs e)
     {
-        _ = LoadAvailableHospitalsAsync();
+        _ = ViewModel.LoadAvailableHospitalsAsync();
         ViewModel.CurrentOrder.BeginEdit();
     }
 
@@ -277,45 +277,7 @@ public sealed partial class OrderDetailsPage : Page
     {
         if (sender is not ComboBox comboBox) return;
         if (comboBox.SelectedItem is not Hospital selectedHospital) return;
-        _ = LoadAvailableShippingAddressesAsync(selectedHospital);
+        _ = ViewModel.LoadAvailableShippingAddressesAsync(selectedHospital);
     }
-    
-    
-    private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    private readonly IRepositoryControllerService _repositoryControllerService = App.GetService<IRepositoryControllerService>();
 
-
-    private ObservableCollection<Hospital> _availableHospitals = new ObservableCollection<Hospital>();
-    private ObservableCollection<Address> _availableShippingAddresses = new ObservableCollection<Address>();
-
-    
-    public async Task LoadAvailableShippingAddressesAsync(Hospital hospital)
-    {
-        IEnumerable<HospitalLocation>? hospitalLocations = await _repositoryControllerService.Hospitals.GetHospitalLocations(hospital.Id);
-        IEnumerable<Address> addresses = hospitalLocations.Select(location => location.Address);
-
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            _availableShippingAddresses.Clear();
-            foreach (Address address in addresses)
-            {
-                _availableShippingAddresses.Add(address);
-            }
-        });
-    }
-    
-    
-    public async Task LoadAvailableHospitalsAsync()
-    {
-        IEnumerable<Hospital>? hospitals = await _repositoryControllerService.Hospitals.GetAsync();
-
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            _availableHospitals.Clear();
-            foreach (Hospital hospital in hospitals)
-            {
-                _availableHospitals.Add(hospital);
-            }
-        });
-    }
 }

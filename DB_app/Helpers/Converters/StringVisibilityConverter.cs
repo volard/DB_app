@@ -3,17 +3,13 @@ using Microsoft.UI.Xaml.Data;
 
 namespace DB_app.Helpers;
 
-public class StringVisiblityConverter : IValueConverter
+public class StringVisibilityConverter : IValueConverter
 {
 
     public object Convert(object value, Type targetType, object parameter, string language)
     {
-        if (value is not string) { throw new ArgumentException($"The value must be string type");  }
-        if (string.IsNullOrEmpty(((string)value)))
-        {
-            return Visibility.Collapsed;
-        }
-        return Visibility.Visible;
+        if (value is not string s) { throw new ArgumentException($"The value must be string type");  }
+        return string.IsNullOrEmpty(s) ? Visibility.Collapsed : Visibility.Visible;
     }
 
 

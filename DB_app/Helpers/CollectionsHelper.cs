@@ -3,7 +3,7 @@
 public class CollectionsHelper
 {
 
-    static public bool IsDifferent<T>(List<T> lhs, List<T> rhs)
+    public static bool IsDifferent<T>(List<T> lhs, List<T> rhs)
     {
         if (lhs.Count != rhs.Count) return true;
         for (int i = 0; i < lhs.Count; i++)

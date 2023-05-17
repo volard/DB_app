@@ -19,6 +19,7 @@
         <helpers:VisibleIfConverter x:Key="VisibleIf" />
         <helpers:CollapsedIf x:Key="CollapsedIf" />
         <helpers:VisibleIfNotNull x:Key="VisibleIfNotNull" />
+        <helpers:IsNotNullConverter x:Key="IsNotNullConverter" />
         <helpers:StringFormatConverter x:Key="StringFormatConverter" />
 
 
@@ -152,25 +153,26 @@
 
 
     <!--#region Page content-->
-    <RelativePanel>
+    <Grid
+        VerticalAlignment="Stretch">
         <Grid
-            Padding="10,0"
+            Padding="10,10"
             VerticalAlignment="Stretch"
             x:Name="RootGrid">
 
             <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition Height="16" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <!--#region Actual order info section-->
             <ScrollViewer
-                Grid.Column="0"
                 Grid.Row="0"
                 HorizontalAlignment="Stretch"
+                
                 Padding="0,0,10,30">
 
-                <StackPanel x:Name="StackPanel">
+                <StackPanel VerticalAlignment="Stretch" x:Name="StackPanel">
                     <StackPanel.Resources>
                         <Style TargetType="muxc:Expander">
                             <Setter Property="HorizontalAlignment" Value="Stretch" />
@@ -183,12 +185,12 @@
                     <RelativePanel HorizontalAlignment="Stretch">
                         <ComboBox
                             Header="Customer"
-                            ItemsSource="{x:Bind _availableHospitals, Mode=OneWay}"
+                            ItemsSource="{x:Bind ViewModel.AvailableHospitals, Mode=OneWay}"
                             Margin="0,20,16,8"
                             PlaceholderText="Select hospital"
                             SelectedItem="{x:Bind ViewModel.CurrentOrder.OrderHospital, Mode=TwoWay}"
                             SelectionChanged="HospitalCustomerComboBox_OnSelectionChanged"
-                            VerticalAlignment="Stretch"
+                            
                             Width="380"
                             x:Name="HospitalCustomerComboBox" />
 
@@ -196,13 +198,14 @@
                             DataContext="{x:Bind ViewModel.CurrentOrder, Mode=OneWay}"
                             DataContextChanged="Element_DataContextChanged"
                             Header="Shipping address"
-                            ItemsSource="{x:Bind _availableShippingAddresses, Mode=OneWay}"
+                            IsEnabled="{x:Bind ViewModel.CurrentOrder.OrderHospital, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
+                            ItemsSource="{x:Bind ViewModel.AvailableShippingAddresses, Mode=OneWay}"
                             Margin="0,20,16,8"
                             PlaceholderText="Select address"
                             RelativePanel.Below="HospitalCustomerComboBox"
                             SelectedItem="{x:Bind ViewModel.CurrentOrder.SelectedAddress, Mode=TwoWay}"
                             SelectionChanged="ComboBox_SelectionChanged"
-                            VerticalAlignment="Stretch"
+                            
                             Width="380"
                             x:Name="ShippingAddressComboBox" />
 
@@ -328,11 +331,6 @@
                                         </ListView.ItemContainerStyle>
 
                                     </ListView>
-                                    <muxc:ProgressBar
-                                        HorizontalAlignment="Stretch"
-                                        IsIndeterminate="True"
-                                        Margin="0,0,0,0"
-                                        VerticalAlignment="Top" />
                                 </Grid>
 
                                 <!--#endregion-->
@@ -348,10 +346,8 @@
             <!--#region Section splitter-->
             <toolkit:GridSplitter
                 CursorBehavior="ChangeOnSplitterHover"
-                Grid.ColumnSpan="1"
                 Grid.Row="1"
                 GripperCursor="SizeNorthSouth"
-                Height="16"
                 VerticalAlignment="Top"
                 Visibility="{x:Bind ViewModel.CurrentOrder.IsInEdit, Converter={StaticResource VisibleIf}, Mode=OneWay}" />
             <!--#endregion-->
@@ -359,8 +355,8 @@
 
             <!--#region Available products-->
             <RelativePanel
-                Grid.Column="0"
                 Grid.Row="1"
+                VerticalAlignment="Stretch"
                 Padding="0,20,30,0"
                 Visibility="{x:Bind ViewModel.CurrentOrder.IsInEdit, Converter={StaticResource VisibleIf}, Mode=OneWay}">
 
@@ -369,13 +365,14 @@
                     CanUserReorderColumns="False"
                     CanUserResizeColumns="True"
                     CanUserSortColumns="True"
+                    
                     GridLinesVisibility="All"
                     IsReadOnly="True"
                     ItemsSource="{x:Bind ViewModel.CurrentOrder.AvailableProducts, Mode=OneWay}"
                     Margin="0,5,0,0"
                     PointerReleased="MedicineMarketGrid_PointerPressed"
                     SelectionMode="Single"
-                    VerticalScrollBarVisibility="Auto"
+                    VerticalScrollBarVisibility="Visible"
                     x:Name="MedicineMarketGrid">
 
                     <toolkit:DataGrid.Resources>
@@ -450,22 +447,27 @@
 
                 </toolkit:DataGrid>
 
-                <muxc:ProgressBar
-                    HorizontalAlignment="Stretch"
-                    IsIndeterminate="True"
-                    Margin="0,0,0,0"
-                    VerticalAlignment="Top" />
+                
             </RelativePanel>
             <!--#endregion-->
 
         </Grid>
 
+        <muxc:ProgressBar
+            IsEnabled="True"
+            HorizontalAlignment="Stretch"
+            IsIndeterminate="True"
+            Margin="0,30,0,0"
+            VerticalAlignment="Bottom" />
         <toolkit:InAppNotification
+            IsEnabled="True"
+            Content="a[]atas"
+            Visibility="Visible"
             RelativePanel.AlignBottomWithPanel="True"
             RelativePanel.AlignHorizontalCenterWithPanel="True"
             StackMode="Replace"
             x:Name="Notification" />
-    </RelativePanel>
+    </Grid>
 
     <!--#endregion-->
 </Page>

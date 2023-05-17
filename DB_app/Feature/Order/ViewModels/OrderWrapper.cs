@@ -5,7 +5,6 @@ using DB_app.Core.Contracts.Services;
 using DB_app.Helpers;
 using DB_app.Models;
 using DB_app.Services.Messages;
-using DocumentFormat.OpenXml.Office2010.Excel;
 using Microsoft.UI.Dispatching;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -102,11 +101,35 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
     private ObservableCollection<OrderItem> _orderItems = new ObservableCollection<OrderItem>();
 
 
-    [NotifyPropertyChangedFor(nameof(IsModified))]
     [ObservableProperty]
     private ObservableCollection<Product> _availableProducts = new ObservableCollection<Product>();
 
-    
+    [ObservableProperty]
+    private bool _isProductLoading;
+
+
+    public async Task LoadAvailableProducts()
+    {
+        await _dispatcherQueue.EnqueueAsync(() =>
+        {
+            IsProductLoading = true;
+        });
+
+        IEnumerable<Product>? products = await _repositoryControllerService.Products.GetAsync();
+
+        await _dispatcherQueue.EnqueueAsync(() =>
+        {
+            AvailableProducts.Clear();
+            foreach (Product product in products)
+            {
+                AvailableProducts.Add(product);
+            }
+            IsProductLoading = false;
+        });
+    }
+
+
+
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required(ErrorMessage = "Shipping address is Required")]
@@ -117,7 +140,7 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
     /// <summary>
     /// Gets the order's total price.
     /// </summary>
-    public double? Total => OrderItems != null ? OrderItems.Sum(item => item.Product.Price * item.Quantity) : 0;
+    public double? Total => OrderItems.Sum(item => item.Product.Price * item.Quantity);
 
 
     private Order? _backupData;
@@ -198,8 +221,8 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
             bool isDifferent = CollectionsHelper.IsDifferent(OrderItems.ToList(), _orderData.Items);
 
             return
-                OrderHospital != _orderData.HospitalCustomer ||
-                SelectedAddress != _orderData.ShippingAddress
+                !Equals(OrderHospital, _orderData.HospitalCustomer) ||
+                !Equals(SelectedAddress, _orderData.ShippingAddress)
                 || isDifferent;
         }
     }
