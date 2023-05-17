@@ -1,16 +1,20 @@
 using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
 using DB_app.Behaviors;
 using DB_app.Core.Contracts.Services;
+using DB_app.Helpers;
 using DB_app.Models;
 using DB_app.Services.Messages;
 using DB_app.ViewModels;
 using DB_app.Views.Components;
+using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -22,9 +26,9 @@ public sealed partial class OrderDetailsPage : Page
     public OrderDetailsViewModel ViewModel { get; } = App.GetService<OrderDetailsViewModel>();
 
 
-    public INotifyDataErrorInfo? oldDataContext { get; set; }
+    private INotifyDataErrorInfo? OldDataContext { get; set; }
 
-
+    /**************************************/
     #region Constructors
 
     public OrderDetailsPage()
@@ -45,15 +49,16 @@ public sealed partial class OrderDetailsPage : Page
 
 
     #endregion
-
+    /**************************************/
+    
 
     /// <summary>
     /// Create a new Window once the Tab is dragged outside.
     /// </summary>
     private void Tabs_TabDroppedOutside(object sender, RoutedEventArgs args)
     {
-        var newPage = new OrderDetailsPage(ViewModel);
-        var orderDetailWindow = new OrderDetailsWindow(newPage);
+        OrderDetailsPage newPage = new OrderDetailsPage(ViewModel);
+        OrderDetailsWindow orderDetailWindow = new OrderDetailsWindow(newPage);
 
         orderDetailWindow.Activate();
         Frame.GoBack();
@@ -62,7 +67,7 @@ public sealed partial class OrderDetailsPage : Page
 
     private async void SaveButton_Click(object sender, RoutedEventArgs e)
     {
-        bool isOk = await ViewModel.CurrentOrder.SaveAsync();
+        await ViewModel.CurrentOrder.SaveAsync();
     }
 
 
@@ -82,15 +87,15 @@ public sealed partial class OrderDetailsPage : Page
     {
         try
         {
-            await App.GetService<IRepositoryControllerService>().Products.DeleteAsync(ViewModel.CurrentOrder.Id);
+            await _repositoryControllerService.Products.DeleteAsync(ViewModel.CurrentOrder.Id);
             Frame.GoBack();
             WeakReferenceMessenger.Default.Send(new DeleteRecordMessage<OrderWrapper>(ViewModel.CurrentOrder));
         }
         catch (Exception)
         {
-            var message = "жоская ошебка";
-            ////Notification.Content = message;
-            //Notification.Show(2000);
+            Notification.Content = "Error";
+            Notification.Style = NotificationHelper.ErrorStyle;
+            Notification.Show(1500);
         }
     }
 
@@ -112,14 +117,12 @@ public sealed partial class OrderDetailsPage : Page
     private void RefreshErrors(string paramName)
     {
         ValidationResult? result = ViewModel.CurrentOrder.GetErrors(paramName).OfType<ValidationResult>().FirstOrDefault();
-        var icon = StackPanel.FindName(paramName + "Icon") as FontIcon;
-        if (icon != null)
+        FontIcon? icon = StackPanel.FindName(paramName + "Icon") as FontIcon;
+        if (icon == null) { return; }
+        icon!.Visibility = result is not null ? Visibility.Visible : Visibility.Collapsed;
+        if (result is not null)
         {
-            icon!.Visibility = result is not null ? Visibility.Visible : Visibility.Collapsed;
-            if (result is not null)
-            {
-                ToolTipService.SetToolTip(icon, result.ErrorMessage);
-            }
+            ToolTipService.SetToolTip(icon, result.ErrorMessage);
         }
     }
 
@@ -129,17 +132,15 @@ public sealed partial class OrderDetailsPage : Page
     /// </summary>
     private void Element_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
     {
-        if (oldDataContext is not null)
+        if (OldDataContext is not null)
         {
-            oldDataContext.ErrorsChanged -= DataContext_ErrorsChanged;
+            OldDataContext.ErrorsChanged -= DataContext_ErrorsChanged;
         }
 
-        if (args.NewValue is INotifyDataErrorInfo dataContext)
-        {
-            oldDataContext = dataContext;
-
-            oldDataContext.ErrorsChanged += DataContext_ErrorsChanged;
-        }
+        if (args.NewValue is not INotifyDataErrorInfo dataContext) return;
+        
+        OldDataContext = dataContext;
+        OldDataContext.ErrorsChanged += DataContext_ErrorsChanged;
     }
 
 
@@ -171,7 +172,7 @@ public sealed partial class OrderDetailsPage : Page
     /// <typeparam name="T"></typeparam>
     /// <param name="childElement"></param>
     /// <returns></returns>
-    public static T? FindParent<T>(DependencyObject childElement) where T : Control
+    private static T? FindParent<T>(DependencyObject childElement) where T : Control
     {
         DependencyObject currentElement = childElement;
 
@@ -201,9 +202,9 @@ public sealed partial class OrderDetailsPage : Page
         if (clickedRow == null || clickedRow?.DataContext is not Product selectedProduct) { return; }
 
 
-        var content = new ContentDialogContent(selectedProduct.Quantity);
+        ContentDialogContent content = new ContentDialogContent(selectedProduct.Quantity);
 
-        ContentDialog dialog = new()
+        ContentDialog dialog = new ContentDialog
         {
             XamlRoot = this.XamlRoot,
             Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style,
@@ -215,20 +216,19 @@ public sealed partial class OrderDetailsPage : Page
         };
 
         ContentDialogResult result = await dialog.ShowAsync();
-        if (result == ContentDialogResult.Primary)
+        if (result != ContentDialogResult.Primary)
         {
-            ViewModel.CurrentOrder.AddOrderItem(selectedProduct, content.ViewModel.Current);
-            InitializeComponent();
+            return;
         }
-
+        
+        ViewModel.CurrentOrder.AddOrderItem(selectedProduct, content.ViewModel.Current);
+        InitializeComponent();
     }
 
 
     /// <summary>
     /// Handle user's intention to change or delete order SelectedOrderItem
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
     private async void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (OrderList.SelectedItem == null) return;
@@ -265,8 +265,57 @@ public sealed partial class OrderDetailsPage : Page
         }
     }
 
+    
     private void BeginEdit_Click(object sender, RoutedEventArgs e)
     {
+        _ = LoadAvailableHospitalsAsync();
+        ViewModel.CurrentOrder.BeginEdit();
+    }
 
+    
+    private void HospitalCustomerComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (sender is not ComboBox comboBox) return;
+        if (comboBox.SelectedItem is not Hospital selectedHospital) return;
+        _ = LoadAvailableShippingAddressesAsync(selectedHospital);
+    }
+    
+    
+    private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
+    private readonly IRepositoryControllerService _repositoryControllerService = App.GetService<IRepositoryControllerService>();
+
+
+    private ObservableCollection<Hospital> _availableHospitals = new ObservableCollection<Hospital>();
+    private ObservableCollection<Address> _availableShippingAddresses = new ObservableCollection<Address>();
+
+    
+    public async Task LoadAvailableShippingAddressesAsync(Hospital hospital)
+    {
+        IEnumerable<HospitalLocation>? hospitalLocations = await _repositoryControllerService.Hospitals.GetHospitalLocations(hospital.Id);
+        IEnumerable<Address> addresses = hospitalLocations.Select(location => location.Address);
+
+        await _dispatcherQueue.EnqueueAsync(() =>
+        {
+            _availableShippingAddresses.Clear();
+            foreach (Address address in addresses)
+            {
+                _availableShippingAddresses.Add(address);
+            }
+        });
+    }
+    
+    
+    public async Task LoadAvailableHospitalsAsync()
+    {
+        IEnumerable<Hospital>? hospitals = await _repositoryControllerService.Hospitals.GetAsync();
+
+        await _dispatcherQueue.EnqueueAsync(() =>
+        {
+            _availableHospitals.Clear();
+            foreach (Hospital hospital in hospitals)
+            {
+                _availableHospitals.Add(hospital);
+            }
+        });
     }
 }

@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en-US" target-language="ru-RU" original="DB_APP/STRINGS/EN-US/RESOURCES.RESW" tool-id="MultilingualAppToolkit" product-name="n/a" product-version="n/a" build-num="n/a">
+    <header>
+      <tool tool-id="MultilingualAppToolkit" tool-name="Multilingual App Toolkit" tool-version="1.0.0.0" tool-company="Microsoft" />
+    </header>
+    <body>
+      <group id="DB_APP/STRINGS/EN-US/RESOURCES.RESW" datatype="resx">
+        <trans-unit id="AppDisplayName" translate="yes" xml:space="preserve">
+          <source>Medicine management system</source>
+          <target state="translated">MMS - Система менеджмента лекарств</target>
+        </trans-unit>
+        <trans-unit id="AppDescription" translate="yes" xml:space="preserve">
+          <source>Educational project dedicated to developing simple yet modern Windows applications using WinUI 3.0 and Windows App SDK</source>
+          <target state="translated">Образовательный проект, посвященный разработке простых, но современных Windows-приложений с использованием WinUI 3.0 и Windows App SDK</target>
+        </trans-unit>
+        <trans-unit id="Shell_Greeting.Content" translate="yes" xml:space="preserve">
+          <source>Main</source>
+          <target state="translated">Мои поздравления, вы на месте</target>
+        </trans-unit>
+        <trans-unit id="Shell_HospitalsGrid.Content" translate="yes" xml:space="preserve">
+          <source>Hospitals</source>
+          <target state="translated">Больницы</target>
+        </trans-unit>
+        <trans-unit id="Shell_MedicinesGrid.Content" translate="yes" xml:space="preserve">
+          <source>Medicines</source>
+          <target state="translated">Медикаманты</target>
+        </trans-unit>
+        <trans-unit id="Shell_OrdersGrid.Content" translate="yes" xml:space="preserve">
+          <source>Orders</source>
+          <target state="translated">Заказы</target>
+        </trans-unit>
+        <trans-unit id="Shell_PharmaciesGrid.Content" translate="yes" xml:space="preserve">
+          <source>Pharmacies</source>
+          <target state="translated">Аптеки</target>
+        </trans-unit>
+        <trans-unit id="Shell_ProductsGrid.Content" translate="yes" xml:space="preserve">
+          <source>Products</source>
+          <target state="translated">Продукты</target>
+        </trans-unit>
+        <trans-unit id="Shell_PharmacyReportGrid.Content" translate="yes" xml:space="preserve">
+          <source>Pharmacies' report</source>
+          <target state="translated">Отчет по аптекам</target>
+        </trans-unit>
+        <trans-unit id="Shell_HospitalReportGrid.Content" translate="yes" xml:space="preserve">
+          <source>Hospitals' report</source>
+          <target state="translated">Отчет по больницам</target>
+        </trans-unit>
+        <trans-unit id="Settings_Personalization.Text" translate="yes" xml:space="preserve">
+          <source>Personalization</source>
+          <target state="translated">Персонализация</target>
+        </trans-unit>
+        <trans-unit id="Settings_Theme.Text" translate="yes" xml:space="preserve">
+          <source>Theme</source>
+          <target state="translated">Тема</target>
+        </trans-unit>
+        <trans-unit id="Settings_Theme_Light.Content" translate="yes" xml:space="preserve">
+          <source>Light</source>
+          <target state="translated">Светлая</target>
+        </trans-unit>
+        <trans-unit id="Settings_Theme_Dark.Content" translate="yes" xml:space="preserve">
+          <source>Dark</source>
+          <target state="translated">Темная</target>
+        </trans-unit>
+        <trans-unit id="Settings_Theme_Default.Content" translate="yes" xml:space="preserve">
+          <source>System</source>
+          <target state="translated">Системная</target>
+        </trans-unit>
+        <trans-unit id="Settings_About.Text" translate="yes" xml:space="preserve">
+          <source>About this application</source>
+          <target state="translated">О приложении</target>
+        </trans-unit>
+        <trans-unit id="Settings_AboutDescription.Text" translate="yes" xml:space="preserve">
+          <source>Educational project dedicated to developing simple yet modern Windows applications using WinUI 3.0 and Windows App SDK</source>
+          <target state="translated">Учебное приложение, которое старается быть максимально enterprise</target>
+        </trans-unit>
+        <trans-unit id="DB_app.ViewModels.MedicinesGridViewModel" translate="yes" xml:space="preserve">
+          <source>Medicines</source>
+          <target state="translated">Медикаменты</target>
+        </trans-unit>
+        <trans-unit id="Shell_AddressesGrid.Content" translate="yes" xml:space="preserve">
+          <source>Addresses</source>
+          <target state="translated">Адреса</target>
+        </trans-unit>
+        <trans-unit id="RecordForDeletionNotFoundException" translate="yes" xml:space="preserve">
+          <source>The record to deletion not found</source>
+          <target state="translated">Запись для удаления не найдена</target>
+        </trans-unit>
+        <trans-unit id="Address.Text" translate="yes" xml:space="preserve">
+          <source>Address</source>
+          <target state="translated">Адрес</target>
+        </trans-unit>
+        <trans-unit id="Hospital.Text" translate="yes" xml:space="preserve">
+          <source>Hospital</source>
+          <target state="translated">Больница</target>
+        </trans-unit>
+        <trans-unit id="Medicine.Text" translate="yes" xml:space="preserve">
+          <source>Medicine</source>
+          <target state="translated">Медикамент</target>
+        </trans-unit>
+        <trans-unit id="Order.Text" translate="yes" xml:space="preserve">
+          <source>Order</source>
+          <target state="translated">Заказ</target>
+        </trans-unit>
+        <trans-unit id="Pharmacy.Text" translate="yes" xml:space="preserve">
+          <source>Pharmacy</source>
+          <target state="translated">Аптека</target>
+        </trans-unit>
+        <trans-unit id="Product.Text" translate="yes" xml:space="preserve">
+          <source>Product</source>
+          <target state="translated">Продукт</target>
+        </trans-unit>
+        <trans-unit id="Settings.Text" translate="yes" xml:space="preserve">
+          <source>Settings</source>
+          <target state="translated">Настройки</target>
+        </trans-unit>
+        <trans-unit id="Edit.Text" translate="yes" xml:space="preserve">
+          <source>Edit</source>
+          <target state="translated" state-qualifier="tm-suggestion">Изменить</target>
+        </trans-unit>
+        <trans-unit id="New.Text" translate="yes" xml:space="preserve">
+          <source>New</source>
+          <target state="translated" state-qualifier="tm-suggestion">Создание</target>
+        </trans-unit>
+        <trans-unit id="New_Hospital" translate="yes" xml:space="preserve">
+          <source>New hospital</source>
+          <target state="translated">Новая больница</target>
+        </trans-unit>
+        <trans-unit id="Hospitals.Text" translate="yes" xml:space="preserve">
+          <source>Hospitals</source>
+          <target state="translated" state-qualifier="tm-suggestion">Больницы</target>
+        </trans-unit>
+        <trans-unit id="New_Order" translate="yes" xml:space="preserve">
+          <source>New order</source>
+          <target state="translated">Новый заказ</target>
+        </trans-unit>
+        <trans-unit id="New_Address" translate="yes" xml:space="preserve">
+          <source>New address</source>
+          <target state="translated">Новый адрес</target>
+        </trans-unit>
+        <trans-unit id="New_Medicine" translate="yes" xml:space="preserve">
+          <source>New medicine</source>
+          <target state="translated">Новый медикамент</target>
+        </trans-unit>
+        <trans-unit id="New_Product" translate="yes" xml:space="preserve">
+          <source>New product</source>
+          <target state="translated">Новый продукт</target>
+        </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>

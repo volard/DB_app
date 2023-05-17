@@ -4,6 +4,7 @@ using CommunityToolkit.WinUI;
 using DB_app.Contracts.ViewModels;
 using DB_app.Core.Contracts.Services;
 using DB_app.Helpers;
+using DB_app.Models;
 using DB_app.Repository;
 using DB_app.Services.Messages;
 using Microsoft.UI.Dispatching;
@@ -18,7 +19,7 @@ public partial class AddressesGridViewModel : ObservableRecipient, INavigationAw
     /// <summary>
     /// DataGrid's data collection
     /// </summary>
-    public ObservableCollection<AddressWrapper> Source { get; set; } = new();
+    public ObservableCollection<AddressWrapper> Source { get; init; } = new ObservableCollection<AddressWrapper>();
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
@@ -26,18 +27,17 @@ public partial class AddressesGridViewModel : ObservableRecipient, INavigationAw
     {
         WeakReferenceMessenger.Default.Register<AddRecordMessage<AddressWrapper>>(this, (r, m) =>
         {
-            if (r is AddressesGridViewModel addressViewModel)
-            {
-                addressViewModel.Source.Insert(0, m.Value);
-                OnPropertyChanged(nameof(Source));
-            }
+            if (r is not AddressesGridViewModel addressViewModel) return;
+            
+            addressViewModel.Source.Insert(0, m.Value);
+            OnPropertyChanged(nameof(Source));
         });
     }
 
     public void Receive(DeleteRecordMessage<AddressWrapper> message)
     {
-        var _givenAddressWrapper = message.Value;
-        Source.Remove(_givenAddressWrapper);
+        AddressWrapper givenAddressWrapper = message.Value;
+        Source.Remove(givenAddressWrapper);
     }
 
     /// <summary>
@@ -51,31 +51,29 @@ public partial class AddressesGridViewModel : ObservableRecipient, INavigationAw
     /// Represents selected by user AddressWrapper object
     /// </summary>
     [ObservableProperty]
-    private AddressWrapper? selectedItem;
+    private AddressWrapper? _selectedItem;
 
 
-    public event EventHandler<NotificationConfigurationEventArgs>? OperationRejected;
+    public event EventHandler<NotificationConfigurationEventArgs>? DisplayNotification;
 
 
     public async Task DeleteSelected()
     {
-        if (SelectedItem != null)
+        if (SelectedItem == null) return;
+        try
         {
-            try
-            {
 
-                int id = SelectedItem.AddressData.Id;
-                await _repositoryControllerService.Addresses.DeleteAsync(id);
+            int id = SelectedItem.AddressData.Id;
+            await _repositoryControllerService.Addresses.DeleteAsync(id);
 
-                Source.Remove(SelectedItem);
+            Source.Remove(SelectedItem);
 
-                OperationRejected?.Invoke(this, new NotificationConfigurationEventArgs("Everything is good", NotificationHelper.SuccessStyle));
+            DisplayNotification?.Invoke(this, new NotificationConfigurationEventArgs("Everything is good", NotificationHelper.SuccessStyle));
 
-            }
-            catch (LinkedRecordOperationException)
-            {
-                OperationRejected?.Invoke(this, new NotificationConfigurationEventArgs("Адресс связан с организацией. Удалите связанную организацию, чтобы удалить адрес", NotificationHelper.ErrorStyle));
-            }
+        }
+        catch (LinkedRecordOperationException)
+        {
+            DisplayNotification?.Invoke(this, new NotificationConfigurationEventArgs("Адресс связан с организацией. Удалите связанную организацию, чтобы удалить адрес", NotificationHelper.ErrorStyle));
         }
     }
 
@@ -83,7 +81,7 @@ public partial class AddressesGridViewModel : ObservableRecipient, INavigationAw
     /// <summary>
     /// Retrieves items from the data source.
     /// </summary>
-    public async void LoadItems()
+    private async void LoadItems()
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
@@ -91,11 +89,11 @@ public partial class AddressesGridViewModel : ObservableRecipient, INavigationAw
             Source.Clear();
         });
 
-        var items = await Task.Run(_repositoryControllerService.Addresses.GetAsync);
+        IEnumerable<Address>? items = await _repositoryControllerService.Addresses.GetAsync();
 
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            foreach (var item in items)
+            foreach (Address item in items)
             {
                 Source.Add(new AddressWrapper(item));
             }
@@ -105,15 +103,11 @@ public partial class AddressesGridViewModel : ObservableRecipient, INavigationAw
     }
 
 
-    public async void OnNavigatedTo(object parameter)
+    public void OnNavigatedTo(object parameter)
     {
-        if (Source.Count < 1)
-        {
-            LoadItems();
-        }
+        if (Source.Count > 1) return;
+        LoadItems();
     }
 
-    public void OnNavigatedFrom()
-    {
-    }
+    public void OnNavigatedFrom() { }
 }

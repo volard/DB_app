@@ -168,12 +168,6 @@
   <data name="Settings_AboutDescription.Text" xml:space="preserve">
     <value>Educational project dedicated to developing simple yet modern Windows applications using WinUI 3.0 and Windows App SDK</value>
   </data>
-  <data name="SettingsPage_PrivacyTermsLink.Content" xml:space="preserve">
-    <value>Privacy Statement doesn't exist :(</value>
-  </data>
-  <data name="SettingsPage_PrivacyTermsLink.NavigateUri" xml:space="preserve">
-    <value>https://google.com?/</value>
-  </data>
   <data name="DB_app.ViewModels.MedicinesGridViewModel" xml:space="preserve">
     <value>Medicines</value>
   </data>
@@ -181,7 +175,7 @@
     <value>Addresses</value>
   </data>
   <data name="RecordForDeletionNotFoundException" xml:space="preserve">
-    <value>The record for deletion doesn't found in the database. Try to sync data.</value>
+    <value>The record to deletion not found</value>
   </data>
   <data name="Address.Text" xml:space="preserve">
     <value>Address</value>
@@ -215,5 +209,17 @@
   </data>
   <data name="Hospitals.Text" xml:space="preserve">
     <value>Hospitals</value>
+  </data>
+  <data name="New_Order" xml:space="preserve">
+    <value>New order</value>
+  </data>
+  <data name="New_Address" xml:space="preserve">
+    <value>New address</value>
+  </data>
+  <data name="New_Medicine" xml:space="preserve">
+    <value>New medicine</value>
+  </data>
+  <data name="New_Product" xml:space="preserve">
+    <value>New product</value>
   </data>
 </root>

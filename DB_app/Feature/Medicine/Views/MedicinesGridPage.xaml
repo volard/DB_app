@@ -1,7 +1,8 @@
 ﻿<Page
+    d:DataContext="{d:DesignInstance Type=vm:MedicinesGridViewModel}"
+    mc:Ignorable="d"
     x:Class="DB_app.Views.MedicinesGridPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="using:DB_app.Behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:DB_app.Helpers"
@@ -9,8 +10,7 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:vm="using:DB_app.ViewModels"
-    d:DataContext="{d:DesignInstance Type=vm:MedicinesGridViewModel}"
-    mc:Ignorable="d">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Page.Resources>
         <helpers:IsNotNullConverter x:Key="IsNotNullConverter" />
@@ -20,52 +20,52 @@
     <behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
         <DataTemplate x:DataType="vm:MedicinesGridViewModel">
             <CommandBar
-                HorizontalAlignment="Stretch"
                 Background="Transparent"
-                DefaultLabelPosition="Right">
+                DefaultLabelPosition="Right"
+                HorizontalAlignment="Stretch">
 
                 <CommandBar.Content>
                     <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="Medicines" />
                 </CommandBar.Content>
 
                 <AppBarButton
-                    x:Name="CommandBarExportButton"
                     Background="Green"
                     Click="CommandBarExportButton_Click"
                     Icon="Manage"
                     Label="Export"
-                    ToolTipService.ToolTip="Export" />
+                    ToolTipService.ToolTip="Export"
+                    x:Name="CommandBarExportButton" />
 
                 <AppBarButton
-                    x:Name="CommandBarAddButton"
                     Click="Add_Click"
                     Icon="Add"
                     Label="Add new"
-                    ToolTipService.ToolTip="Add new" />
+                    ToolTipService.ToolTip="Add new"
+                    x:Name="CommandBarAddButton" />
 
                 <AppBarButton
-                    x:Name="CommandBarViewButton"
                     Click="View_Click"
                     Icon="OpenLocal"
                     IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
                     Label="View"
-                    ToolTipService.ToolTip="View" />
+                    ToolTipService.ToolTip="View"
+                    x:Name="CommandBarViewButton" />
 
                 <AppBarButton
-                    x:Name="CommandBarEditButton"
                     Click="Edit_Click"
                     Icon="Edit"
                     IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
                     Label="Edit"
-                    ToolTipService.ToolTip="Edit" />
+                    ToolTipService.ToolTip="Edit"
+                    x:Name="CommandBarEditButton" />
 
                 <AppBarButton
-                    x:Name="CommandBarDeleteButton"
                     Click="Delete_Click"
                     Icon="Delete"
                     IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
                     Label="Delete"
-                    ToolTipService.ToolTip="Delete" />
+                    ToolTipService.ToolTip="Delete"
+                    x:Name="CommandBarDeleteButton" />
 
             </CommandBar>
         </DataTemplate>
@@ -73,13 +73,12 @@
     <!--#endregion-->
 
     <Grid
-        Padding="0,0,0,10"
         HorizontalAlignment="Stretch"
+        Padding="0,0,0,10"
         VerticalAlignment="Stretch">
         <Grid Padding="0,0,0,50">
 
             <toolkit:DataGrid
-                x:Name="MedicineGrid"
                 AutoGenerateColumns="False"
                 CanUserReorderColumns="False"
                 GridLinesVisibility="All"
@@ -89,11 +88,12 @@
                 SelectionMode="Single"
                 Style="{StaticResource DataGridStyle1}"
                 VerticalScrollBarVisibility="Auto"
-                VirtualizingStackPanel.VirtualizationMode="Recycling">
+                VirtualizingStackPanel.VirtualizationMode="Recycling"
+                x:Name="MedicineGrid">
 
 
                 <toolkit:DataGrid.Resources>
-                    <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
+                    <SolidColorBrush Color="Transparent" x:Key="DataGridColumnHeaderBackgroundColor" />
                 </toolkit:DataGrid.Resources>
 
                 <toolkit:DataGrid.Columns>
@@ -105,20 +105,20 @@
             </toolkit:DataGrid>
 
             <muxc:ProgressBar
-                Margin="0,0,0,0"
                 HorizontalAlignment="Stretch"
-                VerticalAlignment="Top"
                 IsIndeterminate="True"
+                Margin="0,0,0,0"
+                VerticalAlignment="Top"
                 Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
         </Grid>
 
 
 
         <toolkit:InAppNotification
-            x:Name="Notification"
             RelativePanel.AlignBottomWithPanel="True"
             RelativePanel.AlignHorizontalCenterWithPanel="True"
-            StackMode="Replace" />
+            StackMode="Replace"
+            x:Name="Notification" />
 
 
 

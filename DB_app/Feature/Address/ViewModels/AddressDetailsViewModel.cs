@@ -10,7 +10,7 @@ public partial class AddressDetailsViewModel : ObservableRecipient, INavigationA
     /// <summary>
     /// Current_value AddressWrapper to edit
     /// </summary>
-    public AddressWrapper CurrentAddress { get; set; } = new AddressWrapper { IsNew = true, IsInEdit = true };
+    public AddressWrapper CurrentAddress { get; private set; } = new AddressWrapper { IsNew = true, IsInEdit = true };
 
 
 
@@ -18,7 +18,7 @@ public partial class AddressDetailsViewModel : ObservableRecipient, INavigationA
     /// Represents the page's title
     /// </summary>
     [ObservableProperty]
-    private string _pageTitle;
+    private string? _pageTitle;
 
 
 

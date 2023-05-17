@@ -108,12 +108,10 @@ public partial class MedicinesGridViewModel : ObservableRecipient, INavigationAw
     }
 
 
-    public async void OnNavigatedTo(object parameter)
+    public void OnNavigatedTo(object parameter)
     {
-        if (Source.Count < 1)
-        {
-            LoadItems();
-        }
+        if (Source.Count >= 1) return;
+        LoadItems();
     }
 
     public void OnNavigatedFrom() { }

@@ -25,29 +25,20 @@ public class SQLAddressRepository : IAddressRepository
         var hospitalAddresses = await _db.HospitalLocations.Select(x => x.Address).ToListAsync();
         var pharmacyAddresses = await _db.PharmacyLocations.Select(x => x.Address).ToListAsync();
 
-        var bindedAddresses = new List<Address>();
+        var boundAddresses = new List<Address>();
 
-        bindedAddresses.AddRange(hospitalAddresses);
-        bindedAddresses.AddRange(pharmacyAddresses);
+        boundAddresses.AddRange(hospitalAddresses);
+        boundAddresses.AddRange(pharmacyAddresses);
 
         var output = await _db.Addresses.ToListAsync();
 
-        return output.Except(bindedAddresses);
+        return output.Except(boundAddresses);
     }
 
     
     public async Task<IEnumerable<Address>> GetAsync()
     {
         return await _db.Addresses.ToListAsync();
-    }
-
-
-    /// <inheritdoc/>
-    public async Task<IEnumerable<Address>> GetHospitalsAddressesAsync()
-    {
-        var locations = await _db.HospitalLocations.Include(l => l.Address).ToListAsync();
-        IEnumerable<Address> output = locations.Select(l => l.Address);
-        return output;
     }
 
 
@@ -89,13 +80,13 @@ public class SQLAddressRepository : IAddressRepository
     /// </exception>  
     public async Task DeleteAsync(int id)
     {
-        var foundAddress = await _db.Addresses.FirstOrDefaultAsync(_address => _address.Id == id);
+        var foundAddress = await _db.Addresses.FirstOrDefaultAsync(address => address.Id == id);
         if (foundAddress != null)
         {
-            var isLinkedToHospital = await _db.HospitalLocations.AnyAsync(_location => _location.Address == foundAddress);
+            var isLinkedToHospital = await _db.HospitalLocations.AnyAsync(location => location.Address == foundAddress);
             if (isLinkedToHospital) { throw new LinkedRecordOperationException(); }
 
-            var isLinkedToPharmacy = await _db.PharmacyLocations.AnyAsync(_location => _location.Address == foundAddress);
+            var isLinkedToPharmacy = await _db.PharmacyLocations.AnyAsync(location => location.Address == foundAddress);
             if (isLinkedToPharmacy) { throw new LinkedRecordOperationException(); }
 
             _db.Addresses.Remove(foundAddress);

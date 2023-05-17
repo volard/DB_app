@@ -258,7 +258,7 @@ public class DataSeeder
             new Product(20, medicines[8], pharmacies[5], 1023, 393),
             new Product(22, medicines[1], pharmacies[4], 1853, 1208),
             new Product(24, medicines[28], pharmacies[3], 721, 1457),
-            new Product(26, medicines[21], pharmacies[3], 5789.999999, 2183),
+            new Product(26, medicines[21], pharmacies[3], 5789.9999, 2183),
             new Product(28, medicines[11], pharmacies[1], 743, 1904),
             new Product(29, medicines[29], pharmacies[0], 1239, 1246),
             new Product(30, medicines[24], pharmacies[0], 1100, 1459),

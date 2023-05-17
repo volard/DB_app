@@ -1,54 +1,54 @@
 ﻿<Page
+    Loaded="OnLoaded"
     x:Class="DB_app.Views.ShellPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="using:DB_app.Behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:DB_app.Helpers"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Loaded="OnLoaded">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
 
 
     <Grid>
         <!--#region  Custom AppTitleBar-->
         <Grid
-            x:Name="AppTitleBar"
+            Canvas.ZIndex="1"
             Height="{Binding ElementName=NavigationViewControl, Path=CompactPaneLength}"
+            IsHitTestVisible="True"
             Margin="48,0,0,0"
             VerticalAlignment="Top"
-            Canvas.ZIndex="1"
-            IsHitTestVisible="True">
+            x:Name="AppTitleBar">
             <Image
-                Width="20"
                 Height="20"
-                Margin="5,0,0,0"
                 HorizontalAlignment="Left"
-                Source="/Assets/Square44x44Logo.png" />
+                Margin="5,0,0,0"
+                Source="/Assets/Square44x44Logo.png"
+                Width="20" />
             <TextBlock
-                x:Name="AppTitleBarText"
                 Margin="28,0,0,0"
-                VerticalAlignment="Center"
                 Style="{StaticResource CaptionTextBlockStyle}"
-                TextWrapping="NoWrap" />
+                TextWrapping="NoWrap"
+                VerticalAlignment="Center"
+                x:Name="AppTitleBarText" />
         </Grid>
         <!--#endregion-->
 
         <NavigationView
-            x:Name="NavigationViewControl"
             Canvas.ZIndex="0"
             DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
             ExpandedModeThresholdWidth="1280"
             IsBackButtonVisible="Visible"
             IsBackEnabled="{x:Bind ViewModel.IsBackEnabled, Mode=OneWay}"
             IsSettingsVisible="True"
-            SelectedItem="{x:Bind ViewModel.Selected, Mode=OneWay}">
+            SelectedItem="{x:Bind ViewModel.Selected, Mode=OneWay}"
+            x:Name="NavigationViewControl">
 
 
             <NavigationView.MenuItems>
 
-                <NavigationViewItem x:Uid="Shell_Greeting" helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.GreetingViewModel">
+                <NavigationViewItem helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.GreetingViewModel" x:Uid="Shell_Greeting">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SegoeFluentIcons}" Glyph="&#xEA8A;" />
                     </NavigationViewItem.Icon>
@@ -58,34 +58,34 @@
 
                 <NavigationViewItemHeader Content="Data" />
 
-                <NavigationViewItem x:Uid="Shell_HospitalsGrid" helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.HospitalsGridViewModel">
+                <NavigationViewItem helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.HospitalsGridViewModel" x:Uid="Shell_HospitalsGrid">
                     <NavigationViewItem.Icon>
-                        <PathIcon HorizontalAlignment="Stretch" Data="{StaticResource Hospital}" />
+                        <PathIcon Data="{StaticResource Hospital}" HorizontalAlignment="Stretch" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_AddressesGrid" helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.AddressesGridViewModel">
+                <NavigationViewItem helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.AddressesGridViewModel" x:Uid="Shell_AddressesGrid">
                     <NavigationViewItem.Icon>
-                        <PathIcon HorizontalAlignment="Stretch" Data="{StaticResource Address}" />
+                        <PathIcon Data="{StaticResource Address}" HorizontalAlignment="Stretch" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_MedicinesGrid" helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.MedicinesGridViewModel">
+                <NavigationViewItem helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.MedicinesGridViewModel" x:Uid="Shell_MedicinesGrid">
                     <NavigationViewItem.Icon>
-                        <PathIcon HorizontalAlignment="Stretch" Data="{StaticResource Medicine}" />
+                        <PathIcon Data="{StaticResource Medicine}" HorizontalAlignment="Stretch" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_OrdersGrid" helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.OrdersGridViewModel">
+                <NavigationViewItem helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.OrdersGridViewModel" x:Uid="Shell_OrdersGrid">
                     <NavigationViewItem.Icon>
-                        <PathIcon HorizontalAlignment="Stretch" Data="{StaticResource Order}" />
+                        <PathIcon Data="{StaticResource Order}" HorizontalAlignment="Stretch" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_PharmaciesGrid" helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.PharmaciesGridViewModel">
+                <NavigationViewItem helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.PharmaciesGridViewModel" x:Uid="Shell_PharmaciesGrid">
                     <NavigationViewItem.Icon>
-                        <PathIcon HorizontalAlignment="Stretch" Data="{StaticResource Pharmacy}" />
+                        <PathIcon Data="{StaticResource Pharmacy}" HorizontalAlignment="Stretch" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_ProductsGrid" helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.ProductsGridViewModel">
+                <NavigationViewItem helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.ProductsGridViewModel" x:Uid="Shell_ProductsGrid">
                     <NavigationViewItem.Icon>
-                        <PathIcon HorizontalAlignment="Stretch" Data="{StaticResource Product}" />
+                        <PathIcon Data="{StaticResource Product}" HorizontalAlignment="Stretch" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
 
@@ -95,41 +95,41 @@
                 <NavigationViewItem Content="Reports" ToolTipService.ToolTip="Reports">
                     <NavigationViewItem.Icon>
                         <PathIcon
+                            Data="{StaticResource Report}"
                             HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            Data="{StaticResource Report}" />
+                            VerticalAlignment="Stretch" />
                     </NavigationViewItem.Icon>
 
                     <NavigationViewItem.MenuItems>
 
-                        <NavigationViewItem x:Uid="Shell_HospitalReportGrid" helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.MedicineInHospitalReportViewModel">
+                        <NavigationViewItem helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.MedicineInHospitalReportViewModel" x:Uid="Shell_HospitalReportGrid">
                             <NavigationViewItem.Icon>
-                                <PathIcon HorizontalAlignment="Stretch" Data="{StaticResource Report}" />
+                                <PathIcon Data="{StaticResource Report}" HorizontalAlignment="Stretch" />
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
 
-                        <NavigationViewItem x:Uid="Shell_PharmacyReportGrid" helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.MedicineInPharmacyReportViewModel">
+                        <NavigationViewItem helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.MedicineInPharmacyReportViewModel" x:Uid="Shell_PharmacyReportGrid">
                             <NavigationViewItem.Icon>
-                                <PathIcon HorizontalAlignment="Stretch" Data="{StaticResource Report}" />
+                                <PathIcon Data="{StaticResource Report}" HorizontalAlignment="Stretch" />
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
 
-                        <NavigationViewItem x:Uid="Shell_PharmacyReportGrid" helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.MedicineInPharmacyReportViewModel">
+                        <NavigationViewItem helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.MedicineInPharmacyReportViewModel" x:Uid="Shell_PharmacyReportGrid">
                             <NavigationViewItem.Icon>
-                                <PathIcon HorizontalAlignment="Stretch" Data="{StaticResource Report}" />
+                                <PathIcon Data="{StaticResource Report}" HorizontalAlignment="Stretch" />
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
 
-                        <NavigationViewItem x:Uid="Shell_PharmacyReportGrid" helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.MedicineInPharmacyReportViewModel">
+                        <NavigationViewItem helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.MedicineInPharmacyReportViewModel" x:Uid="Shell_PharmacyReportGrid">
                             <NavigationViewItem.Icon>
-                                <PathIcon HorizontalAlignment="Stretch" Data="{StaticResource Report}" />
+                                <PathIcon Data="{StaticResource Report}" HorizontalAlignment="Stretch" />
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
 
 
-                        <NavigationViewItem x:Uid="Shell_PharmacyReportGrid" helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.MedicineInPharmacyReportViewModel">
+                        <NavigationViewItem helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.MedicineInPharmacyReportViewModel" x:Uid="Shell_PharmacyReportGrid">
                             <NavigationViewItem.Icon>
-                                <PathIcon HorizontalAlignment="Stretch" Data="{StaticResource Report}" />
+                                <PathIcon Data="{StaticResource Report}" HorizontalAlignment="Stretch" />
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
 

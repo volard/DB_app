@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Messaging;
 using DB_app.Contracts.ViewModels;
 using DB_app.Core.Contracts.Services;
+using DB_app.Helpers;
 using DB_app.Models;
 using DB_app.Services.Messages;
 using System.Collections.ObjectModel;
@@ -14,28 +15,24 @@ public partial class OrderDetailsViewModel : ObservableValidator, INavigationAwa
 {
 
 
-    public async void OnNavigatedTo(object? parameter)
+    public void OnNavigatedTo(object? parameter)
     {
-        if (parameter is OrderWrapper model) // If we got smth to show
+        if (parameter is OrderWrapper model)
         {
             CurrentOrder = model;
+            CurrentOrder.Backup();
 
-            if (model.IsInEdit)
+            if (CurrentOrder.IsInEdit)
             {
-                AvailableHospitals              = new(await _repositoryControllerService.Hospitals.GetAsync());
-                CurrentOrder.AvailableAddresses = new(await _repositoryControllerService.Addresses.GetHospitalsAddressesAsync());
-                CurrentOrder.AvailableProducts  = new(await _repositoryControllerService.Products.GetAsync());
-                CurrentOrder.Backup();
-                PageTitle = "Edit hospital #" + CurrentOrder.Id;
+                
             }
-            if (!model.IsNew) { PageTitle = "Order #" + model.Id; }
         }
-        else // If we wanna let user to create one
-        {
-            AvailableHospitals              = new(await _repositoryControllerService.Hospitals.GetAsync());
-            CurrentOrder.AvailableAddresses = new(await _repositoryControllerService.Addresses.GetHospitalsAddressesAsync());
-            CurrentOrder.AvailableProducts  = new(await _repositoryControllerService.Products.GetAsync());
-        }
+
+        //if (CurrentOrder.IsNew)
+        //    PageTitle = "New_Order".GetLocalizedValue();
+        //else
+        //    PageTitle = "Order/Text".GetLocalizedValue() + " #" + CurrentOrder.Id;
+
     }
 
     public void OnNavigatedFrom() {  /* Not used */ }
@@ -51,21 +48,13 @@ public partial class OrderDetailsViewModel : ObservableValidator, INavigationAwa
 
     #region Properties
 
-    private readonly IRepositoryControllerService _repositoryControllerService
-         = App.GetService<IRepositoryControllerService>();
-
 
     public OrderWrapper CurrentOrder { get; set; } = new OrderWrapper { IsNew = true, IsInEdit = true };
 
 
-    
-    [ObservableProperty]
-    private ObservableCollection<Hospital> availableHospitals;
-
-
 
     [ObservableProperty]
-    private string _pageTitle;
+    private string? _pageTitle;
 
 
     #endregion

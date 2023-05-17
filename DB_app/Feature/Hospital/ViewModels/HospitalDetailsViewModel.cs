@@ -25,12 +25,12 @@ public partial class HospitalDetailsViewModel : ObservableRecipient, INavigation
             IsLoading = true;
         });
 
-        var addresses = await _repositoryControllerService.Addresses.GetFreeAddressesAsync();
+        IEnumerable<Address>? addresses = await _repositoryControllerService.Addresses.GetFreeAddressesAsync();
 
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             AvailableAddresses.Clear();
-            foreach (var address in addresses)
+            foreach (Address address in addresses)
             {
                 AvailableAddresses.Add(address);
             }
@@ -47,7 +47,7 @@ public partial class HospitalDetailsViewModel : ObservableRecipient, INavigation
             CurrentHospital = model;
             CurrentHospital.Backup();
             
-            if (CurrentHospital.IsInEdit) { Task.Run(LoadAvailableAddressesAsync); }
+            if (CurrentHospital.IsInEdit) { _ = LoadAvailableAddressesAsync(); }
         }
 
         if (CurrentHospital.IsNew)
@@ -69,14 +69,14 @@ public partial class HospitalDetailsViewModel : ObservableRecipient, INavigation
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
-    public readonly IRepositoryControllerService _repositoryControllerService = App.GetService<IRepositoryControllerService>();
+    private readonly IRepositoryControllerService _repositoryControllerService = App.GetService<IRepositoryControllerService>();
 
-    public HospitalWrapper CurrentHospital { get; set; } = new HospitalWrapper { IsNew = true, IsInEdit = true };
+    public HospitalWrapper CurrentHospital { get; private set; } = new HospitalWrapper { IsNew = true, IsInEdit = true };
 
-    public ObservableCollection<Address> AvailableAddresses { get; set; } = new();
+    public ObservableCollection<Address> AvailableAddresses { get; } = new ObservableCollection<Address>();
 
     /// <summary>
-    /// Location object that binded to hospital and selected by user. 
+    /// Location object that bound to hospital and selected by user. 
     /// </summary>
     [ObservableProperty]
     private HospitalLocation? _selectedExistingLocation;

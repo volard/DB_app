@@ -1,40 +1,38 @@
 <Page
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    mc:Ignorable="d"
     x:Class="DB_app.Views.PharmacyWithMedicineReportPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:viewModel="using:DB_app.ViewModels"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:behaviors="using:DB_app.Behaviors"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    xmlns:viewModel="using:DB_app.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <!--#region Header-->
     <behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
         <DataTemplate x:DataType="viewModel:PharmacyWithMedicineReportViewModel">
             <CommandBar
-                HorizontalAlignment="Stretch"
                 Background="Transparent"
-                DefaultLabelPosition="Right">
+                DefaultLabelPosition="Right"
+                HorizontalAlignment="Stretch">
 
                 <CommandBar.Content>
                     <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="Products" />
                 </CommandBar.Content>
 
                 <AppBarButton
-                    x:Name="CommandBarExportButton"
+                    Background="Green"
                     Icon="Manage"
                     Label="Export"
-                    Background="Green"
-                    ToolTipService.ToolTip="Export" />
+                    ToolTipService.ToolTip="Export"
+                    x:Name="CommandBarExportButton" />
 
 
             </CommandBar>
         </DataTemplate>
     </behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
     <!--#endregion-->
-    
-    <Grid>
 
-    </Grid>
+    <Grid />
 </Page>

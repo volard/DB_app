@@ -1,7 +1,7 @@
 <Page
+    mc:Ignorable="d"
     x:Class="DB_app.Views.AddressDetailsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="using:DB_app.Behaviors"
     xmlns:components="using:DB_app.Views.Components"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -9,7 +9,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:viewModel="using:DB_app.ViewModels"
-    mc:Ignorable="d">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Page.Resources>
         <helpers:NotConverter x:Key="NotConverter" />
@@ -23,24 +23,24 @@
     <behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
         <DataTemplate x:DataType="viewModel:AddressDetailsViewModel">
             <CommandBar
-                HorizontalAlignment="Stretch"
                 Background="Transparent"
-                DefaultLabelPosition="Right">
+                DefaultLabelPosition="Right"
+                HorizontalAlignment="Stretch">
                 <CommandBar.Content>
                     <Grid>
 
                         <TextBlock
-                            x:Name="Title"
                             Margin="10,0,0,0"
                             Style="{ThemeResource TitleTextBlockStyle}"
-                            Text="{x:Bind PageTitle, Mode=OneWay}" />
+                            Text="{x:Bind PageTitle, Mode=OneWay}"
+                            x:Name="Title" />
 
                         <InfoBadge
-                            Width="11"
                             Height="11"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Visibility="{x:Bind CurrentAddress.IsModified, Mode=OneWay}">
+                            Visibility="{x:Bind CurrentAddress.IsModified, Mode=OneWay}"
+                            Width="11">
 
                             <InfoBadge.IconSource>
                                 <FontIconSource FontFamily="Segoe Fluent Icons" Glyph="&#xEB52;" />
@@ -57,30 +57,30 @@
                     IsEnabled="{Binding CurrentAddress.HasErrors, Converter={StaticResource NotConverter}, Mode=OneWay}"
                     Label="Save"
                     Visibility="{Binding CurrentAddress.IsInEdit, Converter={StaticResource VisibleIf}, Mode=OneWay}" />
-                
+
                 <AppBarButton
                     Click="BeginEdit_Click"
                     Icon="Edit"
                     Label="Edit"
                     Visibility="{x:Bind viewModel:Converters.CollapsedIfOneOfTwo(CurrentAddress.IsInEdit, CurrentAddress.IsNew), Mode=OneWay}" />
-                
+
                 <AppBarButton
                     Click="{x:Bind CurrentAddress.CancelEdit}"
                     Icon="Cancel"
                     Label="Cancel"
                     Visibility="{x:Bind viewModel:Converters.VisibleIfOneAndNotAnother(CurrentAddress.IsInEdit, CurrentAddress.IsNew), Mode=OneWay}" />
-                
+
                 <AppBarButton
                     Click="DeleteButton_Click"
                     Icon="Delete"
                     Label="Delete"
                     Visibility="{Binding CurrentAddress.IsNew, Converter={StaticResource CollapsedIf}, Mode=OneWay}" />
-                
+
                 <AppBarButton
                     Click="AddButton_Click"
                     Icon="Add"
-                    Visibility="{x:Bind viewModel:Converters.CollapsedIfOneOfTwo(CurrentAddress.IsInEdit, CurrentAddress.IsNew), Mode=OneWay}"
-                    Label="Add new" />
+                    Label="Add new"
+                    Visibility="{x:Bind viewModel:Converters.CollapsedIfOneOfTwo(CurrentAddress.IsInEdit, CurrentAddress.IsNew), Mode=OneWay}" />
 
             </CommandBar>
         </DataTemplate>
@@ -91,48 +91,48 @@
 
     <!--#region Page's content-->
     <ScrollViewer
-        x:Name="DetailPanel"
         RelativePanel.AlignLeftWithPanel="True"
         RelativePanel.AlignRightWithPanel="True"
         RelativePanel.Below="MainCommandBar"
         VerticalScrollBarVisibility="Auto"
-        VerticalScrollMode="Auto">
+        VerticalScrollMode="Auto"
+        x:Name="DetailPanel">
 
         <StackPanel Margin="8,0,0,12">
 
 
             <components:ValidationTextBox
-                x:Name="City"
                 DataContext="{x:Bind ViewModel.CurrentAddress}"
                 HeaderText="City"
                 IsReadOnly="{x:Bind ViewModel.CurrentAddress.IsInEdit, Converter={StaticResource NotConverter}, Mode=OneWay}"
                 PlaceholderText="Enter city"
                 PropertyName="City"
-                Text="{x:Bind ViewModel.CurrentAddress.City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{x:Bind ViewModel.CurrentAddress.City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                x:Name="City" />
 
             <components:ValidationTextBox
-                x:Name="Street"
                 DataContext="{x:Bind ViewModel.CurrentAddress}"
                 HeaderText="Street"
                 IsReadOnly="{x:Bind ViewModel.CurrentAddress.IsInEdit, Converter={StaticResource NotConverter}, Mode=OneWay}"
                 PlaceholderText="Enter street"
                 PropertyName="Street"
-                Text="{x:Bind ViewModel.CurrentAddress.Street, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{x:Bind ViewModel.CurrentAddress.Street, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                x:Name="Street" />
 
             <components:ValidationTextBox
-                x:Name="Building"
                 DataContext="{x:Bind ViewModel.CurrentAddress}"
                 HeaderText="Building"
                 IsReadOnly="{Binding IsInEdit, Converter={StaticResource NotConverter}, Mode=OneWay}"
                 PlaceholderText="Enter building"
                 PropertyName="Building"
-                Text="{x:Bind ViewModel.CurrentAddress.Building, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{x:Bind ViewModel.CurrentAddress.Building, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                x:Name="Building" />
 
             <toolkit:InAppNotification
-                x:Name="Notification"
                 RelativePanel.AlignBottomWithPanel="True"
                 RelativePanel.AlignHorizontalCenterWithPanel="True"
-                StackMode="Replace" />
+                StackMode="Replace"
+                x:Name="Notification" />
 
 
         </StackPanel>

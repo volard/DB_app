@@ -114,4 +114,11 @@ public class SQLHospitalRepository : IHospitalRepository
             .Where(hospital => !hospital.IsActive)
             .ToListAsync();
     }
+
+    public async Task<IEnumerable<HospitalLocation>> GetHospitalLocations(int id)
+    {
+        return await _db.HospitalLocations
+            .Where(location => location.Hospital.Id == id)
+            .ToListAsync();
+    }
 }

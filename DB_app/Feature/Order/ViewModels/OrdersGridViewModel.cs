@@ -1,37 +1,30 @@
-﻿using AppUIBasics.Helper;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.WinUI;
 using DB_app.Contracts.ViewModels;
 using DB_app.Core.Contracts.Services;
 using DB_app.Helpers;
+using DB_app.Models;
 using DB_app.Repository;
 using DB_app.Services.Messages;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Dispatching;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
+
 
 namespace DB_app.ViewModels;
 
 public sealed partial class OrdersGridViewModel : ObservableRecipient, INavigationAware, IRecipient<DeleteRecordMessage<OrderWrapper>>
 {
-private readonly IRepositoryControllerService _repositoryControllerService
-        = App.GetService<IRepositoryControllerService>();
+    private readonly IRepositoryControllerService _repositoryControllerService  = App.GetService<IRepositoryControllerService>();
 
     /// <summary>
     /// DataGrid's data collection
     /// </summary>
-    public ObservableCollection<OrderWrapper> Source { get; set; }
-        = new ObservableCollection<OrderWrapper>();
-
-    public OrdersGridViewModel()
-    {
-        WeakReferenceMessenger.Default.Register(this);
-    }
+    public ObservableCollection<OrderWrapper> Source { get; } = new ObservableCollection<OrderWrapper>();
 
     public void Receive(DeleteRecordMessage<OrderWrapper> message)
     {
-        var givenOrderWrapper = message.Value;
+        OrderWrapper givenOrderWrapper = message.Value;
         Source.Remove(givenOrderWrapper);
     }
 
@@ -40,51 +33,74 @@ private readonly IRepositoryControllerService _repositoryControllerService
     /// Represents selected by user AddressWrapper object
     /// </summary>
     [ObservableProperty]
-    private OrderWrapper selectedItem;
+    private OrderWrapper? _selectedItem;
 
 
 
-    public event EventHandler<NotificationConfigurationEventArgs>? OperationRejected;
+    public event EventHandler<NotificationConfigurationEventArgs>? DisplayNotification;
 
 
     public async Task DeleteSelected()
     {
-        if (SelectedItem != null)
+        if (SelectedItem == null) return;
+        
+        try
         {
-            try
-            {
+            int id = SelectedItem.Id;
+            await _repositoryControllerService.Orders.DeleteAsync(id);
 
-                int id = SelectedItem.Id;
-                await _repositoryControllerService.Orders.DeleteAsync(id);
+            Source.Remove(SelectedItem);
 
-                Source.Remove(SelectedItem);
+            DisplayNotification?.Invoke(this, new NotificationConfigurationEventArgs("Everything is good", NotificationHelper.SuccessStyle));
 
-                OperationRejected?.Invoke(this, new NotificationConfigurationEventArgs("Everything is good", NotificationHelper.SuccessStyle));
-
-            }
-            catch (LinkedRecordOperationException)
-            {
-                OperationRejected?.Invoke(this, new NotificationConfigurationEventArgs("Адресс связан с организацией. Удалите связанную организацию, чтобы удалить адрес", NotificationHelper.ErrorStyle));
-            }
+        }
+        catch (LinkedRecordOperationException)
+        {
+            DisplayNotification?.Invoke(this, new NotificationConfigurationEventArgs("Адресс связан с организацией. Удалите связанную организацию, чтобы удалить адрес", NotificationHelper.ErrorStyle));
         }
     }
+    
+    
+    /// <summary>
+    /// Gets or sets a value that indicates whether to show a progress bar. 
+    /// </summary>
+    [ObservableProperty]
+    private bool _isLoading;
 
-
-    public async void OnNavigatedTo(object parameter)
+    private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
+    
+    
+    /// <summary>
+    /// Retrieves items from the data source.
+    /// </summary>
+    private async void LoadItems()
     {
-        if (Source.Count < 1)
+        await _dispatcherQueue.EnqueueAsync(() =>
         {
+            IsLoading = true;
             Source.Clear();
-            var data = await _repositoryControllerService.Orders.GetAsync();
+        });
 
-            foreach (var item in data)
+        IEnumerable<Order>? orders = await _repositoryControllerService.Orders.GetAsync();
+
+        await _dispatcherQueue.EnqueueAsync(() =>
+        {
+            foreach (Order order in orders)
             {
-                Source.Add(new OrderWrapper(item));
+                Source.Add(new OrderWrapper(order));
             }
-        }
+
+            IsLoading = false;
+        });
     }
 
-    public void OnNavigatedFrom()
+
+    public void OnNavigatedTo(object parameter)
     {
+        if (Source.Count >= 1) return;
+        
+        LoadItems();
     }
+
+    public void OnNavigatedFrom() { }
 }

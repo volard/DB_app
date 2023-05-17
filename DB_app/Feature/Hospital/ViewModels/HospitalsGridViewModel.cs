@@ -8,8 +8,7 @@ using DB_app.Helpers;
 using DB_app.Repository;
 using Microsoft.UI.Dispatching;
 using CommunityToolkit.WinUI;
-using System.Diagnostics;
-using System.Collections.Specialized;
+using DB_app.Models;
 
 namespace DB_app.ViewModels;
 
@@ -21,11 +20,12 @@ public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAw
     {
         WeakReferenceMessenger.Default.Register<AddRecordMessage<HospitalWrapper>>(this, (r, m) =>
         {
-            if (r is HospitalsGridViewModel hospitalViewModel)
+            if (r is not HospitalsGridViewModel hospitalViewModel)
             {
-                hospitalViewModel.Source.Insert(0, m.Value);
-                OnPropertyChanged(nameof(Source));
+                return;
             }
+            hospitalViewModel.Source.Insert(0, m.Value);
+            OnPropertyChanged(nameof(Source));
         });
     }
 
@@ -41,7 +41,7 @@ public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAw
     /// <summary>
     /// DataGrid's data collection
     /// </summary>
-    public ObservableCollection<HospitalWrapper> Source { get; set; } = new();
+    public ObservableCollection<HospitalWrapper> Source { get; init; } = new ObservableCollection<HospitalWrapper>();
 
     /// <summary>
     /// Gets or sets a value that indicates whether to show a progress bar. 
@@ -57,7 +57,7 @@ public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAw
     [ObservableProperty]
     private HospitalWrapper? _selectedItem;
 
-    private bool IsInactiveEnabled = false;
+    private bool _isInactiveEnabled;
 
     #endregion
 
@@ -69,7 +69,7 @@ public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAw
 
     public void Receive(DeleteRecordMessage<HospitalWrapper> message)
     {
-        var givenHospitalWrapper = message.Value;
+        HospitalWrapper givenHospitalWrapper = message.Value;
         Source.Remove(givenHospitalWrapper);
     }
     
@@ -79,7 +79,7 @@ public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAw
     /// <summary>
     /// Retrieves items from the data source.
     /// </summary>
-    public async void LoadItems()
+    private async void LoadItems()
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
@@ -87,11 +87,11 @@ public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAw
             Source.Clear();
         });
 
-        var items = await Task.Run(_repositoryControllerService.Hospitals.GetAsync);
+        IEnumerable<Hospital>? items = await _repositoryControllerService.Hospitals.GetAsync();
 
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            foreach (var item in items)
+            foreach (Hospital? item in items)
             {
                 Source.Add(new HospitalWrapper(item));
             }
@@ -103,10 +103,10 @@ public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAw
 
     public async Task ToggleInactive()
     {
-        if (!IsInactiveEnabled)
+        if (!_isInactiveEnabled)
         {
-            var inactiveHospitals = await _repositoryControllerService.Hospitals.GetInactiveAsync();
-            foreach(var item in inactiveHospitals)
+            IEnumerable<Hospital>? inactiveHospitals = await _repositoryControllerService.Hospitals.GetInactiveAsync();
+            foreach(Hospital item in inactiveHospitals)
             {
                 Source.Insert(0, new HospitalWrapper(item));
             }
@@ -120,7 +120,7 @@ public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAw
                 else ++i;
             }
         }
-        IsInactiveEnabled = !IsInactiveEnabled;
+        _isInactiveEnabled = !_isInactiveEnabled;
     }
 
     /// <summary>
@@ -131,32 +131,28 @@ public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAw
 
     public async Task DeleteSelected()
     {
-        if (SelectedItem != null)
+        if (SelectedItem == null) return;
+        try
         {
-            try
-            {
-                int id = SelectedItem.Id;
-                await _repositoryControllerService.Hospitals.DeleteAsync(id);
+            int id = SelectedItem.Id;
+            await _repositoryControllerService.Hospitals.DeleteAsync(id);
 
-                Source.Remove(SelectedItem);
+            Source.Remove(SelectedItem);
 
-                DisplayInAppNotification?.Invoke(this, new NotificationConfigurationEventArgs("Операция успешно выполнена", NotificationHelper.SuccessStyle));
+            DisplayInAppNotification?.Invoke(this, new NotificationConfigurationEventArgs("Операция успешно выполнена", NotificationHelper.SuccessStyle));
 
-            }
-            catch (LinkedRecordOperationException)
-            {
-                DisplayInAppNotification?.Invoke(this, new NotificationConfigurationEventArgs("Адресс связан с организацией. Удалите связанную организацию, чтобы удалить адрес", NotificationHelper.ErrorStyle));
-            }
+        }
+        catch (LinkedRecordOperationException)
+        {
+            DisplayInAppNotification?.Invoke(this, new NotificationConfigurationEventArgs("Адресс связан с организацией. Удалите связанную организацию, чтобы удалить адрес", NotificationHelper.ErrorStyle));
         }
     }
 
 
-    public async void OnNavigatedTo(object parameter)
+    public void OnNavigatedTo(object parameter)
     {
-        if (Source.Count < 1)
-        {
-            LoadItems();
-        }
+        if (Source.Count >= 1) return; 
+        LoadItems();
     }
 
     public void OnNavigatedFrom(){}

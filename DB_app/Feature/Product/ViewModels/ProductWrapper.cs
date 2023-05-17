@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using DB_app.Core.Contracts.Services;
-using DB_app.Helpers;
 using DB_app.Models;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -65,19 +64,20 @@ public sealed partial class ProductWrapper : ObservableValidator, IEditableObjec
     #region Properties
 
 
-    public Product ProductData { get; set; } = new();
+    public Product ProductData { get;
+        private set; } = new Product();
 
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required(ErrorMessage = "Medicine is Required")]
-    private Medicine? _productMedicine;
+    private Medicine? _medicine;
 
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required(ErrorMessage = "Pharmacy is Required")]
-    private Pharmacy? _productPharmacy;
+    private Pharmacy? _pharmacy;
 
 
     [ObservableProperty]
@@ -85,7 +85,7 @@ public sealed partial class ProductWrapper : ObservableValidator, IEditableObjec
     [Required(ErrorMessage = "Quantity is Required")]
     [Range(0, int.MaxValue, ErrorMessage = "Please enter a value bigger than {1}")]
     //[RegularExpression("([1-9]+)", ErrorMessage = "Please enter a Number")]
-    private int _quantity = 0;
+    private int _quantity;
 
 
     [ObservableProperty]
@@ -93,13 +93,7 @@ public sealed partial class ProductWrapper : ObservableValidator, IEditableObjec
     [Required(ErrorMessage = "Price is Required")]
     [Range(0, int.MaxValue, ErrorMessage = "Please enter a value bigger than {1}")]
     //[RegularExpression("([1-9]+)", ErrorMessage = "Please enter a Number")]
-    private double _price = 0;
-
-
-    // These properties needed for grid table
-    public string PharmacyName { get => ProductData.Pharmacy.Name; }
-    public string MedicineName { get => ProductData.Medicine.Name; }
-    public string MedicineType { get => ProductData.Medicine.Type; }
+    private double _price;
 
 
     public int Id { get => ProductData.Id; }
@@ -111,23 +105,18 @@ public sealed partial class ProductWrapper : ObservableValidator, IEditableObjec
     /// </summary>
     public bool IsModified
     {
-        get
-        {
-            return
-                 != HospitalData.Name_main_doctor ||
-                Surename_main_doctor != HospitalData.Surename_main_doctor ||
-                Middlename_main_doctor != HospitalData.Middlename_main_doctor || isDifferent;
-        }
+        get => !Equals(Medicine, ProductData.Medicine) ||
+               !Equals(Pharmacy, ProductData.Pharmacy);
     }
 
     [ObservableProperty]
-    private bool _isInEdit = false;
+    private bool _isInEdit;
 
     /// <summary>
     /// Indicates whether its a new object
     /// </summary>
     [ObservableProperty]
-    private bool _isNew = false;
+    private bool _isNew;
 
     #endregion
     /**************************************/
@@ -138,20 +127,22 @@ public sealed partial class ProductWrapper : ObservableValidator, IEditableObjec
     #region Methods
 
 
-    public bool Equals(ProductWrapper? other) =>
-        ProductMedicine == other?.ProductMedicine &&
-        ProductMedicine == other?.ProductMedicine &&
-        Price == other?.Price &&
-        Quantity == other?.Quantity;
+    public bool Equals(ProductWrapper? other)
+    {
+        return Equals(Medicine, other?.Medicine) &&
+               Equals(Medicine, other?.Medicine) &&
+               Equals(Price, other?.Price) &&
+               Quantity == other.Quantity;
+    }
 
     public override string ToString()
         => $"ProductWrapper with ProductData - [ {ProductData} ]";
 
 
-    public void InitFields()
+    private void InitFields()
     {
-        ProductMedicine = ProductData.Medicine;
-        ProductPharmacy = ProductData.Pharmacy;
+        Medicine = ProductData.Medicine;
+        Pharmacy = ProductData.Pharmacy;
         Quantity = ProductData.Quantity;
         Price = ProductData.Price;
     }
@@ -167,7 +158,7 @@ public sealed partial class ProductWrapper : ObservableValidator, IEditableObjec
 
 
     /// <summary>
-    /// Go back to prevoius data after updating
+    /// Go back to previous data after updating
     /// </summary>
     public async Task Revert()
     {
@@ -186,11 +177,11 @@ public sealed partial class ProductWrapper : ObservableValidator, IEditableObjec
         EndEdit();
         if (IsNew)
         {
-            await App.GetService<IRepositoryControllerService>().Products.InsertAsync(ProductData);
+            await _repositoryControllerService.Products.InsertAsync(ProductData);
         }
         else
         {
-            await App.GetService<IRepositoryControllerService>().Products.UpdateAsync(ProductData);
+            await _repositoryControllerService.Products.UpdateAsync(ProductData);
         }
         IsNew = false;
         return true;
@@ -215,19 +206,23 @@ public sealed partial class ProductWrapper : ObservableValidator, IEditableObjec
     public void BeginEdit()
     {
         IsInEdit = true;
+        OnPropertyChanged(nameof(IsModified));
         Backup();
     }
 
     public void CancelEdit()
     {
+        InitFields();
         IsInEdit = false;
     }
 
-    public async void EndEdit()
+    public void EndEdit()
     {
         IsInEdit= false;
-        ProductData.Pharmacy = ProductPharmacy;
-        ProductData.Medicine = ProductMedicine;
+        
+        // NOTE the underlying code relays on preliminary data validation
+        ProductData.Pharmacy = Pharmacy!;
+        ProductData.Medicine = Medicine!;
         ProductData.Price    = Price;
         ProductData.Quantity = Quantity; 
     }

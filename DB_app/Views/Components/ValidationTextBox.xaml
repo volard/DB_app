@@ -1,40 +1,40 @@
 <UserControl
+    mc:Ignorable="d"
     x:Class="DB_app.Views.Components.ValidationTextBox"
+    x:Name="self"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:DB_app.Views.Components"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    x:Name="self"
-    mc:Ignorable="d">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <Grid HorizontalAlignment="Left" ColumnSpacing="12">
+    <Grid ColumnSpacing="12" HorizontalAlignment="Left">
         <Grid.ColumnDefinitions>
             <ColumnDefinition MinWidth="300" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
 
-        <!--I didnt get it...-->
-        <!--https://social.msdn.microsoft.com/Forums/vstudio/en-US/70bbea59-63d8-4854-be5e-2f7691cfde2f/dependencyproperty-does-not-listen-to-propertychanged-event?forum=wpf -->
+        <!--  I didnt get it...  -->
+        <!--  https://social.msdn.microsoft.com/Forums/vstudio/en-US/70bbea59-63d8-4854-be5e-2f7691cfde2f/dependencyproperty-does-not-listen-to-propertychanged-event?forum=wpf  -->
         <TextBox
-            x:Name="PART_TextBox"
-            Margin="10,20,0,8"
-            HorizontalAlignment="Stretch"
             Header="{x:Bind HeaderText}"
-            IsSpellCheckEnabled="False"
+            HorizontalAlignment="Stretch"
             IsReadOnly="{Binding IsReadOnly, ElementName=self}"
+            IsSpellCheckEnabled="False"
+            Margin="10,20,0,8"
             PlaceholderText="{x:Bind PlaceholderText}"
             Text="{x:Bind Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            TextChanged="PART_TextBox_TextChanged" />
+            TextChanged="PART_TextBox_TextChanged"
+            x:Name="PART_TextBox" />
         <FontIcon
-            x:Name="PART_WarningIcon"
-            Grid.Column="1"
-            Margin="0,32,0,0"
-            VerticalAlignment="Center"
             FontSize="20"
             Foreground="Orange"
             Glyph="&#xE814;"
-            Visibility="Collapsed" />
+            Grid.Column="1"
+            Margin="0,32,0,0"
+            VerticalAlignment="Center"
+            Visibility="Collapsed"
+            x:Name="PART_WarningIcon" />
     </Grid>
 </UserControl>

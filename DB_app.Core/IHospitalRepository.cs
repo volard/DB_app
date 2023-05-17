@@ -38,4 +38,7 @@ public interface IHospitalRepository
     /// Updates existing hospital
     /// </summary>
     public Task UpdateAsync(Hospital hospital);
+
+    
+    public Task<IEnumerable<HospitalLocation>> GetHospitalLocations(int id);
 }

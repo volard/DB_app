@@ -31,7 +31,7 @@ public sealed partial class HospitalDetailsPage : Page
 
     private async void MakeInactiveButton_ButtonClicked(object sender, RoutedEventArgs e)
     {
-        ContentDialog dialog = new()
+        ContentDialog dialog = new ContentDialog
         {
             XamlRoot = this.XamlRoot,
             Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style,
@@ -42,15 +42,15 @@ public sealed partial class HospitalDetailsPage : Page
             Content = "When you disable hospital, it will be unlinked from its addresses and become read only."
         };
 
-        var result = await dialog.ShowAsync();
+        ContentDialogResult result = await dialog.ShowAsync();
 
         if (result == ContentDialogResult.Primary)
         {
         }
     }
-    
 
-    public void AddSelectedButton_Clicked(object sender, RoutedEventArgs e)
+
+    private void AddSelectedButton_Clicked(object sender, RoutedEventArgs e)
     {
         if (ViewModel.SelectedAddress == null) return;
 
@@ -59,7 +59,7 @@ public sealed partial class HospitalDetailsPage : Page
     }
 
 
-    public void DeleteSelectedButton_Clicked(object sender, RoutedEventArgs e)
+    private void DeleteSelectedButton_Clicked(object sender, RoutedEventArgs e)
     {
         if (ViewModel.SelectedExistingLocation == null) return;
 

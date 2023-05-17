@@ -133,12 +133,10 @@ public partial class PharmaciesGridViewModel : ObservableRecipient, INavigationA
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
 
-    public async void OnNavigatedTo(object parameter)
+    public void OnNavigatedTo(object parameter)
     {
-        if (Source.Count < 1)
-        {
-            LoadItems();
-        }
+        if (Source.Count >= 1) return;
+        LoadItems();
     }
 
     public void OnNavigatedFrom()

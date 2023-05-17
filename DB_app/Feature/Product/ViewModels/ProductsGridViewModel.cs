@@ -1,33 +1,74 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.WinUI;
 using DB_app.Contracts.ViewModels;
 using DB_app.Core.Contracts.Services;
 using DB_app.Services.Messages;
 using DB_app.Helpers;
+using DB_app.Models;
 using System.Collections.ObjectModel;
 using DB_app.Repository;
+using Microsoft.UI.Dispatching;
 
 namespace DB_app.ViewModels;
 
 public partial class ProductsGridViewModel : ObservableRecipient, INavigationAware, IRecipient<DeleteRecordMessage<ProductWrapper>>
 {
-private readonly IRepositoryControllerService _repositoryControllerService
-        = App.GetService<IRepositoryControllerService>();
+    
+    private readonly IRepositoryControllerService _repositoryControllerService = App.GetService<IRepositoryControllerService>();
 
     /// <summary>
     /// DataGrid's data collection
     /// </summary>
-    public ObservableCollection<ProductWrapper> Source { get; set; }
-        = new ObservableCollection<ProductWrapper>();
+    public ObservableCollection<ProductWrapper> Source { get; } = new ObservableCollection<ProductWrapper>();
+    
+    /// <summary>
+    /// Gets or sets a value that indicates whether to show a progress bar. 
+    /// </summary>
+    [ObservableProperty]
+    private bool _isLoading;
 
+    private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
+    
+    /// <summary>
+    /// Retrieves items from the data source.
+    /// </summary>
+    private async void LoadItems()
+    {
+        await _dispatcherQueue.EnqueueAsync(() =>
+        {
+            IsLoading = true;
+            Source.Clear();
+        });
+
+        IEnumerable<Product>? items = await _repositoryControllerService.Products.GetAsync();
+
+        await _dispatcherQueue.EnqueueAsync(() =>
+        {
+            foreach (Product item in items)
+            {
+                Source.Add(new ProductWrapper(item));
+            }
+
+            IsLoading = false;
+        });
+    }
+    
     public ProductsGridViewModel()
     {
-        WeakReferenceMessenger.Default.Register(this);
+        WeakReferenceMessenger.Default.Register<AddRecordMessage<ProductWrapper>>(this, (r, m) =>
+        {
+            if (r is not ProductsGridViewModel productsGridViewModel)
+                return;
+            
+            productsGridViewModel.Source.Insert(0, m.Value);
+            OnPropertyChanged(nameof(Source));
+        });
     }
 
     public void Receive(DeleteRecordMessage<ProductWrapper> message)
     {
-        var givenProductWrapper = message.Value;
+        ProductWrapper givenProductWrapper = message.Value;
         Source.Remove(givenProductWrapper);
     }
 
@@ -39,7 +80,7 @@ private readonly IRepositoryControllerService _repositoryControllerService
     private ProductWrapper? _selectedItem;
 
 
-    public event EventHandler<NotificationConfigurationEventArgs>? OperationRejected;
+    public event EventHandler<NotificationConfigurationEventArgs>? DisplayNotification;
 
 
     public async Task DeleteSelected()
@@ -54,24 +95,24 @@ private readonly IRepositoryControllerService _repositoryControllerService
 
                 Source.Remove(SelectedItem);
 
-                OperationRejected?.Invoke(this, new NotificationConfigurationEventArgs("Everything is good", NotificationHelper.SuccessStyle));
+                DisplayNotification?.Invoke(this, new NotificationConfigurationEventArgs("Everything is good", NotificationHelper.SuccessStyle));
 
             }
             catch (LinkedRecordOperationException)
             {
-                OperationRejected?.Invoke(this, new NotificationConfigurationEventArgs("Адресс связан с организацией. Удалите связанную организацию, чтобы удалить адрес", NotificationHelper.ErrorStyle));
+                DisplayNotification?.Invoke(this, new NotificationConfigurationEventArgs("Адресс связан с организацией. Удалите связанную организацию, чтобы удалить адрес", NotificationHelper.ErrorStyle));
             }
         }
     }
 
-    private bool IsOutOfStockEnabled = false;
+    private bool _isOutOfStockEnabled = false;
 
     public async Task ToggleOutOfStock()
     {
-        if (!IsOutOfStockEnabled)
+        if (!_isOutOfStockEnabled)
         {
-            var outOfStockProducts = await _repositoryControllerService.Products.GetOutOfStockAsync();
-            foreach (var item in outOfStockProducts)
+            IEnumerable<Product>? outOfStockProducts = await _repositoryControllerService.Products.GetOutOfStockAsync();
+            foreach (Product item in outOfStockProducts)
             {
                 Source.Insert(0, new ProductWrapper(item));
             }
@@ -85,22 +126,14 @@ private readonly IRepositoryControllerService _repositoryControllerService
                 ++i;
             }
         }
-        IsOutOfStockEnabled = !IsOutOfStockEnabled;
+        _isOutOfStockEnabled = !_isOutOfStockEnabled;
     }
 
 
-    public async void OnNavigatedTo(object parameter)
+    public void OnNavigatedTo(object parameter)
     {
-        if (Source.Count < 1)
-        {
-            Source.Clear();
-            var data = await _repositoryControllerService.Products.GetAsync();
-
-            foreach (var item in data)
-            {
-                Source.Add(new ProductWrapper(item));
-            }
-        }
+        if (Source.Count >= 1) return;
+            LoadItems();
     }
 
     public void OnNavigatedFrom()

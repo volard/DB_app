@@ -15,9 +15,7 @@ public sealed partial class MedicineWrapper :
 {
     /**************************************/
     #region Constructors
-    /**************************************/
-
-
+    
     public MedicineWrapper(Medicine? medicine = null)
     {
         if (medicine == null)
@@ -30,19 +28,19 @@ public sealed partial class MedicineWrapper :
     }
 
     #endregion
-
+    /**************************************/
 
 
 
     /**************************************/
     #region Properties
-    /**************************************/
+    
 
     private readonly IRepositoryControllerService _repositoryControllerService = App.GetService<IRepositoryControllerService>();
 
     private Medicine? _backupData;
 
-    public Medicine MedicineData { get; set; } = new();
+    private Medicine MedicineData { get; set; } = new Medicine();
 
 
     [ObservableProperty]
@@ -67,13 +65,9 @@ public sealed partial class MedicineWrapper :
     /// </summary>
     public bool IsModified
     {
-        get
-        {
-            return
+        get =>
                 Name != MedicineData.Name ||
-                // Note Type name is subject to change because it can be messed up wiht System.Type
                 Type != MedicineData.Type;
-        }
     }
 
 
@@ -91,14 +85,14 @@ public sealed partial class MedicineWrapper :
     private bool _isInEdit = false;
 
     #endregion
+    /**************************************/
+
+
     
-
-
 
     /**************************************/
     #region Members
-    /**************************************/
-
+    
     public bool Equals(object? obj)
     {
         if (obj is not MedicineWrapper other) return false;
@@ -110,16 +104,14 @@ public sealed partial class MedicineWrapper :
 
     public override string ToString() => $"MedicineWrapper with MedicineData '{Name}' under '{Type}' type";
 
-    public void InitFields()
+    private void InitFields()
     {
         Name = MedicineData.Name;
-        // Note Type name is subject to change because it can be messed up wiht System.Type
         Type = MedicineData.Type;
     }
 
-
     #endregion
-
+    /**************************************/
 
 
 
@@ -129,14 +121,14 @@ public sealed partial class MedicineWrapper :
 
 
     /// <summary>
-    /// Go back to prevoius data after updating
+    /// Go back to previous data after updating
     /// </summary>
     public async Task Revert()
     {
         if (_backupData != null)
         {
             MedicineData = _backupData;
-            await App.GetService<IRepositoryControllerService>().Medicines.UpdateAsync(MedicineData);
+            await _repositoryControllerService.Medicines.UpdateAsync(MedicineData);
         }
     }
 
@@ -148,11 +140,11 @@ public sealed partial class MedicineWrapper :
         EndEdit();
         if (IsNew)
         {
-            await App.GetService<IRepositoryControllerService>().Medicines.InsertAsync(MedicineData);
+            await _repositoryControllerService.Medicines.InsertAsync(MedicineData);
         }
         else
         {
-            await App.GetService<IRepositoryControllerService>().Medicines.UpdateAsync(MedicineData);
+            await _repositoryControllerService.Medicines.UpdateAsync(MedicineData);
         }
         return true;
     }

@@ -1,4 +1,5 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows10.0.19041.0</TargetFramework>
@@ -9,9 +10,9 @@
     <Platforms>x86;x64;arm64</Platforms>
     <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
     <PublishProfile>Properties\PublishProfiles\win10-$(Platform).pubxml</PublishProfile>
-	<ImplicitUsings>enable</ImplicitUsings>
-	<Nullable>enable</Nullable>
-	<UseWinUI>true</UseWinUI>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
@@ -24,14 +25,24 @@
     <AppxBundlePlatforms>x86|x64</AppxBundlePlatforms>
     <AppInstallerUri>F:\Kirill\Projects\DB_app_solution\DB_app\bin\x64\Release\net6.0-windows10.0.19041.0\win10-x64\DB_app.exe</AppInstallerUri>
   </PropertyGroup>
+  <PropertyGroup Label="MultilingualAppToolkit">
+    <MultilingualAppToolkitVersion>4.0</MultilingualAppToolkitVersion>
+    <MultilingualFallbackLanguage>en-US</MultilingualFallbackLanguage>
+    <TranslationReport Condition="'$(Configuration)' == 'Release'">true</TranslationReport>
+    <SuppressPseudoWarning Condition="'$(Configuration)' == 'Debug'">true</SuppressPseudoWarning>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Feature\Address\NewFolder\**" />
+    <Compile Remove="Strings\ru-ru\**" />
     <Compile Remove="Views\Medicine\**" />
     <EmbeddedResource Remove="Feature\Address\NewFolder\**" />
+    <EmbeddedResource Remove="Strings\ru-ru\**" />
     <EmbeddedResource Remove="Views\Medicine\**" />
     <None Remove="Feature\Address\NewFolder\**" />
+    <None Remove="Strings\ru-ru\**" />
     <None Remove="Views\Medicine\**" />
     <Page Remove="Feature\Address\NewFolder\**" />
+    <Page Remove="Strings\ru-ru\**" />
     <Page Remove="Views\Medicine\**" />
   </ItemGroup>
   <ItemGroup>
@@ -43,6 +54,7 @@
     <None Remove="Feature\PharmacyWithMedicineReport\PharmacyWithMedicineReportPage.xaml" />
     <None Remove="Fonts\Segoe Fluent Icons.ttf" />
     <None Remove="MediaWindow.xaml" />
+    <None Remove="MultilingualResources\DB_app.ru-RU.xlf" />
     <None Remove="Styles\Icons.xaml" />
     <None Remove="Styles\NotificationStyle.xaml" />
     <None Remove="Views\Address\AddressDetailsPage.xaml" />
@@ -58,11 +70,9 @@
   <ItemGroup>
     <Page Remove="Views\SaveChangesDialog.xaml" />
   </ItemGroup>
-
   <ItemGroup>
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.101.0" />
     <PackageReference Include="CommunityToolkit.Labs.WinUI.SettingsControls" Version="0.0.18" />
@@ -75,7 +85,6 @@
     <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
     <PackageReference Include="WinUIEx" Version="2.2.0" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\DB_app.Core\DB_app.Repository.csproj" />
   </ItemGroup>
@@ -141,60 +150,63 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <ProjectCapability Include="Msix" />
   </ItemGroup>
-
   <ItemGroup>
     <Folder Include="Feature\Hospital\Views\" />
     <Folder Include="Feature\Order\" />
     <Folder Include="Feature\Pharmacy\" />
     <Folder Include="Themes\" />
   </ItemGroup>
-  
   <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
   </PropertyGroup>
-  
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
     <NoWarn>CS0103</NoWarn>
     <DefineConstants>$(DefineConstants);DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION</DefineConstants>
   </PropertyGroup>
-  
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
     <NoWarn>CS0103</NoWarn>
   </PropertyGroup>
-  
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <NoWarn>CS0103</NoWarn>
     <DefineConstants>$(DefineConstants);DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION</DefineConstants>
   </PropertyGroup>
-  
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <NoWarn>CS0103</NoWarn>
   </PropertyGroup>
-  
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|arm64'">
     <NoWarn>CS0103</NoWarn>
     <DefineConstants>$(DefineConstants);DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION</DefineConstants>
   </PropertyGroup>
-  
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|arm64'">
     <NoWarn>CS0103</NoWarn>
   </PropertyGroup>
-  
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\Microsoft.Multilingual.PriResources.targets" Label="MultilingualAppToolkit" Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\v$(MultilingualAppToolkitVersion)\Microsoft.Multilingual.PriResources.targets')" />
+  <Target Name="MATPrerequisite" BeforeTargets="PrepareForBuild" Condition="!Exists('$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\Microsoft.Multilingual.PriResources.targets')" Label="MultilingualAppToolkit">
+    <Warning Text="$(MSBuildProjectFile) is Multilingual build enabled, but the Multilingual App Toolkit is unavailable during the build. If building with Visual Studio, please check to ensure that toolkit is properly installed." />
+  </Target>
   <ItemGroup>
     <PRIResource Remove="Views\Medicine\**" />
   </ItemGroup>
-  
   <ItemGroup>
     <PRIResource Remove="Feature\Address\NewFolder\**" />
   </ItemGroup>
-  
   <ItemGroup>
     <Resource Include="Fonts\Segoe Fluent Icons.ttf">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Strings\en-us\Resources.resw" />
+    <Content Include="Strings\LanguageList.resw" />
+    <Content Include="Strings\ru-RU\Resources.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <XliffResource Include="MultilingualResources\DB_app.ru-RU.xlf" />
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Remove="Strings\ru-ru\**" />
   </ItemGroup>
 </Project>

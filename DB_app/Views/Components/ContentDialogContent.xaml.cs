@@ -18,10 +18,10 @@ namespace DB_app.Views.Components;
 
 public sealed partial class ContentDialogContent : Page
 {
-    public int Min { get; set; } = 1;
-    public int Max { get; set; }
+    public int Min { get; } = 1;
+    public int Max { get; }
 
-    public ContentDialogContentViewModel ViewModel {get; set; } = new();
+    public ContentDialogContentViewModel ViewModel {get; } = new ContentDialogContentViewModel();
 
     public ContentDialogContent(int max)
     {
@@ -35,7 +35,6 @@ public sealed partial class ContentDialogContent : Page
         this.InitializeComponent();
         Max = max;
         ViewModel.Current = current;
-
     }
 
     private void Slider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
@@ -46,5 +45,5 @@ public sealed partial class ContentDialogContent : Page
 public partial class ContentDialogContentViewModel : ObservableObject
 {
     [ObservableProperty]
-    public int current = 1;
+    private int _current = 1;
 }

@@ -25,11 +25,6 @@ public interface IAddressRepository
     public Task UpdateAsync(Address address);
 
     /// <summary>
-    /// Get all addresses where hospitals located
-    /// </summary>
-    public Task<IEnumerable<Address>> GetHospitalsAddressesAsync();
-
-    /// <summary>
     /// Get all addresses available for binding
     /// </summary>
     public Task<IEnumerable<Address>> GetFreeAddressesAsync();

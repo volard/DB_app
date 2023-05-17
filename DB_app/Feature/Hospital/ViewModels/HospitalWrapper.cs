@@ -131,13 +131,13 @@ public sealed partial class HospitalWrapper : ObservableValidator, IEditableObje
     /// Indicates whether its a new object
     /// </summary>
     [ObservableProperty]
-    private bool _isNew = false;
+    private bool _isNew;
 
     /// <summary>
     /// Indicates edit mode
     /// </summary>
     [ObservableProperty]
-    private bool _isInEdit = false;
+    private bool _isInEdit;
 
     #endregion
 
@@ -167,21 +167,20 @@ public sealed partial class HospitalWrapper : ObservableValidator, IEditableObje
 
     /**************************************/
     #region Modification methods
-    /**************************************/
+    
 
     public void Backup() => _backupData = HospitalData;
 
 
     /// <summary>
-    /// Go back to prevoius data after updating
+    /// Go back to previous data after updating
     /// </summary>
     public async Task RevertAsync()
     {
-        if (_backupData != null)
-        {
-            HospitalData = _backupData;
-            await App.GetService<IRepositoryControllerService>().Hospitals.UpdateAsync(HospitalData);
-        }
+        if (_backupData == null) return;
+        
+        HospitalData = _backupData;
+        await _repositoryControllerService.Hospitals.UpdateAsync(HospitalData);
     }
 
 
@@ -191,9 +190,9 @@ public sealed partial class HospitalWrapper : ObservableValidator, IEditableObje
         if (HasErrors) return false;
         EndEdit();
         if (IsNew)
-            await App.GetService<IRepositoryControllerService>().Hospitals.InsertAsync(HospitalData);
+            await _repositoryControllerService.Hospitals.InsertAsync(HospitalData);
         else
-            await App.GetService<IRepositoryControllerService>().Hospitals.UpdateAsync(HospitalData);
+            await _repositoryControllerService.Hospitals.UpdateAsync(HospitalData);
         IsNew = false;
 
         // Sync with grid
@@ -202,11 +201,13 @@ public sealed partial class HospitalWrapper : ObservableValidator, IEditableObje
     }
 
     #endregion
-
+    /**************************************/
+    
+    
 
     /**************************************/
     #region IEditable implementation
-    /**************************************/
+    
 
     public void BeginEdit()
     {
@@ -238,4 +239,5 @@ public sealed partial class HospitalWrapper : ObservableValidator, IEditableObje
 
     
     #endregion
+    /**************************************/
 }

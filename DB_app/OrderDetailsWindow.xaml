@@ -1,42 +1,43 @@
 <windowex:WindowEx
+    MinHeight="500"
+    MinWidth="500"
+    PersistenceId="OrderDetailsWindow"
+    mc:Ignorable="d"
     x:Class="DB_app.OrderDetailsWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:DB_app"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:media="using:Microsoft.UI.Xaml.Media"
     xmlns:windowex="using:WinUIEx"
-    MinWidth="500"
-    MinHeight="500"
-    PersistenceId="OrderDetailsWindow"
-    mc:Ignorable="d">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <windowex:WindowEx.Backdrop>
-        <windowex:MicaSystemBackdrop />
-    </windowex:WindowEx.Backdrop>
+    <windowex:WindowEx.SystemBackdrop>
+        <media:MicaBackdrop />
+    </windowex:WindowEx.SystemBackdrop>
 
     <Grid>
         <Grid
-            x:Name="AppTitleBar"
-            Height="34"
             Background="#272727"
-            VerticalAlignment="Top"
             Canvas.ZIndex="1"
-            IsHitTestVisible="True">
+            Height="34"
+            IsHitTestVisible="True"
+            VerticalAlignment="Top"
+            x:Name="AppTitleBar">
             <Image
-                Width="16"
                 Height="16"
-                Margin="5,0,0,0"
-                VerticalAlignment="Center"
                 HorizontalAlignment="Left"
-                Source="/Assets/WindowIcon.ico" />
-            <TextBlock
-                x:Name="AppTitleBarText"
-                Margin="28,0,0,0"
-                Text="Order details"
+                Margin="5,0,0,0"
+                Source="/Assets/WindowIcon.ico"
                 VerticalAlignment="Center"
+                Width="16" />
+            <TextBlock
+                Margin="28,0,0,0"
                 Style="{StaticResource CaptionTextBlockStyle}"
-                TextWrapping="NoWrap" />
+                Text="Order details"
+                TextWrapping="NoWrap"
+                VerticalAlignment="Center"
+                x:Name="AppTitleBarText" />
         </Grid>
 
 
@@ -44,8 +45,8 @@
             <Frame x:Name="NavigationFrame" />
         </Grid>
     </Grid>
-    
-    
-    
+
+
+
 
 </windowex:WindowEx>

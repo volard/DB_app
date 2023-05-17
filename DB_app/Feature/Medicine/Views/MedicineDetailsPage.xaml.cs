@@ -71,7 +71,7 @@ public sealed partial class MedicineDetailsPage : Page
     /// <summary>
     /// Check whether there are unsaved changes and warn the user.
     /// </summary>
-    protected override async void OnNavigatingFrom(NavigatingCancelEventArgs e)
+    protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
     {
 
         // TODO add confirmation feature etc

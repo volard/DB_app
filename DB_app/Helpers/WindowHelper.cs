@@ -9,50 +9,35 @@ namespace AppUIBasics.Helper;
 // windows.  In the future, we would like to support this in platform APIs.
 public class WindowHelper
 {
-    static public Window CreateWindow()
+    public static Window CreateWindow()
     {
-        Window newWindow = new();
+        Window newWindow = new Window();
         TrackWindow(newWindow);
         return newWindow;
     }
 
-    static public void TrackWindow(Window window)
+    public static void TrackWindow(Window window)
     {
         window.Closed += (sender, args) => {
-            _activeWindows.Remove(window);
+            ActiveWindows.Remove(window);
         };
-        _activeWindows.Add(window);
+        ActiveWindows.Add(window);
     }
 
-    static public Window? GetWindowForElement(UIElement element)
+    public static Window? GetWindowForElement(UIElement element)
     {
-        if (element.XamlRoot != null)
-        {
-            foreach (Window window in _activeWindows)
-            {
-                if (element.XamlRoot == window.Content.XamlRoot)
-                {
-                    return window;
-                }
-            }
-        }
-        return null;
+        return element.XamlRoot == null ? null : ActiveWindows.FirstOrDefault(window => element.XamlRoot == window.Content.XamlRoot);
     }
 
-    static public UIElement? FindElementByName(UIElement element, string name)
+    public static UIElement? FindElementByName(UIElement element, string name)
     {
-        if (element.XamlRoot != null && element.XamlRoot.Content != null)
-        {
-            var ele = (element.XamlRoot.Content as FrameworkElement)?.FindName(name);
-            if (ele != null)
-            {
-                return ele as UIElement;
-            }
-        }
-        return null;
+        if (element.XamlRoot == null || element.XamlRoot.Content == null) return null;
+        
+        object? ele = (element.XamlRoot.Content as FrameworkElement)?.FindName(name);
+        return ele as UIElement;
     }
+    
 
-    static public List<Window> ActiveWindows { get { return _activeWindows; } }
+    private static List<Window> ActiveWindows { get; } = new List<Window>();
 
-    static private List<Window> _activeWindows = new();
 }

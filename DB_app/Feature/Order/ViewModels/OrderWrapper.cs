@@ -1,6 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.WinUI;
 using DB_app.Core.Contracts.Services;
+using DB_app.Helpers;
 using DB_app.Models;
+using DB_app.Services.Messages;
+using DocumentFormat.OpenXml.Office2010.Excel;
+using Microsoft.UI.Dispatching;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -22,8 +28,15 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
         {
             IsNew = true;
         }
-        else { OrderData = order; }
+        else
+        {
+            _orderData = order;
+        }
+        
+        InitFields();
     }
+
+
 
     #endregion
 
@@ -31,77 +44,98 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
     #region Properties
 
     private readonly IRepositoryControllerService _repositoryControllerService = App.GetService<IRepositoryControllerService>();
+    private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
-    private Order _orderData = new();
+    public DateTime DatePlaced => _orderData.DatePlaced;
 
-    public Order OrderData
+    private Order _orderData = new Order();
+
+    private void InitFields()
     {
-        get { return _orderData; }
-        set
-        {
-            _orderData = value;
-            OrderHospital = _orderData.HospitalCustomer;
-            ShippingAddress = _orderData.ShippingAddress;
-            ObservableOrderItems = new(_orderData.Items);
-        }
+        OrderHospital = _orderData.HospitalCustomer;
+        SelectedAddress = _orderData.ShippingAddress;
+        OrderItems = new ObservableCollection<OrderItem>(_orderData.Items);
     }
 
-    [Required(ErrorMessage = "Hospital-customer is Required"), ObservableProperty, NotifyPropertyChangedFor(nameof(AvailableAddresses))]
-    private Hospital _orderHospital;
 
-    [ObservableProperty, Required(ErrorMessage = "Shipping address is Required")]
-    private Address _shippingAddress;
-
-    // Required for orders datagrid
-    public int Id { get => OrderData.Id; }
-    public string Surename_main_doctor { get => OrderData.HospitalCustomer.Surename_main_doctor; }
-    public DateTime DatePlaced { get => OrderData.DatePlaced; }
-
+    
+    /// <summary>
+    /// Gets or sets a value that indicates whether to show a progress bar. 
+    /// </summary>
     [ObservableProperty]
-    private ObservableCollection<OrderItem> observableOrderItems = new();
-
-    [ObservableProperty]
-    private ObservableCollection<Product> availableProducts;
-
-    private ObservableCollection<Address> _availableAddresses;
-
-    public ObservableCollection<Address> AvailableAddresses
+    private bool _isLoading;
+    
+    /// <summary>
+    /// Loads the addresses data.
+    /// </summary>
+    public async Task LoadAvailableProductsAsync()
     {
-        get
+        await _dispatcherQueue.EnqueueAsync(() =>
         {
-            if (OrderHospital != null)
+            IsLoading = true;
+        });
+
+        IEnumerable<Product>? products = await _repositoryControllerService.Products.GetAsync();
+
+        await _dispatcherQueue.EnqueueAsync(() =>
+        {
+            AvailableProducts.Clear();
+            foreach (Product product in products)
             {
-                return new(OrderHospital.Locations.Select(el => el.Address));
+                AvailableProducts.Add(product);
             }
-            return _availableAddresses;
-        }
-        set
-        {
-            _availableAddresses = value;
-        }
+
+            IsLoading = false;
+        });
     }
+
+    
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [NotifyPropertyChangedFor(nameof(IsModified))]
+    [Required(ErrorMessage = "Hospital-customer is Required")]
+    private Hospital? _orderHospital;
+
+
+    [NotifyPropertyChangedFor(nameof(IsModified))]
+    [ObservableProperty]
+    private ObservableCollection<OrderItem> _orderItems = new ObservableCollection<OrderItem>();
+
+
+    [NotifyPropertyChangedFor(nameof(IsModified))]
+    [ObservableProperty]
+    private ObservableCollection<Product> _availableProducts = new ObservableCollection<Product>();
+
+    
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required(ErrorMessage = "Shipping address is Required")]
+    [NotifyPropertyChangedFor(nameof(IsModified))]
+    private Address? _selectedAddress;
+
 
     /// <summary>
     /// Gets the order's total price.
     /// </summary>
-    public double? Total => ObservableOrderItems != null ? ObservableOrderItems.Sum(item => item.Product.Price * item.Quantity) : 0;
+    public double? Total => OrderItems != null ? OrderItems.Sum(item => item.Product.Price * item.Quantity) : 0;
+
 
     private Order? _backupData;
 
-    [ObservableProperty]
-    private bool isModified = false;
 
     /// <summary>
     /// Indicates whether object in edit mode
     /// </summary>
     [ObservableProperty]
-    private bool isInEdit = false;
+    private bool _isInEdit;
+
 
     /// <summary>
     /// Indicates whether its a new object
     /// </summary>
     [ObservableProperty]
-    private bool isNew = false;
+    private bool _isNew;
+
 
     #endregion
 
@@ -110,22 +144,23 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
 
     public void Backup()
     {
-        _backupData = OrderData;
+        _backupData = _orderData;
     }
 
 
     /// <summary>
-    /// Go back to prevoius data after updating
+    /// Go back to previous data after updating
     /// </summary>
     public async Task Revert()
     {
         if (_backupData != null)
         {
-            OrderData = _backupData;
-            await App.GetService<IRepositoryControllerService>().Orders.UpdateAsync(OrderData);
+            _orderData = _backupData;
+            await _repositoryControllerService.Orders.UpdateAsync(_orderData);
         }
     }
 
+    
     public async Task<bool> SaveAsync()
     {
         ValidateAllProperties();
@@ -137,16 +172,37 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
         EndEdit();
         if (IsNew)
         {
-            await App.GetService<IRepositoryControllerService>().Orders.InsertAsync(OrderData);
+            await _repositoryControllerService.Orders.InsertAsync(_orderData);
         }
         else
         {
-            await App.GetService<IRepositoryControllerService>().Orders.UpdateAsync(OrderData);
+            await _repositoryControllerService.Orders.UpdateAsync(_orderData);
         }
+        
+        
+        // Sync with grid
+        WeakReferenceMessenger.Default.Send(new AddRecordMessage<OrderWrapper>(this));
         return true;
     }
 
     #endregion
+    
+    
+    /// <summary>
+    /// Indicates about changes that is not synced with UI DataGrid
+    /// </summary>
+    public bool IsModified
+    {
+        get
+        {
+            bool isDifferent = CollectionsHelper.IsDifferent(OrderItems.ToList(), _orderData.Items);
+
+            return
+                OrderHospital != _orderData.HospitalCustomer ||
+                SelectedAddress != _orderData.ShippingAddress
+                || isDifferent;
+        }
+    }
 
 
     #region Members
@@ -157,12 +213,12 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
 
 
     public override string ToString()
-        => $"OrderWrapper with OrderData - [ {OrderData} ]";
+        => $"OrderWrapper with OrderData - [ {_orderData} ]";
 
 
     public async Task RemoveOrderItem(OrderItem orderItem)
     {
-        ObservableOrderItems.Remove(orderItem);
+        OrderItems.Remove(orderItem);
         OnPropertyChanged(nameof(Total));
 
         var _temp = AvailableProducts.FirstOrDefault(el => el == orderItem.Product);
@@ -188,11 +244,11 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
     /// <param name="orderItem"></param>
     public async Task UpdateOrderItem(OrderItem orderItem, int new_quantity_value)
     {
-        int _index = ObservableOrderItems.IndexOf(orderItem);
-        int old_value = ObservableOrderItems[_index].Quantity;
-        ObservableOrderItems.RemoveAt(_index);
+        int _index = OrderItems.IndexOf(orderItem);
+        int old_value = OrderItems[_index].Quantity;
+        OrderItems.RemoveAt(_index);
         orderItem.Quantity = new_quantity_value;
-        ObservableOrderItems.Insert(_index, orderItem);
+        OrderItems.Insert(_index, orderItem);
 
         OnPropertyChanged(nameof(Total));
 
@@ -214,25 +270,26 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
         AvailableProducts.Insert(_index, _temp);
     }
 
+    public int Id => _orderData.Id;
     
     public void AddOrderItem(Product product, int quantity)
     {
         OrderItem? found = null;
         int _index;
-        if (ObservableOrderItems.Count != 0)
+        if (OrderItems.Count != 0)
         {
-            found = ObservableOrderItems.FirstOrDefault(el => el.Product == product);
+            found = OrderItems.FirstOrDefault(el => el.Product == product);
         }
         if (found != null)
         {
             found.Quantity += quantity;
-            _index = ObservableOrderItems.IndexOf(found);
-            ObservableOrderItems.RemoveAt(_index);
-            ObservableOrderItems.Insert(_index, found);
+            _index = OrderItems.IndexOf(found);
+            OrderItems.RemoveAt(_index);
+            OrderItems.Insert(_index, found);
         }
         else
         {
-            ObservableOrderItems.Add(new OrderItem(OrderData, product, quantity));
+            OrderItems.Add(new OrderItem(_orderData, product, quantity));
         }
 
         OnPropertyChanged(nameof(Total));
@@ -257,27 +314,26 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
 
     public void BeginEdit()
     {
-        IsModified = true;
+        
         Backup();
     }
 
     public void CancelEdit()
     {
-        IsModified = false;
+        
         IsInEdit = false;
     }
 
     public void EndEdit()
     {
         IsInEdit = false;
-        OrderData.HospitalCustomer = OrderHospital;
-        OrderData.ShippingAddress = ShippingAddress;
-        OrderData.Items = ObservableOrderItems.ToList();
+        _orderData.HospitalCustomer = OrderHospital;
+        _orderData.ShippingAddress = SelectedAddress;
+        _orderData.Items = OrderItems.ToList();
     }
 
 
     #endregion
-
-
+    
 
 }

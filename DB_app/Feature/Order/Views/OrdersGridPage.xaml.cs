@@ -37,13 +37,13 @@ public sealed partial class OrdersGridPage : Page
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
-        ViewModel.OperationRejected += ShowNotificationMessage;
+        ViewModel.DisplayNotification += ShowNotificationMessage;
         base.OnNavigatedTo(e);
     }
 
     protected override void OnNavigatedFrom(NavigationEventArgs e)
     {
-        ViewModel.OperationRejected-= ShowNotificationMessage;
+        ViewModel.DisplayNotification-= ShowNotificationMessage;
         base.OnNavigatedFrom(e);
     }
 
@@ -55,11 +55,11 @@ public sealed partial class OrdersGridPage : Page
 
 
     private void AddButton_Click(object sender, RoutedEventArgs e) =>
-        App.GetService<INavigationService>().NavigateTo(typeof(OrderDetailsViewModel).FullName!, new OrderWrapper() { IsInEdit = true });
+        App.GetService<INavigationService>().NavigateTo(typeof(OrderDetailsViewModel).FullName!, new OrderWrapper() { IsNew = true, IsInEdit = true });
+
 
     private void ViewButton_Click(object sender, RoutedEventArgs e) =>
         Frame.Navigate(typeof(OrderDetailsPage), ViewModel, new DrillInNavigationTransitionInfo());
-
 
 
     private async void DeleteButton_Click(object sender, RoutedEventArgs e) =>

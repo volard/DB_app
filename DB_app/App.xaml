@@ -1,8 +1,8 @@
 ﻿<Application
     x:Class="DB_app.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="using:Microsoft.UI.Xaml.Controls">
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -16,9 +16,9 @@
                         <ResourceDictionary Source="/Styles/Thickness.xaml" />
                         <ResourceDictionary>
                             <Style
-                                x:Key="PageTitleTextBlockStyle"
                                 BasedOn="{StaticResource TitleTextBlockStyle}"
-                                TargetType="TextBlock">
+                                TargetType="TextBlock"
+                                x:Key="PageTitleTextBlockStyle">
                                 <Setter Property="FontSize" Value="28" />
                                 <Setter Property="TextWrapping" Value="NoWrap" />
                                 <Setter Property="HorizontalAlignment" Value="Left" />
@@ -29,19 +29,19 @@
                     </controls:XamlControlsResources.MergedDictionaries>
                 </controls:XamlControlsResources>
             </ResourceDictionary.MergedDictionaries>
-            <!-- 
+            <!--
                 Not all icons available in WinUi 3 are in Fluent UI System Icons. Some of them require the Segoe Fluent Icons font.
                 NOTE According to the EULA of Segoe Fluent Icons shipping a copy of it with this dll is not allowed :)
-            
-                Segoe Fluent Icons is installed by default on Windows 11, but to enable icons in an application 
+                
+                Segoe Fluent Icons is installed by default on Windows 11, but to enable icons in an application
                 for Windows 10, I have to manually add the font to application's resources.
             -->
-            <FontFamily x:Key="SegoeFluentIcons">pack://application:DB_app/;component/Fonts/#Segoe Fluent Icons</FontFamily>
+            <FontFamily x:Key="SegoeFluentIcons"><![CDATA[pack://application:DB_app/;component/Fonts/#Segoe Fluent Icons]]></FontFamily>
 
-            <!-- For some reason it works only if I declare it here -->
+            <!--  For some reason it works only if I declare it here  -->
             <Thickness x:Key="NavigationViewContentMargin">0,48,0,0</Thickness>
         </ResourceDictionary>
-        
+
     </Application.Resources>
-    
+
 </Application>

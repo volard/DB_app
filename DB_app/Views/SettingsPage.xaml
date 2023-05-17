@@ -1,14 +1,14 @@
 ﻿<Page
+    mc:Ignorable="d"
     x:Class="DB_app.Views.SettingsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:DB_app.Helpers"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
-    xmlns:xaml="using:Microsoft.UI.Xaml"
-    mc:Ignorable="d">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:xaml="using:Microsoft.UI.Xaml">
 
     <Page.Resources>
         <helpers:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
@@ -21,9 +21,9 @@
 
         <!--  Style (inc. the correct spacing) of a section header  -->
         <Style
-            x:Key="SettingsSectionHeaderTextBlockStyle"
             BasedOn="{StaticResource BodyStrongTextBlockStyle}"
-            TargetType="TextBlock">
+            TargetType="TextBlock"
+            x:Key="SettingsSectionHeaderTextBlockStyle">
             <Style.Setters>
                 <Setter Property="Margin" Value="1,29,0,5" />
             </Style.Setters>
@@ -32,11 +32,11 @@
 
     <Grid>
         <ScrollViewer
-            x:Name="contentSV"
             IsTabStop="False"
             UseSystemFocusVisuals="False"
             VerticalScrollBarVisibility="Auto"
-            VerticalScrollMode="Auto">
+            VerticalScrollMode="Auto"
+            x:Name="contentSV">
 
             <StackPanel Spacing="{StaticResource SettingsCardSpacing}">
 
@@ -64,7 +64,7 @@
                     <labs:SettingsCard.HeaderIcon>
                         <FontIcon Glyph="&#xF2B7;" />
                     </labs:SettingsCard.HeaderIcon>
-                    
+
                     <ComboBox
                         ItemsSource="{x:Bind ViewModel.AvailableLanguages, Mode=OneWay}"
                         SelectedItem="{x:Bind ViewModel.SelectedLanguage, Mode=OneWay}"
@@ -72,14 +72,14 @@
 
                 </labs:SettingsCard>
 
-                
+
                 <InfoBar
-                    Title="One more step to do"
                     IsOpen="{x:Bind ViewModel.IsLocalizationChanged, Mode=OneWay}"
                     Message="Please, restart the app to apply language changes"
-                    Severity="Informational" />
+                    Severity="Informational"
+                    Title="One more step to do" />
 
-                
+
                 <!--  Enable sound  -->
                 <labs:SettingsCard Description="Controls provide audible feedback" Header="Sound">
                     <labs:SettingsCard.HeaderIcon>
@@ -110,9 +110,9 @@
                         <BitmapIcon ShowAsMonochrome="False" UriSource="/Assets/Square44x44Logo.png" />
                     </labs:SettingsExpander.HeaderIcon>
                     <TextBlock
-                        Margin="0,-2,0,0"
                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                         IsTextSelectionEnabled="True"
+                        Margin="0,-2,0,0"
                         Text="{x:Bind ViewModel.Version}" />
                     <labs:SettingsExpander.Items>
                         <labs:SettingsCard
@@ -128,27 +128,27 @@
                                 Text="git clone https://github.com/volard/DB_app" />
                         </labs:SettingsCard>
                         <labs:SettingsCard
-                            x:Name="bugRequestCard"
                             Click="bugRequestCard_Click"
                             Header="File a bug or request new feature"
-                            IsClickEnabled="True">
+                            IsClickEnabled="True"
+                            x:Name="bugRequestCard">
                             <labs:SettingsCard.ActionIcon>
                                 <FontIcon Glyph="&#xE8A7;" />
                             </labs:SettingsCard.ActionIcon>
                         </labs:SettingsCard>
                         <labs:SettingsCard
-                            x:Name="supportCard"
                             Click="supportCard_Click"
                             Header="Support author"
-                            IsClickEnabled="True">
+                            IsClickEnabled="True"
+                            x:Name="supportCard">
                             <labs:SettingsCard.ActionIcon>
                                 <FontIcon Glyph="&#xE719;" />
                             </labs:SettingsCard.ActionIcon>
                         </labs:SettingsCard>
                         <labs:SettingsCard
-                            HorizontalContentAlignment="Left"
                             ContentAlignment="Vertical"
-                            Header="Dependencies &amp; references">
+                            Header="Dependencies &amp; references"
+                            HorizontalContentAlignment="Left">
                             <StackPanel Margin="-12,0,0,0" Orientation="Vertical">
                                 <HyperlinkButton Content="Windows UI Library" NavigateUri="https://aka.ms/winui" />
                                 <HyperlinkButton Content="Windows Community Toolkit" NavigateUri="https://github.com/CommunityToolkit/WindowsCommunityToolkit" />
@@ -156,7 +156,7 @@
                                 <HyperlinkButton Content="Template Studio for WinUI (C#)" NavigateUri="https://github.com/microsoft/TemplateStudio" />
                                 <HyperlinkButton Content="Entity Framework Core" NavigateUri="https://github.com/dotnet/efcore" />
                                 <HyperlinkButton Content="WinUI Extensions" NavigateUri="https://dotmorten.github.io/WinUIEx/" />
-                                
+
 
                             </StackPanel>
                         </labs:SettingsCard>
@@ -169,10 +169,10 @@
         </ScrollViewer>
 
         <toolkit:InAppNotification
-            x:Name="Notification"
             RelativePanel.AlignBottomWithPanel="True"
             RelativePanel.AlignHorizontalCenterWithPanel="True"
-            StackMode="Replace" />
+            StackMode="Replace"
+            x:Name="Notification" />
     </Grid>
 
 </Page>
