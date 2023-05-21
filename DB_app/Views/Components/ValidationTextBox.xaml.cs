@@ -188,7 +188,7 @@ public sealed partial class ValidationTextBox : UserControl
     /// </summary>
     private void RefreshErrors()
     {
-        if (PropertyName is not string propertyName ||
+        if (PropertyName is not { } propertyName ||
             DataContext is not INotifyDataErrorInfo dataContext)
         {
             return;

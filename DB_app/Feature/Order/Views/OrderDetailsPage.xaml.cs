@@ -1,5 +1,4 @@
 using CommunityToolkit.Mvvm.Messaging;
-using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
 using DB_app.Behaviors;
 using DB_app.Core.Contracts.Services;
@@ -8,17 +7,15 @@ using DB_app.Models;
 using DB_app.Services.Messages;
 using DB_app.ViewModels;
 using DB_app.Views.Components;
-using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace DB_app.Views;
+
 
 public sealed partial class OrderDetailsPage : Page
 {
@@ -82,6 +79,13 @@ public sealed partial class OrderDetailsPage : Page
     /// </summary>
     protected override void OnNavigatingFrom(NavigatingCancelEventArgs e){  /* Not done yet */ }
 
+    protected override void OnNavigatedTo(NavigationEventArgs e)
+    {
+        if(ViewModel.CurrentOrder.IsInEdit)
+            ViewModel.LoadProducts();
+
+        base.OnNavigatedTo(e);
+    }
 
     private async void DeleteButton_Click(object? sender, RoutedEventArgs e)
     {
@@ -165,44 +169,19 @@ public sealed partial class OrderDetailsPage : Page
     }
 
 
-    /// <summary>
-    ///  Finds the DataGridRow that was clicked I traverse the visual tree
-    ///  Thanks to https://stackoverflow.com/questions/70429745/how-to-know-when-a-datagridrow-is-clicked
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="childElement"></param>
-    /// <returns></returns>
-    private static T? FindParent<T>(DependencyObject childElement) where T : Control
-    {
-        DependencyObject currentElement = childElement;
-
-        while (currentElement != null)
-        {
-            if (currentElement is T matchingElement)
-            {
-                return matchingElement;
-            }
-
-            currentElement = VisualTreeHelper.GetParent(currentElement);
-        }
-
-        return null;
-    }
+    
 
 
     /// <summary>
     /// Handle user's intention to add a product from market's list
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
     private async void MedicineMarketGrid_PointerPressed(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
     {
-        DataGridRow? clickedRow = FindParent<DataGridRow>((UIElement)e.OriginalSource);
+        DataGridRow? clickedRow = XamlHelpres.FindParent<DataGridRow>((UIElement)e.OriginalSource);
 
         if (clickedRow == null || clickedRow?.DataContext is not Product selectedProduct) { return; }
-
-
-        ContentDialogContent content = new ContentDialogContent(selectedProduct.Quantity);
+        
+        OrderItemDialog content = new OrderItemDialog(selectedProduct.Quantity);
 
         ContentDialog dialog = new ContentDialog
         {
@@ -215,13 +194,14 @@ public sealed partial class OrderDetailsPage : Page
             Content = content
         };
 
+        // TODO replace with nice function
         ContentDialogResult result = await dialog.ShowAsync();
         if (result != ContentDialogResult.Primary)
         {
             return;
         }
         
-        ViewModel.CurrentOrder.AddOrderItem(selectedProduct, content.ViewModel.Current);
+        ViewModel.InsertOrderItem(selectedProduct, content.ViewModel.Current);
         InitializeComponent();
     }
 
@@ -232,15 +212,16 @@ public sealed partial class OrderDetailsPage : Page
     private async void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (OrderList.SelectedItem == null) return;
-        if (OrderList.SelectedItem is not OrderItem SelectedOrderItem) return;
+        if (OrderList.SelectedItem is not OrderItem selectedOrderItem) return;
         OrderList.SelectedItem = null;
 
-        var content = new ContentDialogContent(
-            SelectedOrderItem.Product.Quantity + SelectedOrderItem.Quantity, 
-            SelectedOrderItem.Quantity
+        OrderItemDialog content = new OrderItemDialog(
+            selectedOrderItem.Product.Quantity + selectedOrderItem.Quantity, 
+            selectedOrderItem.Quantity
         );
-
-        ContentDialog dialog = new()
+        
+        // TODO replace with nice function
+        ContentDialog dialog = new ContentDialog
         {
             XamlRoot = this.XamlRoot,
             Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style,
@@ -252,23 +233,23 @@ public sealed partial class OrderDetailsPage : Page
             Content = content
         };
 
-        ContentDialogResult UserDecision = await dialog.ShowAsync();
+        ContentDialogResult userDecision = await dialog.ShowAsync();
 
-        if (UserDecision == ContentDialogResult.Primary)
+        switch (userDecision)
         {
-            int new_value = content.ViewModel.Current;
-            await ViewModel.CurrentOrder.UpdateOrderItem(SelectedOrderItem, new_value);
-        }
-        else if (UserDecision == ContentDialogResult.Secondary)
-        {
-            await ViewModel.CurrentOrder.RemoveOrderItem(SelectedOrderItem);
+            case ContentDialogResult.Primary:
+                await ViewModel.UpdateOrderItem(selectedOrderItem, content.Difference);
+                break;
+            case ContentDialogResult.Secondary:
+                await ViewModel.RemoveOrderItem(selectedOrderItem);
+                break;
         }
     }
 
     
     private void BeginEdit_Click(object sender, RoutedEventArgs e)
     {
-        _ = ViewModel.LoadAvailableHospitalsAsync();
+        ViewModel.LoadAvailableHospitals();
         ViewModel.CurrentOrder.BeginEdit();
     }
 
@@ -277,7 +258,7 @@ public sealed partial class OrderDetailsPage : Page
     {
         if (sender is not ComboBox comboBox) return;
         if (comboBox.SelectedItem is not Hospital selectedHospital) return;
-        _ = ViewModel.LoadAvailableShippingAddressesAsync(selectedHospital);
+        ViewModel.LoadAvailableShippingAddresses(selectedHospital.Id);
     }
 
 }

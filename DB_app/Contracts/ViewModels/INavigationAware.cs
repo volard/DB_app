@@ -1,6 +1,4 @@
-﻿using Microsoft.UI.Xaml.Controls;
-using Newtonsoft.Json.Linq;
-using System.Reflection.Metadata;
+﻿
 
 namespace DB_app.Contracts.ViewModels;
 

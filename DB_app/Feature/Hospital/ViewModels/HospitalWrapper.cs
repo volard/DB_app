@@ -6,7 +6,6 @@ using DB_app.Services.Messages;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
 using DB_app.Helpers;
 using System.Collections.Specialized;
 
@@ -212,7 +211,6 @@ public sealed partial class HospitalWrapper : ObservableValidator, IEditableObje
     public void BeginEdit()
     {
         IsInEdit = true;
-        OnPropertyChanged(nameof(IsModified));
         Backup();
     }
 

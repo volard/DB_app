@@ -9,6 +9,7 @@ using DB_app.Repository;
 using Microsoft.UI.Dispatching;
 using CommunityToolkit.WinUI;
 using DB_app.Models;
+using Windows.System;
 
 namespace DB_app.ViewModels;
 
@@ -20,10 +21,7 @@ public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAw
     {
         WeakReferenceMessenger.Default.Register<AddRecordMessage<HospitalWrapper>>(this, (r, m) =>
         {
-            if (r is not HospitalsGridViewModel hospitalViewModel)
-            {
-                return;
-            }
+            if (r is not HospitalsGridViewModel hospitalViewModel) return;
             hospitalViewModel.Source.Insert(0, m.Value);
             OnPropertyChanged(nameof(Source));
         });
@@ -36,7 +34,7 @@ public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAw
     /// <summary>
     /// Dependency representing Data Repository
     /// </summary>
-    private readonly IRepositoryControllerService _repositoryControllerService = App.GetService<IRepositoryControllerService>();
+    public readonly IRepositoryControllerService _repositoryControllerService = App.GetService<IRepositoryControllerService>();
 
     /// <summary>
     /// DataGrid's data collection
@@ -46,10 +44,9 @@ public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAw
     /// <summary>
     /// Gets or sets a value that indicates whether to show a progress bar. 
     /// </summary>
-    [ObservableProperty]
-    private bool _isLoading;
+    [ObservableProperty] private bool _isLoading;
 
-    private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
+    public readonly Microsoft.UI.Dispatching.DispatcherQueue _dispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
 
     /// <summary>
     /// Represents selected by user HospitalWrapper object
@@ -73,32 +70,6 @@ public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAw
         Source.Remove(givenHospitalWrapper);
     }
     
-
-
-
-    /// <summary>
-    /// Retrieves items from the data source.
-    /// </summary>
-    private async void LoadItems()
-    {
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            IsLoading = true;
-            Source.Clear();
-        });
-
-        IEnumerable<Hospital>? items = await _repositoryControllerService.Hospitals.GetAsync();
-
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            foreach (Hospital? item in items)
-            {
-                Source.Add(new HospitalWrapper(item));
-            }
-
-            IsLoading = false;
-        });
-    }
 
 
     public async Task ToggleInactive()
@@ -149,11 +120,34 @@ public partial class HospitalsGridViewModel : ObservableRecipient, INavigationAw
     }
 
 
-    public void OnNavigatedTo(object parameter)
+    public async void OnNavigatedTo(object parameter)
     {
-        if (Source.Count >= 1) return; 
-        LoadItems();
+
     }
+    
+
+
+
+    public async void Load()
+    {
+        await _dispatcherQueue.EnqueueAsync(() =>
+        {
+            IsLoading = true;
+            Source.Clear();
+        });
+
+        IEnumerable<Hospital>? items = await Task.Run(_repositoryControllerService.Hospitals.GetAsync);
+
+        await _dispatcherQueue.EnqueueAsync(() =>
+        {
+            foreach (Hospital item in items)
+            {
+                Source.Add(new HospitalWrapper(item));
+            }
+            IsLoading = false;
+        });
+    }
+
 
     public void OnNavigatedFrom(){}
 

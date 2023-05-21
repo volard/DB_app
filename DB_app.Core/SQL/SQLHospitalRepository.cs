@@ -34,9 +34,11 @@ public class SQLHospitalRepository : IHospitalRepository
     /// <inheritdoc/>
     public async Task<Hospital> GetAsync(int id)
     {
-        return await _db.Hospitals
+        var data = await _db.Hospitals
            .Include(hospital => hospital.Locations)
            .FirstOrDefaultAsync(hospital => hospital.Id == id);
+        Thread.Sleep(590000);
+        return data;
     }
 
 

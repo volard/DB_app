@@ -18,7 +18,7 @@ namespace DB_app.ViewModels;
 /// </summary>
 public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
 {
-
+    /**************************************/
     #region Constructors
 
     public OrderWrapper(Order? order = null)
@@ -29,7 +29,7 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
         }
         else
         {
-            _orderData = order;
+            OrderData = order;
         }
         
         InitFields();
@@ -38,25 +38,45 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
 
 
     #endregion
-
-
+    /**************************************/
+    
+    
+    
+    /**************************************/
     #region Properties
 
+    
     private readonly IRepositoryControllerService _repositoryControllerService = App.GetService<IRepositoryControllerService>();
+    
+    
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
-    public DateTime DatePlaced => _orderData.DatePlaced;
+    
+    public DateTime DatePlaced => OrderData.DatePlaced;
 
-    private Order _orderData = new Order();
+    
+    public Order OrderData = new Order();
 
-    private void InitFields()
+    
+    public int Id => OrderData.Id;
+
+    
+    /// <summary>
+    /// Indicates about changes that is not synced with UI DataGrid
+    /// </summary>
+    public bool IsModified
     {
-        OrderHospital = _orderData.HospitalCustomer;
-        SelectedAddress = _orderData.ShippingAddress;
-        OrderItems = new ObservableCollection<OrderItem>(_orderData.Items);
+        get
+        {
+            bool isDifferent = CollectionsHelper.IsDifferent(OrderItems.ToList(), OrderData.Items);
+
+            return
+                !Equals(OrderHospital, OrderData.HospitalCustomer) ||
+                !Equals(SelectedAddress, OrderData.ShippingAddress)
+                || isDifferent;
+        }
     }
-
-
+    
     
     /// <summary>
     /// Gets or sets a value that indicates whether to show a progress bar. 
@@ -64,71 +84,23 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
     [ObservableProperty]
     private bool _isLoading;
     
-    /// <summary>
-    /// Loads the addresses data.
-    /// </summary>
-    public async Task LoadAvailableProductsAsync()
-    {
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            IsLoading = true;
-        });
-
-        IEnumerable<Product>? products = await _repositoryControllerService.Products.GetAsync();
-
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            AvailableProducts.Clear();
-            foreach (Product product in products)
-            {
-                AvailableProducts.Add(product);
-            }
-
-            IsLoading = false;
-        });
-    }
-
     
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [NotifyPropertyChangedFor(nameof(IsModified))]
     [Required(ErrorMessage = "Hospital-customer is Required")]
     private Hospital? _orderHospital;
-
-
+    
+    
+    [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsModified))]
-    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(Total))]
     private ObservableCollection<OrderItem> _orderItems = new ObservableCollection<OrderItem>();
-
-
-    [ObservableProperty]
-    private ObservableCollection<Product> _availableProducts = new ObservableCollection<Product>();
+    
 
     [ObservableProperty]
     private bool _isProductLoading;
-
-
-    public async Task LoadAvailableProducts()
-    {
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            IsProductLoading = true;
-        });
-
-        IEnumerable<Product>? products = await _repositoryControllerService.Products.GetAsync();
-
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            AvailableProducts.Clear();
-            foreach (Product product in products)
-            {
-                AvailableProducts.Add(product);
-            }
-            IsProductLoading = false;
-        });
-    }
-
-
+    
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
@@ -161,13 +133,16 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
 
 
     #endregion
+    /**************************************/
+    
 
 
+    /**************************************/
     #region Modification methods
 
     public void Backup()
     {
-        _backupData = _orderData;
+        _backupData = OrderData;
     }
 
 
@@ -178,8 +153,8 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
     {
         if (_backupData != null)
         {
-            _orderData = _backupData;
-            await _repositoryControllerService.Orders.UpdateAsync(_orderData);
+            OrderData = _backupData;
+            await _repositoryControllerService.Orders.UpdateAsync(OrderData);
         }
     }
 
@@ -187,21 +162,17 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
     public async Task<bool> SaveAsync()
     {
         ValidateAllProperties();
-        if (HasErrors)
-        {
-            return false;
-        }
-            
+        if (HasErrors) return false;
+
         EndEdit();
         if (IsNew)
         {
-            await _repositoryControllerService.Orders.InsertAsync(_orderData);
+            await _repositoryControllerService.Orders.InsertAsync(OrderData);
         }
         else
         {
-            await _repositoryControllerService.Orders.UpdateAsync(_orderData);
+            await _repositoryControllerService.Orders.UpdateAsync(OrderData);
         }
-        
         
         // Sync with grid
         WeakReferenceMessenger.Default.Send(new AddRecordMessage<OrderWrapper>(this));
@@ -209,26 +180,12 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
     }
 
     #endregion
+    /**************************************/
     
     
-    /// <summary>
-    /// Indicates about changes that is not synced with UI DataGrid
-    /// </summary>
-    public bool IsModified
-    {
-        get
-        {
-            bool isDifferent = CollectionsHelper.IsDifferent(OrderItems.ToList(), _orderData.Items);
 
-            return
-                !Equals(OrderHospital, _orderData.HospitalCustomer) ||
-                !Equals(SelectedAddress, _orderData.ShippingAddress)
-                || isDifferent;
-        }
-    }
-
-
-    #region Members
+    /**************************************/
+    #region Methods
 
 
     public bool Equals(OrderWrapper? other) =>
@@ -236,127 +193,52 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
 
 
     public override string ToString()
-        => $"OrderWrapper with OrderData - [ {_orderData} ]";
-
-
-    public async Task RemoveOrderItem(OrderItem orderItem)
-    {
-        OrderItems.Remove(orderItem);
-        OnPropertyChanged(nameof(Total));
-
-        var _temp = AvailableProducts.FirstOrDefault(el => el == orderItem.Product);
-        int _index;
-        if (_temp == null)
-        {
-            _temp = await _repositoryControllerService.Products.GetAsync(orderItem.Product.Id);
-            _index = 0;
-        }
-        else
-        {
-            _index = AvailableProducts.IndexOf(_temp);
-            AvailableProducts.RemoveAt(_index);
-        }
-        _temp.Quantity += orderItem.Quantity;
-        AvailableProducts.Insert(_index, _temp);
-    }
-
-
-    /// <summary>
-    /// Replace orderItem with its new version
-    /// </summary>
-    /// <param name="orderItem"></param>
-    public async Task UpdateOrderItem(OrderItem orderItem, int new_quantity_value)
-    {
-        int _index = OrderItems.IndexOf(orderItem);
-        int old_value = OrderItems[_index].Quantity;
-        OrderItems.RemoveAt(_index);
-        orderItem.Quantity = new_quantity_value;
-        OrderItems.Insert(_index, orderItem);
-
-        OnPropertyChanged(nameof(Total));
-
-        var _temp = AvailableProducts.FirstOrDefault(el => el == orderItem.Product);
-        if( _temp == null )
-        {
-            _temp = await _repositoryControllerService.Products.GetAsync(orderItem.Product.Id);
-            _index = 0;
-        }
-        else
-        {
-            _index = AvailableProducts.IndexOf(_temp);
-            AvailableProducts.RemoveAt(_index);
-        }
-        
-        int result_value = _temp.Quantity - (new_quantity_value - old_value);
-        _temp.Quantity = result_value;
-
-        AvailableProducts.Insert(_index, _temp);
-    }
-
-    public int Id => _orderData.Id;
+        => $"OrderWrapper with OrderData - [ {OrderData} ]";
     
-    public void AddOrderItem(Product product, int quantity)
+    
+    private void InitFields()
     {
-        OrderItem? found = null;
-        int _index;
-        if (OrderItems.Count != 0)
-        {
-            found = OrderItems.FirstOrDefault(el => el.Product == product);
-        }
-        if (found != null)
-        {
-            found.Quantity += quantity;
-            _index = OrderItems.IndexOf(found);
-            OrderItems.RemoveAt(_index);
-            OrderItems.Insert(_index, found);
-        }
-        else
-        {
-            OrderItems.Add(new OrderItem(_orderData, product, quantity));
-        }
-
-        OnPropertyChanged(nameof(Total));
-
-
-        var _temp = AvailableProducts.First(el => el == product);
-        _temp.Quantity -= quantity;
-        _index = AvailableProducts.IndexOf(_temp);
-        AvailableProducts.RemoveAt(_index);
-        if(_temp.Quantity != 0)
-        {
-            AvailableProducts.Insert(_index, _temp);
-        }
+        OrderHospital = OrderData.HospitalCustomer;
+        SelectedAddress = OrderData.ShippingAddress;
+        OrderItems = new ObservableCollection<OrderItem>(OrderData.Items);
     }
 
-
+    
     #endregion
-
-
+    /**************************************/
+    
+    
+    /**************************************/
     #region IEditable implementation
 
 
     public void BeginEdit()
     {
-        
+        IsInEdit = true;
         Backup();
     }
 
+    
     public void CancelEdit()
     {
-        
+        InitFields();
         IsInEdit = false;
     }
 
+    
     public void EndEdit()
     {
         IsInEdit = false;
-        _orderData.HospitalCustomer = OrderHospital;
-        _orderData.ShippingAddress = SelectedAddress;
-        _orderData.Items = OrderItems.ToList();
+        OnPropertyChanged(nameof(IsModified));
+        
+        // NOTE the underlying code relays on preliminary data validation
+        OrderData.HospitalCustomer = OrderHospital;
+        OrderData.ShippingAddress = SelectedAddress;
+        OrderData.Items = OrderItems.ToList();
     }
 
 
     #endregion
-    
+    /**************************************/
 
 }

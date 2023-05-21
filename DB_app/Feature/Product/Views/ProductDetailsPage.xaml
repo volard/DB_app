@@ -16,7 +16,6 @@
         <helpers:NotConverter x:Key="NotConverter" />
         <helpers:VisibleIfConverter x:Key="VisibleIf" />
         <helpers:CollapsedIf x:Key="CollapsedIf" />
-        <helpers:DoubleToIntConverter x:Key="DoubleToIntConverter" />
     </Page.Resources>
 
 
@@ -136,18 +135,18 @@
                         Margin="0,20,16,8"
                         MinWidth="380"
                         PlaceholderText="Select pharmacy"
-                        SelectedItem="{x:Bind ViewModel.CurrentProduct.Pharmacy, Mode=TwoWay}"
+                        SelectedItem="{x:Bind ViewModel.CurrentProduct.ProductPharmacy, Mode=TwoWay}"
                         SelectionChanged="ComboBox_SelectionChanged"
                         VerticalAlignment="Stretch"
-                        x:Name="ProductPharmacy" />
+                        x:Name="ProductPharmacyComboBox" />
 
                     <FontIcon
                         FontSize="20"
                         Foreground="Orange"
                         Glyph="&#xE814;"
                         Margin="0,40,16,8"
-                        RelativePanel.AlignVerticalCenterWith="ProductPharmacy"
-                        RelativePanel.RightOf="ProductPharmacy"
+                        RelativePanel.AlignVerticalCenterWith="ProductPharmacyComboBox"
+                        RelativePanel.RightOf="ProductPharmacyComboBox"
                         Visibility="Collapsed"
                         x:Name="ProductPharmacyIcon" />
 
@@ -172,19 +171,19 @@
                         ItemsSource="{x:Bind ViewModel.AvailableMedicines, Mode=TwoWay}"
                         Margin="0,20,16,8"
                         PlaceholderText="Select medicine"
-                        SelectedItem="{x:Bind ViewModel.CurrentProduct.Medicine, Mode=TwoWay}"
+                        SelectedItem="{x:Bind ViewModel.CurrentProduct.ProductMedicine, Mode=TwoWay}"
                         SelectionChanged="ComboBox_SelectionChanged"
                         VerticalAlignment="Stretch"
                         Width="380"
-                        x:Name="ProductMedicine" />
+                        x:Name="ProductMedicineComboBox" />
 
                     <FontIcon
                         FontSize="20"
                         Foreground="Orange"
                         Glyph="&#xE814;"
                         Margin="0,40,16,8"
-                        RelativePanel.AlignVerticalCenterWith="ProductMedicine"
-                        RelativePanel.RightOf="ProductMedicine"
+                        RelativePanel.AlignVerticalCenterWith="ProductMedicineComboBox"
+                        RelativePanel.RightOf="ProductMedicineComboBox"
                         Visibility="Collapsed"
                         x:Name="ProductMedicineIcon" />
 
@@ -206,15 +205,15 @@
                         PlaceholderText="Input price"
                         Value="{x:Bind ViewModel.CurrentProduct.Price, Mode=TwoWay}"
                         ValueChanged="NumberBox_ValueChanged"
-                        x:Name="Price" />
+                        x:Name="PriceNumberBox" />
 
                     <FontIcon
                         FontSize="20"
                         Foreground="Orange"
                         Glyph="&#xE814;"
                         Margin="0,40,16,8"
-                        RelativePanel.AlignVerticalCenterWith="Price"
-                        RelativePanel.RightOf="Price"
+                        RelativePanel.AlignVerticalCenterWith="PriceNumberBox"
+                        RelativePanel.RightOf="PriceNumberBox"
                         Visibility="Collapsed"
                         x:Name="PriceIcon" />
 
@@ -237,15 +236,15 @@
                         PlaceholderText="Input quantity"
                         Value="{x:Bind ViewModel.CurrentProduct.Quantity, Mode=TwoWay}"
                         ValueChanged="NumberBox_ValueChanged"
-                        x:Name="Quantity" />
+                        x:Name="QuantityNumberBox" />
 
                     <FontIcon
                         FontSize="20"
                         Foreground="Orange"
                         Glyph="&#xE814;"
                         Margin="0,40,16,8"
-                        RelativePanel.AlignVerticalCenterWith="Quantity"
-                        RelativePanel.RightOf="Quantity"
+                        RelativePanel.AlignVerticalCenterWith="QuantityNumberBox"
+                        RelativePanel.RightOf="QuantityNumberBox"
                         Visibility="Collapsed"
                         x:Name="QuantityIcon" />
 

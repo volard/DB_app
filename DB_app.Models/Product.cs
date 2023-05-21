@@ -69,16 +69,16 @@ public class Product
             return false;
         }
 
-        if (obj is not Product)
+        if (obj is not Product product)
         {
             return false;
         }
 
         return
             (
-                ((Product)obj).Medicine == Medicine &&
-                ((Product)obj).Pharmacy == Pharmacy
+                product.Medicine == Medicine &&
+                product.Pharmacy == Pharmacy
             ) || 
-            ((Product)obj).Id == Id;
+            product.Id == Id;
     }
 }

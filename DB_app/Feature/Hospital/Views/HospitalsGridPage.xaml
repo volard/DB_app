@@ -14,6 +14,7 @@
 
     <Page.Resources>
         <helpers:IsNotNullConverter x:Key="IsNotNullConverter" />
+        <helpers:VisibleIfConverter x:Key="VisibleIfConverter"></helpers:VisibleIfConverter>
     </Page.Resources>
 
     <!--#region Header-->
@@ -139,9 +140,10 @@
             <muxc:ProgressBar
                 HorizontalAlignment="Stretch"
                 IsIndeterminate="True"
+                IsEnabled="True"
                 Margin="0,0,0,0"
                 VerticalAlignment="Top"
-                Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
+                Visibility="{x:Bind ViewModel.IsLoading, Converter = {StaticResource VisibleIfConverter}, Mode=OneWay}" />
 
         </Grid>
 

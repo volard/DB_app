@@ -16,6 +16,7 @@
         <helpers:NotConverter x:Key="NotConverter" />
         <helpers:VisibleIfConverter x:Key="VisibleIf" />
         <helpers:CollapsedIf x:Key="CollapsedIf" />
+        <helpers:IsNotNullConverter x:Key="IsNotNullConverter" />
     </Page.Resources>
 
     <!--#region Header-->

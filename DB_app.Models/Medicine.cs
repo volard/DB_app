@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
 
 namespace DB_app.Models;
 
@@ -26,10 +25,10 @@ public class Medicine
     [Required, Key]
     public int    Id           { get; set; }
 
-    [Required, NotNull]
+    [Required]
     public string Name         { get; set; }
 
-    [Required, NotNull]
+    [Required]
     public string Type         { get; set; }
 
     public override string ToString() => $"{Name} - {Type}";
@@ -41,13 +40,13 @@ public class Medicine
             return false;
         }
 
-        if (obj is not Medicine)
+        if (obj is not Medicine medicine)
         {
             return false;
         }
 
         return
-            ((Medicine)obj).Name == Name ||
-            ((Medicine)obj).Id == Id;
+            medicine.Name == Name ||
+            medicine.Id == Id;
     }
 }

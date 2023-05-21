@@ -2,6 +2,7 @@
 using CommunityToolkit.WinUI;
 using DB_app.Contracts.ViewModels;
 using DB_app.Core.Contracts.Services;
+using DB_app.Helpers;
 using DB_app.Models;
 using DocumentFormat.OpenXml.Office.CustomUI;
 using Microsoft.UI.Dispatching;
@@ -17,16 +18,13 @@ public partial class MedicineInHospitalReportViewModel : ObservableRecipient, IN
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
-    public MedicineInHospitalReportViewModel()
-    {
-
-    }
+ 
 
     /// <summary>
     /// DataGrid's data collection
     /// </summary>
-    public ObservableCollection<Order> Source { get; set; } = new();
-    public ObservableCollection<Hospital> AvailableHospitals { get; set; } = new();
+    public ObservableCollection<Order> Source { get; init; } = new ObservableCollection<Order>();
+    public ObservableCollection<Hospital> AvailableHospitals { get; } = new ObservableCollection<Hospital>();
 
 
 
@@ -45,7 +43,7 @@ public partial class MedicineInHospitalReportViewModel : ObservableRecipient, IN
     public async void OnNavigatedTo(object parameter)
     {
         Source.CollectionChanged += Source_CollectionChanged;
-        await LoadAvailableHospitals();
+        CollectionsHelper.LoadCollectionAsync(AvailableHospitals, _dispatcherQueue, _repositoryControllerService.Hospitals.GetAsync);
         SelectedHospital = AvailableHospitals[1];
         LoadSource(SelectedHospital);
 
@@ -67,13 +65,14 @@ public partial class MedicineInHospitalReportViewModel : ObservableRecipient, IN
             Source.Clear();
         });
 
-        var orders = await _repositoryControllerService.Orders.GetHospitalOrders(hospital.Id);
+        IEnumerable<Order>? orders = await _repositoryControllerService.Orders.GetHospitalOrders(hospital.Id);
 
-        List<string> types = new();
+        List<string> types = new List<string>();
 
-        foreach (var order in orders)
+        IEnumerable<Order> enumerable = orders.ToList();
+        foreach (Order? order in enumerable)
         {
-            foreach(var item in order.Items)
+            foreach(OrderItem item in order.Items)
             {
                 if(!types.Contains(item.Product.Medicine.Type))
                 {
@@ -83,11 +82,11 @@ public partial class MedicineInHospitalReportViewModel : ObservableRecipient, IN
             }
         }
 
-        List<double> sumsPertype = new();
+        List<double> sumsPertype = new List<double>();
 
-        foreach (var type in types)
+        foreach (string type in types)
         {
-            var money = orders.Select(order => order.Items).Select(items => items.Select(item =>
+            IEnumerable<double> money = enumerable.Select(order => order.Items).Select(items => items.Select(item =>
             {
                 if (item.Product.Medicine.Type == type) return item.Price;
                 return 0;
@@ -144,31 +143,6 @@ public partial class MedicineInHospitalReportViewModel : ObservableRecipient, IN
     //    return groupedItems;
     //}
 
-
-
-    /// <summary>
-    /// Retrieves items from the data source.
-    /// </summary>
-    public async Task LoadAvailableHospitals()
-    {
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            IsHospitalsLoading = true;
-            AvailableHospitals.Clear();
-        });
-
-        var items = await Task.Run(_repositoryControllerService.Hospitals.GetAsync);
-
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            foreach (var item in items)
-            {
-                AvailableHospitals.Add(item);
-            }
-
-            IsHospitalsLoading = false;
-        });
-    }
 
 
     public void OnNavigatedFrom()

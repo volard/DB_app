@@ -26,12 +26,20 @@ public class SQLControllerService : IRepositoryControllerService
 
     public void SetupDataBase()
     {
-#if DEBUG
-        DataSeeder.ClearData(_db);
-        _db.Database.EnsureDeleted();
-        _db.Database.EnsureCreated();
-        DataSeeder.Seed(_db);
-#endif
+//#if DEBUG
+//        try
+//        {
+//            DataSeeder.ClearData(_db);
+//        }
+//        catch (Exception)
+//        {
+//            // ignored
+//        }
+
+//        _db.Database.EnsureDeleted();
+//        _db.Database.EnsureCreated();
+//        DataSeeder.Seed(_db);
+//#endif
 
 
         Hospitals  = new SQLHospitalRepository(_db);

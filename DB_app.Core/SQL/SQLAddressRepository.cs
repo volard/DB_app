@@ -1,7 +1,6 @@
 ﻿using DB_app.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
-using System.Reflection.Metadata.Ecma335;
 
 namespace DB_app.Repository.SQL;
 
@@ -41,8 +40,7 @@ public class SQLAddressRepository : IAddressRepository
         return await _db.Addresses.ToListAsync();
     }
 
-
-    /// <inheritdoc/>
+    
     public async Task<Address> GetAsync(int id)
     {
         return await _db.Addresses

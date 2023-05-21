@@ -6,7 +6,6 @@ namespace DB_app.Views;
 /// Creates a dialog that gives the users a chance to save changes, discard them, 
 /// or cancel the operation that trigggered the event. 
 /// </summary>
-/// 
 public sealed partial class SaveChangesDialog : ContentDialog
 {
     /// <summary>

@@ -61,7 +61,7 @@
     <!--#endregion-->
 
 
-    <StackPanel Orientation="Vertical" x:Name="ContentArea">
+    <StackPanel Orientation="Vertical">
 
         <InfoBar
             IsClosable="False"

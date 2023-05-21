@@ -1,5 +1,5 @@
 ﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Data;
+
 
 namespace DB_app.ViewModels;
 
@@ -43,7 +43,7 @@ public static class Converters
     /// <summary>
     /// Returns Visibility.Collapsed if the specified value is null; otherwise, returns Visibility.Visible.
     /// </summary>
-    public static Visibility CollapsedIfNull(object value) =>
+    public static Visibility CollapsedIfNull(object? value) =>
         value == null ? Visibility.Collapsed : Visibility.Visible;
 
     /// <summary>
@@ -67,7 +67,7 @@ public static class Converters
         if (lhs || rhs) return Visibility.Collapsed; else return Visibility.Visible;
     }
 
-    public static Visibility VisibleItNotNull(object obj)
+    public static Visibility VisibleItNotNull(object? obj)
     {
         if (obj is null) return Visibility.Collapsed; else return Visibility.Visible;
     }

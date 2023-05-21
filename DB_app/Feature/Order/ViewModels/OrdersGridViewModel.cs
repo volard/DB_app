@@ -9,13 +9,14 @@ using DB_app.Repository;
 using DB_app.Services.Messages;
 using Microsoft.UI.Dispatching;
 using System.Collections.ObjectModel;
+using Windows.System.Profile;
 
 
 namespace DB_app.ViewModels;
 
 public sealed partial class OrdersGridViewModel : ObservableRecipient, INavigationAware, IRecipient<DeleteRecordMessage<OrderWrapper>>
 {
-    private readonly IRepositoryControllerService _repositoryControllerService  = App.GetService<IRepositoryControllerService>();
+    private readonly IRepositoryControllerService _repositoryControllerService = App.GetService<IRepositoryControllerService>();
 
     /// <summary>
     /// DataGrid's data collection
@@ -67,39 +68,33 @@ public sealed partial class OrdersGridViewModel : ObservableRecipient, INavigati
     [ObservableProperty]
     private bool _isLoading;
 
-    private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
+    public DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
     
     
-    /// <summary>
-    /// Retrieves items from the data source.
-    /// </summary>
-    private async void LoadItems()
+
+    public void OnNavigatedTo(object parameter)
+    {
+    }
+
+    public async void Load()
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             IsLoading = true;
-            Source.Clear();
         });
 
-        IEnumerable<Order>? orders = await _repositoryControllerService.Orders.GetAsync();
+        IEnumerable<Order>? items = await Task.Run(_repositoryControllerService.Orders.GetAsync);
 
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            foreach (Order order in orders)
+            Source.Clear();
+            foreach (Order item in items)
             {
-                Source.Add(new OrderWrapper(order));
+                Source.Add(new OrderWrapper(item));
             }
 
             IsLoading = false;
         });
-    }
-
-
-    public void OnNavigatedTo(object parameter)
-    {
-        if (Source.Count >= 1) return;
-        
-        LoadItems();
     }
 
     public void OnNavigatedFrom() { }

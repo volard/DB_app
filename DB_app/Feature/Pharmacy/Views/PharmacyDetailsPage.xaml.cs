@@ -45,6 +45,7 @@ public sealed partial class PharmacyDetailsPage : Page
         var result = await dialog.ShowAsync();
         if (result == ContentDialogResult.Primary)
         {
+            
         }
     }
 
@@ -72,8 +73,6 @@ public sealed partial class PharmacyDetailsPage : Page
     private async void SaveButton_Click(object sender, RoutedEventArgs e)
     {
         await ViewModel.CurrentPharmacy.SaveAsync();
-        //App.GetService<INavigationService>().NavigateTo(typeof(AddressDetailsViewModel).FullName!, ViewModel.SelectedItem);
-        //Frame.Navigate(typeof(PharmaciesGridPage), null);
     }
 
 
@@ -89,7 +88,7 @@ public sealed partial class PharmacyDetailsPage : Page
 
     private void BeginEdit_Click(object sender, RoutedEventArgs e)
     {
-        _ = ViewModel.LoadAvailableAddressesAsync();
+        ViewModel.LoadAvailableAddresses();
         ViewModel.CurrentPharmacy.BeginEdit();
     }
 }

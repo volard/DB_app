@@ -222,4 +222,40 @@
   <data name="New_Product" xml:space="preserve">
     <value>New product</value>
   </data>
+  <data name="Addresses.Text" xml:space="preserve">
+    <value>Addresses</value>
+  </data>
+  <data name="Medicines.Text" xml:space="preserve">
+    <value>Medicines</value>
+  </data>
+  <data name="New_Pharmacy" xml:space="preserve">
+    <value>New pharmacy</value>
+  </data>
+  <data name="Orders.Text" xml:space="preserve">
+    <value>Orders</value>
+  </data>
+  <data name="Pharmacies.Text" xml:space="preserve">
+    <value>Pharmacies</value>
+  </data>
+  <data name="Products.Text" xml:space="preserve">
+    <value>Products</value>
+  </data>
+  <data name="Warning.Text" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="SaveDialog.CloseButtonText" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="SaveDialog.SecondaryButtonText" xml:space="preserve">
+    <value>Don't save</value>
+  </data>
+  <data name="SaveDialog.PrimaryButtonText" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="SaveDialog.Title" xml:space="preserve">
+    <value>Save changes?</value>
+  </data>
+  <data name="SaveDialog.Content" xml:space="preserve">
+    <value>You have unsaved changes that will be lost. Would you like to save your changes?</value>
+  </data>
 </root>

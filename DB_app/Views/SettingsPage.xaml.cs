@@ -2,19 +2,18 @@
 using DB_app.Helpers;
 using DB_app.ViewModels;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Navigation;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.System;
 
 namespace DB_app.Views;
 
+// ReSharper disable once IdentifierTypo
 using WASDK = Microsoft.WindowsAppSDK;
 
 // Reduces warning noise on parameters that are needed for signature requirements
 #pragma warning disable IDE0060
 
-public sealed partial class SettingsPage : Page
+public sealed partial class SettingsPage
 {
     public SettingsViewModel ViewModel { get; } = App.GetService<SettingsViewModel>();
 
@@ -28,10 +27,9 @@ public sealed partial class SettingsPage : Page
         InitializeComponent();
     }
 
-    public static string WinAppSdkDetails => string.Format("Windows App SDK {0}.{1}.{2}{3}",
-            WASDK.Release.Major, WASDK.Release.Minor, WASDK.Release.Patch, WASDK.Release.VersionShortTag);
+    public static string WinAppSdkDetails => $"Windows App SDK {WASDK.Release.Major}.{WASDK.Release.Minor}.{WASDK.Release.Patch}{WASDK.Release.VersionShortTag}";
 
-    public string AppTitleName = "AppDisplayName".GetLocalizedValue();
+    public readonly string AppTitleName = "AppDisplayName".GetLocalizedValue();
 
 
     private async void bugRequestCard_Click(object sender, RoutedEventArgs e)
@@ -42,7 +40,7 @@ public sealed partial class SettingsPage : Page
 
     private void SettingsCard_Click(object sender, RoutedEventArgs e)
     {
-        var package = new DataPackage();
+        DataPackage package = new DataPackage();
         package.SetText("git clone https://github.com/volard/DB_app");
         Clipboard.SetContent(package);
 
@@ -53,26 +51,9 @@ public sealed partial class SettingsPage : Page
     }
 
 
-    /// <summary>
-    /// Raises the <see cref="ViewModel.DisplayInAppNotification"/> event.
-    /// </summary>
-    /// <param name="e">The input <see cref="NotificationConfigurationEventArgs"/> instance.</param>
-    private void ShowNotificationMessage(object? sender, NotificationConfigurationEventArgs e)
-    {
-        Notification.Content = e.Message;
-        Notification.Style = e.Style;
-        Notification.Show(1500);
-    }
-
     /**************************************/
     #region Navigation Handlers
     /**************************************/
-
-    protected override void OnNavigatedTo(NavigationEventArgs e)
-    {
-        ViewModel.DisplayInAppNotification += ShowNotificationMessage;
-        base.OnNavigatedTo(e);
-    }
 
 
     //private void MediaWindow_Closed(object sender, WindowEventArgs args)
@@ -89,17 +70,7 @@ public sealed partial class SettingsPage : Page
     //    _mediaWindow.Maximize();
     //    _mediaWindow.Activate();
     //}
-
-    protected override void OnNavigatedFrom(NavigationEventArgs e)
-    {
-        ViewModel.DisplayInAppNotification -= ShowNotificationMessage;
-        //if ( _mediaWindow  != null )
-        //{
-        //    _mediaWindow.Closed -= MediaWindow_Closed;
-        //    _mediaWindow.Close();
-        //}
-        base.OnNavigatedFrom(e);
-    }
+    
 
 
     #endregion
@@ -128,9 +99,9 @@ public sealed partial class SettingsPage : Page
 
     private void supportCard_Click(object sender, RoutedEventArgs e)
     {
-        if(soundToggle.IsOn)
+        if(SoundToggle.IsOn)
         {
-            _mediaWindow = new()
+            _mediaWindow = new MediaWindow
             {
                 IsMinimizable = false,
                 IsAlwaysOnTop = true,

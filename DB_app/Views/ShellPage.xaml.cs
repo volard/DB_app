@@ -11,7 +11,7 @@ using Windows.System;
 namespace DB_app.Views;
 
 
-public sealed partial class ShellPage : Page
+public sealed partial class ShellPage
 {
     public ShellViewModel ViewModel
     {
@@ -31,12 +31,12 @@ public sealed partial class ShellPage : Page
         App.MainWindow.ExtendsContentIntoTitleBar = true;
         App.MainWindow.SetTitleBar(AppTitleBar);
         App.MainWindow.Activated += MainWindow_Activated;
-        ResourceLoader resourceLoader = new();
+        ResourceLoader resourceLoader = new ResourceLoader();
         AppTitleBarText.Text = resourceLoader.GetString("AppDisplayName");
         NavigationViewControl.IsTitleBarAutoPaddingEnabled = true;
     }
 
-    private void OnLoaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    private void OnLoaded(object sender, RoutedEventArgs e)
     {
         TitleBarHelper.UpdateTitleBar(RequestedTheme);
 
@@ -49,9 +49,9 @@ public sealed partial class ShellPage : Page
 
     private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
     {
-        var resource = args.WindowActivationState == WindowActivationState.Deactivated ? "WindowCaptionForegroundDisabled" : "WindowCaptionForeground";
+        string resource = args.WindowActivationState == WindowActivationState.Deactivated ? "WindowCaptionForegroundDisabled" : "WindowCaptionForeground";
 
-        AppTitleBarText.Foreground = (SolidColorBrush)App.Current.Resources[resource];
+        AppTitleBarText.Foreground = (SolidColorBrush)Application.Current.Resources[resource];
     }
 
     private void NavigationViewControl_DisplayModeChanged(NavigationView sender, NavigationViewDisplayModeChangedEventArgs args)
@@ -83,7 +83,7 @@ public sealed partial class ShellPage : Page
     {
         var navigationService = App.GetService<INavigationService>();
 
-        var result = navigationService.GoBack();
+        bool result = navigationService.GoBack();
 
         args.Handled = result;
     }

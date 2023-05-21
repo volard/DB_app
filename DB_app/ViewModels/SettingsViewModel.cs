@@ -1,16 +1,12 @@
 ﻿using System.Reflection;
-using System.Windows.Input;
-
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using DB_app.Contracts.Services;
 using DB_app.Helpers;
 using DB_app.Models;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Newtonsoft.Json.Linq;
 using Windows.ApplicationModel;
-using Windows.Media.Capture;
+
 
 namespace DB_app.ViewModels;
 
@@ -48,10 +44,15 @@ public partial class SettingsViewModel : ObservableRecipient
 
     private readonly IThemeSelectorService _themeSelectorService = App.GetService<IThemeSelectorService>();
     private readonly ILocalizationService _localizationService;
+    
+    /// <summary>
+    /// Occurs when <c><see cref="CommunityToolkit.WinUI.UI.Controls.InAppNotification"/></c> is displaying
+    /// </summary>
+    public event EventHandler<NotificationConfigurationEventArgs>? DisplayInAppNotification;
 
 
 
-    public SettingsViewModel(IThemeSelectorService themeSelectorService)
+    public SettingsViewModel()
     {
         AppElementTheme = _themeSelectorService.Theme;
         _localizationService = App.GetService<ILocalizationService>();
@@ -62,11 +63,11 @@ public partial class SettingsViewModel : ObservableRecipient
 
     public async void theme_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        var comboBox = sender as ComboBox;
+        ComboBox? comboBox = sender as ComboBox;
         if (comboBox == null || comboBox.SelectedIndex == -1) { return; }
-        var item = comboBox.SelectedItem as ComboBoxItem;
+        ComboBoxItem? item = comboBox.SelectedItem as ComboBoxItem;
         if (item == null) { return; }
-        var tag = item.Tag.ToString();
+        string? tag = item.Tag.ToString();
         if (string.IsNullOrEmpty(tag)) {  return; }
         ElementTheme param = (ElementTheme)Enum.Parse(typeof(ElementTheme), tag);
 
@@ -86,7 +87,7 @@ public partial class SettingsViewModel : ObservableRecipient
     }
 
 
-    private bool _isLocalizationChanged = false;
+    private bool _isLocalizationChanged;
     public bool IsLocalizationChanged
     {
         get { return _isLocalizationChanged; }
@@ -112,13 +113,7 @@ public partial class SettingsViewModel : ObservableRecipient
         IsLocalizationChanged = true;
         _localizationService.SetLanguageAsync(language);
     }
-
-
-    /// <summary>
-    /// Occurs when <c><see cref="CommunityToolkit.WinUI.UI.Controls.InAppNotification"/></c> is displaying
-    /// </summary>
-    public event EventHandler<NotificationConfigurationEventArgs>? DisplayInAppNotification;
-
+    
 
     private static string GetVersion()
     {

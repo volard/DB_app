@@ -15,7 +15,7 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
 {
     /**************************************/
     #region Constructors
-    /**************************************/
+    
 
 
     /// <summary>
@@ -37,17 +37,18 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
     }
 
     #endregion
-
+    /**************************************/
 
 
     /**************************************/
     #region Properties
-    /**************************************/
+    
 
     /// <summary>
     /// Underlying <see cref="Address"/> data
     /// </summary>
-    public Address AddressData { get; set; } = new();
+    // ReSharper disable once MemberCanBePrivate.Global
+    public Address AddressData { get; set; } = new Address();
 
 
     [ObservableProperty]
@@ -107,13 +108,13 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
 
 
     #endregion
-
+    /**************************************/
 
 
 
     /**************************************/
     #region Members
-    /**************************************/
+    
 
     public override string ToString() => 
         $"AddressWrapper with addressData {AddressData}";
@@ -138,17 +139,17 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
 
 
     #endregion
-
+    /**************************************/
 
 
 
     /**************************************/
     #region Modification methods
-    /**************************************/
+    
 
 
     /// <summary>
-    /// Go back to prevoius data after updating
+    /// Go back to previous data after updating
     /// </summary>
     public async Task Revert()
     {
@@ -187,13 +188,13 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
 
 
     #endregion
-
+    /**************************************/
 
 
 
     /**************************************/
     #region IEditable implementation
-    /**************************************/
+    
 
     public void BeginEdit()
     {
@@ -224,4 +225,5 @@ public sealed partial class AddressWrapper : ObservableValidator, IEditableObjec
 
 
     #endregion
+    /**************************************/
 }

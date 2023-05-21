@@ -19,7 +19,6 @@ public sealed partial class PharmacyWrapper : ObservableValidator, IEditableObje
 {
     /**************************************/
     #region Constructors
-    /**************************************/
 
     public PharmacyWrapper(Pharmacy? pharmacy = null)
     {
@@ -42,13 +41,12 @@ public sealed partial class PharmacyWrapper : ObservableValidator, IEditableObje
 
 
     #endregion
-
+    /**************************************/
 
 
 
     /**************************************/
     #region Properties
-    /**************************************/
 
 
     private readonly IRepositoryControllerService _repositoryControllerService = App.GetService<IRepositoryControllerService>();
@@ -118,13 +116,12 @@ public sealed partial class PharmacyWrapper : ObservableValidator, IEditableObje
 
 
     #endregion
-
+    /**************************************/
 
 
 
     /**************************************/
     #region Members
-    /**************************************/
 
 
     private void InitFields()
@@ -145,14 +142,13 @@ public sealed partial class PharmacyWrapper : ObservableValidator, IEditableObje
 
 
     #endregion
-
+    /**************************************/
 
 
 
     /**************************************/
     #region Modification methods
-    /**************************************/
-
+    
 
     public void Backup() => _backupData = PharmacyData;
 
@@ -192,14 +188,13 @@ public sealed partial class PharmacyWrapper : ObservableValidator, IEditableObje
 
 
     #endregion
-
+    /**************************************/
 
 
 
 
     /**************************************/
     #region IEditable implementation
-    /**************************************/
 
 
     public void BeginEdit()
@@ -230,4 +225,5 @@ public sealed partial class PharmacyWrapper : ObservableValidator, IEditableObje
 
 
     #endregion
+    /**************************************/
 }

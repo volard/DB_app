@@ -64,20 +64,19 @@ public sealed partial class ProductWrapper : ObservableValidator, IEditableObjec
     #region Properties
 
 
-    public Product ProductData { get;
-        private set; } = new Product();
+    public Product ProductData { get; private set; } = new Product();
 
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required(ErrorMessage = "Medicine is Required")]
-    private Medicine? _medicine;
+    private Medicine? _productMedicine;
 
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required(ErrorMessage = "Pharmacy is Required")]
-    private Pharmacy? _pharmacy;
+    private Pharmacy? _productPharmacy;
 
 
     [ObservableProperty]
@@ -105,8 +104,8 @@ public sealed partial class ProductWrapper : ObservableValidator, IEditableObjec
     /// </summary>
     public bool IsModified
     {
-        get => !Equals(Medicine, ProductData.Medicine) ||
-               !Equals(Pharmacy, ProductData.Pharmacy);
+        get => !Equals(ProductMedicine, ProductData.Medicine) ||
+               !Equals(ProductPharmacy, ProductData.Pharmacy);
     }
 
     [ObservableProperty]
@@ -129,8 +128,8 @@ public sealed partial class ProductWrapper : ObservableValidator, IEditableObjec
 
     public bool Equals(ProductWrapper? other)
     {
-        return Equals(Medicine, other?.Medicine) &&
-               Equals(Medicine, other?.Medicine) &&
+        return Equals(ProductMedicine, other?.ProductMedicine) &&
+               Equals(ProductMedicine, other?.ProductMedicine) &&
                Equals(Price, other?.Price) &&
                Quantity == other.Quantity;
     }
@@ -141,8 +140,8 @@ public sealed partial class ProductWrapper : ObservableValidator, IEditableObjec
 
     private void InitFields()
     {
-        Medicine = ProductData.Medicine;
-        Pharmacy = ProductData.Pharmacy;
+        ProductMedicine = ProductData.Medicine;
+        ProductPharmacy = ProductData.Pharmacy;
         Quantity = ProductData.Quantity;
         Price = ProductData.Price;
     }
@@ -221,8 +220,8 @@ public sealed partial class ProductWrapper : ObservableValidator, IEditableObjec
         IsInEdit= false;
         
         // NOTE the underlying code relays on preliminary data validation
-        ProductData.Pharmacy = Pharmacy!;
-        ProductData.Medicine = Medicine!;
+        ProductData.Pharmacy = ProductPharmacy!;
+        ProductData.Medicine = ProductMedicine!;
         ProductData.Price    = Price;
         ProductData.Quantity = Quantity; 
     }

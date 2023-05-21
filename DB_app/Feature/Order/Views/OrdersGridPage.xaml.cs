@@ -38,6 +38,10 @@ public sealed partial class OrdersGridPage : Page
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         ViewModel.DisplayNotification += ShowNotificationMessage;
+
+        if (ViewModel.Source.Count >= 1) return; 
+        ViewModel.Load();
+
         base.OnNavigatedTo(e);
     }
 
@@ -68,6 +72,7 @@ public sealed partial class OrdersGridPage : Page
 
     private void EditButton_Click(object sender, RoutedEventArgs e)
     {
+        if(ViewModel.SelectedItem == null) return;
         ViewModel.SelectedItem.IsInEdit = true;
         App.GetService<INavigationService>().NavigateTo(typeof(OrderDetailsViewModel).FullName!, ViewModel.SelectedItem);
     }

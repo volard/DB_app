@@ -1,4 +1,5 @@
 <Page
+    d:DataContext="{d:DesignInstance Type=viewModel:ProductWrapper}"
     mc:Ignorable="d"
     x:Class="DB_app.Views.OrderDetailsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -11,7 +12,7 @@
     xmlns:sys="using:System"
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:viewModel="using:DB_app.ViewModels"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" d:DataContext="{d:DesignInstance Type=viewModel:ProductWrapper}">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
 
     <Page.Resources>
@@ -153,8 +154,7 @@
 
 
     <!--#region Page content-->
-    <Grid
-        VerticalAlignment="Stretch">
+    <Grid VerticalAlignment="Stretch">
         <Grid
             Padding="10,10"
             VerticalAlignment="Stretch"
@@ -169,7 +169,6 @@
             <ScrollViewer
                 Grid.Row="0"
                 HorizontalAlignment="Stretch"
-                
                 Padding="0,0,10,30">
 
                 <StackPanel VerticalAlignment="Stretch" x:Name="StackPanel">
@@ -190,7 +189,6 @@
                             PlaceholderText="Select hospital"
                             SelectedItem="{x:Bind ViewModel.CurrentOrder.OrderHospital, Mode=TwoWay}"
                             SelectionChanged="HospitalCustomerComboBox_OnSelectionChanged"
-                            
                             Width="380"
                             x:Name="HospitalCustomerComboBox" />
 
@@ -205,7 +203,6 @@
                             RelativePanel.Below="HospitalCustomerComboBox"
                             SelectedItem="{x:Bind ViewModel.CurrentOrder.SelectedAddress, Mode=TwoWay}"
                             SelectionChanged="ComboBox_SelectionChanged"
-                            
                             Width="380"
                             x:Name="ShippingAddressComboBox" />
 
@@ -356,8 +353,8 @@
             <!--#region Available products-->
             <RelativePanel
                 Grid.Row="1"
-                VerticalAlignment="Stretch"
                 Padding="0,20,30,0"
+                VerticalAlignment="Stretch"
                 Visibility="{x:Bind ViewModel.CurrentOrder.IsInEdit, Converter={StaticResource VisibleIf}, Mode=OneWay}">
 
                 <toolkit:DataGrid
@@ -365,10 +362,9 @@
                     CanUserReorderColumns="False"
                     CanUserResizeColumns="True"
                     CanUserSortColumns="True"
-                    
                     GridLinesVisibility="All"
                     IsReadOnly="True"
-                    ItemsSource="{x:Bind ViewModel.CurrentOrder.AvailableProducts, Mode=OneWay}"
+                    ItemsSource="{x:Bind ViewModel.AvailableProducts, Mode=OneWay}"
                     Margin="0,5,0,0"
                     PointerReleased="MedicineMarketGrid_PointerPressed"
                     SelectionMode="Single"
@@ -423,9 +419,11 @@
 
                     <toolkit:DataGrid.Columns>
                         <toolkit:DataGridTextColumn
-                            Binding="{Binding Pharmacy.Name}"
                             Header="Pharmacy name"
-                            Width="30*" />
+                            Binding="{Binding Pharmacy.Name}"
+                            Width="30*">
+                            
+                        </toolkit:DataGridTextColumn>
                         <toolkit:DataGridTextColumn
                             Binding="{Binding Medicine.Name}"
                             Header="Medicine name"
@@ -447,22 +445,20 @@
 
                 </toolkit:DataGrid>
 
-                
+
             </RelativePanel>
             <!--#endregion-->
 
         </Grid>
 
         <muxc:ProgressBar
-            IsEnabled="True"
             HorizontalAlignment="Stretch"
+            Visibility="{x:Bind ViewModel.IsProductsLoading, Converter={StaticResource VisibleIf}, Mode=OneWay}"
             IsIndeterminate="True"
             Margin="0,30,0,0"
             VerticalAlignment="Bottom" />
+
         <toolkit:InAppNotification
-            IsEnabled="True"
-            Content="a[]atas"
-            Visibility="Visible"
             RelativePanel.AlignBottomWithPanel="True"
             RelativePanel.AlignHorizontalCenterWithPanel="True"
             StackMode="Replace"

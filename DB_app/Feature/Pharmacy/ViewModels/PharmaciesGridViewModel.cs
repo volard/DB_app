@@ -8,6 +8,7 @@ using DB_app.Repository;
 using DB_app.Helpers;
 using Microsoft.UI.Dispatching;
 using CommunityToolkit.WinUI;
+using DB_app.Models;
 
 namespace DB_app.ViewModels;
 
@@ -25,11 +26,10 @@ public partial class PharmaciesGridViewModel : ObservableRecipient, INavigationA
     {
         WeakReferenceMessenger.Default.Register<AddRecordMessage<PharmacyWrapper>>(this, (r, m) =>
         {
-            if (r is PharmaciesGridViewModel pharmacyViewModel)
-            {
-                pharmacyViewModel.Source.Insert(0, m.Value);
-                OnPropertyChanged(nameof(Source));
-            }
+            if (r is not PharmaciesGridViewModel pharmacyViewModel) return;
+
+            pharmacyViewModel.Source.Insert(0, m.Value);
+            OnPropertyChanged(nameof(Source));
         });
     }
 
@@ -52,6 +52,28 @@ public partial class PharmaciesGridViewModel : ObservableRecipient, INavigationA
     public event EventHandler<NotificationConfigurationEventArgs>? OperationRejected;
 
     private bool IsInactiveEnabled = false;
+
+    public async void Load()
+    {
+        await _dispatcherQueue.EnqueueAsync(() =>
+        {
+            IsLoading = true;
+        });
+
+        IEnumerable<Pharmacy>? items = await Task.Run(_repositoryControllerService.Pharmacies.GetAsync);
+
+        await _dispatcherQueue.EnqueueAsync(() =>
+        {
+            Source.Clear();
+            foreach (var item in items)
+            {
+                Source.Add(new PharmacyWrapper(item));
+            }
+
+            IsLoading = false;
+        });
+    }
+
 
     public async Task ToggleInactive()
     {
@@ -100,29 +122,7 @@ public partial class PharmaciesGridViewModel : ObservableRecipient, INavigationA
         }
     }
 
-    /// <summary>
-    /// Retrieves items from the data source.
-    /// </summary>
-    public async void LoadItems()
-    {
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            IsLoading = true;
-            Source.Clear();
-        });
-
-        var items = await Task.Run(_repositoryControllerService.Pharmacies.GetAsync);
-
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            foreach (var item in items)
-            {
-                Source.Add(new PharmacyWrapper(item));
-            }
-
-            IsLoading = false;
-        });
-    }
+  
 
     /// <summary>
     /// Gets or sets a value that indicates whether to show a progress bar. 
@@ -135,8 +135,7 @@ public partial class PharmaciesGridViewModel : ObservableRecipient, INavigationA
 
     public void OnNavigatedTo(object parameter)
     {
-        if (Source.Count >= 1) return;
-        LoadItems();
+
     }
 
     public void OnNavigatedFrom()

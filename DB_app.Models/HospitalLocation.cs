@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
 
 namespace DB_app.Models;
 
@@ -14,15 +13,15 @@ public class HospitalLocation : IEquatable<HospitalLocation>
     [Key, Required]
     public int Id { get; set; }
 
-    [Required, NotNull]
+    [Required]
     public Hospital Hospital { get; set; }
 
-    [Required, NotNull]
+    [Required]
     public Address Address { get; set; }
 
     public bool Equals(HospitalLocation? other)
     {
-        return other?.Address == Address;
+        return Equals(other?.Address, Address);
     }
 
     public override bool Equals(object? obj)

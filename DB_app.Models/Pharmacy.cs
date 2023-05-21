@@ -1,5 +1,4 @@
-﻿using DB_app.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
@@ -16,9 +15,9 @@ public class Pharmacy
         )
     {
         Name      = name;
-        var _data = new List<PharmacyLocation>();
-        foreach (var item in addresses) { _data.Add(new PharmacyLocation(item)); }
-        Locations = _data;
+        List<PharmacyLocation> data = new List<PharmacyLocation>();
+        foreach (Address item in addresses) { data.Add(new PharmacyLocation(item)); }
+        Locations = data;
     }
 
     public Pharmacy
@@ -74,14 +73,14 @@ public class Pharmacy
             return false;
         }
 
-        if (obj is not Pharmacy)
+        if (obj is not Pharmacy pharmacy)
         {
             return false;
         }
 
         return
-            (((Pharmacy)obj).Name == Name && ((Pharmacy)obj).IsActive == IsActive) ||
-            ((Pharmacy)obj).Id == Id;
+            (pharmacy.Name == Name && pharmacy.IsActive == IsActive) ||
+            pharmacy.Id == Id;
     }
 }
 

@@ -23,7 +23,7 @@ namespace DB_app;
 /// <summary>
 /// Provides application-specific behavior to supplement the default Application class.
 /// </summary>
-public partial class App : Application
+public partial class App
 {
     /// <summary>
     /// The .NET Generic Host provides dependency injection, configuration, logging, and other services.

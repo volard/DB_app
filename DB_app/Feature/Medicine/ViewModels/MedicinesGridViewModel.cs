@@ -4,6 +4,7 @@ using CommunityToolkit.WinUI;
 using DB_app.Contracts.ViewModels;
 using DB_app.Core.Contracts.Services;
 using DB_app.Helpers;
+using DB_app.Models;
 using DB_app.Repository;
 using DB_app.Services.Messages;
 using Microsoft.UI.Dispatching;
@@ -22,23 +23,21 @@ public partial class MedicinesGridViewModel : ObservableRecipient, INavigationAw
     /// <summary>
     /// DataGrid's data collection
     /// </summary>
-    public ObservableCollection<MedicineWrapper> Source { get; set; } = new();
+    public ObservableCollection<MedicineWrapper> Source { get; init; } = new ObservableCollection<MedicineWrapper>();
 
     public MedicinesGridViewModel()
     {
         WeakReferenceMessenger.Default.Register<AddRecordMessage<MedicineWrapper>>(this, (r, m) =>
         {
-            if (r is MedicinesGridViewModel medicinesViewModel)
-            {
-                medicinesViewModel.Source.Insert(0, m.Value);
-                OnPropertyChanged(nameof(Source));
-            }
+            if (r is not MedicinesGridViewModel medicinesViewModel) return;
+            medicinesViewModel.Source.Insert(0, m.Value);
+            OnPropertyChanged(nameof(Source));
         });
     }
 
     public void Receive(DeleteRecordMessage<MedicineWrapper> message)
     {
-        var givenMedicineWrapper = message.Value;
+        MedicineWrapper givenMedicineWrapper = message.Value;
         Source.Remove(givenMedicineWrapper);
     }
 
@@ -47,7 +46,7 @@ public partial class MedicinesGridViewModel : ObservableRecipient, INavigationAw
     /// Represents selected by user AddressWrapper object
     /// </summary>
     [ObservableProperty]
-    private MedicineWrapper? selectedItem;
+    private MedicineWrapper? _selectedItem;
 
 
     public event EventHandler<NotificationConfigurationEventArgs>? DisplayNotification;
@@ -83,10 +82,7 @@ public partial class MedicinesGridViewModel : ObservableRecipient, INavigationAw
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
-    /// <summary>
-    /// Retrieves items from the data source.
-    /// </summary>
-    public async void LoadItems() // TODO make it generic and add to collection helpers
+    public async void Load()
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
@@ -94,7 +90,7 @@ public partial class MedicinesGridViewModel : ObservableRecipient, INavigationAw
             Source.Clear();
         });
 
-        var items = await Task.Run(_repositoryControllerService.Medicines.GetAsync);
+        IEnumerable<Medicine>? items = await Task.Run(_repositoryControllerService.Medicines.GetAsync);
 
         await _dispatcherQueue.EnqueueAsync(() =>
         {
@@ -102,16 +98,20 @@ public partial class MedicinesGridViewModel : ObservableRecipient, INavigationAw
             {
                 Source.Add(new MedicineWrapper(item));
             }
-
             IsLoading = false;
         });
     }
 
-
     public void OnNavigatedTo(object parameter)
     {
         if (Source.Count >= 1) return;
-        LoadItems();
+        CollectionsHelper.LoadCollectionAsync<MedicineWrapper>(
+            Source, _dispatcherQueue, async () =>
+            {
+                IEnumerable<Medicine> itemsOrigins = await _repositoryControllerService.Medicines.GetAsync();
+                return itemsOrigins.Select(item => new MedicineWrapper(item));
+            }
+        );
     }
 
     public void OnNavigatedFrom() { }

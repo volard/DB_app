@@ -117,4 +117,19 @@
   <data name="New_Product" xml:space="preserve">
     <value>Новый продукт</value>
   </data>
+  <data name="Addresses.Text" xml:space="preserve">
+    <value>Адреса</value>
+  </data>
+  <data name="Orders.Text" xml:space="preserve">
+    <value>Заказы</value>
+  </data>
+  <data name="Pharmacies.Text" xml:space="preserve">
+    <value>Аптеки</value>
+  </data>
+  <data name="Products.Text" xml:space="preserve">
+    <value>Продукты</value>
+  </data>
+  <data name="Warning.Text" xml:space="preserve">
+    <value>Предупреждение</value>
+  </data>
 </root>

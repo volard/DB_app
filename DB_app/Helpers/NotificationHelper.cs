@@ -2,7 +2,7 @@
 
 namespace DB_app.Helpers;
 
-public class NotificationHelper
+public static class NotificationHelper
 {
     public static readonly Style SuccessStyle = (Application.Current.Resources["SuccessInAppNavigationStyle"] as Style)!;
     public static readonly Style ErrorStyle  = (Application.Current.Resources["ErrorInAppNavigationStyle"]   as Style)!;

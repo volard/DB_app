@@ -146,6 +146,54 @@
           <source>New product</source>
           <target state="translated">Новый продукт</target>
         </trans-unit>
+        <trans-unit id="Addresses.Text" translate="yes" xml:space="preserve">
+          <source>Addresses</source>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">Адреса</target>
+        </trans-unit>
+        <trans-unit id="Medicines.Text" translate="yes" xml:space="preserve">
+          <source>Medicines</source>
+          <target state="new">Medicines</target>
+        </trans-unit>
+        <trans-unit id="New_Pharmacy" translate="yes" xml:space="preserve">
+          <source>New pharmacy</source>
+          <target state="new">New pharmacy</target>
+        </trans-unit>
+        <trans-unit id="Orders.Text" translate="yes" xml:space="preserve">
+          <source>Orders</source>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">Заказы</target>
+        </trans-unit>
+        <trans-unit id="Pharmacies.Text" translate="yes" xml:space="preserve">
+          <source>Pharmacies</source>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">Аптеки</target>
+        </trans-unit>
+        <trans-unit id="Products.Text" translate="yes" xml:space="preserve">
+          <source>Products</source>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">Продукты</target>
+        </trans-unit>
+        <trans-unit id="Warning.Text" translate="yes" xml:space="preserve">
+          <source>Warning</source>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">Предупреждение</target>
+        </trans-unit>
+        <trans-unit id="SaveDialog.CloseButtonText" translate="yes" xml:space="preserve">
+          <source>Cancel</source>
+          <target state="new">Cancel</target>
+        </trans-unit>
+        <trans-unit id="SaveDialog.SecondaryButtonText" translate="yes" xml:space="preserve">
+          <source>Don't save</source>
+          <target state="new">Don't save</target>
+        </trans-unit>
+        <trans-unit id="SaveDialog.PrimaryButtonText" translate="yes" xml:space="preserve">
+          <source>Save</source>
+          <target state="new">Save</target>
+        </trans-unit>
+        <trans-unit id="SaveDialog.Title" translate="yes" xml:space="preserve">
+          <source>Save changes?</source>
+          <target state="new">Save changes?</target>
+        </trans-unit>
+        <trans-unit id="SaveDialog.Content" translate="yes" xml:space="preserve">
+          <source>You have unsaved changes that will be lost. Would you like to save your changes?</source>
+          <target state="new">You have unsaved changes that will be lost. Would you like to save your changes?</target>
+        </trans-unit>
       </group>
     </body>
   </file>

@@ -4,21 +4,31 @@ using DB_app.Helpers;
 
 namespace DB_app.ViewModels;
 
-public partial class AddressDetailsViewModel : ObservableRecipient, INavigationAware
+public partial class AddressDetailsViewModel : ObservableObject, INavigationAware
 {
 
     /// <summary>
     /// Current_value AddressWrapper to edit
     /// </summary>
-    public AddressWrapper CurrentAddress { get; private set; } = new AddressWrapper { IsNew = true, IsInEdit = true };
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(PageTitle))]
+    private AddressWrapper _currentAddress = new AddressWrapper { IsNew = true, IsInEdit = true };
 
 
 
     /// <summary>
     /// Represents the page's title
     /// </summary>
-    [ObservableProperty]
-    private string? _pageTitle;
+    public string PageTitle
+    {
+        get
+        {
+            if (CurrentAddress.IsNew)
+                return "New_Hospital".GetLocalizedValue();
+            else
+                return "Address/Text".GetLocalizedValue() + " #" + CurrentAddress.Id;
+        }
+    }
 
 
 
@@ -29,11 +39,7 @@ public partial class AddressDetailsViewModel : ObservableRecipient, INavigationA
             CurrentAddress = model;
             CurrentAddress.Backup();
         }
-
-        if (CurrentAddress.IsNew)
-            PageTitle = "New_Hospital".GetLocalizedValue();
-        else
-            PageTitle = "Address/Text".GetLocalizedValue() + " #" + CurrentAddress.Id;
+        
     }
 
     public void OnNavigatedFrom() { /* Not used */ }

@@ -15,48 +15,25 @@ public partial class HospitalDetailsViewModel : ObservableRecipient, INavigation
     #region Members
     /**************************************/
 
-    /// <summary>
-    /// Loads the addresses data.
-    /// </summary>
-    public async Task LoadAvailableAddressesAsync()
-    {
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            IsLoading = true;
-        });
-
-        IEnumerable<Address>? addresses = await _repositoryControllerService.Addresses.GetFreeAddressesAsync();
-
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            AvailableAddresses.Clear();
-            foreach (Address address in addresses)
-            {
-                AvailableAddresses.Add(address);
-            }
-
-            IsLoading = false;
-        });
-    }
-
-
     public void OnNavigatedTo(object? parameter)
     {
-        if (parameter is HospitalWrapper model)
-        {
-            CurrentHospital = model;
-            CurrentHospital.Backup();
-            
-            if (CurrentHospital.IsInEdit) { _ = LoadAvailableAddressesAsync(); }
-        }
+        if (parameter is not HospitalWrapper model) return;
+        
+        CurrentHospital = model;
+        CurrentHospital.Backup();
 
-        if (CurrentHospital.IsNew)
-            PageTitle = "New_Hospital".GetLocalizedValue();
-        else
-            PageTitle = "Hospital/Text".GetLocalizedValue() + " #" + CurrentHospital.Id;
+        if (CurrentHospital.IsInEdit)
+        {
+            LoadAvailableAddresses();
+        }
     }
 
-   
+   public void LoadAvailableAddresses()
+       {
+           CollectionsHelper.LoadCollectionAsync(
+               AvailableAddresses, _dispatcherQueue, _repositoryControllerService.Addresses.GetFreeAddressesAsync
+           );
+       }
 
     public void OnNavigatedFrom() { /* Not used */ }
 
@@ -70,10 +47,15 @@ public partial class HospitalDetailsViewModel : ObservableRecipient, INavigation
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
     private readonly IRepositoryControllerService _repositoryControllerService = App.GetService<IRepositoryControllerService>();
-
-    public HospitalWrapper CurrentHospital { get; private set; } = new HospitalWrapper { IsNew = true, IsInEdit = true };
+    
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(PageTitle))]
+    private HospitalWrapper _currentHospital = new HospitalWrapper { IsNew = true, IsInEdit = true };
+    
 
     public ObservableCollection<Address> AvailableAddresses { get; } = new ObservableCollection<Address>();
+
+    
 
     /// <summary>
     /// Location object that bound to hospital and selected by user. 
@@ -90,8 +72,15 @@ public partial class HospitalDetailsViewModel : ObservableRecipient, INavigation
     [ObservableProperty]
     private Address? _selectedAddress;
 
-    [ObservableProperty]
-    private string? _pageTitle;
+    public string PageTitle{
+        get
+        {
+             if (CurrentHospital.IsNew)
+                return "New_Hospital".GetLocalizedValue();
+             return "Hospital/Text".GetLocalizedValue() + " #" + CurrentHospital.Id;
+        }
+       
+    }
 
     #endregion
 

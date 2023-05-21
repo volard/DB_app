@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DB_app.Models;
 
@@ -53,7 +52,7 @@ public class Order
     [Required]
     public DateTime        DatePlaced          { get; set; } = DateTime.Now;
 
-    public List<OrderItem> Items               { get; set; } = new();
+    public List<OrderItem> Items               { get; set; } = new List<OrderItem>();
 
     #endregion
 
@@ -67,12 +66,12 @@ public class Order
             return false;
         }
 
-        if (obj is not Order)
+        if (obj is not Order order)
         {
             return false;
         }
 
         return
-            ((Order)obj).Id == Id;
+            order.Id == Id;
     }
 }

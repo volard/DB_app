@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
+
 
 namespace DB_app.Models;
 
@@ -10,9 +10,9 @@ public class Address
 
     public Address
         (
-            string city, 
-            string street, 
-            string building
+            string? city, 
+            string? street, 
+            string? building
         ) 
     {
         City     = city;
@@ -22,10 +22,10 @@ public class Address
 
     public Address
         (
-            int    id,
-            string city,
-            string street,
-            string building
+            int     id,
+            string? city,
+            string? street,
+            string? building
         ) : 
         this 
         (
@@ -47,28 +47,24 @@ public class Address
     [Key, Required]
     public int      Id          { get; set; }
 
-    [Required, NotNull]
-    public string? City         { get; set; }
+    [Required]
+    public string?  City         { get; set; }
 
-    [Required, NotNull]
+    [Required]
     public string?   Street     { get; set; }
 
-    [Required, NotNull]
+    [Required]
     public string?   Building   { get; set; }
 
     #endregion
 
     public override string ToString() => $"{City}; {Street}; {Building}";
 
-    public override bool Equals(object? obj)
+    protected bool Equals(Address other)
     {
-        if (obj is not Address other) return false;
-
-        return other.City == City && other.Street == Street && other.Building == Building;
+        return string.Equals(City, other.City, StringComparison.OrdinalIgnoreCase) && 
+               string.Equals(Street, other.Street, StringComparison.OrdinalIgnoreCase) && 
+               string.Equals(Building, other.Building, StringComparison.OrdinalIgnoreCase);
     }
 
-    public override int GetHashCode()
-    {
-        return Id.GetHashCode();
-    }
 }

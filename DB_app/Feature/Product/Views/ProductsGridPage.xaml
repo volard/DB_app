@@ -118,15 +118,15 @@
 
 
                     <toolkit:DataGridTextColumn
-                        Binding="{Binding Pharmacy.Name}"
+                        Binding="{Binding ProductPharmacy.Name}"
                         Header="Pharmacy Name"
                         Width="30*" />
                     <toolkit:DataGridTextColumn
-                        Binding="{Binding Medicine.Name}"
+                        Binding="{Binding ProductMedicine.Name}"
                         Header="Medicine Name"
                         Width="30*" />
                     <toolkit:DataGridTextColumn
-                        Binding="{Binding Medicine.Type}"
+                        Binding="{Binding ProductMedicine.Type}"
                         Header="Medicine Type"
                         Width="30*" />
                     <toolkit:DataGridTextColumn

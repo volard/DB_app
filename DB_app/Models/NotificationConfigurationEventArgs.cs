@@ -3,7 +3,7 @@
 namespace DB_app.Helpers;
 
 /// <summary>
-/// Configuration data wrapper to setup InAppNotification during apropriate event raising
+/// Configuration data wrapper to setup InAppNotification during appropriate event raising
 /// </summary>
 public class NotificationConfigurationEventArgs : EventArgs
 {

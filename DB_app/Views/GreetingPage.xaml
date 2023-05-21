@@ -7,7 +7,7 @@
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <ScrollViewer x:Name="ContentArea">
+    <ScrollViewer>
 
         <StackPanel Spacing="16">
 
@@ -39,8 +39,7 @@
                     QuoteMargin="12,12,0,0"
                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
                     ScrollViewer.VerticalScrollMode="Disabled"
-                    Text="{x:Bind M1text}"
-                    x:Name="MarkdownTextBlock1" />
+                    Text="{x:Bind M1Text}" />
             </Grid>
 
 
@@ -72,8 +71,7 @@
                     QuoteMargin="12,12,0,0"
                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
                     ScrollViewer.VerticalScrollMode="Disabled"
-                    Text="{x:Bind M2text}"
-                    x:Name="MarkdownTextBlock2" />
+                    Text="{x:Bind M2Text}" />
             </Grid>
 
             <Grid
@@ -104,8 +102,7 @@
                     QuoteMargin="12,12,0,0"
                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
                     ScrollViewer.VerticalScrollMode="Disabled"
-                    Text="{x:Bind M3text}"
-                    x:Name="MarkdownTextBlock3" />
+                    Text="{x:Bind M3Text}" />
             </Grid>
 
 

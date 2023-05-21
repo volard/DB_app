@@ -1,6 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Diagnostics.CodeAnalysis;
 
 namespace DB_app.Models;
 
@@ -20,9 +18,9 @@ public class Hospital
         Surename_main_doctor    = surename_main_doctor;
         Name_main_doctor        = name_main_doctor;
         Middlename_main_doctor  = middlename_main_doctor;
-        var _data = new List<HospitalLocation>();
-        foreach (var item in addresses) { _data.Add(new HospitalLocation(item)); }
-        Locations = _data;
+        List<HospitalLocation> data = new List<HospitalLocation>();
+        foreach (Address item in addresses) { data.Add(new HospitalLocation(item)); }
+        Locations = data;
     }
 
     public Hospital
@@ -66,20 +64,20 @@ public class Hospital
     [Required, Key]
     public int           Id                          { get; set; }
 
-    [Required, NotNull]
+    [Required]
     public string        Surename_main_doctor        { get; set; }
 
-    [Required, NotNull]
+    [Required]
     public string        Name_main_doctor            { get; set; }
 
-    [Required, NotNull]
+    [Required]
     public string        Middlename_main_doctor      { get; set; }
 
-    [Required, NotNull]
+    [Required]
     public bool          IsActive                    { get; set; } = true;
 
 
-    public List<HospitalLocation> Locations { get; set; } = new();
+    public List<HospitalLocation> Locations { get; set; } = new List<HospitalLocation>();
 
     #endregion
 
@@ -93,7 +91,7 @@ public class Hospital
             return false;
         }
 
-        if (obj is not Hospital)
+        if (obj is not Hospital hospital)
         {
             return false;
         }
@@ -101,11 +99,11 @@ public class Hospital
         return 
            (
             (
-                ((Hospital)obj).Surename_main_doctor == Surename_main_doctor && 
-                ((Hospital)obj).Name_main_doctor == Name_main_doctor &&
-                ((Hospital)obj).Middlename_main_doctor == Middlename_main_doctor
-            ) && ((Hospital)obj).IsActive == IsActive) ||
-            ((Hospital)obj).Id == Id ;
+                hospital.Surename_main_doctor == Surename_main_doctor && 
+                hospital.Name_main_doctor == Name_main_doctor &&
+                hospital.Middlename_main_doctor == Middlename_main_doctor
+            ) && hospital.IsActive == IsActive) ||
+            hospital.Id == Id ;
     }
 }
 

@@ -110,7 +110,7 @@
     <Page Update="Styles\NotificationStyle.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="Views\Components\ContentDialogContent.xaml">
+    <Page Update="Views\Components\OrderItemDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\Components\ValidationTextBox.xaml">

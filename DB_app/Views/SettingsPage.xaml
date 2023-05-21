@@ -7,8 +7,7 @@
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:xaml="using:Microsoft.UI.Xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Page.Resources>
         <helpers:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
@@ -35,13 +34,12 @@
             IsTabStop="False"
             UseSystemFocusVisuals="False"
             VerticalScrollBarVisibility="Auto"
-            VerticalScrollMode="Auto"
-            x:Name="contentSV">
+            VerticalScrollMode="Auto">
 
             <StackPanel Spacing="{StaticResource SettingsCardSpacing}">
 
 
-                <!--  Apperance & behaviour  -->
+                <!--  Appearance & behaviour  -->
                 <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="Apperance &amp; behaviour" />
                 <labs:SettingsCard Description="Select which app theme to display" Header="App theme">
 
@@ -85,7 +83,7 @@
                     <labs:SettingsCard.HeaderIcon>
                         <FontIcon Glyph="&#xEC4F;" />
                     </labs:SettingsCard.HeaderIcon>
-                    <ToggleSwitch x:Name="soundToggle" />
+                    <ToggleSwitch x:Name="SoundToggle" />
                 </labs:SettingsCard>
 
 
@@ -130,8 +128,7 @@
                         <labs:SettingsCard
                             Click="bugRequestCard_Click"
                             Header="File a bug or request new feature"
-                            IsClickEnabled="True"
-                            x:Name="bugRequestCard">
+                            IsClickEnabled="True">
                             <labs:SettingsCard.ActionIcon>
                                 <FontIcon Glyph="&#xE8A7;" />
                             </labs:SettingsCard.ActionIcon>
@@ -139,8 +136,7 @@
                         <labs:SettingsCard
                             Click="supportCard_Click"
                             Header="Support author"
-                            IsClickEnabled="True"
-                            x:Name="supportCard">
+                            IsClickEnabled="True">
                             <labs:SettingsCard.ActionIcon>
                                 <FontIcon Glyph="&#xE719;" />
                             </labs:SettingsCard.ActionIcon>

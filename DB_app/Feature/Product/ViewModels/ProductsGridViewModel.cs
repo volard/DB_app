@@ -9,6 +9,7 @@ using DB_app.Models;
 using System.Collections.ObjectModel;
 using DB_app.Repository;
 using Microsoft.UI.Dispatching;
+using static DB_app.Helpers.CollectionsHelper;
 
 namespace DB_app.ViewModels;
 
@@ -29,23 +30,21 @@ public partial class ProductsGridViewModel : ObservableRecipient, INavigationAwa
     private bool _isLoading;
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    
-    /// <summary>
-    /// Retrieves items from the data source.
-    /// </summary>
-    private async void LoadItems()
+
+
+    public async void Load()
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             IsLoading = true;
-            Source.Clear();
         });
 
-        IEnumerable<Product>? items = await _repositoryControllerService.Products.GetAsync();
+        IEnumerable<Product>? items = await Task.Run(_repositoryControllerService.Products.GetAsync);
 
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            foreach (Product item in items)
+            Source.Clear();
+            foreach (var item in items)
             {
                 Source.Add(new ProductWrapper(item));
             }
@@ -53,13 +52,13 @@ public partial class ProductsGridViewModel : ObservableRecipient, INavigationAwa
             IsLoading = false;
         });
     }
-    
+
+
     public ProductsGridViewModel()
     {
         WeakReferenceMessenger.Default.Register<AddRecordMessage<ProductWrapper>>(this, (r, m) =>
         {
-            if (r is not ProductsGridViewModel productsGridViewModel)
-                return;
+            if (r is not ProductsGridViewModel productsGridViewModel) return;
             
             productsGridViewModel.Source.Insert(0, m.Value);
             OnPropertyChanged(nameof(Source));
@@ -131,12 +130,8 @@ public partial class ProductsGridViewModel : ObservableRecipient, INavigationAwa
 
 
     public void OnNavigatedTo(object parameter)
-    {
-        if (Source.Count >= 1) return;
-            LoadItems();
-    }
+    { }
 
     public void OnNavigatedFrom()
-    {
-    }
+    { }
 }

@@ -3,6 +3,7 @@ using DB_app.Contracts.Services;
 using DB_app.Helpers;
 using DB_app.Services;
 using DB_app.ViewModels;
+using DocumentFormat.OpenXml.Bibliography;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
@@ -31,6 +32,10 @@ public sealed partial class AddressesGridPage : Page
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         ViewModel.DisplayNotification += ShowNotificationMessage;
+
+        if (ViewModel.Source.Count > 1) return;
+        ViewModel.Load();
+
         base.OnNavigatedTo(e);
     }
 

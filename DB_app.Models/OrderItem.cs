@@ -63,15 +63,7 @@ public class OrderItem
 
 
     [NotMapped]
-    public double LocalTotal
-    {
-        get
-        {
-            if (Price != null && Quantity != null)
-                return Price * Quantity;
-            else return 0;
-        }
-    }
+    public double LocalTotal => Price * Quantity;
 
     #endregion
 

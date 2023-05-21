@@ -81,18 +81,19 @@ public partial class AddressesGridViewModel : ObservableRecipient, INavigationAw
     /// <summary>
     /// Retrieves items from the data source.
     /// </summary>
-    private async void LoadItems()
+    public async void Load()
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             IsLoading = true;
-            Source.Clear();
+
         });
 
-        IEnumerable<Address>? items = await _repositoryControllerService.Addresses.GetAsync();
+        IEnumerable<Address>? items = await Task.Run(_repositoryControllerService.Addresses.GetAsync);
 
         await _dispatcherQueue.EnqueueAsync(() =>
         {
+            Source.Clear();
             foreach (Address item in items)
             {
                 Source.Add(new AddressWrapper(item));
@@ -105,8 +106,7 @@ public partial class AddressesGridViewModel : ObservableRecipient, INavigationAw
 
     public void OnNavigatedTo(object parameter)
     {
-        if (Source.Count > 1) return;
-        LoadItems();
+        
     }
 
     public void OnNavigatedFrom() { }

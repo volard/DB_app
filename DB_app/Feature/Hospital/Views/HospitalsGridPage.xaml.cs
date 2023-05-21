@@ -1,7 +1,11 @@
-﻿using DB_app.Behaviors;
+﻿using CommunityToolkit.WinUI.UI.Controls;
+using DB_app.Behaviors;
 using DB_app.Contracts.Services;
+using DB_app.Core.Contracts.Services;
 using DB_app.Helpers;
+using DB_app.Models;
 using DB_app.ViewModels;
+using DocumentFormat.OpenXml.Bibliography;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
@@ -47,8 +51,10 @@ public sealed partial class HospitalsGridPage : Page
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
-        ViewModel.DisplayInAppNotification += ShowNotificationMessage;
-        base.OnNavigatedTo(e);
+        //ViewModel.DisplayInAppNotification += ShowNotificationMessage;
+
+        if (ViewModel.Source.Count >= 1) return;
+        ViewModel.Load();
     }
 
 

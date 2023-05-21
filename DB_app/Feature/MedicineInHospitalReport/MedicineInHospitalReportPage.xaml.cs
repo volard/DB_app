@@ -5,7 +5,7 @@ using Microsoft.UI.Xaml.Data;
 
 namespace DB_app.Views;
 
-public sealed partial class MedicineInHospitalReportPage : Microsoft.UI.Xaml.Controls.Page
+public sealed partial class MedicineInHospitalReportPage
 {
     public MedicineInHospitalReportViewModel ViewModel { get; } = App.GetService<MedicineInHospitalReportViewModel>();
 

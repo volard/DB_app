@@ -39,6 +39,10 @@ public sealed partial class PharmaciesGridPage : Page
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         ViewModel.OperationRejected += ShowNotificationMessage;
+
+        if (ViewModel.Source.Count >= 1) return;
+        ViewModel.Load();
+
         base.OnNavigatedTo(e);
     }
 

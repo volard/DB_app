@@ -29,6 +29,10 @@ public sealed partial class ProductsGridPage : Page
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         ViewModel.DisplayNotification += ShowNotificationMessage;
+
+        if (ViewModel.Source.Count >= 1) return;
+        ViewModel.Load();
+
         base.OnNavigatedTo(e);
     }
 

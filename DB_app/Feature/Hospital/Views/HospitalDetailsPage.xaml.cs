@@ -86,7 +86,7 @@ public sealed partial class HospitalDetailsPage : Page
 
     private void BeginEdit_Click(object sender, RoutedEventArgs e)
     {
-        _ = ViewModel.LoadAvailableAddressesAsync();
+        ViewModel.LoadAvailableAddresses();
         ViewModel.CurrentHospital.BeginEdit();
     }
 }

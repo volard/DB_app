@@ -2,38 +2,40 @@
 
 namespace DB_app.Repository.SQL;
 
-public class DataSeeder
+// ReSharper disable StringLiteralTypo
+public static class DataSeeder
 {
     public static void ClearData(SQLContext dbContext)
     {
         // NOTE be careful with deletion order...
         if(dbContext is null) return;
+        
 
-        if(dbContext.OrderItems.Any() && dbContext.OrderItems is not null)
+        if(dbContext.OrderItems is not null && dbContext.OrderItems.Any())
             dbContext.OrderItems.RemoveRange(dbContext.OrderItems);
 
-        if (dbContext.Orders.Any() && dbContext.Orders is not null)
+        if (dbContext.Orders is not null && dbContext.Orders.Any())
             dbContext.Orders.RemoveRange(dbContext.Orders);
 
-        if (dbContext.Products.Any() && dbContext.Products is not null)
+        if (dbContext.Products is not null && dbContext.Products.Any())
             dbContext.Products.RemoveRange(dbContext.Products);
 
-        if (dbContext.Pharmacies.Any() && dbContext.Pharmacies is not null)
+        if (dbContext.Pharmacies is not null && dbContext.Pharmacies.Any())
             dbContext.Pharmacies.RemoveRange(dbContext.Pharmacies);
 
-        if (dbContext.Hospitals.Any() && dbContext.Hospitals is not null)
+        if (dbContext.Hospitals is not null && dbContext.Hospitals.Any())
             dbContext.Hospitals.RemoveRange(dbContext.Hospitals);
 
-        if (dbContext.Medicines.Any() && dbContext.Medicines is not null)
+        if (dbContext.Medicines is not null && dbContext.Medicines.Any())
             dbContext.Medicines.RemoveRange(dbContext.Medicines);
 
-        if (dbContext.Addresses.Any() && dbContext.Addresses is not null)
+        if (dbContext.Addresses is not null && dbContext.Addresses.Any())
             dbContext.Addresses.RemoveRange(dbContext.Addresses);
 
-        if (dbContext.PharmacyLocations.Any() && dbContext.PharmacyLocations is not null)
+        if (dbContext.PharmacyLocations is not null && dbContext.PharmacyLocations.Any())
             dbContext.PharmacyLocations.RemoveRange(dbContext.PharmacyLocations);
 
-        if (dbContext.HospitalLocations.Any() && dbContext.HospitalLocations is not null)
+        if (dbContext.HospitalLocations is not null && dbContext.HospitalLocations.Any())
             dbContext.HospitalLocations.RemoveRange(dbContext.HospitalLocations);
 
         dbContext.SaveChanges();
@@ -277,3 +279,4 @@ public class DataSeeder
         dbContext.SaveChanges();
     }
 }
+// ReSharper restore StringLiteralTypo

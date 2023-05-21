@@ -17,8 +17,6 @@ public abstract class ActivationHandler<T> : IActivationHandler
     /// <summary>
     /// Checks if the incoming activation arguments are of the newType the ActivationHandler can manage.
     /// </summary>
-    /// <param newName="args"></param>
-    /// <returns></returns>
     public bool CanHandle(object args) => args is T && CanHandleInternal((args as T)!);
 
     public async Task HandleAsync(object args) => await HandleInternalAsync((args as T)!);

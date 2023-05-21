@@ -12,11 +12,12 @@ using Windows.Storage.Provider;
 using Windows.Storage;
 using System.Diagnostics;
 using ClosedXML.Excel;
+using CommunityToolkit.WinUI.UI.Controls;
 
 namespace DB_app.Views;
 
 
-public sealed partial class MedicinesGridPage : Page
+public sealed partial class MedicinesGridPage
 {
     public MedicinesGridViewModel ViewModel { get; }
 
@@ -52,7 +53,7 @@ public sealed partial class MedicinesGridPage : Page
     }
 
     private void Add_Click(object sender, RoutedEventArgs e) =>
-        Frame.Navigate(typeof(MedicineDetailsPage), new AddressWrapper() { IsInEdit = true }, new DrillInNavigationTransitionInfo());
+        Frame.Navigate(typeof(MedicineDetailsPage), new MedicineWrapper() { IsInEdit = true }, new DrillInNavigationTransitionInfo());
 
 
     private void View_Click(object sender, RoutedEventArgs e) =>
@@ -72,12 +73,12 @@ public sealed partial class MedicinesGridPage : Page
 
     private async void CommandBarExportButton_Click(object sender, RoutedEventArgs e)
     {
-        FileSavePicker savePicker = new();
+        FileSavePicker savePicker = new FileSavePicker();
 
         // Retrieve the window handle (HWND) of the current WinUI 3 window.
         //var window = WindowHelper.GetWindowForElement(this);
         
-        var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(App.MainWindow);
+        IntPtr hWnd = WinRT.Interop.WindowNative.GetWindowHandle(App.MainWindow);
 
         // Initialize the file picker with the window handle (HWND).
         WinRT.Interop.InitializeWithWindow.Initialize(savePicker, hWnd);
@@ -96,26 +97,26 @@ public sealed partial class MedicinesGridPage : Page
             // Prevent updates to the remote version of the file until we finish making changes and call CompleteUpdatesAsync.
             CachedFileManager.DeferUpdates(file);
 
-            var workbook = new XLWorkbook();
-            var worksheet = workbook.Worksheets.Add("Main");
+            XLWorkbook workbook = new XLWorkbook();
+            IXLWorksheet? worksheet = workbook.Worksheets.Add("Main");
 
-            List<string> headers = new();
+            List<string> headers = new List<string>();
 
-            foreach (var col in MedicineGrid.Columns)
+            foreach (DataGridColumn? col in MedicineGrid.Columns)
             {
                 headers.Add(col.Header.ToString() ?? " ");
             }
 
             // row X column
             worksheet.Cell(1, 1).InsertData(headers);
-            List<List<string>> data = new();
+            List<List<string>> data = new List<List<string>>();
 
             for (int row = 0; row < ViewModel.Source.Count; row++) // for every row
             {
-                List<string> line = new();
+                List<string> line = new List<string>();
                 for (int col = 0; col < MedicineGrid.Columns.Count; col++) // for every col of current row
                 {
-                    var value = (MedicineGrid.Columns.ElementAt(col).GetCellContent(ViewModel.Source.ElementAt(row)) as TextBlock)?.Text ?? " ";
+                    string value = (MedicineGrid.Columns.ElementAt(col).GetCellContent(ViewModel.Source.ElementAt(row)) as TextBlock)?.Text ?? " ";
                     line.Add(value);
                 }
                 data.Add(line);
@@ -129,7 +130,7 @@ public sealed partial class MedicinesGridPage : Page
             FileUpdateStatus status = await CachedFileManager.CompleteUpdatesAsync(file);
             if (status == FileUpdateStatus.Complete)
             {
-                Debug.WriteLine("Success - file saved under defiault name");
+                Debug.WriteLine("Success - file saved under default name");
             }
             else if (status == FileUpdateStatus.CompleteAndRenamed)
             {

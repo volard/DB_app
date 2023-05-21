@@ -16,60 +16,41 @@ public partial class PharmacyDetailsViewModel : ObservableRecipient, INavigation
 {
     /**************************************/
     #region Members
-    /**************************************/
-
-    /// <summary>
-    /// Loads the addresses data.
-    /// </summary>
-    public async Task LoadAvailableAddressesAsync()
-    {
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            IsLoading = true;
-        });
-
-        var addresses = await _repositoryControllerService.Addresses.GetFreeAddressesAsync();
-
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            AvailableAddresses.Clear();
-            foreach (var address in addresses)
-            {
-                AvailableAddresses.Add(address);
-            }
-
-            IsLoading = false;
-        });
-    }
-
+    
 
     public void OnNavigatedTo(object? parameter)
     {
-        if (parameter is PharmacyWrapper model)
+        if (parameter is not PharmacyWrapper model) return;
+        CurrentPharmacy = model;
+        CurrentPharmacy.Backup();
+
+        if (CurrentPharmacy.IsInEdit)
         {
-            CurrentPharmacy = model;
-            CurrentPharmacy.Backup();
-
-            if (CurrentPharmacy.IsInEdit) { Task.Run(LoadAvailableAddressesAsync); }
+            LoadAvailableAddresses();
         }
+    }
 
-        if (CurrentPharmacy.IsNew)
-            PageTitle = "New_Pharmacy".GetLocalizedValue();
-        else
-            PageTitle = "Pharmacy/Text".GetLocalizedValue() + " #" + CurrentPharmacy.Id;
+    public void LoadAvailableAddresses()
+    {
+        CollectionsHelper.LoadCollectionAsync(
+            AvailableAddresses, _dispatcherQueue, _repositoryControllerService.Addresses.GetFreeAddressesAsync
+        );
     }
 
     public void OnNavigatedFrom() { /* Not used */ }
 
-    
+
 
 
     #endregion
+    /**************************************/
+
 
 
     /**************************************/
     #region Properties
-    /**************************************/
+
+    
 
     public readonly IRepositoryControllerService _repositoryControllerService = App.GetService<IRepositoryControllerService>();
 
@@ -77,7 +58,9 @@ public partial class PharmacyDetailsViewModel : ObservableRecipient, INavigation
     /// <summary>
     /// Current_value AddressWrapper to edit
     /// </summary>
-    public PharmacyWrapper CurrentPharmacy { get; set; } = new PharmacyWrapper { IsNew = true, IsInEdit = true };
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(PageTitle))]
+    private PharmacyWrapper _currentPharmacy = new PharmacyWrapper { IsNew = true, IsInEdit = true };
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
@@ -98,10 +81,17 @@ public partial class PharmacyDetailsViewModel : ObservableRecipient, INavigation
     [ObservableProperty]
     private Address? _selectedAddress;
 
-    [ObservableProperty]
-    private string? _pageTitle;
+    public string PageTitle
+    {
+        get
+        {
+            if (CurrentPharmacy.IsNew)
+                return "New_Pharmacy".GetLocalizedValue();
+            return "Pharmacy/Text".GetLocalizedValue() + " #" + CurrentPharmacy.Id;
+        }
+    }
 
     #endregion
-
+    /**************************************/
 
 }

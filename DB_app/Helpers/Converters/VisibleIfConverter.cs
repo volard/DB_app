@@ -9,11 +9,7 @@ public class VisibleIfConverter : IValueConverter
     {
         if (value is bool boolValue)
         {
-            if (boolValue)
-            {
-                return Visibility.Visible;
-            }
-            return Visibility.Collapsed;
+            return boolValue ? Visibility.Visible : Visibility.Collapsed;
         }
         throw new ArgumentException("value must be bool type");
     }
