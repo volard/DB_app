@@ -79,10 +79,19 @@ public sealed partial class OrderDetailsPage : Page
     /// </summary>
     protected override void OnNavigatingFrom(NavigatingCancelEventArgs e){  /* Not done yet */ }
 
-    protected override void OnNavigatedTo(NavigationEventArgs e)
+    protected override async void OnNavigatedTo(NavigationEventArgs e)
     {
-        if(ViewModel.CurrentOrder.IsInEdit)
-            ViewModel.LoadProducts();
+        if (e.Parameter is not OrderWrapper model) return;
+        ViewModel.CurrentOrder = model;
+        ViewModel.CurrentOrder.Backup();
+
+        if (ViewModel.CurrentOrder.IsInEdit)
+        {
+            await ViewModel.LoadProducts();
+            ViewModel.LoadAvailableHospitals();
+
+        }
+
 
         base.OnNavigatedTo(e);
     }
@@ -247,8 +256,9 @@ public sealed partial class OrderDetailsPage : Page
     }
 
     
-    private void BeginEdit_Click(object sender, RoutedEventArgs e)
+    private async void BeginEdit_Click(object sender, RoutedEventArgs e)
     {
+        await ViewModel.LoadProducts();
         ViewModel.LoadAvailableHospitals();
         ViewModel.CurrentOrder.BeginEdit();
     }

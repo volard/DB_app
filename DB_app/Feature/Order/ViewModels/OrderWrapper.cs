@@ -54,8 +54,17 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
     
     public DateTime DatePlaced => OrderData.DatePlaced;
 
-    
-    public Order OrderData = new Order();
+    private Order _orderData = new Order();
+
+    public Order OrderData
+    {
+        get => _orderData;
+        set
+        {
+            _orderData = value;
+            InitFields();
+        }
+    }
 
     
     public int Id => OrderData.Id;

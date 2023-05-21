@@ -20,29 +20,25 @@ public class SQLControllerService : IRepositoryControllerService
     public SQLControllerService(DbContextOptions<SQLContext> options)
     {
         _db = new SQLContext(options);
-        SetupDataBase();
+        _db.Database.EnsureCreated();
+        Hospitals = new SQLHospitalRepository(_db);
+        Orders = new SQLOrderRepository(_db);
+        Products = new SQLProductRepository(_db);
+        Addresses = new SQLAddressRepository(_db);
+        Pharmacies = new SQLPharmacyRepository(_db);
+        Medicines = new SQLMedicineRepository(_db);
     }
 
 
-    public void SetupDataBase()
+    public void RestartDataBase()
     {
-//#if DEBUG
-//        try
-//        {
-//            DataSeeder.ClearData(_db);
-//        }
-//        catch (Exception)
-//        {
-//            // ignored
-//        }
-
-//        _db.Database.EnsureDeleted();
-//        _db.Database.EnsureCreated();
-//        DataSeeder.Seed(_db);
-//#endif
+        DataSeeder.ClearData(_db);
+        _db.Database.EnsureDeleted();
+        _db.Database.EnsureCreated();
+        DataSeeder.Seed(_db);
 
 
-        Hospitals  = new SQLHospitalRepository(_db);
+        Hospitals = new SQLHospitalRepository(_db);
         Orders     = new SQLOrderRepository   (_db);
         Products   = new SQLProductRepository (_db);
         Addresses  = new SQLAddressRepository (_db);

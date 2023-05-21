@@ -37,6 +37,10 @@ public class SQLOrderRepository : IOrderRepository
         return await _db.Orders
                 .Include(order => order.HospitalCustomer)
                 .Include(order => order.ShippingAddress)
+                .Include(order => order.Items)
+                .ThenInclude(items => items.Product)
+                .ThenInclude(el => el.Pharmacy)
+                .Include(el => el.Items).ThenInclude(el => el.Product.Medicine)
                 .ToListAsync();
     }
 
@@ -61,7 +65,7 @@ public class SQLOrderRepository : IOrderRepository
         {
             _db.Orders.Add(order);
             await _db.SaveChangesAsync();
-            Debug.WriteLine("InsertAsync - Order : " + order.Id + "was succesfully inserted in the Database");
+            Debug.WriteLine("InsertAsync - Order : " + order.Id + "was successfully inserted in the Database");
         }
     }
 

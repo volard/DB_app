@@ -120,6 +120,7 @@ public class SQLHospitalRepository : IHospitalRepository
     public async Task<IEnumerable<HospitalLocation>> GetHospitalLocations(int id)
     {
         return await _db.HospitalLocations
+            .Include(location => location.Address)
             .Where(location => location.Hospital.Id == id)
             .ToListAsync();
     }

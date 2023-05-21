@@ -63,7 +63,8 @@ public sealed partial class OrdersGridPage : Page
 
 
     private void ViewButton_Click(object sender, RoutedEventArgs e) =>
-        Frame.Navigate(typeof(OrderDetailsPage), ViewModel, new DrillInNavigationTransitionInfo());
+        Frame.Navigate(typeof(OrderDetailsPage), ViewModel.SelectedItem, new DrillInNavigationTransitionInfo());
+    //App.GetService<INavigationService>().NavigateTo(typeof(OrderDetailsViewModel).FullName!, ViewModel.SelectedItem);
 
 
     private async void DeleteButton_Click(object sender, RoutedEventArgs e) =>

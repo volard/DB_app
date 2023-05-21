@@ -91,18 +91,60 @@
                 <toolkit:DataGrid.Columns>
 
 
-                    <toolkit:DataGridTextColumn Binding="{Binding OrderHospital.Id}" Header="Hospital's id" />
-                    <toolkit:DataGridTextColumn Binding="{Binding OrderHospital.Surename_main_doctor}" Header="Hospital's main doctor surename" />
-                    <toolkit:DataGridTemplateColumn Header="Date" Tag="Date Placed">
+                    <toolkit:DataGridTextColumn Binding="{Binding OrderHospital.Id}" Header="Hospital id" />
+
+
+                    <toolkit:DataGridTemplateColumn Header="Main doctor">
                         <toolkit:DataGridTemplateColumn.CellTemplate>
                             <DataTemplate x:DataType="vm:OrderWrapper">
                                 <TextBlock
                                     Margin="12,0"
-                                    Text="{x:Bind sys:String.Format('\{0:MM/dd/yy H:mm:ss\}', DatePlaced)}"
+                                    VerticalAlignment="Center">
+                                    <Run Text="{Binding OrderHospital.Surename_main_doctor}"> </Run>
+                                    <Run Text="{Binding OrderHospital.Name_main_doctor }"> </Run>
+                                    <Run Text="{Binding OrderHospital.Middlename_main_doctor }"></Run>
+                                </TextBlock>
+                            </DataTemplate>
+                        </toolkit:DataGridTemplateColumn.CellTemplate>
+                    </toolkit:DataGridTemplateColumn>
+
+
+                    <toolkit:DataGridTemplateColumn Header="Date">
+                        <toolkit:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate x:DataType="vm:OrderWrapper">
+                                <TextBlock
+                                    Margin="12,0"
+                                    Text="{x:Bind sys:String.Format('\{0:MM/dd/yy\}', DatePlaced)}"
                                     VerticalAlignment="Center" />
                             </DataTemplate>
                         </toolkit:DataGridTemplateColumn.CellTemplate>
                     </toolkit:DataGridTemplateColumn>
+
+                    <toolkit:DataGridTemplateColumn Header="Time">
+                        <toolkit:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate x:DataType="vm:OrderWrapper">
+                                <TextBlock
+                                    Margin="12,0"
+                                    Text="{x:Bind sys:String.Format('\{0:H:mm:ss\}', DatePlaced)}"
+                                    VerticalAlignment="Center" />
+                            </DataTemplate>
+                        </toolkit:DataGridTemplateColumn.CellTemplate>
+                    </toolkit:DataGridTemplateColumn>
+
+
+                    <toolkit:DataGridTemplateColumn Header="Total">
+                    <toolkit:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate x:DataType="vm:OrderWrapper">
+                            <TextBlock
+                                Margin="12,0"
+                                Text="{x:Bind sys:String.Format('\{0:c\}', Total)}"
+                                VerticalAlignment="Center" />
+                        </DataTemplate>
+                    </toolkit:DataGridTemplateColumn.CellTemplate>
+                    </toolkit:DataGridTemplateColumn>
+
+
+                   
 
                 </toolkit:DataGrid.Columns>
             </toolkit:DataGrid>

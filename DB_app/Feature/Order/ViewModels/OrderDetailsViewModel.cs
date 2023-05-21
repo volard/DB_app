@@ -20,12 +20,12 @@ public partial class OrderDetailsViewModel : ObservableValidator, INavigationAwa
     
     public void OnNavigatedTo(object? parameter)
         {
-            if (parameter is not OrderWrapper model) return;
-            CurrentOrder = model;
-            CurrentOrder.Backup();
+            //if (parameter is not OrderWrapper model) return;
+            //CurrentOrder = model;
+            //CurrentOrder.Backup();
         }
     
-        public void OnNavigatedFrom() { /* Not used */ }
+    public void OnNavigatedFrom() { /* Not used */ }
 
         
     #endregion
@@ -134,6 +134,7 @@ public partial class OrderDetailsViewModel : ObservableValidator, INavigationAwa
     /**************************************/
     #region Methods
 
+
     public async Task RemoveOrderItem(OrderItem orderItem)
     {
         CurrentOrder.OrderItems.Remove(orderItem);
@@ -153,6 +154,7 @@ public partial class OrderDetailsViewModel : ObservableValidator, INavigationAwa
         AvailableProducts.Insert(index, temp);
     }
     
+
     public async Task UpdateOrderItem(OrderItem orderItem, int difference)
     {
         int index = CurrentOrder.OrderItems.IndexOf(orderItem);
@@ -175,6 +177,7 @@ public partial class OrderDetailsViewModel : ObservableValidator, INavigationAwa
         temp.Quantity = resultValue;
         AvailableProducts.Insert(index, temp);
     }
+
 
     public void InsertOrderItem(Product product, int quantity)
     {
@@ -211,7 +214,7 @@ public partial class OrderDetailsViewModel : ObservableValidator, INavigationAwa
     }
 
 
-    public async void LoadProducts()
+    public async Task LoadProducts()
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {

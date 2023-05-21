@@ -90,7 +90,7 @@ public sealed partial class SettingsPage
         App.GetService<PharmaciesGridViewModel>().Source.Clear();
 
 
-        App.GetService<IRepositoryControllerService>().SetupDataBase();
+        App.GetService<IRepositoryControllerService>().RestartDataBase();
 
         Notification.Content = "Data restored";
         Notification.Style = NotificationHelper.SuccessStyle;

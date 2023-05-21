@@ -33,6 +33,23 @@ public class Order
         Id = id;
     }
 
+    public Order
+    (
+        int id,
+        Hospital hospitalCustomer,
+        Address shippingAddress,
+        Pharmacy pharmacySeller,
+        List<OrderItem> orderItems) : this
+            (
+                id,
+                hospitalCustomer,
+                shippingAddress,
+                pharmacySeller
+            )
+    {
+        Items = orderItems;
+    }
+
     public Order() { }
 
     #endregion

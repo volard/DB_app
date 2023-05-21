@@ -11,5 +11,5 @@ public interface IRepositoryControllerService
     IHospitalRepository Hospitals  { get; }
     IMedicineRepository Medicines  { get; }
 
-    public void SetupDataBase();
+    public void RestartDataBase();
 }
