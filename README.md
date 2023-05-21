@@ -2,11 +2,10 @@
     <picture>
       <img src="/SolutionItems/logo.svg" height="156">
     </picture>
-  <br/>
-    <h1 size= font-weight="bold" color="#000205" align="center">MMS
+    <h4 size= font-weight="bold" color="#000205" align="center">MMS
       <br/>
-      Medicine Management System</h1>
-      <h4 align="center">Dumb-ass Windows native application to control turnover of medicines on a market</h3>
+      Medicine Management System</h4>
+      <p align="center">Dumb-ass Windows native application to control turnover of medicines on a market</p>
 </p>
 
 
