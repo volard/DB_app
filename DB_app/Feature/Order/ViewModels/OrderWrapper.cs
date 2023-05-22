@@ -212,11 +212,84 @@ public sealed partial class OrderWrapper : ObservableValidator, IEditableObject
         OrderItems = new ObservableCollection<OrderItem>(OrderData.Items);
     }
 
-    
+
     #endregion
     /**************************************/
-    
-    
+
+
+
+
+
+
+
+    public ObservableCollection<Hospital> AvailableHospitals = new ObservableCollection<Hospital>();
+
+    [ObservableProperty]
+    private bool _isShippingAddressesLoading;
+
+
+    [ObservableProperty]
+    private bool _isHospitalsLoading;
+
+
+    public ObservableCollection<Address> AvailableShippingAddresses = new ObservableCollection<Address>();
+
+
+
+    public async Task LoadAvailableShippingAddresses(int hospitalId)
+    {
+        await _dispatcherQueue.EnqueueAsync(() =>
+        {
+            IsShippingAddressesLoading = true;
+        });
+
+        IEnumerable<Address>? items = await Task.Run(async () =>
+        {
+            var origin = await _repositoryControllerService.Hospitals.GetHospitalLocations(hospitalId);
+            return origin.Select(el => el.Address);
+        });
+
+        await _dispatcherQueue.EnqueueAsync(() =>
+        {
+            AvailableShippingAddresses.Clear();
+            foreach (var item in items)
+            {
+                AvailableShippingAddresses.Add(item);
+            }
+
+            IsShippingAddressesLoading = false;
+        });
+    }
+
+
+
+
+
+    public async Task LoadAvailableHospitals()
+    {
+        await _dispatcherQueue.EnqueueAsync(() =>
+        {
+            IsHospitalsLoading = true;
+        });
+
+        IEnumerable<Hospital>? items = await Task.Run(_repositoryControllerService.Hospitals.GetAsync);
+
+        await _dispatcherQueue.EnqueueAsync(() =>
+        {
+            AvailableHospitals.Clear();
+            foreach (var item in items)
+            {
+                AvailableHospitals.Add(item);
+            }
+
+            IsHospitalsLoading = false;
+        });
+    }
+
+
+
+
+
     /**************************************/
     #region IEditable implementation
 

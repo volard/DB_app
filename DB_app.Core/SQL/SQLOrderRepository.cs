@@ -24,7 +24,7 @@ public class SQLOrderRepository : IOrderRepository
         {
             _db.Orders.Remove(foundOrder);
             await _db.SaveChangesAsync();
-            Debug.WriteLine("DeleteAsync - Order : " + foundOrder + "was succesfully deleted from the Database");
+            Debug.WriteLine("DeleteAsync - Order : " + foundOrder + "was successfully deleted from the Database");
         }
         else
         {
@@ -33,9 +33,10 @@ public class SQLOrderRepository : IOrderRepository
     }
 
     public async Task<IEnumerable<Order>> GetAsync()
-    {
+    { // big boi incoming
         return await _db.Orders
                 .Include(order => order.HospitalCustomer)
+                .Include(order => order.HospitalCustomer.Locations)
                 .Include(order => order.ShippingAddress)
                 .Include(order => order.Items)
                 .ThenInclude(items => items.Product)
@@ -78,7 +79,7 @@ public class SQLOrderRepository : IOrderRepository
         {
             _db.Entry(foundOrder).CurrentValues.SetValues(order);
             await _db.SaveChangesAsync();
-            Debug.WriteLine("UpdateAsync - Order : " + foundOrder.Id + " was succesfully updated in the Database");
+            Debug.WriteLine("UpdateAsync - Order : " + foundOrder.Id + " was successfully updated in the Database");
         }
         else
         {

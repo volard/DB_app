@@ -22,7 +22,8 @@ public class Order
             int id,
             Hospital hospitalCustomer,
             Address  shippingAddress,
-            Pharmacy pharmacySeller
+            Pharmacy pharmacySeller,
+            DateTime placed
         ) : this
             (
                 hospitalCustomer,
@@ -31,7 +32,26 @@ public class Order
             )
     {
         Id = id;
+        DatePlaced = placed; 
     }
+
+
+    public Order
+    (
+        int id,
+        Hospital hospitalCustomer,
+        Address shippingAddress,
+        Pharmacy pharmacySeller
+    ) : this
+    (
+        hospitalCustomer,
+        shippingAddress,
+        pharmacySeller
+    )
+    {
+        Id = id;
+    }
+
 
     public Order
     (

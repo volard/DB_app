@@ -26,6 +26,7 @@ public class SQLHospitalRepository : IHospitalRepository
     {
         return await _db.Hospitals
             .Include(hospital => hospital.Locations)
+            .ThenInclude(location => location.Address)
             .Where(hospital => hospital.IsActive)
             .ToListAsync();
     }

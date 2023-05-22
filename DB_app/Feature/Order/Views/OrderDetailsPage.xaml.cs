@@ -11,8 +11,11 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Navigation;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
+using System.Linq;
 
 namespace DB_app.Views;
 
@@ -22,8 +25,6 @@ public sealed partial class OrderDetailsPage : Page
 
     public OrderDetailsViewModel ViewModel { get; } = App.GetService<OrderDetailsViewModel>();
 
-
-    private INotifyDataErrorInfo? OldDataContext { get; set; }
 
     /**************************************/
     #region Constructors
@@ -88,12 +89,10 @@ public sealed partial class OrderDetailsPage : Page
         if (ViewModel.CurrentOrder.IsInEdit)
         {
             await ViewModel.LoadProducts();
-            ViewModel.LoadAvailableHospitals();
-
+            await ViewModel.CurrentOrder.LoadAvailableHospitals();
         }
 
 
-        base.OnNavigatedTo(e);
     }
 
     private async void DeleteButton_Click(object? sender, RoutedEventArgs e)
@@ -122,61 +121,6 @@ public sealed partial class OrderDetailsPage : Page
         Frame.Navigate(typeof(OrderDetailsPage));
         Frame.BackStack.Remove(Frame.BackStack.Last());
     }
-
-
-    /// <summary>
-    /// Refreshes the errors currently displayed.
-    /// </summary>
-    private void RefreshErrors(string paramName)
-    {
-        ValidationResult? result = ViewModel.CurrentOrder.GetErrors(paramName).OfType<ValidationResult>().FirstOrDefault();
-        FontIcon? icon = StackPanel.FindName(paramName + "Icon") as FontIcon;
-        if (icon == null) { return; }
-        icon!.Visibility = result is not null ? Visibility.Visible : Visibility.Collapsed;
-        if (result is not null)
-        {
-            ToolTipService.SetToolTip(icon, result.ErrorMessage);
-        }
-    }
-
-
-    /// <summary>
-    /// Updates the bindings whenever the data context changes.
-    /// </summary>
-    private void Element_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
-    {
-        if (OldDataContext is not null)
-        {
-            OldDataContext.ErrorsChanged -= DataContext_ErrorsChanged;
-        }
-
-        if (args.NewValue is not INotifyDataErrorInfo dataContext) return;
-        
-        OldDataContext = dataContext;
-        OldDataContext.ErrorsChanged += DataContext_ErrorsChanged;
-    }
-
-
-    /// <summary>
-    /// Invokes <see cref="RefreshErrors"/> whenever the data context requires it.
-    /// </summary>
-    /// <param name="sender"><see cref="ProductWrapper"/> object</param>
-    /// <param name="e"></param>    
-    private void DataContext_ErrorsChanged(object? sender, DataErrorsChangedEventArgs e)
-    {
-        if (e.PropertyName != null)
-            RefreshErrors(e.PropertyName);
-    }
-
-
-    /// <summary>
-    /// Refreshes errors on combobox selection changes
-    /// </summary>
-    private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        RefreshErrors(((ComboBox)sender).Name);
-    }
-
 
     
 
@@ -259,16 +203,20 @@ public sealed partial class OrderDetailsPage : Page
     private async void BeginEdit_Click(object sender, RoutedEventArgs e)
     {
         await ViewModel.LoadProducts();
-        ViewModel.LoadAvailableHospitals();
+        await ViewModel.CurrentOrder.LoadAvailableHospitals();
+
+        HospitalCustomerComboBox.SelectedItem = ViewModel.CurrentOrder.OrderHospital;
         ViewModel.CurrentOrder.BeginEdit();
     }
 
     
-    private void HospitalCustomerComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    private async void HospitalCustomerComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (sender is not ComboBox comboBox) return;
         if (comboBox.SelectedItem is not Hospital selectedHospital) return;
-        ViewModel.LoadAvailableShippingAddresses(selectedHospital.Id);
+        await ViewModel.CurrentOrder.LoadAvailableShippingAddresses(selectedHospital.Id);
+        ShippingAddressComboBox.SelectedItem = ViewModel.CurrentOrder.SelectedAddress;
     }
 
 }
+ 

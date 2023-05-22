@@ -18,12 +18,7 @@ public partial class OrderDetailsViewModel : ObservableValidator, INavigationAwa
     #region Navigation implementation
 
     
-    public void OnNavigatedTo(object? parameter)
-        {
-            //if (parameter is not OrderWrapper model) return;
-            //CurrentOrder = model;
-            //CurrentOrder.Backup();
-        }
+    public void OnNavigatedTo(object? parameter) { }
     
     public void OnNavigatedFrom() { /* Not used */ }
 
@@ -31,28 +26,6 @@ public partial class OrderDetailsViewModel : ObservableValidator, INavigationAwa
     #endregion
     /**************************************/
 
-
-
-    public async void LoadAvailableHospitals()
-    {
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            IsHospitalsLoading = true;
-        });
-
-        IEnumerable<Hospital>? items = await Task.Run(_repositoryControllerService.Hospitals.GetAsync);
-
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            AvailableHospitals.Clear();
-            foreach (var item in items)
-            {
-                AvailableHospitals.Add(item);
-            }
-
-            IsHospitalsLoading = false;
-        });
-    }
 
 
     /**************************************/
@@ -64,44 +37,7 @@ public partial class OrderDetailsViewModel : ObservableValidator, INavigationAwa
     private readonly IRepositoryControllerService _repositoryControllerService = App.GetService<IRepositoryControllerService>();
     
     
-    public ObservableCollection<Hospital> AvailableHospitals = new ObservableCollection<Hospital>();
-
-    [ObservableProperty]
-    private bool _isShippingAddressesLoading;
-
     
-    [ObservableProperty]
-    private bool _isHospitalsLoading;
-
-    
-    public ObservableCollection<Address> AvailableShippingAddresses = new ObservableCollection<Address>();
-
-
-
-    public async void LoadAvailableShippingAddresses(int hospitalId)
-    {
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            IsShippingAddressesLoading = true;
-        });
-
-        IEnumerable<Address>? items = await Task.Run(async () =>
-        {
-            var origin =  await _repositoryControllerService.Hospitals.GetHospitalLocations(hospitalId);
-            return origin.Select(el => el.Address);
-        });
-
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            AvailableShippingAddresses.Clear();
-            foreach (var item in items)
-            {
-                AvailableShippingAddresses.Add(item);
-            }
-
-            IsShippingAddressesLoading = false;
-        });
-    }
 
 
 

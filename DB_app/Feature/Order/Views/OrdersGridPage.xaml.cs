@@ -64,7 +64,6 @@ public sealed partial class OrdersGridPage : Page
 
     private void ViewButton_Click(object sender, RoutedEventArgs e) =>
         Frame.Navigate(typeof(OrderDetailsPage), ViewModel.SelectedItem, new DrillInNavigationTransitionInfo());
-    //App.GetService<INavigationService>().NavigateTo(typeof(OrderDetailsViewModel).FullName!, ViewModel.SelectedItem);
 
 
     private async void DeleteButton_Click(object sender, RoutedEventArgs e) =>
@@ -75,7 +74,8 @@ public sealed partial class OrdersGridPage : Page
     {
         if(ViewModel.SelectedItem == null) return;
         ViewModel.SelectedItem.IsInEdit = true;
-        App.GetService<INavigationService>().NavigateTo(typeof(OrderDetailsViewModel).FullName!, ViewModel.SelectedItem);
+        //App.GetService<INavigationService>().NavigateTo(typeof(OrderDetailsViewModel).FullName!, ViewModel.SelectedItem);
+        Frame.Navigate(typeof(OrderDetailsPage), ViewModel.SelectedItem, new DrillInNavigationTransitionInfo());
     }
 
     #endregion

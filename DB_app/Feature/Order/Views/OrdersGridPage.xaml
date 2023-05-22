@@ -37,6 +37,7 @@
                     Label="Add new"
                     ToolTipService.ToolTip="Add new"
                     x:Name="CommandBarAddButton" />
+
                 <AppBarButton
                     Click="ViewButton_Click"
                     Icon="OpenLocal"
@@ -107,6 +108,8 @@
                             </DataTemplate>
                         </toolkit:DataGridTemplateColumn.CellTemplate>
                     </toolkit:DataGridTemplateColumn>
+
+                    <toolkit:DataGridTextColumn Binding="{Binding SelectedAddress}" Header="Shipping address" />
 
 
                     <toolkit:DataGridTemplateColumn Header="Date">

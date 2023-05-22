@@ -1,11 +1,20 @@
 ﻿using DB_app.Models;
-using Npgsql;
 
 namespace DB_app.Repository.SQL;
 
 // ReSharper disable StringLiteralTypo
 public static class DataSeeder
 {
+
+    private static Random gen = new Random();
+    private static DateTime start = new DateTime(2012, 1, 1);
+    private static int range = (DateTime.Today - start).Days;
+    private static DateTime RandomDay()
+    {
+        return start.AddDays(gen.Next(range)).AddHours(gen.Next(23)).AddMinutes(gen.Next(59)).AddSeconds(gen.Next(59));
+    }
+
+
     public static void ClearData(SQLContext dbContext)
     {
         // NOTE be careful with deletion order...
@@ -274,14 +283,76 @@ public static class DataSeeder
         dbContext.Products.AddRange(products);
 
 
-        
+
 
         var orders = new List<Order>()
         {
-            new Order(0, hospitals[3], hospitals[3].Locations[0].Address, pharmacies[4])
+            new Order(1, hospitals[3], hospitals[3].Locations[0].Address, pharmacies[0], RandomDay()),
+            new Order(2, hospitals[3], hospitals[3].Locations[0].Address, pharmacies[0], RandomDay()),
+            new Order(3, hospitals[3], hospitals[3].Locations[0].Address, pharmacies[9], RandomDay()),
+            new Order(4, hospitals[3], hospitals[3].Locations[1].Address, pharmacies[4], RandomDay()),
+            new Order(5, hospitals[3], hospitals[3].Locations[0].Address, pharmacies[3], RandomDay()),
+            new Order(6, hospitals[6], hospitals[6].Locations[0].Address, pharmacies[5], RandomDay()),
+            new Order(7, hospitals[6], hospitals[6].Locations[0].Address, pharmacies[4], RandomDay()),
+            new Order(8, hospitals[6], hospitals[6].Locations[1].Address, pharmacies[4], RandomDay()),
+            new Order(9, hospitals[7], hospitals[7].Locations[0].Address, pharmacies[7], RandomDay()),
+            new Order(10, hospitals[7], hospitals[7].Locations[2].Address, pharmacies[4], RandomDay()),
+            new Order(11, hospitals[8], hospitals[8].Locations[0].Address, pharmacies[8], RandomDay()),
+            new Order(12, hospitals[3], hospitals[3].Locations[1].Address, pharmacies[4], RandomDay()),
+            new Order(13, hospitals[0], hospitals[0].Locations[0].Address, pharmacies[1], RandomDay())
         };
 
-        List<OrderItem> orderItems = new List<OrderItem>() { new OrderItem(orders[0], products[5], 234) };
+        List<OrderItem> orderItems = new List<OrderItem>()
+        {
+            new OrderItem(1, orders[0], products[5], 234),
+            new OrderItem(2, orders[5], products[6], 34),
+            new OrderItem(3, orders[5], products[8], 4),
+            new OrderItem(4, orders[1], products[2], 87),
+            new OrderItem(5, orders[5], products[13], 24),
+            new OrderItem(6, orders[5], products[25], 16),
+            new OrderItem(7, orders[5], products[5], 234),
+            new OrderItem(8, orders[5], products[5], 14),
+            new OrderItem(9, orders[5], products[18], 234),
+            new OrderItem(10, orders[8], products[5], 234),
+            new OrderItem(11, orders[11], products[19], 234),
+            new OrderItem(12, orders[0], products[5], 234),
+            new OrderItem(13, orders[0], products[5], 34),
+            new OrderItem(14, orders[11], products[5], 234),
+            new OrderItem(15, orders[0], products[17], 45),
+            new OrderItem(16, orders[0], products[20], 234),
+            new OrderItem(17, orders[5], products[4], 18),
+            new OrderItem(18, orders[0], products[5], 39),
+            new OrderItem(19, orders[0], products[5], 146),
+            new OrderItem(20, orders[2], products[14], 12),
+            new OrderItem(21, orders[4], products[5], 234),
+            new OrderItem(22, orders[7], products[17], 234),
+            new OrderItem(23, orders[0], products[5], 234),
+            new OrderItem(24, orders[0], products[19], 234),
+            new OrderItem(25, orders[1], products[20], 56),
+            new OrderItem(26, orders[10], products[5], 34),
+            new OrderItem(27, orders[0], products[20], 234),
+            new OrderItem(28,orders[10], products[5], 234),
+            new OrderItem(29,orders[0], products[8], 47),
+            new OrderItem(30,orders[8], products[5], 234),
+            new OrderItem(31,orders[0], products[14], 257),
+            new OrderItem(32, orders[9], products[5], 34),
+            new OrderItem(33,orders[0], products[8], 234),
+            new OrderItem(34, orders[11], products[5], 17),
+            new OrderItem(35,orders[3], products[5], 13),
+            new OrderItem(36,orders[6], products[14], 34),
+            new OrderItem(37,orders[0], products[17], 47),
+            new OrderItem(38,orders[8], products[5], 48),
+            new OrderItem(39,orders[6], products[14], 15),
+            new OrderItem(40, orders[9], products[10], 34),
+            new OrderItem(41, orders[0], products[8], 546),
+            new OrderItem(42, orders[11], products[13], 67),
+
+            new OrderItem(43,orders[12], products[24], 10),
+            new OrderItem(44, orders[12], products[9], 34),
+            new OrderItem(45, orders[12], products[8],626),
+            new OrderItem(46, orders[12], products[3], 87),
+        };
+
 
         dbContext.Orders.AddRange(orders);
         dbContext.OrderItems.AddRange(orderItems);

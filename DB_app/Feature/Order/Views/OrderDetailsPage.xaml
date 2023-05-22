@@ -1,8 +1,7 @@
 ﻿<Page
-    d:DataContext="{d:DesignInstance Type=viewModel:ProductWrapper}"
-    mc:Ignorable="d"
     x:Class="DB_app.Views.OrderDetailsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="using:DB_app.Behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:DB_app.Helpers"
@@ -12,7 +11,8 @@
     xmlns:sys="using:System"
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:viewModel="using:DB_app.ViewModels"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    d:DataContext="{d:DesignInstance Type=viewModel:ProductWrapper}"
+    mc:Ignorable="d">
 
 
     <Page.Resources>
@@ -24,8 +24,8 @@
         <helpers:StringFormatConverter x:Key="StringFormatConverter" />
 
 
-        <DataTemplate x:DataType="models:OrderItem" x:Key="DefaultLineItemTemplate">
-            <Grid HorizontalAlignment="Stretch" Margin="20,8">
+        <DataTemplate x:Key="DefaultLineItemTemplate" x:DataType="models:OrderItem">
+            <Grid Margin="20,8" HorizontalAlignment="Stretch">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
@@ -35,26 +35,26 @@
                 </Grid.ColumnDefinitions>
                 <TextBlock
                     Grid.Column="0"
-                    Text="{x:Bind Product.Pharmacy.Name}"
-                    VerticalAlignment="Center" />
+                    VerticalAlignment="Center"
+                    Text="{x:Bind Product.Pharmacy.Name}" />
                 <TextBlock
                     Grid.Column="1"
-                    Text="{x:Bind Product.Medicine.Name}"
-                    VerticalAlignment="Center" />
+                    VerticalAlignment="Center"
+                    Text="{x:Bind Product.Medicine.Name}" />
                 <TextBlock
                     Grid.Column="2"
-                    Text="{x:Bind Product.Medicine.Type}"
-                    VerticalAlignment="Center" />
+                    VerticalAlignment="Center"
+                    Text="{x:Bind Product.Medicine.Type}" />
                 <TextBlock
                     Grid.Column="3"
                     HorizontalAlignment="Right"
-                    Text="{x:Bind sys:String.Format('\{0:c\}', Product.Price)}"
-                    VerticalAlignment="Center" />
+                    VerticalAlignment="Center"
+                    Text="{x:Bind sys:String.Format('\{0:c\}', Product.Price)}" />
                 <TextBlock
                     Grid.Column="4"
                     HorizontalAlignment="Right"
-                    Text="{x:Bind Quantity}"
-                    VerticalAlignment="Center" />
+                    VerticalAlignment="Center"
+                    Text="{x:Bind Quantity}" />
 
             </Grid>
         </DataTemplate>
@@ -67,24 +67,24 @@
     <behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
         <DataTemplate x:DataType="viewModel:OrderDetailsViewModel">
             <CommandBar
+                HorizontalAlignment="Stretch"
                 Background="Transparent"
-                DefaultLabelPosition="Right"
-                HorizontalAlignment="Stretch">
+                DefaultLabelPosition="Right">
                 <CommandBar.Content>
                     <Grid>
 
                         <TextBlock
+                            x:Name="Title"
                             Margin="10,0,0,0"
                             Style="{ThemeResource TitleTextBlockStyle}"
-                            Text="{x:Bind PageTitle, Mode=OneWay}"
-                            x:Name="Title" />
+                            Text="{x:Bind PageTitle, Mode=OneWay}" />
 
                         <InfoBadge
+                            Width="11"
                             Height="11"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Visibility="{x:Bind CurrentOrder.IsModified, Mode=OneWay}"
-                            Width="11">
+                            Visibility="{x:Bind CurrentOrder.IsModified, Mode=OneWay}">
 
                             <InfoBadge.IconSource>
                                 <FontIconSource FontFamily="Segoe Fluent Icons" Glyph="&#xEB52;" />
@@ -156,9 +156,9 @@
     <!--#region Page content-->
     <Grid VerticalAlignment="Stretch">
         <Grid
+            x:Name="RootGrid"
             Padding="10,10"
-            VerticalAlignment="Stretch"
-            x:Name="RootGrid">
+            VerticalAlignment="Stretch">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
@@ -168,10 +168,10 @@
             <!--#region Actual order info section-->
             <ScrollViewer
                 Grid.Row="0"
-                HorizontalAlignment="Stretch"
-                Padding="0,0,10,30">
+                Padding="0,0,10,30"
+                HorizontalAlignment="Stretch">
 
-                <StackPanel VerticalAlignment="Stretch" x:Name="StackPanel">
+                <StackPanel x:Name="StackPanel" VerticalAlignment="Stretch">
                     <StackPanel.Resources>
                         <Style TargetType="muxc:Expander">
                             <Setter Property="HorizontalAlignment" Value="Stretch" />
@@ -180,69 +180,87 @@
                         </Style>
                     </StackPanel.Resources>
 
+
                     <!--#region General order data-->
                     <RelativePanel HorizontalAlignment="Stretch">
                         <ComboBox
-                            Header="Customer"
-                            ItemsSource="{x:Bind ViewModel.AvailableHospitals, Mode=OneWay}"
-                            Margin="0,20,16,8"
-                            PlaceholderText="Select hospital"
-                            IsEnabled="{x:Bind ViewModel.CurrentOrder.IsInEdit, Mode=OneWay}"
-                            SelectedItem="{x:Bind ViewModel.CurrentOrder.OrderHospital, Mode=OneWay}"
-                            SelectionChanged="HospitalCustomerComboBox_OnSelectionChanged"
+                            x:Name="HospitalCustomerComboBox"
                             Width="380"
-                            x:Name="HospitalCustomerComboBox" />
+                            Margin="0,20,16,8"
+                            Header="Customer"
+                            ItemsSource="{x:Bind ViewModel.CurrentOrder.AvailableHospitals, Mode=OneWay}"
+                            PlaceholderText="Select hospital"
+                            SelectedItem="{x:Bind ViewModel.CurrentOrder.OrderHospital, Mode=TwoWay}"
+                            SelectionChanged="HospitalCustomerComboBox_OnSelectionChanged"
+                            Visibility="{x:Bind ViewModel.CurrentOrder.IsInEdit, Converter={StaticResource VisibleIf}, Mode=OneWay}" />
+
+
+                        <TextBox
+                            x:Name="CustomerTextBox"
+                            MinWidth="380"
+                            Margin="0,20,16,8"
+                            Header="Customer"
+                            IsReadOnly="True"
+                            Text="{x:Bind ViewModel.CurrentOrder.OrderHospital, Mode=OneWay}"
+                            Visibility="{x:Bind ViewModel.CurrentOrder.IsInEdit, Converter={StaticResource CollapsedIf}, Mode=OneWay}" />
+
+                        <TextBox
+                            MinWidth="380"
+                            Margin="0,20,16,8"
+                            Header="Shipping address"
+                            IsReadOnly="True"
+                            RelativePanel.Below="CustomerTextBox"
+                            Text="{x:Bind ViewModel.CurrentOrder.SelectedAddress, Mode=OneWay}"
+                            Visibility="{x:Bind ViewModel.CurrentOrder.IsInEdit, Converter={StaticResource CollapsedIf}, Mode=OneWay}" />
+
 
                         <ComboBox
-                            DataContext="{x:Bind ViewModel.CurrentOrder, Mode=OneWay}"
-                            DataContextChanged="Element_DataContextChanged"
-                            Header="Shipping address"
-                            IsEnabled="{x:Bind ViewModel.CurrentOrder.OrderHospital, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
-                            ItemsSource="{x:Bind ViewModel.AvailableShippingAddresses, Mode=OneWay}"
-                            Margin="0,20,16,8"
-                            PlaceholderText="Select address"
-                            RelativePanel.Below="HospitalCustomerComboBox"
-                            SelectedItem="{x:Bind ViewModel.CurrentOrder.SelectedAddress, Mode=TwoWay}"
-                            SelectionChanged="ComboBox_SelectionChanged"
+                            x:Name="ShippingAddressComboBox"
                             Width="380"
-                            x:Name="ShippingAddressComboBox" />
+                            Margin="0,20,16,8"
+                            Header="Shipping address"
+                            ItemsSource="{x:Bind ViewModel.CurrentOrder.AvailableShippingAddresses, Mode=OneWay}"
+                            Visibility="{x:Bind ViewModel.CurrentOrder.IsInEdit, Converter={StaticResource VisibleIf}, Mode=OneWay}"
+                            RelativePanel.Below="HospitalCustomerComboBox"
+                            SelectedItem="{x:Bind ViewModel.CurrentOrder.SelectedAddress, Mode=OneWay}" />
 
                         <FontIcon
+                            x:Name="ShippingAddressComboBoxIcon"
+                            Margin="0,20,16,8"
                             FontSize="20"
                             Foreground="Orange"
                             Glyph="&#xE814;"
-                            Margin="0,20,16,8"
                             RelativePanel.AlignVerticalCenterWith="ShippingAddressComboBox"
                             RelativePanel.RightOf="ShippingAddressComboBox"
-                            Visibility="Collapsed"
-                            x:Name="ShippingAddressComboBoxIcon" />
+                            Visibility="Collapsed" />
 
                         <TextBlock
+                            x:Name="DatePlacedHeader"
+                            Margin="0,20,0,0"
                             RelativePanel.AlignRightWithPanel="True"
-                            RelativePanel.AlignVerticalCenterWith="HospitalCustomerComboBox"
+                            RelativePanel.AlignTopWithPanel="True"
                             Style="{ThemeResource SubtitleTextBlockStyle}"
-                            Text="Date placed"
-                            x:Name="DatePlacedHeader" />
+                            Text="Date placed" />
 
                         <TextBlock
-                            FontStyle="Italic"
+                            x:Name="DatePlacedTextBox"
                             Margin="0,10,0,0"
+                            FontStyle="Italic"
                             RelativePanel.AlignRightWithPanel="True"
                             RelativePanel.Below="DatePlacedHeader"
-                            Text="{x:Bind ViewModel.CurrentOrder.DatePlaced, Converter={StaticResource StringFormatConverter}, ConverterParameter='MM-dd-yy │ H:mm:ss', Mode=OneWay}"
-                            x:Name="DatePlacedTextBox" />
+                            Text="{x:Bind ViewModel.CurrentOrder.DatePlaced, Converter={StaticResource StringFormatConverter}, ConverterParameter='MM-dd-yy │ H:mm:ss', Mode=OneWay}" />
 
                         <TextBlock
+                            x:Name="TotalHeader"
                             Margin="0,15,0,0"
                             RelativePanel.AlignRightWithPanel="True"
                             RelativePanel.Below="DatePlacedTextBox"
                             Style="{ThemeResource SubtitleTextBlockStyle}"
-                            Text="Total"
-                            x:Name="TotalHeader" />
+                            Text="Total" />
 
                         <TextBlock
-                            FontStyle="Italic"
                             Margin="0,10,0,0"
+                            FontStyle="Italic"
                             RelativePanel.AlignRightWithPanel="True"
                             RelativePanel.Below="TotalHeader"
                             Text="{x:Bind ViewModel.CurrentOrder.Total, Converter={StaticResource StringFormatConverter}, ConverterParameter='0:N2', Mode=OneWay}" />
@@ -253,18 +271,18 @@
 
                     <!--#region Order items expandable section-->
                     <muxc:Expander
-                        ExpandDirection="Down"
-                        IsExpanded="True"
+                        x:Name="ExpanderItems"
                         Margin="0,20,0,0"
-                        x:Name="ExpanderItems">
+                        ExpandDirection="Down"
+                        IsExpanded="True">
 
                         <muxc:Expander.Header>
                             <Grid>
                                 <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="Order items" />
                                 <TextBlock
                                     HorizontalAlignment="Right"
-                                    Text="{x:Bind ViewModel.CurrentOrder.OrderItems.Count, Mode=OneWay}"
-                                    VerticalAlignment="Center" />
+                                    VerticalAlignment="Center"
+                                    Text="{x:Bind ViewModel.CurrentOrder.OrderItems.Count, Mode=OneWay}" />
                             </Grid>
                         </muxc:Expander.Header>
 
@@ -272,7 +290,7 @@
                             <StackPanel HorizontalAlignment="Stretch">
 
                                 <!--#region  Order items header-->
-                                <Grid Margin="20,8" x:Name="DefaultLineItemsHeader">
+                                <Grid x:Name="DefaultLineItemsHeader" Margin="20,8">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="*" />
@@ -282,29 +300,29 @@
                                     </Grid.ColumnDefinitions>
 
                                     <TextBlock
-                                        FontWeight="SemiBold"
                                         Grid.Column="0"
+                                        FontWeight="SemiBold"
                                         Text="Pharmacy name" />
                                     <TextBlock
-                                        FontWeight="SemiBold"
                                         Grid.Column="1"
+                                        FontWeight="SemiBold"
                                         Text="Medicine name" />
                                     <TextBlock
-                                        FontWeight="SemiBold"
                                         Grid.Column="2"
+                                        FontWeight="SemiBold"
                                         Text="Type" />
                                     <TextBlock
-                                        FontWeight="SemiBold"
                                         Grid.Column="3"
                                         HorizontalAlignment="Right"
-                                        Text="Price"
-                                        VerticalAlignment="Bottom" />
-                                    <TextBlock
+                                        VerticalAlignment="Bottom"
                                         FontWeight="SemiBold"
+                                        Text="Price" />
+                                    <TextBlock
                                         Grid.Column="4"
                                         HorizontalAlignment="Right"
-                                        Text="Quantity"
-                                        VerticalAlignment="Bottom" />
+                                        VerticalAlignment="Bottom"
+                                        FontWeight="SemiBold"
+                                        Text="Quantity" />
                                 </Grid>
                                 <!--#endregion-->
 
@@ -313,12 +331,12 @@
 
                                 <Grid>
                                     <ListView
+                                        x:Name="OrderList"
+                                        IsEnabled="{x:Bind ViewModel.CurrentOrder.IsInEdit, Mode=OneWay}"
                                         ItemTemplate="{StaticResource DefaultLineItemTemplate}"
                                         ItemsSource="{x:Bind ViewModel.CurrentOrder.OrderItems, Mode=OneWay}"
                                         SelectionChanged="ListView_SelectionChanged"
-                                        SelectionMode="Single"
-                                        IsEnabled="{x:Bind ViewModel.CurrentOrder.IsInEdit, Mode=OneWay}"
-                                        x:Name="OrderList">
+                                        SelectionMode="Single">
 
                                         <ListView.ItemContainerStyle>
                                             <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
@@ -344,16 +362,16 @@
 
             <!--#region Section splitter-->
             <toolkit:GridSplitter
-                CursorBehavior="ChangeOnSplitterHover"
                 Grid.Row="1"
-                GripperCursor="SizeNorthSouth"
-                Height="15"
+                Height="25"
                 VerticalAlignment="Top"
-                Visibility="{x:Bind ViewModel.CurrentOrder.IsInEdit, Converter={StaticResource VisibleIf}, Mode=OneWay}" >
+                CursorBehavior="ChangeOnSplitterHover"
+                GripperCursor="SizeNorthSouth"
+                Visibility="{x:Bind ViewModel.CurrentOrder.IsInEdit, Converter={StaticResource VisibleIf}, Mode=OneWay}">
                 <toolkit:GridSplitter.Template>
                     <ControlTemplate TargetType="toolkit:GridSplitter">
-                        <Grid  HorizontalAlignment="Stretch">
-                            <Button HorizontalAlignment="Stretch" Content="┈" />
+                        <Grid HorizontalAlignment="Stretch">
+                            <Button HorizontalAlignment="Stretch" Content="---" />
                             <Rectangle HorizontalAlignment="Stretch" Fill="#00FFFFFF" />
                         </Grid>
                     </ControlTemplate>
@@ -366,11 +384,13 @@
             <!--#region Available products-->
             <RelativePanel
                 Grid.Row="1"
-                Padding="0,20,30,0"
+                Padding="0,40,30,0"
                 VerticalAlignment="Stretch"
                 Visibility="{x:Bind ViewModel.CurrentOrder.IsInEdit, Converter={StaticResource VisibleIf}, Mode=OneWay}">
 
                 <toolkit:DataGrid
+                    x:Name="MedicineMarketGrid"
+                    Margin="0,5,0,0"
                     AutoGenerateColumns="False"
                     CanUserReorderColumns="False"
                     CanUserResizeColumns="True"
@@ -378,14 +398,12 @@
                     GridLinesVisibility="All"
                     IsReadOnly="True"
                     ItemsSource="{x:Bind ViewModel.AvailableProducts, Mode=OneWay}"
-                    Margin="0,5,0,0"
                     PointerReleased="MedicineMarketGrid_PointerPressed"
                     SelectionMode="Single"
-                    VerticalScrollBarVisibility="Visible"
-                    x:Name="MedicineMarketGrid">
+                    VerticalScrollBarVisibility="Visible">
 
                     <toolkit:DataGrid.Resources>
-                        <SolidColorBrush Color="Transparent" x:Key="DataGridColumnHeaderBackgroundColor" />
+                        <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
                     </toolkit:DataGrid.Resources>
 
                     <toolkit:DataGrid.Triggers />
@@ -432,27 +450,25 @@
 
                     <toolkit:DataGrid.Columns>
                         <toolkit:DataGridTextColumn
-                            Header="Pharmacy name"
+                            Width="30*"
                             Binding="{Binding Pharmacy.Name}"
-                            Width="30*">
-                            
-                        </toolkit:DataGridTextColumn>
+                            Header="Pharmacy name" />
                         <toolkit:DataGridTextColumn
+                            Width="30*"
                             Binding="{Binding Medicine.Name}"
-                            Header="Medicine name"
-                            Width="30*" />
+                            Header="Medicine name" />
                         <toolkit:DataGridTextColumn
+                            Width="30*"
                             Binding="{Binding Medicine.Type}"
-                            Header="Medicine type"
-                            Width="30*" />
+                            Header="Medicine type" />
                         <toolkit:DataGridTextColumn
+                            Width="30*"
                             Binding="{Binding Price}"
-                            Header="Price"
-                            Width="30*" />
+                            Header="Price" />
                         <toolkit:DataGridTextColumn
+                            Width="30*"
                             Binding="{Binding Quantity}"
-                            Header="Quantity"
-                            Width="30*" />
+                            Header="Quantity" />
                     </toolkit:DataGrid.Columns>
 
 
@@ -465,17 +481,17 @@
         </Grid>
 
         <muxc:ProgressBar
-            HorizontalAlignment="Stretch"
-            Visibility="{x:Bind ViewModel.IsProductsLoading, Converter={StaticResource VisibleIf}, Mode=OneWay}"
-            IsIndeterminate="True"
             Margin="0,30,0,0"
-            VerticalAlignment="Bottom" />
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Bottom"
+            IsIndeterminate="True"
+            Visibility="{x:Bind ViewModel.IsProductsLoading, Converter={StaticResource VisibleIf}, Mode=OneWay}" />
 
         <toolkit:InAppNotification
+            x:Name="Notification"
             RelativePanel.AlignBottomWithPanel="True"
             RelativePanel.AlignHorizontalCenterWithPanel="True"
-            StackMode="Replace"
-            x:Name="Notification" />
+            StackMode="Replace" />
     </Grid>
 
     <!--#endregion-->
