@@ -16,7 +16,6 @@ public partial class MedicineInHospitalReportViewModel : ObservableRecipient, IN
 
     public MedicineInHospitalReportViewModel()
     {
-        var some = await _repositoryControllerService.Hospitals.GetHospitalsOrderItems();
     }
 
     private readonly IRepositoryControllerService _repositoryControllerService = App.GetService<IRepositoryControllerService>();
@@ -50,10 +49,11 @@ public partial class MedicineInHospitalReportViewModel : ObservableRecipient, IN
         Source.CollectionChanged += Source_CollectionChanged;
         CollectionsHelper.LoadCollectionAsync(AvailableHospitals, _dispatcherQueue, _repositoryControllerService.Hospitals.GetAsync);
         SelectedHospital = AvailableHospitals[1];
-        LoadSource(SelectedHospital);
-
+        await LoadSource(SelectedHospital);
     }
 
+
+    // NOTE subject to change
     private void Source_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
     {
         OnPropertyChanged(nameof(Source));
@@ -67,7 +67,7 @@ public partial class MedicineInHospitalReportViewModel : ObservableRecipient, IN
     /// <summary>
     /// Retrieves items from the data source.
     /// </summary>
-    public async void LoadSource(Hospital hospital)
+    public async Task LoadSource(Hospital hospital)
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
@@ -77,22 +77,10 @@ public partial class MedicineInHospitalReportViewModel : ObservableRecipient, IN
 
         
 
-        IEnumerable<Order>? orders = await _repositoryControllerService.Orders.GetHospitalOrders(hospital.Id);
+        IEnumerable<Order>? orderItems = await _repositoryControllerService.Orders.GetHospitalsOrderItems(hospital.Id);
 
         List<string> types = new List<string>();
 
-        IEnumerable<Order> enumerable = orders.ToList();
-        foreach (Order? order in enumerable)
-        {
-            foreach(OrderItem item in order.Items)
-            {
-                if(!types.Contains(item.Product.Medicine.Type))
-                {
-                    types.Add(item.Product.Medicine.Type);
-                }
-
-            }
-        }
 
         List<double> sumsPertype = new List<double>();
 

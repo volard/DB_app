@@ -44,11 +44,13 @@ public class SQLHospitalRepository : IHospitalRepository
 
     public async Task<IEnumerable<OrderItem>> GetHospitalsOrderItems(int hospitalId)
     {
-        return await _db.OrderItems
-            .Where(item => item.RepresentingOrder.HospitalCustomer.Id == hospitalId)
+        var selected = await _db.OrderItems
+            .Include(item => item.RepresentingOrder)
+            .ThenInclude(order => order.HospitalCustomer)
             .Include(el => el.Product)
             .ThenInclude(product => product.Medicine)
             .ToListAsync();
+        return selected.Where(item => item.RepresentingOrder.HospitalCustomer.Id == hospitalId);
     }
 
 

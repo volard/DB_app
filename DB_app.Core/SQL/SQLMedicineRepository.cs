@@ -1,5 +1,6 @@
 ﻿using DB_app.Models;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Serialization;
 
 namespace DB_app.Repository.SQL;
 
@@ -14,6 +15,16 @@ public class SQLMedicineRepository : IMedicineRepository
     public SQLMedicineRepository(SQLContext db)
     {
         _db = db;
+    }
+
+    public async Task<IEnumerable<string>> GetTypes()
+    {
+        var all = await _db.Medicines.ToListAsync();
+        var types = new List<string>();
+        foreach(var medicine in all)
+        {
+            if(!types.Contains(medicine.Type))
+        }
     }
 
 

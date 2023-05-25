@@ -39,5 +39,7 @@ namespace DB_app.Repository
         /// Get only medicine by unique name
         /// </summary>
         public Task<IEnumerable<Medicine>> GetUnique();
+
+        public Task<IEnumerable<string>> GetTypes();
     }
 }
