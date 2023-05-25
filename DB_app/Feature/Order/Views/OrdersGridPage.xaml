@@ -1,8 +1,7 @@
 ﻿<Page
-    d:DataContext="{d:DesignInstance Type=vm:OrdersGridViewModel}"
-    mc:Ignorable="d"
     x:Class="DB_app.Views.OrdersGridPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="using:DB_app.Behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:DB_app.Helpers"
@@ -11,11 +10,12 @@
     xmlns:sys="using:System"
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:vm="using:DB_app.ViewModels"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    d:DataContext="{d:DesignInstance Type=vm:OrdersGridViewModel}"
+    mc:Ignorable="d">
 
     <Page.Resources>
         <helpers:IsNotNullConverter x:Key="IsNotNullConverter" />
-        <helpers:VisibleIfConverter x:Key="VisibleIfConverter"></helpers:VisibleIfConverter>
+        <helpers:VisibleIfConverter x:Key="VisibleIfConverter" />
     </Page.Resources>
 
 
@@ -23,44 +23,44 @@
     <behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
         <DataTemplate x:DataType="vm:OrdersGridViewModel">
             <CommandBar
+                HorizontalAlignment="Stretch"
                 Background="Transparent"
-                DefaultLabelPosition="Right"
-                HorizontalAlignment="Stretch">
+                DefaultLabelPosition="Right">
 
                 <CommandBar.Content>
                     <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="Orders" />
                 </CommandBar.Content>
 
                 <AppBarButton
+                    x:Name="CommandBarAddButton"
                     Click="AddButton_Click"
                     Icon="Add"
                     Label="Add new"
-                    ToolTipService.ToolTip="Add new"
-                    x:Name="CommandBarAddButton" />
+                    ToolTipService.ToolTip="Add new" />
 
                 <AppBarButton
+                    x:Name="CommandBarViewButton"
                     Click="ViewButton_Click"
                     Icon="OpenLocal"
                     IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
                     Label="View"
-                    ToolTipService.ToolTip="View"
-                    x:Name="CommandBarViewButton" />
+                    ToolTipService.ToolTip="View" />
 
                 <AppBarButton
+                    x:Name="CommandBarEditButton"
                     Click="EditButton_Click"
                     Icon="Edit"
                     IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
                     Label="Edit"
-                    ToolTipService.ToolTip="Edit"
-                    x:Name="CommandBarEditButton" />
+                    ToolTipService.ToolTip="Edit" />
 
                 <AppBarButton
+                    x:Name="CommandBarDeleteButton"
                     Click="DeleteButton_Click"
                     Icon="Delete"
                     IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
                     Label="Delete"
-                    ToolTipService.ToolTip="Delete"
-                    x:Name="CommandBarDeleteButton" />
+                    ToolTipService.ToolTip="Delete" />
 
             </CommandBar>
         </DataTemplate>
@@ -68,15 +68,14 @@
     <!--#endregion-->
 
     <Grid
-        HorizontalAlignment="Stretch"
         Padding="0,0,0,10"
+        HorizontalAlignment="Stretch"
         VerticalAlignment="Stretch">
         <Grid Padding="0,0,0,50">
 
             <toolkit:DataGrid
                 AutoGenerateColumns="False"
                 CanUserReorderColumns="False"
-                GridLinesVisibility="All"
                 IsReadOnly="True"
                 ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
                 SelectedItem="{x:Bind ViewModel.SelectedItem, Mode=TwoWay}"
@@ -86,7 +85,7 @@
 
 
                 <toolkit:DataGrid.Resources>
-                    <SolidColorBrush Color="Transparent" x:Key="DataGridColumnHeaderBackgroundColor" />
+                    <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
                 </toolkit:DataGrid.Resources>
 
                 <toolkit:DataGrid.Columns>
@@ -98,12 +97,10 @@
                     <toolkit:DataGridTemplateColumn Header="Main doctor">
                         <toolkit:DataGridTemplateColumn.CellTemplate>
                             <DataTemplate x:DataType="vm:OrderWrapper">
-                                <TextBlock
-                                    Margin="12,0"
-                                    VerticalAlignment="Center">
-                                    <Run Text="{Binding OrderHospital.Surename_main_doctor}"> </Run>
-                                    <Run Text="{Binding OrderHospital.Name_main_doctor }"> </Run>
-                                    <Run Text="{Binding OrderHospital.Middlename_main_doctor }"></Run>
+                                <TextBlock Margin="12,0" VerticalAlignment="Center">
+                                    <Run Text="{Binding OrderHospital.Surename_main_doctor}" />
+                                    <Run Text="{Binding OrderHospital.Name_main_doctor}" />
+                                    <Run Text="{Binding OrderHospital.Middlename_main_doctor}" />
                                 </TextBlock>
                             </DataTemplate>
                         </toolkit:DataGridTemplateColumn.CellTemplate>
@@ -117,8 +114,8 @@
                             <DataTemplate x:DataType="vm:OrderWrapper">
                                 <TextBlock
                                     Margin="12,0"
-                                    Text="{x:Bind sys:String.Format('\{0:MM/dd/yy\}', DatePlaced)}"
-                                    VerticalAlignment="Center" />
+                                    VerticalAlignment="Center"
+                                    Text="{x:Bind sys:String.Format('\{0:MM/dd/yy\}', DatePlaced)}" />
                             </DataTemplate>
                         </toolkit:DataGridTemplateColumn.CellTemplate>
                     </toolkit:DataGridTemplateColumn>
@@ -128,43 +125,44 @@
                             <DataTemplate x:DataType="vm:OrderWrapper">
                                 <TextBlock
                                     Margin="12,0"
-                                    Text="{x:Bind sys:String.Format('\{0:H:mm:ss\}', DatePlaced)}"
-                                    VerticalAlignment="Center" />
+                                    VerticalAlignment="Center"
+                                    Text="{x:Bind sys:String.Format('\{0:H:mm:ss\}', DatePlaced)}" />
                             </DataTemplate>
                         </toolkit:DataGridTemplateColumn.CellTemplate>
                     </toolkit:DataGridTemplateColumn>
 
 
                     <toolkit:DataGridTemplateColumn Header="Total">
-                    <toolkit:DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate x:DataType="vm:OrderWrapper">
-                            <TextBlock
-                                Margin="12,0"
-                                Text="{x:Bind sys:String.Format('\{0:c\}', Total)}"
-                                VerticalAlignment="Center" />
-                        </DataTemplate>
-                    </toolkit:DataGridTemplateColumn.CellTemplate>
+                        <toolkit:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate x:DataType="vm:OrderWrapper">
+                                <TextBlock
+                                    Margin="12,0"
+                                    VerticalAlignment="Center"
+                                    Text="{x:Bind sys:String.Format('\{0:c\}', Total)}" />
+                            </DataTemplate>
+                        </toolkit:DataGridTemplateColumn.CellTemplate>
                     </toolkit:DataGridTemplateColumn>
 
 
-                   
+
 
                 </toolkit:DataGrid.Columns>
+
             </toolkit:DataGrid>
 
             <muxc:ProgressBar
-                HorizontalAlignment="Stretch"
-                Visibility="{x:Bind ViewModel.IsLoading, Converter={StaticResource VisibleIfConverter}, Mode=OneWay}"
-                IsIndeterminate="True"
                 Margin="0,0,0,0"
-                VerticalAlignment="Top" />
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Top"
+                IsIndeterminate="True"
+                Visibility="{x:Bind ViewModel.IsLoading, Converter={StaticResource VisibleIfConverter}, Mode=OneWay}" />
         </Grid>
 
         <toolkit:InAppNotification
+            x:Name="Notification"
             RelativePanel.AlignBottomWithPanel="True"
             RelativePanel.AlignHorizontalCenterWithPanel="True"
-            StackMode="Replace"
-            x:Name="Notification" />
+            StackMode="Replace" />
 
     </Grid>
 

@@ -17,6 +17,50 @@ public class SQLMedicineRepository : IMedicineRepository
     }
 
 
+    public async Task<IEnumerable<Hospital>> GetHospitalsContaining(Medicine medicine)
+    {
+        var items = await _db.OrderItems.Where(item => item.Product.Medicine.Name == medicine.Name).ToListAsync();
+        List<Hospital> output = new();
+        foreach (OrderItem orderItem in items)
+        {
+            var hospital = orderItem.RepresentingOrder.HospitalCustomer;
+            if (!output.Contains(hospital))
+            {
+                output.Add(hospital);
+            }
+        }
+        return output;
+    }
+
+    public async Task<IEnumerable<Pharmacy>> GetPharmaciesContaining(Medicine medicine)
+    {
+        var items = await _db.Products.Where(product => product.Medicine.Name == medicine.Name).ToListAsync();
+        List<Pharmacy> output = new();
+        foreach (Product product in items)
+        {
+            var pharmacy = product.Pharmacy;
+            if (!output.Contains(pharmacy))
+            {
+                output.Add(pharmacy);
+            }
+        }
+        return output;
+    }
+
+
+    public async Task<IEnumerable<Medicine>> GetUnique()
+    {
+        var all = await _db.Medicines.ToListAsync();
+        List<Medicine> unique = new();
+        foreach (var item in all)
+        {
+            if (!unique.Contains(item))
+            {
+                unique.Add(item);
+            }
+        }
+        return unique;
+    }
 
     /// <inheritdoc/>
     public async Task<IEnumerable<Medicine>> GetAsync()

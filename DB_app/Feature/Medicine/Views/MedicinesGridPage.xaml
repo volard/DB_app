@@ -81,7 +81,6 @@
             <toolkit:DataGrid
                 AutoGenerateColumns="False"
                 CanUserReorderColumns="False"
-                GridLinesVisibility="All"
                 IsReadOnly="True"
                 ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
                 SelectedItem="{x:Bind ViewModel.SelectedItem, Mode=TwoWay}"

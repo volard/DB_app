@@ -220,9 +220,9 @@
                             Margin="0,20,16,8"
                             Header="Shipping address"
                             ItemsSource="{x:Bind ViewModel.CurrentOrder.AvailableShippingAddresses, Mode=OneWay}"
-                            Visibility="{x:Bind ViewModel.CurrentOrder.IsInEdit, Converter={StaticResource VisibleIf}, Mode=OneWay}"
                             RelativePanel.Below="HospitalCustomerComboBox"
-                            SelectedItem="{x:Bind ViewModel.CurrentOrder.SelectedAddress, Mode=OneWay}" />
+                            SelectedItem="{x:Bind ViewModel.CurrentOrder.SelectedAddress, Mode=OneWay}"
+                            Visibility="{x:Bind ViewModel.CurrentOrder.IsInEdit, Converter={StaticResource VisibleIf}, Mode=OneWay}" />
 
                         <FontIcon
                             x:Name="ShippingAddressComboBoxIcon"
@@ -395,7 +395,6 @@
                     CanUserReorderColumns="False"
                     CanUserResizeColumns="True"
                     CanUserSortColumns="True"
-                    GridLinesVisibility="All"
                     IsReadOnly="True"
                     ItemsSource="{x:Bind ViewModel.AvailableProducts, Mode=OneWay}"
                     PointerReleased="MedicineMarketGrid_PointerPressed"

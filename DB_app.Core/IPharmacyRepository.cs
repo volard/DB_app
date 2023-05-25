@@ -18,6 +18,8 @@ public interface IPharmacyRepository
     /// </summary>
     public Task<Pharmacy> GetAsync(int id);
 
+    public Task<double> GetPharmacyBudget(int pharmacyId);
+
     /// <summary>
     /// Returns all pharmacies
     /// </summary>

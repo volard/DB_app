@@ -1,7 +1,7 @@
 <Page
-    mc:Ignorable="d"
     x:Class="DB_app.Views.HospitalDetailsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="using:DB_app.Behaviors"
     xmlns:components="using:DB_app.Views.Components"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -10,7 +10,7 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:viewModel="using:DB_app.ViewModels"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    mc:Ignorable="d">
 
     <Page.Resources>
         <helpers:NotConverter x:Key="NotConverter" />
@@ -24,24 +24,24 @@
     <behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
         <DataTemplate x:DataType="viewModel:HospitalDetailsViewModel">
             <CommandBar
+                HorizontalAlignment="Stretch"
                 Background="Transparent"
-                DefaultLabelPosition="Right"
-                HorizontalAlignment="Stretch">
+                DefaultLabelPosition="Right">
                 <CommandBar.Content>
                     <Grid>
 
                         <TextBlock
+                            x:Name="Title"
                             Margin="10,0,0,0"
                             Style="{ThemeResource TitleTextBlockStyle}"
-                            Text="{x:Bind PageTitle, Mode=OneWay}"
-                            x:Name="Title" />
+                            Text="{x:Bind PageTitle, Mode=OneWay}" />
 
                         <InfoBadge
+                            Width="11"
                             Height="11"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Visibility="{x:Bind CurrentHospital.IsModified, Mode=OneWay}"
-                            Width="11">
+                            Visibility="{x:Bind CurrentHospital.IsModified, Mode=OneWay}">
 
                             <InfoBadge.IconSource>
                                 <FontIconSource FontFamily="Segoe Fluent Icons" Glyph="&#xEB52;" />
@@ -88,11 +88,11 @@
 
     <RelativePanel>
         <ScrollViewer
+            x:Name="DetailPanel"
             RelativePanel.AlignLeftWithPanel="True"
             RelativePanel.AlignRightWithPanel="True"
             VerticalScrollBarVisibility="Auto"
-            VerticalScrollMode="Auto"
-            x:Name="DetailPanel">
+            VerticalScrollMode="Auto">
 
             <StackPanel>
 
@@ -126,35 +126,35 @@
 
                                 <!--  Surename doctor name  -->
                                 <components:ValidationTextBox
+                                    x:Name="Surename_main_doctor"
                                     DataContext="{x:Bind ViewModel.CurrentHospital}"
                                     HeaderText="Main doctor's surename"
                                     IsReadOnly="{x:Bind ViewModel.CurrentHospital.IsInEdit, Converter={StaticResource NotConverter}, Mode=OneWay}"
                                     PlaceholderText="Enter name"
                                     PropertyName="Surename_main_doctor"
-                                    Text="{x:Bind ViewModel.CurrentHospital.Surename_main_doctor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    x:Name="Surename_main_doctor" />
+                                    Text="{x:Bind ViewModel.CurrentHospital.Surename_main_doctor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                             </RelativePanel>
 
                             <!--  Main doctor name  -->
                             <components:ValidationTextBox
+                                x:Name="Name_main_doctor"
                                 DataContext="{x:Bind ViewModel.CurrentHospital}"
                                 HeaderText="Main doctor's name"
                                 IsReadOnly="{x:Bind ViewModel.CurrentHospital.IsInEdit, Converter={StaticResource NotConverter}, Mode=OneWay}"
                                 PlaceholderText="Enter name"
                                 PropertyName="Name_main_doctor"
-                                Text="{x:Bind ViewModel.CurrentHospital.Name_main_doctor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                x:Name="Name_main_doctor" />
+                                Text="{x:Bind ViewModel.CurrentHospital.Name_main_doctor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                             <!--  Middle doctor name  -->
                             <components:ValidationTextBox
+                                x:Name="Middlename_main_doctor"
                                 DataContext="{x:Bind ViewModel.CurrentHospital}"
                                 HeaderText="Main doctor's middlename"
                                 IsReadOnly="{x:Bind ViewModel.CurrentHospital.IsInEdit, Converter={StaticResource NotConverter}, Mode=OneWay}"
                                 PlaceholderText="Enter name"
                                 PropertyName="Middlename_main_doctor"
-                                Text="{x:Bind ViewModel.CurrentHospital.Middlename_main_doctor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                x:Name="Middlename_main_doctor" />
+                                Text="{x:Bind ViewModel.CurrentHospital.Middlename_main_doctor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                         </StackPanel>
                     </muxc:Expander.Content>
@@ -163,18 +163,18 @@
 
                 <!--#region Addresses list in expander-->
                 <muxc:Expander
+                    x:Name="ExpanderAddresses"
                     ExpandDirection="Down"
                     IsExpanded="True"
-                    Visibility="{x:Bind viewModel:Converters.VisibleIf(ViewModel.CurrentHospital.IsActive), Mode=OneWay}"
-                    x:Name="ExpanderAddresses">
+                    Visibility="{x:Bind viewModel:Converters.VisibleIf(ViewModel.CurrentHospital.IsActive), Mode=OneWay}">
 
                     <muxc:Expander.Header>
                         <Grid>
                             <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="Addresses" />
                             <TextBlock
                                 HorizontalAlignment="Right"
-                                Text="{x:Bind ViewModel.CurrentHospital.ObservableLocations.Count, Mode=OneWay}"
-                                VerticalAlignment="Center" />
+                                VerticalAlignment="Center"
+                                Text="{x:Bind ViewModel.CurrentHospital.ObservableLocations.Count, Mode=OneWay}" />
                         </Grid>
                     </muxc:Expander.Header>
 
@@ -183,23 +183,23 @@
                         <RelativePanel>
 
                             <CommandBar
+                                x:Name="AddressCommandBar"
+                                Margin="0,30,0,0"
+                                HorizontalAlignment="Stretch"
+                                VerticalContentAlignment="Center"
                                 Background="Transparent"
                                 DefaultLabelPosition="Right"
-                                HorizontalAlignment="Stretch"
-                                Margin="0,30,0,0"
                                 RelativePanel.AlignRightWithPanel="True"
-                                VerticalContentAlignment="Center"
-                                Visibility="{x:Bind viewModel:Converters.VisibleIf(ViewModel.CurrentHospital.IsInEdit), Mode=OneWay}"
-                                x:Name="AddressCommandBar">
+                                Visibility="{x:Bind viewModel:Converters.VisibleIf(ViewModel.CurrentHospital.IsInEdit), Mode=OneWay}">
 
 
                                 <CommandBar.Content>
                                     <StackPanel Orientation="Horizontal">
                                         <FontIcon
+                                            Margin="0,0,20,0"
                                             FontFamily="Segoe MDL2 Assets"
                                             Foreground="DodgerBlue"
-                                            Glyph="&#xE946;"
-                                            Margin="0,0,20,0">
+                                            Glyph="&#xE946;">
                                             <ToolTipService.ToolTip>
                                                 <ToolTip Content="At least one address have to be provided otherwise organisation becomes inactive" />
                                             </ToolTipService.ToolTip>
@@ -207,74 +207,73 @@
                                         </FontIcon>
 
                                         <ComboBox
+                                            Width="380"
                                             ItemsSource="{x:Bind ViewModel.AvailableAddresses}"
                                             PlaceholderText="Select new address"
-                                            SelectedItem="{x:Bind ViewModel.SelectedAddress, Mode=TwoWay}"
-                                            Width="380" />
+                                            SelectedItem="{x:Bind ViewModel.SelectedAddress, Mode=TwoWay}" />
                                     </StackPanel>
 
                                 </CommandBar.Content>
 
                                 <AppBarButton
+                                    x:Name="AddressCommandBarAddButton"
                                     Click="{x:Bind AddSelectedButton_Clicked}"
                                     Icon="Add"
                                     IsEnabled="{x:Bind ViewModel.SelectedAddress, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
                                     Label="Add selected"
-                                    ToolTipService.ToolTip="Add selected"
-                                    x:Name="AddressCommandBarAddButton" />
+                                    ToolTipService.ToolTip="Add selected" />
 
                                 <AppBarButton
+                                    x:Name="AddressCommandBarDeleteButton"
                                     Click="{x:Bind DeleteSelectedButton_Clicked}"
                                     Icon="Delete"
                                     IsEnabled="{x:Bind ViewModel.SelectedExistingLocation, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
                                     Label="Delete"
-                                    ToolTipService.ToolTip="Delete"
-                                    x:Name="AddressCommandBarDeleteButton" />
+                                    ToolTipService.ToolTip="Delete" />
 
                             </CommandBar>
 
                             <Grid Margin="0,20,0,0" RelativePanel.Below="AddressCommandBar">
 
                                 <toolkit:DataGrid
+                                    x:Name="AddressGrid"
                                     AutoGenerateColumns="False"
                                     CanUserReorderColumns="False"
-                                    GridLinesVisibility="All"
                                     IsReadOnly="True"
                                     ItemsSource="{x:Bind ViewModel.CurrentHospital.ObservableLocations, Mode=OneWay}"
                                     SelectedItem="{x:Bind ViewModel.SelectedExistingLocation, Mode=TwoWay}"
                                     SelectionMode="Single"
                                     VerticalScrollBarVisibility="Auto"
-                                    VirtualizingStackPanel.VirtualizationMode="Recycling"
-                                    x:Name="AddressGrid">
+                                    VirtualizingStackPanel.VirtualizationMode="Recycling">
 
                                     <toolkit:DataGrid.Resources>
-                                        <SolidColorBrush Color="Transparent" x:Key="DataGridColumnHeaderBackgroundColor" />
+                                        <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
                                     </toolkit:DataGrid.Resources>
 
                                     <toolkit:DataGrid.Columns>
 
                                         <toolkit:DataGridTextColumn
+                                            Width="30*"
                                             Binding="{Binding Address.City}"
-                                            Header="City"
-                                            Width="30*" />
+                                            Header="City" />
                                         <toolkit:DataGridTextColumn
+                                            Width="30*"
                                             Binding="{Binding Address.Street}"
-                                            Header="Street"
-                                            Width="30*" />
+                                            Header="Street" />
                                         <toolkit:DataGridTextColumn
+                                            Width="30*"
                                             Binding="{Binding Address.Building}"
-                                            Header="Building"
-                                            Width="30*" />
+                                            Header="Building" />
                                     </toolkit:DataGrid.Columns>
 
                                 </toolkit:DataGrid>
 
 
                                 <muxc:ProgressBar
-                                    HorizontalAlignment="Stretch"
-                                    IsIndeterminate="True"
                                     Margin="0,0,0,0"
+                                    HorizontalAlignment="Stretch"
                                     VerticalAlignment="Top"
+                                    IsIndeterminate="True"
                                     Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
                             </Grid>
 
@@ -287,10 +286,10 @@
         </ScrollViewer>
 
         <toolkit:InAppNotification
+            x:Name="Notification"
             RelativePanel.AlignBottomWithPanel="True"
             RelativePanel.AlignHorizontalCenterWithPanel="True"
-            StackMode="Replace"
-            x:Name="Notification" />
+            StackMode="Replace" />
 
     </RelativePanel>
 </Page>

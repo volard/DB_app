@@ -42,6 +42,15 @@ public class SQLHospitalRepository : IHospitalRepository
         return data;
     }
 
+    public async Task<IEnumerable<OrderItem>> GetHospitalsOrderItems(int hospitalId)
+    {
+        return await _db.OrderItems
+            .Where(item => item.RepresentingOrder.HospitalCustomer.Id == hospitalId)
+            .Include(el => el.Product)
+            .ThenInclude(product => product.Medicine)
+            .ToListAsync();
+    }
+
 
     /// <inheritdoc/>
     public async Task InsertAsync(Hospital hospital)

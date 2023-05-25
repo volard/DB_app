@@ -15,14 +15,15 @@ public sealed partial class OrdersGridPage : Page
 {
     public OrdersGridViewModel ViewModel { get; } = App.GetService<OrdersGridViewModel>();
 
+
     public OrdersGridPage()
     {
         InitializeComponent();
-        SetBinding(NavigationViewHeaderBehavior.HeaderContextProperty, new Binding
-        {
-            Source = ViewModel,
-            Mode = BindingMode.OneWay
-        });
+        //SetBinding(NavigationViewHeaderBehavior.HeaderContextProperty, new Binding
+        //{
+        //    Source = ViewModel,
+        //    Mode = BindingMode.OneWay
+        //});
         
     }
 
@@ -74,7 +75,6 @@ public sealed partial class OrdersGridPage : Page
     {
         if(ViewModel.SelectedItem == null) return;
         ViewModel.SelectedItem.IsInEdit = true;
-        //App.GetService<INavigationService>().NavigateTo(typeof(OrderDetailsViewModel).FullName!, ViewModel.SelectedItem);
         Frame.Navigate(typeof(OrderDetailsPage), ViewModel.SelectedItem, new DrillInNavigationTransitionInfo());
     }
 

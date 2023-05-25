@@ -41,4 +41,6 @@ public interface IHospitalRepository
 
     
     public Task<IEnumerable<HospitalLocation>> GetHospitalLocations(int id);
+
+    public Task<IEnumerable<OrderItem>> GetHospitalsOrderItems(int hospitalId);
 }

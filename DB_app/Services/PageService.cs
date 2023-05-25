@@ -57,6 +57,9 @@ public class PageService : IPageService
         // ====================
         Configure<MedicineInHospitalReportViewModel, MedicineInHospitalReportPage>();
         Configure<MedicineInPharmacyReportViewModel, MedicineInPharmacyReportPage>();
+        Configure<PharmacyBudgetReportViewModel, PharmacyBudgetReportPage>();
+        Configure<PharmacyWithMedicineReportViewModel, PharmacyWithMedicineReportPage>();
+        Configure<HospitalsWithMedicineReportViewModel, HospitalsWithMedicineReportPage>();
 
         #endregion
 

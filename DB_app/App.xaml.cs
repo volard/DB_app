@@ -31,7 +31,7 @@ public partial class App
     public IHost Host { get; }
 
     /// <summary>
-    /// Get registered service othervise throws an ArgumentException.
+    /// Get registered service otherwise throws an ArgumentException.
     /// </summary>
     public static T GetService<T>()
         where T : class
@@ -157,6 +157,15 @@ public partial class App
             services.AddTransient<MedicineInPharmacyReportViewModel>();
             services.AddTransient<MedicineInPharmacyReportPage>();
 
+            services.AddTransient<PharmacyBudgetReportPage>();
+            services.AddTransient<PharmacyBudgetReportViewModel>();
+
+            services.AddTransient<PharmacyWithMedicineReportViewModel>();
+            services.AddTransient<PharmacyWithMedicineReportPage>();
+
+            services.AddTransient<HospitalsWithMedicineReportViewModel>();
+            services.AddTransient<HospitalsWithMedicineReportPage>();
+
 
             // === Misc
             services.AddTransient<SettingsViewModel>();
@@ -167,6 +176,8 @@ public partial class App
 
             services.AddTransient<ShellPage>();
             services.AddTransient<ShellViewModel>();
+
+            
 
             #endregion
 

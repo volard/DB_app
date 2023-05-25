@@ -27,12 +27,21 @@ public class SQLPharmacyRepository : IPharmacyRepository
     }
 
 
+    public async Task<double> GetPharmacyBudget(int pharmacyId)
+    {
+        var items = await _db.OrderItems.
+            Where(item => item.Product.Pharmacy.Id == pharmacyId
+            ).ToListAsync();
+        return items.Sum(el => el.LocalTotal);
+    }
+
+
 
     public async Task<Pharmacy> GetAsync(int id)
     {
         return await _db.Pharmacies
            .Include(pharmacy => pharmacy.Locations)
-           .FirstOrDefaultAsync(Pharmacy => Pharmacy.Id == id);
+           .FirstOrDefaultAsync(pharmacy => pharmacy.Id == id);
     }
 
 

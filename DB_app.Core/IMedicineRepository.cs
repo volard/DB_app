@@ -24,5 +24,20 @@ namespace DB_app.Repository
         /// Updates existing medicine
         /// </summary>
         public Task UpdateAsync(Medicine medicine);
+
+        /// <summary>
+        /// Get all hospitals containing provided medicine
+        /// </summary>
+        public Task<IEnumerable<Hospital>> GetHospitalsContaining(Medicine medicine);
+
+        /// <summary>
+        /// Get all pharmacies selling provided medicine
+        /// </summary>
+        public Task<IEnumerable<Pharmacy>> GetPharmaciesContaining(Medicine medicine);
+
+        /// <summary>
+        /// Get only medicine by unique name
+        /// </summary>
+        public Task<IEnumerable<Medicine>> GetUnique();
     }
 }

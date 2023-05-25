@@ -4,8 +4,8 @@ using DB_app.Contracts.ViewModels;
 using DB_app.Core.Contracts.Services;
 using DB_app.Helpers;
 using DB_app.Models;
-using DocumentFormat.OpenXml.Office.CustomUI;
 using Microsoft.UI.Dispatching;
+using Microsoft.UI.Xaml.Data;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 
@@ -13,6 +13,11 @@ namespace DB_app.ViewModels;
 
 public partial class MedicineInHospitalReportViewModel : ObservableRecipient, INavigationAware
 {
+
+    public MedicineInHospitalReportViewModel()
+    {
+        var some = await _repositoryControllerService.Hospitals.GetHospitalsOrderItems();
+    }
 
     private readonly IRepositoryControllerService _repositoryControllerService = App.GetService<IRepositoryControllerService>();
 
@@ -54,6 +59,11 @@ public partial class MedicineInHospitalReportViewModel : ObservableRecipient, IN
         OnPropertyChanged(nameof(Source));
     }
 
+    // Create grouping for collection
+    ObservableCollection<GroupInfoCollection<Order>> orders = new ObservableCollection<GroupInfoCollection<Order>>();
+
+    
+
     /// <summary>
     /// Retrieves items from the data source.
     /// </summary>
@@ -64,6 +74,8 @@ public partial class MedicineInHospitalReportViewModel : ObservableRecipient, IN
             IsSourceLoading = true;
             Source.Clear();
         });
+
+        
 
         IEnumerable<Order>? orders = await _repositoryControllerService.Orders.GetHospitalOrders(hospital.Id);
 
@@ -96,8 +108,6 @@ public partial class MedicineInHospitalReportViewModel : ObservableRecipient, IN
             sumsPertype.Add(money.Sum(money => money));
         }
 
-        Debug.WriteLine("asht");
-
         //await _dispatcherQueue.EnqueueAsync(() =>
         //{
         //    foreach (var item in items)
@@ -112,18 +122,12 @@ public partial class MedicineInHospitalReportViewModel : ObservableRecipient, IN
 
     //public CollectionViewSource GroupData(string groupBy = "Range")
     //{
-    //    ObservableCollection<GroupInfoCollection<DataGridDataItem>> groups = new ObservableCollection<GroupInfoCollection<DataGridDataItem>>();
+    //    ObservableCollection<GroupInfoCollection<Order>> groups = new ObservableCollection<GroupInfoCollection<Order>>();
     //    var query = from item in _items
     //                orderby item
-    //                group item by item.Range into g
+    //                group item by item.Type into g
     //                select new { GroupName = g.Key, Items = g };
-    //    if (groupBy == "Parent_Mountain")
-    //    {
-    //        query = from item in _items
-    //                orderby item
-    //                group item by item.Parent_mountain into g
-    //                select new { GroupName = g.Key, Items = g };
-    //    }
+        
     //    foreach (var g in query)
     //    {
     //        GroupInfoCollection<DataGridDataItem> info = new GroupInfoCollection<DataGridDataItem>();
