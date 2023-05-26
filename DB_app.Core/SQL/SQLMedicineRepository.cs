@@ -19,41 +19,37 @@ public class SQLMedicineRepository : IMedicineRepository
 
     public async Task<IEnumerable<string>> GetTypes()
     {
-        var all = await _db.Medicines.ToListAsync();
-        var types = new List<string>();
-        foreach(var medicine in all)
+        List<Medicine> all = await _db.Medicines.ToListAsync();
+        List<string> types = new();
+        foreach (Medicine medicine in all.Where(medicine => !types.Contains(medicine.Type)))
         {
-            if(!types.Contains(medicine.Type))
+            types.Add(medicine.Type);
         }
+        return types;
     }
 
 
     public async Task<IEnumerable<Hospital>> GetHospitalsContaining(Medicine medicine)
     {
-        var items = await _db.OrderItems.Where(item => item.Product.Medicine.Name == medicine.Name).ToListAsync();
+        List<OrderItem> items = await _db.OrderItems.Where(item => item.Product.Medicine.Name == medicine.Name).ToListAsync();
         List<Hospital> output = new();
-        foreach (OrderItem orderItem in items)
+        foreach (Hospital hospital in items
+                     .Select(orderItem => orderItem.RepresentingOrder.HospitalCustomer)
+                     .Where(hospital => !output.Contains(hospital)))
         {
-            var hospital = orderItem.RepresentingOrder.HospitalCustomer;
-            if (!output.Contains(hospital))
-            {
-                output.Add(hospital);
-            }
+            output.Add(hospital);
         }
         return output;
     }
 
     public async Task<IEnumerable<Pharmacy>> GetPharmaciesContaining(Medicine medicine)
     {
-        var items = await _db.Products.Where(product => product.Medicine.Name == medicine.Name).ToListAsync();
+        List<Product> items = await _db.Products.Where(product => product.Medicine.Name == medicine.Name).ToListAsync();
         List<Pharmacy> output = new();
-        foreach (Product product in items)
+        foreach (Pharmacy pharmacy in items.Select(product => product.Pharmacy)
+                     .Where(pharmacy => !output.Contains(pharmacy)))
         {
-            var pharmacy = product.Pharmacy;
-            if (!output.Contains(pharmacy))
-            {
-                output.Add(pharmacy);
-            }
+            output.Add(pharmacy);
         }
         return output;
     }
@@ -61,14 +57,11 @@ public class SQLMedicineRepository : IMedicineRepository
 
     public async Task<IEnumerable<Medicine>> GetUnique()
     {
-        var all = await _db.Medicines.ToListAsync();
+        List<Medicine> all = await _db.Medicines.ToListAsync();
         List<Medicine> unique = new();
-        foreach (var item in all)
+        foreach (Medicine item in all.Where(item => !unique.Contains(item)))
         {
-            if (!unique.Contains(item))
-            {
-                unique.Add(item);
-            }
+            unique.Add(item);
         }
         return unique;
     }

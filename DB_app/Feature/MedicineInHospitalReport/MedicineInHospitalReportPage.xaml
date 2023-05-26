@@ -4,12 +4,18 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="using:DB_app.Behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:DB_app.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:viewModel="using:DB_app.ViewModels"
     mc:Ignorable="d">
 
+
+    <Page.Resources>
+        <helpers:NotConverter x:Key="NotConverter" />
+        <helpers:VisibleIfConverter x:Key="VisibleIf" />
+    </Page.Resources>
 
     <!--#region Header-->
     <behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
@@ -61,9 +67,12 @@
     <!--#endregion-->
 
 
-    <StackPanel Orientation="Vertical">
+    <Grid 
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch"
+        Padding="0,0,0,20">
 
-        <InfoBar
+            <InfoBar
             Title="Title"
             Margin="0,0,0,20"
             IsClosable="False"
@@ -71,26 +80,35 @@
             Message="Essential app message for your users to be informed of, acknowledge, or take action on."
             Severity="Informational" />
 
-        <Grid>
+        <Grid Margin="0,80, 0, 0">
 
 
 
             <toolkit:DataGrid
+                x:Name="OrderItemsDataGrid"
                 AutoGenerateColumns="False"
                 CanUserResizeColumns="True"
                 IsReadOnly="True"
-                ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}">
+                VerticalScrollBarVisibility="Visible"
+                
+                Style="{StaticResource DataGridStyle1}">
 
                 <toolkit:DataGrid.Resources>
                     <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
                 </toolkit:DataGrid.Resources>
+    
+
+                <toolkit:DataGrid.RowGroupHeaderStyles>
+                    <!-- Override the default Style for groups headers -->
+                    <Style TargetType="toolkit:DataGridRowGroupHeader">
+                        <Setter Property="Background" Value="LightGray" />
+                    </Style>
+                </toolkit:DataGrid.RowGroupHeaderStyles>
 
 
                 <toolkit:DataGrid.Columns>
 
-                    <toolkit:DataGridTextColumn Binding="{Binding Pro}" Header="OrderID" />
-                    <toolkit:DataGridTextColumn Binding="{Binding OrderDate}" Header="OrderDate" />
-                    <toolkit:DataGridTextColumn Binding="{Binding Company}" Header="Company" />
+                    <toolkit:DataGridTextColumn Binding="{Binding Product.Medicine.Name}" Header="Medicine name" />
 
                 </toolkit:DataGrid.Columns>
 
@@ -101,7 +119,9 @@
                 Margin="0,0,0,0"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Top"
-                IsIndeterminate="True" />
+                IsIndeterminate="True"
+                Visibility="{x:Bind ViewModel.IsSourceLoading, Converter={StaticResource VisibleIf}, Mode=OneWay}" />
         </Grid>
-    </StackPanel>
+        
+    </Grid>
 </Page>

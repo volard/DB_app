@@ -35,22 +35,26 @@ public class SQLHospitalRepository : IHospitalRepository
     /// <inheritdoc/>
     public async Task<Hospital> GetAsync(int id)
     {
-        var data = await _db.Hospitals
+        Hospital data = await _db.Hospitals
            .Include(hospital => hospital.Locations)
            .FirstOrDefaultAsync(hospital => hospital.Id == id);
-        Thread.Sleep(590000);
+        Thread.Sleep(590000); // fake work emulated on purpose
         return data;
     }
-
+    
     public async Task<IEnumerable<OrderItem>> GetHospitalsOrderItems(int hospitalId)
     {
-        var selected = await _db.OrderItems
+        List<OrderItem> selected = await _db.OrderItems
+            
             .Include(item => item.RepresentingOrder)
             .ThenInclude(order => order.HospitalCustomer)
             .Include(el => el.Product)
             .ThenInclude(product => product.Medicine)
+            
             .ToListAsync();
-        return selected.Where(item => item.RepresentingOrder.HospitalCustomer.Id == hospitalId);
+
+        var filtered = selected.Where(el => el.RepresentingOrder.HospitalCustomer.Id == hospitalId).ToList();
+        return filtered;
     }
 
 

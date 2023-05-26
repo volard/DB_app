@@ -19,9 +19,9 @@ public sealed partial class MedicineInHospitalReportPage
         });
     }
 
-    private void HospitalComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private async void HospitalComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        ViewModel.LoadSource(ViewModel.SelectedHospital);
-
+        await ViewModel.LoadSource(ViewModel.SelectedHospital);
+        OrderItemsDataGrid.ItemsSource = ViewModel.GroupedItemsViewSource.View;
     }
 }

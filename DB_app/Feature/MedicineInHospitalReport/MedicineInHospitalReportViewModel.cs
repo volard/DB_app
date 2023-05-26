@@ -4,9 +4,11 @@ using DB_app.Contracts.ViewModels;
 using DB_app.Core.Contracts.Services;
 using DB_app.Helpers;
 using DB_app.Models;
+using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml.Data;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 
 namespace DB_app.ViewModels;
@@ -27,7 +29,7 @@ public partial class MedicineInHospitalReportViewModel : ObservableRecipient, IN
     /// <summary>
     /// DataGrid's data collection
     /// </summary>
-    public ObservableCollection<Order> Source { get; init; } = new ObservableCollection<Order>();
+    public ObservableCollection<OrderItem> Source { get; init; } = new ObservableCollection<OrderItem>();
     public ObservableCollection<Hospital> AvailableHospitals { get; } = new ObservableCollection<Hospital>();
 
 
@@ -60,9 +62,11 @@ public partial class MedicineInHospitalReportViewModel : ObservableRecipient, IN
     }
 
     // Create grouping for collection
-    ObservableCollection<GroupInfoCollection<Order>> orders = new ObservableCollection<GroupInfoCollection<Order>>();
+    public ObservableCollection<GroupInfoCollection<OrderItem>> GroupedOrders = new();
 
-    
+    public CollectionViewSource GroupedItemsViewSource = new();
+
+
 
     /// <summary>
     /// Retrieves items from the data source.
@@ -75,35 +79,35 @@ public partial class MedicineInHospitalReportViewModel : ObservableRecipient, IN
             Source.Clear();
         });
 
-        
+        IEnumerable<OrderItem>? orderItems = await Task.Run(() => _repositoryControllerService.Hospitals.GetHospitalsOrderItems(4));
 
-        IEnumerable<Order>? orderItems = await _repositoryControllerService.Orders.GetHospitalsOrderItems(hospital.Id);
+        IEnumerable<OrderItem> enumerableItems = orderItems as OrderItem[] ?? orderItems.ToArray();
 
-        List<string> types = new List<string>();
+        HashSet<string> types = new(enumerableItems.Select(item => item.Product.Medicine.Type));
 
+        List<double> sumsPerType = new();
+//GroupedOrders.Clear();
 
-        List<double> sumsPertype = new List<double>();
-
-        foreach (string type in types)
-        {
-            IEnumerable<double> money = enumerable.Select(order => order.Items).Select(items => items.Select(item =>
+            foreach (string type in types)
             {
-                if (item.Product.Medicine.Type == type) return item.Price;
-                return 0;
+                double counter = 0;
+                GroupInfoCollection<OrderItem> info = new() { Key = type };
+                foreach (OrderItem orderItem in enumerableItems.Where(item => item.Product.Medicine.Type == type))
+                {
+                    counter += orderItem.LocalTotal;
+                    info.Add(orderItem);
+                }
+                sumsPerType.Add(counter);
+                GroupedOrders.Add(info);
             }
-            )).Select(item => item.First());
 
-            sumsPertype.Add(money.Sum(money => money));
-        }
+            GroupedItemsViewSource = new CollectionViewSource { IsSourceGrouped = true, Source = GroupedOrders };
+
+            //IsSourceLoading = false;
 
         //await _dispatcherQueue.EnqueueAsync(() =>
         //{
-        //    foreach (var item in items)
-        //    {
-        //        Source.Add(item);
-        //    }
-
-        //    IsSourceLoading = false;
+            
         //});
     }
 
