@@ -89,6 +89,8 @@
                 AutoGenerateColumns="False"
                 CanUserResizeColumns="True"
                 IsReadOnly="True"
+                LoadingRowGroup="dg_loadingRowGroup"
+                RowGroupHeaderPropertyNameAlternative="Type"
                 VerticalScrollBarVisibility="Visible"
                 
                 Style="{StaticResource DataGridStyle1}">
@@ -108,8 +110,8 @@
 
                 <toolkit:DataGrid.Columns>
 
-                    <toolkit:DataGridTextColumn Binding="{Binding Product.Medicine.Name}" Header="Medicine name" />
-
+                    <toolkit:DataGridTextColumn Binding="{Binding Name}" Header="Medicine name" />
+                   
                 </toolkit:DataGrid.Columns>
 
 

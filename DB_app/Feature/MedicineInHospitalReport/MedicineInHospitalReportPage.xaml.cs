@@ -1,4 +1,6 @@
+using CommunityToolkit.WinUI.UI.Controls;
 using DB_app.Behaviors;
+using DB_app.Models;
 using DB_app.ViewModels;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
@@ -17,6 +19,14 @@ public sealed partial class MedicineInHospitalReportPage
             Source = ViewModel,
             Mode = BindingMode.OneWay
         });
+    }
+
+    //Handle the LoadingRowGroup event to alter the grouped header property value to be displayed
+    private void dg_loadingRowGroup(object sender, DataGridRowGroupHeaderEventArgs e)
+    {
+        ICollectionViewGroup group = e.RowGroupHeader.CollectionViewGroup;
+        Medicine item = group.GroupItems[0] as Medicine;
+        e.RowGroupHeader.PropertyValue = item.Type + " [ " + ViewModel.QuantityPerType[item.Type].ToString() + " ] ";
     }
 
     private async void HospitalComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

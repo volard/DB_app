@@ -10,6 +10,7 @@ using Microsoft.UI.Xaml.Data;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace DB_app.ViewModels;
 
@@ -50,8 +51,7 @@ public partial class MedicineInHospitalReportViewModel : ObservableRecipient, IN
     {
         Source.CollectionChanged += Source_CollectionChanged;
         CollectionsHelper.LoadCollectionAsync(AvailableHospitals, _dispatcherQueue, _repositoryControllerService.Hospitals.GetAsync);
-        SelectedHospital = AvailableHospitals[1];
-        await LoadSource(SelectedHospital);
+        SelectedHospital = AvailableHospitals[0];
     }
 
 
@@ -62,11 +62,23 @@ public partial class MedicineInHospitalReportViewModel : ObservableRecipient, IN
     }
 
     // Create grouping for collection
-    public ObservableCollection<GroupInfoCollection<OrderItem>> GroupedOrders = new();
+    public ObservableCollection<GroupInfoCollection<Medicine>> GroupedOrders = new();
 
     public CollectionViewSource GroupedItemsViewSource = new();
 
+    public struct StoredMedicine
+    {
+        public StoredMedicine(Medicine medicine, int quantity)
+        {
+            Medicine = medicine;
+            Quantity = quantity;
+        }
 
+        public Medicine Medicine { get; set; }
+        public int Quantity { get; set; }
+    }
+
+    public Dictionary<string, int> QuantityPerType = new();
 
     /// <summary>
     /// Retrieves items from the data source.
@@ -77,69 +89,56 @@ public partial class MedicineInHospitalReportViewModel : ObservableRecipient, IN
         {
             IsSourceLoading = true;
             Source.Clear();
+            GroupedOrders.Clear();
+            QuantityPerType.Clear();
         });
 
-        IEnumerable<OrderItem>? orderItems = await Task.Run(() => _repositoryControllerService.Hospitals.GetHospitalsOrderItems(4));
+        IEnumerable<OrderItem>? orderItems = await Task.Run(() => _repositoryControllerService.Hospitals.GetHospitalsOrderItems(hospital.Id));
 
-        IEnumerable<OrderItem> enumerableItems = orderItems as OrderItem[] ?? orderItems.ToArray();
+        var groupedItems = orderItems.GroupBy(item => item.Product.Medicine.Id);
 
-        HashSet<string> types = new(enumerableItems.Select(item => item.Product.Medicine.Type));
+        List<StoredMedicine> calculatedItems = new();
 
-        List<double> sumsPerType = new();
-//GroupedOrders.Clear();
+        foreach (var groupedItem in groupedItems)
+        {
+            if (groupedItem == null) continue;
 
-            foreach (string type in types)
+            calculatedItems.Add
+                (
+                new StoredMedicine(
+                    groupedItem.First().Product.Medicine, groupedItem.Sum(item => item.Quantity)
+                    )
+                );
+        }
+
+        var regroupedItems = calculatedItems.GroupBy(item => item.Medicine.Type);
+
+        foreach (var type in regroupedItems)
+        {
+            GroupInfoCollection<Medicine> info = new()
             {
-                double counter = 0;
-                GroupInfoCollection<OrderItem> info = new() { Key = type };
-                foreach (OrderItem orderItem in enumerableItems.Where(item => item.Product.Medicine.Type == type))
-                {
-                    counter += orderItem.LocalTotal;
-                    info.Add(orderItem);
-                }
-                sumsPerType.Add(counter);
-                GroupedOrders.Add(info);
+                Key = type.Key
+            };
+            QuantityPerType[type.Key] = type.Sum(item => item.Quantity);
+            foreach (var storedItem in type)
+            {
+                info.Add(storedItem.Medicine);
             }
+            GroupedOrders.Add(info);
+        }
 
             GroupedItemsViewSource = new CollectionViewSource { IsSourceGrouped = true, Source = GroupedOrders };
 
-            //IsSourceLoading = false;
+            IsSourceLoading = false;
 
         //await _dispatcherQueue.EnqueueAsync(() =>
         //{
-            
+
         //});
     }
 
 
-    //public CollectionViewSource GroupData(string groupBy = "Range")
-    //{
-    //    ObservableCollection<GroupInfoCollection<Order>> groups = new ObservableCollection<GroupInfoCollection<Order>>();
-    //    var query = from item in _items
-    //                orderby item
-    //                group item by item.Type into g
-    //                select new { GroupName = g.Key, Items = g };
-        
-    //    foreach (var g in query)
-    //    {
-    //        GroupInfoCollection<DataGridDataItem> info = new GroupInfoCollection<DataGridDataItem>();
-    //        info.Key = g.GroupName;
-    //        foreach (var item in g.Items)
-    //        {
-    //            info.Add(item);
-    //        }
-
-    //        groups.Add(info);
-    //    }
-
-    //    groupedItems = new CollectionViewSource();
-    //    groupedItems.IsSourceGrouped = true;
-    //    groupedItems.Source = groups;
-
-    //    return groupedItems;
-    //}
-
-
+   
 
     public void OnNavigatedFrom()
     {
