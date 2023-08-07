@@ -43,4 +43,6 @@ public interface IProductRepository
     /// Updates existing product
     /// </summary>
     public Task UpdateAsync(Product product);
+
+    public Task<IEnumerable<Product>> GetProductsRepresenting(Medicine medicine);
 }

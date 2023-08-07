@@ -33,6 +33,14 @@ public class SQLProductRepository : IProductRepository
         }
     }
 
+    public async Task<IEnumerable<Product>> GetProductsRepresenting(Medicine medicine)
+    {
+        return await _db.Products
+            .Include(product => product.Pharmacy)
+            .Where(product => product.Medicine ==  medicine && product.Quantity > 0)
+            .ToListAsync();
+    }
+
     public async Task<IEnumerable<Product>> GetAllAsync()
     {
         return await _db.Products

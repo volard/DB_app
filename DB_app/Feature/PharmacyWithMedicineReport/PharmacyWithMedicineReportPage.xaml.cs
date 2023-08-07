@@ -31,7 +31,7 @@ public sealed partial class PharmacyWithMedicineReportPage : Page
 
     private async void MedicinesComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (ViewModel.SelectedMedicine != null) return;
+        if (ViewModel.SelectedMedicine == null) return;
         await ViewModel.LoadSource();
     }
 }

@@ -7,7 +7,13 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModel="using:DB_app.ViewModels"
+    xmlns:helpers="using:DB_app.Helpers"
     mc:Ignorable="d">
+
+    <Page.Resources>
+        <helpers:NotConverter x:Key="NotConverter" />
+        <helpers:VisibleIfConverter x:Key="VisibleIf" />
+    </Page.Resources>
 
     <!--#region Header-->
     <behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
@@ -76,6 +82,7 @@
             <controls:DataGrid
                 AutoGenerateColumns="False"
                 CanUserResizeColumns="True"
+                ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
                 IsReadOnly="True">
 
                 <controls:DataGrid.Resources>
@@ -85,9 +92,9 @@
 
                 <controls:DataGrid.Columns>
 
-                    <controls:DataGridTextColumn Header="OrderID" />
-                    <controls:DataGridTextColumn Header="OrderDate" />
-                    <controls:DataGridTextColumn Header="Company" />
+                    <controls:DataGridTextColumn Binding="{Binding Pharmacy.Name}" Header="Pharmacy name" />
+                    <controls:DataGridTextColumn Binding="{Binding Quantity}" Header="Quantity available" />
+                    <controls:DataGridTextColumn Binding="{Binding Price}" Header="Price" />
 
                 </controls:DataGrid.Columns>
 
@@ -98,7 +105,8 @@
                 Margin="0,0,0,0"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Top"
-                IsIndeterminate="True" />
+                IsIndeterminate="True"
+                Visibility="{x:Bind ViewModel.IsSourceLoading, Converter={StaticResource VisibleIf}, Mode=OneWay}"/>
         </Grid>
     </StackPanel>
 </Page>

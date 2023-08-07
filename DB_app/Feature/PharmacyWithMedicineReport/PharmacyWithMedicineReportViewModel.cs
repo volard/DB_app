@@ -1,6 +1,4 @@
-﻿
-
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.WinUI;
 using DB_app.Core.Contracts.Services;
 using DB_app.Models;
@@ -21,7 +19,7 @@ public partial class PharmacyWithMedicineReportViewModel : ObservableObject
     /// <summary>
     /// DataGrid's data collection
     /// </summary>
-    public ObservableCollection<Pharmacy> Source { get; init; } = new ObservableCollection<Pharmacy>();
+    public ObservableCollection<Product> Source { get; init; } = new();
     public ObservableCollection<Medicine> AvailableMedicines { get; } = new ObservableCollection<Medicine>();
 
 
@@ -50,18 +48,19 @@ public partial class PharmacyWithMedicineReportViewModel : ObservableObject
             Source.Clear();
         });
 
-        IEnumerable<Pharmacy>? pharmacies = await Task.Run(async () => await _repositoryControllerService.Medicines.GetPharmaciesContaining(SelectedMedicine));
+        IEnumerable<Product>? products = await Task.Run(async () => await _repositoryControllerService.Products.GetProductsRepresenting(SelectedMedicine));
 
 
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            foreach (Pharmacy pharmacy in pharmacies)
+            foreach (Product product in products)
             {
-                Source.Add(pharmacy);
+                Source.Add(product);
             }
 
-            IsSourceLoading = false;
+            
         });
+        IsSourceLoading = false;
     }
 
     /// <summary>
