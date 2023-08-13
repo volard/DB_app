@@ -5,15 +5,21 @@
     xmlns:behaviors="using:DB_app.Behaviors"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:DB_app.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModel="using:DB_app.ViewModels"
     mc:Ignorable="d">
 
-
+    <Page.Resources>
+        <helpers:NotConverter x:Key="NotConverter" />
+        <helpers:VisibleIfConverter x:Key="VisibleIf" />
+        <helpers:EmptyToCollapsedConverter x:Key="EmptyToCollapsedConverter" />
+        <helpers:EmptyToVisibleConverter x:Key="EmptyToVisibleConverter" />
+    </Page.Resources>
 
     <!--#region Header-->
     <behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
-        <DataTemplate x:DataType="viewModel:MedicineInHospitalReportViewModel">
+        <DataTemplate x:DataType="viewModel:HospitalsWithMedicineReportViewModel">
             <RelativePanel HorizontalAlignment="Stretch" VerticalAlignment="Center">
                 <TextBlock
                     RelativePanel.AlignLeftWithPanel="True"
@@ -28,15 +34,15 @@
                     <CommandBar.Content>
                         <StackPanel Orientation="Horizontal">
 
-                            <ProgressRing Margin="0,0,20,0" IsActive="{x:Bind IsHospitalsLoading, Mode=OneWay}" />
+                            <ProgressRing Margin="0,0,20,0" IsActive="{x:Bind IsMedicinesLoading, Mode=OneWay}" />
 
                             <ComboBox
-                                x:Name="HospitalsComboBox"
+                                x:Name="MedicinesComboBox"
                                 Height="38"
                                 MinWidth="400"
-                                ItemsSource="{x:Bind AvailableHospitals, Mode=OneWay}"
-                                SelectedItem="{x:Bind SelectedHospital, Mode=TwoWay}"
-                                SelectionChanged="HospitalComboBox_SelectionChanged" />
+                                ItemsSource="{x:Bind AvailableMedicines, Mode=OneWay}"
+                                SelectedItem="{x:Bind SelectedMedicine, Mode=TwoWay}"
+                                SelectionChanged="MedicineComboBox_SelectionChanged" />
 
 
                         </StackPanel>
@@ -73,9 +79,29 @@
 
         <Grid>
 
+            <StackPanel
+                x:Name="NotFoundBlock"
+                HorizontalAlignment="Stretch">
+                <Image
+                    Width="200"
+                    Height="200"
+                    Source="ms-appx:///Assets/not-found.svg" />
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    CharacterSpacing="200"
+                    FontFamily="Arial"
+                    FontSize="24"
+                    FontStyle="Italic"
+                    Foreground="CornflowerBlue"
+                    HorizontalTextAlignment="Center"
+                    Text="Not found"
+                    TextWrapping="WrapWholeWords" />
+            </StackPanel>
+
 
 
             <controls:DataGrid
+                x:Name="SourceDataGrid"
                 AutoGenerateColumns="False"
                 CanUserResizeColumns="True"
                 IsReadOnly="True"
@@ -88,10 +114,19 @@
 
                 <controls:DataGrid.Columns>
 
-                    <controls:DataGridTextColumn Binding="{Binding Pro}" Header="OrderID" />
-                    <controls:DataGridTextColumn Binding="{Binding OrderDate}" Header="OrderDate" />
-                    <controls:DataGridTextColumn Binding="{Binding Company}" Header="Company" />
+                    <controls:DataGridTextColumn Binding="{Binding Hospital.Id}" Header="Hospital id" />
 
+                    <controls:DataGridTemplateColumn Header="Main doctor">
+                        <controls:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate x:DataType="viewModel:StoringHospital">
+                                <TextBlock VerticalAlignment="Center">
+                                    <Run Text="{Binding Hospital.Surename_main_doctor}" />
+                                    <Run Text="{Binding Hospital.Name_main_doctor}" />
+                                    <Run Text="{Binding Hospital.Middlename_main_doctor}" />
+                                </TextBlock>
+                            </DataTemplate>
+                        </controls:DataGridTemplateColumn.CellTemplate>
+                    </controls:DataGridTemplateColumn>
                 </controls:DataGrid.Columns>
 
 
@@ -101,7 +136,8 @@
                 Margin="0,0,0,0"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Top"
-                IsIndeterminate="True" />
+                IsIndeterminate="True"
+                Visibility="{x:Bind ViewModel.IsSourceLoading, Converter={StaticResource VisibleIf}, Mode=OneWay}" />
         </Grid>
     </StackPanel>
 </Page>

@@ -55,9 +55,27 @@
 
         <Grid>
 
-
+            <StackPanel
+                x:Name="NotFoundBlock"
+                HorizontalAlignment="Stretch">
+                <Image
+                    Width="200"
+                    Height="200"
+                    Source="ms-appx:///Assets/not-found.svg" />
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    CharacterSpacing="200"
+                    FontFamily="Arial"
+                    FontSize="24"
+                    FontStyle="Italic"
+                    Foreground="CornflowerBlue"
+                    HorizontalTextAlignment="Center"
+                    Text="Not found"
+                    TextWrapping="WrapWholeWords" />
+            </StackPanel>
 
             <controls:DataGrid
+                x:Name="SourceDataGrid"
                 AutoGenerateColumns="False"
                 CanUserResizeColumns="True"
                 DataContext="BudgetPharmacyItem"

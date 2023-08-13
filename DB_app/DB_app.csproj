@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="AddressesGridPage.xaml" />
+    <None Remove="Assets\not-found.svg" />
     <None Remove="Assets\secret.mp4" />
     <None Remove="Feature\HospitalsWithMedicineReport\HospitalsWithMedicineReportPage.xaml" />
     <None Remove="Feature\MedicineInHospitalReport\MedicineInHospitalReportPage.xaml" />

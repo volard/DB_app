@@ -1,7 +1,5 @@
-using DB_app.Behaviors;
 using DB_app.ViewModels;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Navigation;
 
 
@@ -21,11 +19,22 @@ public sealed partial class PharmacyBudgetReportPage : Page
         //});
     }
 
-    protected override void OnNavigatedTo(NavigationEventArgs e)
+    protected override async void OnNavigatedTo(NavigationEventArgs e)
     {
         if (ViewModel.Source.Count >= 1) { return; }
 
-        ViewModel.LoadReport();
+        await ViewModel.LoadReport();
+
+        if (ViewModel.Source.Count == 0)
+        {
+            SourceDataGrid.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
+            NotFoundBlock.Visibility = Microsoft.UI.Xaml.Visibility.Visible;
+        }
+        else
+        {
+            SourceDataGrid.Visibility = Microsoft.UI.Xaml.Visibility.Visible;
+            NotFoundBlock.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
+        }
 
         base.OnNavigatedTo(e);
     }

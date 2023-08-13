@@ -33,5 +33,15 @@ public sealed partial class PharmacyWithMedicineReportPage : Page
     {
         if (ViewModel.SelectedMedicine == null) return;
         await ViewModel.LoadSource();
+        if (ViewModel.Source.Count == 0)
+        {
+            SourceDataGrid.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
+            NotFoundBlock.Visibility = Microsoft.UI.Xaml.Visibility.Visible;
+        }
+        else
+        {
+            SourceDataGrid.Visibility = Microsoft.UI.Xaml.Visibility.Visible;
+            NotFoundBlock.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
+        }
     }
 }

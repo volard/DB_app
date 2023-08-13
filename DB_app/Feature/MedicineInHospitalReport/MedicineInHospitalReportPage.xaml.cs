@@ -32,6 +32,17 @@ public sealed partial class MedicineInHospitalReportPage
     private async void HospitalComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         await ViewModel.LoadSource(ViewModel.SelectedHospital);
-        OrderItemsDataGrid.ItemsSource = ViewModel.GroupedItemsViewSource.View;
+        SourceDataGrid.ItemsSource = ViewModel.GroupedItemsViewSource.View;
+
+        if (ViewModel.GroupedOrders.Count == 0)
+        {
+            SourceDataGrid.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
+            NotFoundBlock.Visibility = Microsoft.UI.Xaml.Visibility.Visible;
+        }
+        else
+        {
+            SourceDataGrid.Visibility = Microsoft.UI.Xaml.Visibility.Visible;
+            NotFoundBlock.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
+        }
     }
 }

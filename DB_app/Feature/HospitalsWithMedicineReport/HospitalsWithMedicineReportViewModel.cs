@@ -6,7 +6,17 @@ using Microsoft.UI.Dispatching;
 using System.Collections.ObjectModel;
 
 namespace DB_app.ViewModels;
+public struct StoringHospital
+{
+    public StoringHospital(Hospital hospital, int quantity) : this()
+    {
+        Hospital = hospital;
+        Quantity = quantity;
+    }
 
+    public Hospital Hospital { get; set; }
+    public int Quantity { get; set; }
+}
 public partial class HospitalsWithMedicineReportViewModel : ObservableObject
 {
 
@@ -19,7 +29,7 @@ public partial class HospitalsWithMedicineReportViewModel : ObservableObject
     /// <summary>
     /// DataGrid's data collection
     /// </summary>
-    public ObservableCollection<Hospital> Source { get; init; } = new ObservableCollection<Hospital>();
+    public ObservableCollection<StoringHospital> Source { get; init; } = new();
     public ObservableCollection<Medicine> AvailableMedicines { get; } = new ObservableCollection<Medicine>();
 
 
@@ -36,6 +46,8 @@ public partial class HospitalsWithMedicineReportViewModel : ObservableObject
     [ObservableProperty]
     private bool _isSourceLoading = false;
 
+    
+
 
 
     /// <summary>
@@ -51,14 +63,14 @@ public partial class HospitalsWithMedicineReportViewModel : ObservableObject
 
         IEnumerable<Hospital>? hospitals = await Task.Run(async () => await _repositoryControllerService.Medicines.GetHospitalsContaining(SelectedMedicine));
 
-
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             foreach (Hospital hospital in hospitals)
             {
-                Source.Add(hospital);
+                Source.Add(
+                    new StoringHospital(hospital, 8)
+                    ) ;
             }
-
             IsSourceLoading = false;
         });
     }
@@ -84,7 +96,8 @@ public partial class HospitalsWithMedicineReportViewModel : ObservableObject
                 AvailableMedicines.Add(medicine);
             }
 
-            IsMedicinesLoading = false;
+            
         });
+        IsMedicinesLoading = false;
     }
 }

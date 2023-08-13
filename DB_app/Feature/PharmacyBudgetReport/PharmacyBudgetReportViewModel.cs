@@ -24,7 +24,7 @@ public partial class PharmacyBudgetReportViewModel: ObservableRecipient
     [ObservableProperty]
     private bool _isLoading = false;
 
-    public async void LoadReport()
+    public async Task LoadReport()
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {

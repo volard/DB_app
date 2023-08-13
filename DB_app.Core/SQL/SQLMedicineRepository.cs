@@ -31,8 +31,12 @@ public class SQLMedicineRepository : IMedicineRepository
 
     public async Task<IEnumerable<Hospital>> GetHospitalsContaining(Medicine medicine)
     {
-        List<OrderItem> items = await _db.OrderItems.Where(item => item.Product.Medicine.Name == medicine.Name).ToListAsync();
+        List<OrderItem> items = await _db.OrderItems
+            .Include(item => item.RepresentingOrder)
+            .Include(item => item.RepresentingOrder.HospitalCustomer)
+            .Where(item => item.Product.Medicine.Name == medicine.Name).ToListAsync();
         List<Hospital> output = new();
+        if (items.Count() == 0) return output;
         foreach (Hospital hospital in items
                      .Select(orderItem => orderItem.RepresentingOrder.HospitalCustomer)
                      .Where(hospital => !output.Contains(hospital)))

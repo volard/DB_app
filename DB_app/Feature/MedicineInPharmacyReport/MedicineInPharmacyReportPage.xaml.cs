@@ -26,6 +26,16 @@ public sealed partial class MedicineInPharmacyReportPage : Page
     {
         ViewModel.LoadSource(ViewModel.SelectedPharmacy);
         SourceDataGrid.Columns[0].SortDirection = DataGridSortDirection.Ascending;
+        if (ViewModel.Source.Count == 0)
+        {
+            SourceDataGrid.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
+            NotFoundBlock.Visibility = Microsoft.UI.Xaml.Visibility.Visible;
+        }
+        else
+        {
+            SourceDataGrid.Visibility = Microsoft.UI.Xaml.Visibility.Visible;
+            NotFoundBlock.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
+        }
     }
 
     private void dg_Sorting(object sender, DataGridColumnEventArgs e)

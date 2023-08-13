@@ -67,12 +67,12 @@
     <!--#endregion-->
 
 
-    <Grid 
+    <Grid
+        Padding="0,0,0,20"
         HorizontalAlignment="Stretch"
-        VerticalAlignment="Stretch"
-        Padding="0,0,0,20">
+        VerticalAlignment="Stretch">
 
-            <InfoBar
+        <InfoBar
             Title="Title"
             Margin="0,0,0,20"
             IsClosable="False"
@@ -80,28 +80,42 @@
             Message="Essential app message for your users to be informed of, acknowledge, or take action on."
             Severity="Informational" />
 
-        <Grid Margin="0,80, 0, 0">
+        <Grid Margin="0,80,0,0">
 
-
+            <StackPanel x:Name="NotFoundBlock" HorizontalAlignment="Stretch">
+                <Image
+                    Width="200"
+                    Height="200"
+                    Source="ms-appx:///Assets/not-found.svg" />
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    CharacterSpacing="200"
+                    FontFamily="Arial"
+                    FontSize="24"
+                    FontStyle="Italic"
+                    Foreground="CornflowerBlue"
+                    HorizontalTextAlignment="Center"
+                    Text="Not found"
+                    TextWrapping="WrapWholeWords" />
+            </StackPanel>
 
             <toolkit:DataGrid
-                x:Name="OrderItemsDataGrid"
+                x:Name="SourceDataGrid"
                 AutoGenerateColumns="False"
                 CanUserResizeColumns="True"
                 IsReadOnly="True"
                 LoadingRowGroup="dg_loadingRowGroup"
                 RowGroupHeaderPropertyNameAlternative="Type"
-                VerticalScrollBarVisibility="Visible"
-                
-                Style="{StaticResource DataGridStyle1}">
+                Style="{StaticResource DataGridStyle1}"
+                VerticalScrollBarVisibility="Visible">
 
                 <toolkit:DataGrid.Resources>
                     <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
                 </toolkit:DataGrid.Resources>
-    
+
 
                 <toolkit:DataGrid.RowGroupHeaderStyles>
-                    <!-- Override the default Style for groups headers -->
+                    <!--  Override the default Style for groups headers  -->
                     <Style TargetType="toolkit:DataGridRowGroupHeader">
                         <Setter Property="Background" Value="LightGray" />
                     </Style>
@@ -111,7 +125,7 @@
                 <toolkit:DataGrid.Columns>
 
                     <toolkit:DataGridTextColumn Binding="{Binding Name}" Header="Medicine name" />
-                   
+
                 </toolkit:DataGrid.Columns>
 
 
@@ -124,6 +138,6 @@
                 IsIndeterminate="True"
                 Visibility="{x:Bind ViewModel.IsSourceLoading, Converter={StaticResource VisibleIf}, Mode=OneWay}" />
         </Grid>
-        
+
     </Grid>
 </Page>
