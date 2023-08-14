@@ -68,20 +68,21 @@
     <!--#endregion-->
 
 
-    <Grid
+    <RelativePanel
         Padding="0,0,0,20"
         HorizontalAlignment="Stretch"
         VerticalAlignment="Stretch">
 
         <InfoBar
             Title="Title"
+            x:Name="Description"
             Margin="0,0,0,20"
             IsClosable="False"
             IsOpen="True"
             Message="Essential app message for your users to be informed of, acknowledge, or take action on."
             Severity="Informational" />
 
-        <Grid Margin="0,80,0,0">
+        <Grid RelativePanel.Below="Description" HorizontalAlignment="Stretch">
 
             <StackPanel x:Name="NotFoundBlock" HorizontalAlignment="Stretch">
                 <Image
@@ -104,6 +105,7 @@
                 x:Name="SourceDataGrid"
                 AutoGenerateColumns="False"
                 CanUserResizeColumns="True"
+                MinWidth="400"
                 IsReadOnly="True"
                 LoadingRowGroup="dg_loadingRowGroup"
                 RowGroupHeaderPropertyNameAlternative="Type"
@@ -146,5 +148,5 @@
             RelativePanel.AlignHorizontalCenterWithPanel="True"
             StackMode="Replace" />
 
-    </Grid>
+    </RelativePanel>
 </Page>

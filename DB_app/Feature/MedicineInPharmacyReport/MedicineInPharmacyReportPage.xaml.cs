@@ -1,10 +1,12 @@
 ﻿using CommunityToolkit.WinUI.UI.Controls;
 using DB_app.Behaviors;
+using DB_app.Helpers;
 using DB_app.Models;
 using DB_app.ViewModels;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace DB_app.Views;
 
@@ -77,5 +79,19 @@ public sealed partial class MedicineInPharmacyReportPage : Page
                 }
             }
         }
+    }
+
+    private async void CommandBarExportButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        await ExcelExtensions.ExportAsExcel(SourceDataGrid, ViewModel.Source.Select(item =>
+        {
+            return new List<string>
+            {
+                item.Medicine.Name ?? " ",
+                item.Price.ToString() ?? " ",
+                item.Quantity.ToString() ?? " "
+            };
+        }).ToList(), fileName: "Medicine In Pharmacy Report");
+        NotificationHelper.ShowNotificationMessage(Notification, "gut", NotificationHelper.SuccessStyle);
     }
 }

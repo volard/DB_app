@@ -41,20 +41,22 @@
     </behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
     <!--#endregion-->
 
-    <StackPanel
-        x:Name="ContentArea"
-        Background="Transparent"
-        Orientation="Vertical">
+    <RelativePanel
+        Padding="0,0,0,20"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch">
 
         <InfoBar
+            x:Name="Description"
             Title="Title"
+            RelativePanel.AlignTopWithPanel="True"
             Margin="0,0,0,20"
             IsClosable="False"
             IsOpen="True"
             Message="This report shows how much money each pharmacy got according to orders list"
             Severity="Informational" />
 
-        <Grid>
+        <Grid RelativePanel.Below="Description" HorizontalAlignment="Stretch">
 
             <StackPanel
                 x:Name="NotFoundBlock"
@@ -116,5 +118,11 @@
                 IsIndeterminate="True"
                 Visibility="{x:Bind ViewModel.IsLoading, Converter={StaticResource VisibleIfConverter}, Mode=OneWay}" />
         </Grid>
-    </StackPanel>
+
+        <controls:InAppNotification
+            x:Name="Notification"
+            RelativePanel.AlignBottomWithPanel="True"
+            RelativePanel.AlignHorizontalCenterWithPanel="True"
+            StackMode="Replace" />
+    </RelativePanel>
 </Page>

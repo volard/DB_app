@@ -49,7 +49,7 @@ public sealed partial class MedicineInHospitalReportPage
     private async void CommandBarExportButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
         Dictionary<string, List<string>> collection = ViewModel.GroupedOrders.ToDictionary(item => item.Key.ToString()!, item => item.Select(medicine => medicine.Name).ToList()); ;
-        await ExcelExtensions.ExportAsExcel(SourceDataGrid, collection, fileName: "MedicineReport");
+        await ExcelExtensions.ExportAsExcel(SourceDataGrid, collection, fileName: "MedicineInHospitalReport");
         NotificationHelper.ShowNotificationMessage(Notification, "File saved successfully", NotificationHelper.SuccessStyle);
     }
 }

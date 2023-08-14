@@ -47,6 +47,7 @@
                         x:Name="CommandBarExportButton"
                         Margin="20,0,0,0"
                         Background="Green"
+                        Click="CommandBarExportButton_Click"
                         Icon="Manage"
                         Label="Export"
                         ToolTipService.ToolTip="Export" />
@@ -60,20 +61,25 @@
     </behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
     <!--#endregion-->
 
-    <StackPanel x:Name="ContentArea" Orientation="Vertical">
+    <RelativePanel
+        Padding="0,0,0,20"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch">
 
         <InfoBar
+            x:Name="Description"
             Title="Title"
             Margin="0,0,0,20"
+            HorizontalAlignment="Stretch"
             IsClosable="False"
             IsOpen="True"
             Message="Essential app message for your users to be informed of, acknowledge, or take action on."
+            RelativePanel.AlignTopWithPanel="True"
             Severity="Informational" />
 
-        <Grid>
-            <StackPanel
-                x:Name="NotFoundBlock"
-                HorizontalAlignment="Stretch">
+        <Grid HorizontalAlignment="Stretch" RelativePanel.Below="Description">
+
+            <StackPanel x:Name="NotFoundBlock" HorizontalAlignment="Stretch">
                 <Image
                     Width="200"
                     Height="200"
@@ -91,6 +97,7 @@
             </StackPanel>
             <toolkit:DataGrid
                 x:Name="SourceDataGrid"
+                HorizontalAlignment="Stretch"
                 AutoGenerateColumns="False"
                 CanUserResizeColumns="True"
                 CanUserSortColumns="True"
@@ -127,5 +134,11 @@
                 IsIndeterminate="True"
                 Visibility="{x:Bind ViewModel.IsSourceLoading, Mode=OneWay}" />
         </Grid>
-    </StackPanel>
+
+        <toolkit:InAppNotification
+            x:Name="Notification"
+            RelativePanel.AlignBottomWithPanel="True"
+            RelativePanel.AlignHorizontalCenterWithPanel="True"
+            StackMode="Replace" />
+    </RelativePanel>
 </Page>

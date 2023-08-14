@@ -1,4 +1,5 @@
 using DB_app.Behaviors;
+using DB_app.Helpers;
 using DB_app.ViewModels;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
@@ -43,5 +44,11 @@ public sealed partial class PharmacyWithMedicineReportPage : Page
             SourceDataGrid.Visibility = Microsoft.UI.Xaml.Visibility.Visible;
             NotFoundBlock.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
         }
+    }
+
+    private void CommandBarExportButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        NotificationHelper.ShowNotificationMessage(Notification, "gut", NotificationHelper.SuccessStyle);
+
     }
 }
