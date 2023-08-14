@@ -54,6 +54,7 @@
                         x:Name="CommandBarExportButton"
                         Margin="20,0,0,0"
                         Background="Green"
+                        Click="CommandBarExportButton_Click"
                         Icon="Manage"
                         Label="Export"
                         ToolTipService.ToolTip="Export" />
@@ -138,6 +139,12 @@
                 IsIndeterminate="True"
                 Visibility="{x:Bind ViewModel.IsSourceLoading, Converter={StaticResource VisibleIf}, Mode=OneWay}" />
         </Grid>
+
+        <toolkit:InAppNotification
+            x:Name="Notification"
+            RelativePanel.AlignBottomWithPanel="True"
+            RelativePanel.AlignHorizontalCenterWithPanel="True"
+            StackMode="Replace" />
 
     </Grid>
 </Page>

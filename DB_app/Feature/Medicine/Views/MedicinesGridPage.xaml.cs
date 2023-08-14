@@ -1,18 +1,12 @@
 ﻿using DB_app.Behaviors;
+using DB_app.Contracts.Services;
+using DB_app.Helpers;
 using DB_app.ViewModels;
 using Microsoft.UI.Xaml;
-using DB_app.Helpers;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
-using DB_app.Contracts.Services;
-using Windows.Storage.Pickers;
-using Windows.Storage.Provider;
-using Windows.Storage;
-using System.Diagnostics;
-using ClosedXML.Excel;
-using CommunityToolkit.WinUI.UI.Controls;
 
 namespace DB_app.Views;
 
@@ -33,7 +27,7 @@ public sealed partial class MedicinesGridPage
     }
 
 
-   protected override void OnNavigatedTo(NavigationEventArgs e)
+    protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         ViewModel.DisplayNotification += ShowNotificationMessage;
         base.OnNavigatedTo(e);
@@ -41,7 +35,7 @@ public sealed partial class MedicinesGridPage
 
     protected override void OnNavigatedFrom(NavigationEventArgs e)
     {
-        ViewModel.DisplayNotification-= ShowNotificationMessage;
+        ViewModel.DisplayNotification -= ShowNotificationMessage;
         base.OnNavigatedFrom(e);
     }
 
@@ -73,14 +67,14 @@ public sealed partial class MedicinesGridPage
 
     private async void CommandBarExportButton_Click(object sender, RoutedEventArgs e)
     {
-        await ExcelExtensions.ExportAsExcel(MedicineGrid, ViewModel.Source.Count, ViewModel.Source.Select<MedicineWrapper, List<string>>(item =>
+        await ExcelExtensions.ExportAsExcel(MedicineGrid, ViewModel.Source.Select<MedicineWrapper, List<string>>(item =>
         {
             return new List<string>
             {
                 item.Name ?? " ",
                 item.Type ?? " "
             };
-        }).ToList(), "MedicineReport");
+        }).ToList(), fileName: "MedicineReport");
 
         ShowNotificationMessage(this, new("File saved successfully", NotificationHelper.SuccessStyle));
     }

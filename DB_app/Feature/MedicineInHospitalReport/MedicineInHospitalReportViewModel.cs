@@ -4,13 +4,9 @@ using DB_app.Contracts.ViewModels;
 using DB_app.Core.Contracts.Services;
 using DB_app.Helpers;
 using DB_app.Models;
-using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml.Data;
 using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
 
 namespace DB_app.ViewModels;
 
@@ -25,7 +21,7 @@ public partial class MedicineInHospitalReportViewModel : ObservableRecipient, IN
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
- 
+
 
     /// <summary>
     /// DataGrid's data collection
@@ -117,7 +113,7 @@ public partial class MedicineInHospitalReportViewModel : ObservableRecipient, IN
         {
             GroupInfoCollection<Medicine> info = new()
             {
-                Key = type.Key
+                Key = type.Key + " [ " + type.Sum(item => item.Quantity) + " ]"
             };
             QuantityPerType[type.Key] = type.Sum(item => item.Quantity);
             foreach (var storedItem in type)
@@ -127,9 +123,9 @@ public partial class MedicineInHospitalReportViewModel : ObservableRecipient, IN
             GroupedOrders.Add(info);
         }
 
-            GroupedItemsViewSource = new CollectionViewSource { IsSourceGrouped = true, Source = GroupedOrders };
+        GroupedItemsViewSource = new CollectionViewSource { IsSourceGrouped = true, Source = GroupedOrders };
 
-            IsSourceLoading = false;
+        IsSourceLoading = false;
 
         //await _dispatcherQueue.EnqueueAsync(() =>
         //{
@@ -137,8 +133,6 @@ public partial class MedicineInHospitalReportViewModel : ObservableRecipient, IN
         //});
     }
 
-
-   
 
     public void OnNavigatedFrom()
     {
