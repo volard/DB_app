@@ -64,12 +64,12 @@ public partial class MedicinesGridViewModel : ObservableRecipient, INavigationAw
 
                 Source.Remove(SelectedItem);
 
-                DisplayNotification?.Invoke(this, new NotificationConfigurationEventArgs("Everything is good", NotificationHelper.SuccessStyle));
+                DisplayNotification?.Invoke(this, new("Everything is good", NotificationHelper.SuccessStyle));
 
             }
             catch (LinkedRecordOperationException)
             {
-                DisplayNotification?.Invoke(this, new NotificationConfigurationEventArgs("Таблэтки связаны с чем-то. Удалите связанную организацию, чтобы удалить адрес", NotificationHelper.ErrorStyle));
+                DisplayNotification?.Invoke(this, new("Таблэтки связаны с чем-то. Удалите связанную организацию, чтобы удалить адрес", NotificationHelper.ErrorStyle));
             }
         }
     }

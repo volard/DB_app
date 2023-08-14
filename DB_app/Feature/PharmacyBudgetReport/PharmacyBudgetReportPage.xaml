@@ -32,6 +32,7 @@
                     Background="Green"
                     Icon="Manage"
                     Label="Export"
+                    Click="CommandBarExportButton_Click"
                     ToolTipService.ToolTip="Export" />
 
 
@@ -106,6 +107,7 @@
 
 
             </controls:DataGrid>
+            
 
             <ProgressBar
                 Margin="0,0,0,0"

@@ -97,8 +97,8 @@
 
                 <toolkit:DataGrid.Columns>
 
-                    <toolkit:DataGridTextColumn Binding="{Binding Name}" Header="Name" />
-                    <toolkit:DataGridTextColumn Binding="{Binding Type}" Header="Type" />
+                    <toolkit:DataGridTextColumn Binding="{Binding Name}" x:Uid="NameHeader" />
+                    <toolkit:DataGridTextColumn Binding="{Binding Type}" x:Uid="Type" />
 
                 </toolkit:DataGrid.Columns>
             </toolkit:DataGrid>

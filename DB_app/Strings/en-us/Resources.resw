@@ -240,7 +240,7 @@
   <data name="Products.Text" xml:space="preserve">
     <value>Products</value>
   </data>
-  <data name="Warning.Text" xml:space="preserve">
+  <data name="Warning.Header" xml:space="preserve">
     <value>Warning</value>
   </data>
   <data name="SaveDialog.CloseButtonText" xml:space="preserve">
@@ -257,5 +257,14 @@
   </data>
   <data name="SaveDialog.Content" xml:space="preserve">
     <value>You have unsaved changes that will be lost. Would you like to save your changes?</value>
+  </data>
+  <data name="Name.Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Type.Header" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="NameHeader.Header" xml:space="preserve">
+    <value>Name</value>
   </data>
 </root>
