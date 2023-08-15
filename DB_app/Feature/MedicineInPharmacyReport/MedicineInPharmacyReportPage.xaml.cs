@@ -6,7 +6,6 @@ using DB_app.ViewModels;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
 using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace DB_app.Views;
 
@@ -49,9 +48,9 @@ public sealed partial class MedicineInPharmacyReportPage : Page
 
             if (e.Column.SortDirection == null || e.Column.SortDirection == DataGridSortDirection.Descending)
             {
-                foreach (var line in new ObservableCollection<Product>( from item in _items
-                                                                                orderby item.Medicine.Name ascending
-                                                                                select item
+                foreach (var line in new ObservableCollection<Product>(from item in _items
+                                                                       orderby item.Medicine.Name ascending
+                                                                       select item
                                                                                ))
                 {
                     ViewModel.Source.Add(line);

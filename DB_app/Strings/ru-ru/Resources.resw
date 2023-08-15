@@ -124,7 +124,7 @@
     <value>Образовательный проект, посвященный разработке простых, но современных Windows-приложений с использованием WinUI 3.0 и Windows App SDK</value>
   </data>
   <data name="Shell_Greeting.Content" xml:space="preserve">
-    <value>Мои поздравления, вы на месте</value>
+    <value>Главная</value>
   </data>
   <data name="Shell_HospitalsGrid.Content" xml:space="preserve">
     <value>Больницы</value>
@@ -168,9 +168,6 @@
   <data name="Settings_AboutDescription.Text" xml:space="preserve">
     <value>Учебное приложение, которое старается быть максимально enterprise</value>
   </data>
-  <data name="DB_app.ViewModels.MedicinesGridViewModel" xml:space="preserve">
-    <value>Медикаменты</value>
-  </data>
   <data name="Shell_AddressesGrid.Content" xml:space="preserve">
     <value>Адреса</value>
   </data>
@@ -197,9 +194,6 @@
   </data>
   <data name="Settings.Text" xml:space="preserve">
     <value>Настройки</value>
-  </data>
-  <data name="Edit.Text" xml:space="preserve">
-    <value>Изменить</value>
   </data>
   <data name="New.Text" xml:space="preserve">
     <value>Создание</value>
@@ -245,5 +239,155 @@
   </data>
   <data name="NameHeader.Header" xml:space="preserve">
     <value>Название</value>
+  </data>
+  <data name="AddNewButton.Label" xml:space="preserve">
+    <value>Добавить</value>
+  </data>
+  <data name="CancelButton.Label" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="Data.Content" xml:space="preserve">
+    <value>Данные</value>
+  </data>
+  <data name="DeleteButton.Label" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="EditButton.Label" xml:space="preserve">
+    <value>Изменить</value>
+  </data>
+  <data name="ExportButton.Label" xml:space="preserve">
+    <value>Экспортировать</value>
+  </data>
+  <data name="HospitalWithMedicine.Text" xml:space="preserve">
+    <value>Больницы с лекарством</value>
+  </data>
+  <data name="MedicineInHospital.Text" xml:space="preserve">
+    <value>Лекартсва в больнице</value>
+  </data>
+  <data name="MedicineInPharmacy.Text" xml:space="preserve">
+    <value>Лекарства в аптеке</value>
+  </data>
+  <data name="Medicines.Text" xml:space="preserve">
+    <value>Медикаменты</value>
+  </data>
+  <data name="NotFound.Text" xml:space="preserve">
+    <value>Не найдено</value>
+  </data>
+  <data name="PharmaciesBudget.Text" xml:space="preserve">
+    <value>Бюджет аптек</value>
+  </data>
+  <data name="PharmacyWithMedicine.Text" xml:space="preserve">
+    <value>Аптеки с лекарством</value>
+  </data>
+  <data name="SaveButton.Label" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="Shell_Reports.Content" xml:space="preserve">
+    <value>Отчеты</value>
+  </data>
+  <data name="Shell_Reports_HospitalsWithMedicine.Content" xml:space="preserve">
+    <value>Больницы с лекарством</value>
+  </data>
+  <data name="Shell_Reports_MedicineInHospital.Content" xml:space="preserve">
+    <value>Лекарства в больнице</value>
+  </data>
+  <data name="Shell_Reports_MedicineInPharmacy.Content" xml:space="preserve">
+    <value>Лекарства в аптеке</value>
+  </data>
+  <data name="Shell_Reports_PharmacyBudget.Content" xml:space="preserve">
+    <value>Бюджет аптек</value>
+  </data>
+  <data name="Shell_Reports_PharmacyWithMedicine.Content" xml:space="preserve">
+    <value>Аптеки с лекарством</value>
+  </data>
+  <data name="ViewButton.Label" xml:space="preserve">
+    <value>Посмотреть</value>
+  </data>
+  <data name="BudgetHeader.Header" xml:space="preserve">
+    <value>Бюджет</value>
+  </data>
+  <data name="Building.Header" xml:space="preserve">
+    <value>Здание</value>
+  </data>
+  <data name="City.Header" xml:space="preserve">
+    <value>Город</value>
+  </data>
+  <data name="DateHeader.Header" xml:space="preserve">
+    <value>Дата</value>
+  </data>
+  <data name="Doctor.Header" xml:space="preserve">
+    <value>ГлавВрач</value>
+  </data>
+  <data name="DoctorMiddlename.Header" xml:space="preserve">
+    <value>Отчество</value>
+  </data>
+  <data name="DoctorName.Header" xml:space="preserve">
+    <value>Имя</value>
+  </data>
+  <data name="DoctorSurename.Header" xml:space="preserve">
+    <value>Фамилия</value>
+  </data>
+  <data name="Edit.Text" xml:space="preserve">
+    <value>Изменить</value>
+  </data>
+  <data name="HospitalHeader.Header" xml:space="preserve">
+    <value>Больница</value>
+  </data>
+  <data name="HospitalsWithMedicineDescription.Message" xml:space="preserve">
+    <value>Вывод всех больниц, где имеется указанное лекарство</value>
+  </data>
+  <data name="HospitalsWithMedicineDescription.Title" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="MedicineHeader.Header" xml:space="preserve">
+    <value>Лекарство</value>
+  </data>
+  <data name="MedicineInHospitalDescription.Message" xml:space="preserve">
+    <value>Вывод всех лекарств в указанной больнице</value>
+  </data>
+  <data name="MedicineInHospitalDescription.Title" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="MedicineInPharmacyDescription.Message" xml:space="preserve">
+    <value>Вывод всех лекарств в указанной аптеке</value>
+  </data>
+  <data name="MedicineInPharmacyDescription.Title" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="OpenWindowButton.Label" xml:space="preserve">
+    <value>Открыть в новом окне</value>
+  </data>
+  <data name="PharmaciesBudgetDescription.Message" xml:space="preserve">
+    <value>Вывод бюджета аптек</value>
+  </data>
+  <data name="PharmaciesBudgetDescription.Title" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="PharmacyHeader.Header" xml:space="preserve">
+    <value>Аптека</value>
+  </data>
+  <data name="PharmacyWithMedicineDescription.Message" xml:space="preserve">
+    <value>Вывод всех аптек, где имеется указанное лекарство</value>
+  </data>
+  <data name="PharmacyWithMedicineDescription.Title" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="PriceHeader.Header" xml:space="preserve">
+    <value>Цена</value>
+  </data>
+  <data name="QuantityHeader.Header" xml:space="preserve">
+    <value>Количество</value>
+  </data>
+  <data name="ShippingAddressHeader.Header" xml:space="preserve">
+    <value>Адрес доставки</value>
+  </data>
+  <data name="Street.Header" xml:space="preserve">
+    <value>Улица</value>
+  </data>
+  <data name="TimeHeader.Header" xml:space="preserve">
+    <value>Время</value>
+  </data>
+  <data name="TotalHeader.Header" xml:space="preserve">
+    <value>Итого</value>
   </data>
 </root>

@@ -28,39 +28,35 @@
                 DefaultLabelPosition="Right">
 
                 <CommandBar.Content>
-                    <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="Orders" />
+                    <TextBlock x:Uid="Orders" Style="{ThemeResource TitleTextBlockStyle}" />
                 </CommandBar.Content>
 
                 <AppBarButton
                     x:Name="CommandBarAddButton"
+                    x:Uid="AddNewButton"
                     Click="AddButton_Click"
-                    Icon="Add"
-                    Label="Add new"
-                    ToolTipService.ToolTip="Add new" />
+                    Icon="Add" />
 
                 <AppBarButton
                     x:Name="CommandBarViewButton"
+                    x:Uid="ViewButton"
                     Click="ViewButton_Click"
                     Icon="OpenLocal"
-                    IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
-                    Label="View"
-                    ToolTipService.ToolTip="View" />
+                    IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}" />
 
                 <AppBarButton
                     x:Name="CommandBarEditButton"
+                    x:Uid="EditButton"
                     Click="EditButton_Click"
                     Icon="Edit"
-                    IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
-                    Label="Edit"
-                    ToolTipService.ToolTip="Edit" />
+                    IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}" />
 
                 <AppBarButton
                     x:Name="CommandBarDeleteButton"
+                    x:Uid="DeleteButton"
                     Click="DeleteButton_Click"
                     Icon="Delete"
-                    IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
-                    Label="Delete"
-                    ToolTipService.ToolTip="Delete" />
+                    IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}" />
 
             </CommandBar>
         </DataTemplate>
@@ -91,10 +87,10 @@
                 <toolkit:DataGrid.Columns>
 
 
-                    <toolkit:DataGridTextColumn Binding="{Binding OrderHospital.Id}" Header="Hospital id" />
+                    <toolkit:DataGridTextColumn x:Uid="HospitalHeader" Binding="{Binding OrderHospital.Id}" />
 
 
-                    <toolkit:DataGridTemplateColumn Header="Main doctor">
+                    <toolkit:DataGridTemplateColumn x:Uid="Doctor">
                         <toolkit:DataGridTemplateColumn.CellTemplate>
                             <DataTemplate x:DataType="vm:OrderWrapper">
                                 <TextBlock Margin="12,0" VerticalAlignment="Center">
@@ -106,10 +102,10 @@
                         </toolkit:DataGridTemplateColumn.CellTemplate>
                     </toolkit:DataGridTemplateColumn>
 
-                    <toolkit:DataGridTextColumn Binding="{Binding SelectedAddress}" Header="Shipping address" />
+                    <toolkit:DataGridTextColumn x:Uid="ShippingAddressHeader" Binding="{Binding SelectedAddress}" />
 
 
-                    <toolkit:DataGridTemplateColumn Header="Date">
+                    <toolkit:DataGridTemplateColumn x:Uid="DateHeader">
                         <toolkit:DataGridTemplateColumn.CellTemplate>
                             <DataTemplate x:DataType="vm:OrderWrapper">
                                 <TextBlock
@@ -120,7 +116,7 @@
                         </toolkit:DataGridTemplateColumn.CellTemplate>
                     </toolkit:DataGridTemplateColumn>
 
-                    <toolkit:DataGridTemplateColumn Header="Time">
+                    <toolkit:DataGridTemplateColumn x:Uid="TimeHeader">
                         <toolkit:DataGridTemplateColumn.CellTemplate>
                             <DataTemplate x:DataType="vm:OrderWrapper">
                                 <TextBlock
@@ -132,7 +128,7 @@
                     </toolkit:DataGridTemplateColumn>
 
 
-                    <toolkit:DataGridTemplateColumn Header="Total">
+                    <toolkit:DataGridTemplateColumn x:Uid="TotalHeader">
                         <toolkit:DataGridTemplateColumn.CellTemplate>
                             <DataTemplate x:DataType="vm:OrderWrapper">
                                 <TextBlock

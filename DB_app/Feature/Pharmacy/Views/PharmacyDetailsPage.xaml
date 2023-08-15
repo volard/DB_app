@@ -55,31 +55,31 @@
                     Click="SaveButton_Click"
                     Icon="Save"
                     IsEnabled="{Binding CurrentPharmacy.HasErrors, Converter={StaticResource NotConverter}, Mode=OneWay}"
-                    Label="Save"
+                    x:Uid="SaveButton"
                     Visibility="{Binding CurrentPharmacy.IsInEdit, Converter={StaticResource VisibleIf}, Mode=OneWay}" />
 
                 <AppBarButton
                     Click="BeginEdit_Click"
                     Icon="Edit"
-                    Label="Edit"
+                    x:Uid="EditButton"
                     Visibility="{x:Bind viewModel:Converters.CollapsedIfOneOfTwo(CurrentPharmacy.IsInEdit, CurrentPharmacy.IsNew), Mode=OneWay}" />
 
                 <AppBarButton
                     Click="{x:Bind CurrentPharmacy.CancelEdit}"
                     Icon="Cancel"
-                    Label="Cancel"
+                    x:Uid="CancelButton"
                     Visibility="{x:Bind viewModel:Converters.VisibleIfOneAndNotAnother(CurrentPharmacy.IsInEdit, CurrentPharmacy.IsNew), Mode=OneWay}" />
 
                 <AppBarButton
                     Click="DeleteButton_Click"
                     Icon="Delete"
-                    Label="Delete"
+                    x:Uid="DeleteButton"
                     Visibility="{Binding CurrentPharmacy.IsNew, Converter={StaticResource CollapsedIf}, Mode=OneWay}" />
 
                 <AppBarButton
                     Click="AddButton_Click"
                     Icon="Add"
-                    Label="Add new"
+                    x:Uid="AddNewButton"
                     Visibility="{x:Bind viewModel:Converters.CollapsedIfOneOfTwo(CurrentPharmacy.IsInEdit, CurrentPharmacy.IsNew), Mode=OneWay}" />
             </CommandBar>
         </DataTemplate>

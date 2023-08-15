@@ -54,7 +54,7 @@
 
                 <NavigationViewItemSeparator />
 
-                <NavigationViewItemHeader Content="Data" />
+                <NavigationViewItemHeader x:Uid="Data" />
 
                 <NavigationViewItem x:Uid="Shell_HospitalsGrid" helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.HospitalsGridViewModel">
                     <NavigationViewItem.Icon>
@@ -90,7 +90,7 @@
                 <NavigationViewItemSeparator />
 
 
-                <NavigationViewItem Content="Reports" ToolTipService.ToolTip="Reports">
+                <NavigationViewItem x:Uid="Shell_Reports" ToolTipService.ToolTip="Reports">
                     <NavigationViewItem.Icon>
                         <PathIcon
                             HorizontalAlignment="Stretch"
@@ -100,33 +100,33 @@
 
                     <NavigationViewItem.MenuItems>
 
-                        <NavigationViewItem helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.MedicineInHospitalReportViewModel" Content="Medicine in hospital">
+                        <NavigationViewItem helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.MedicineInHospitalReportViewModel" x:Uid="Shell_Reports_MedicineInHospital">
                             <NavigationViewItem.Icon>
                                 <PathIcon HorizontalAlignment="Stretch" Data="{StaticResource Report}" />
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
 
-                        <NavigationViewItem helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.MedicineInPharmacyReportViewModel" Content="Medicine in pharmacy">
+                        <NavigationViewItem helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.MedicineInPharmacyReportViewModel" x:Uid="Shell_Reports_MedicineInPharmacy">
                             <NavigationViewItem.Icon>
                                 <PathIcon HorizontalAlignment="Stretch" Data="{StaticResource Report}" />
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
 
-                        <NavigationViewItem helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.PharmacyBudgetReportViewModel" Content="Pharmacy budget">
+                        <NavigationViewItem helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.PharmacyBudgetReportViewModel" x:Uid="Shell_Reports_PharmacyBudget">
                             <NavigationViewItem.Icon>
                                 <FontIcon Glyph="&#xE825;" />
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
 
 
-                        <NavigationViewItem helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.PharmacyWithMedicineReportViewModel" Content="Pharmacy with medicine">
+                        <NavigationViewItem helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.PharmacyWithMedicineReportViewModel" x:Uid="Shell_Reports_PharmacyWithMedicine">
                             <NavigationViewItem.Icon>
                                 <PathIcon HorizontalAlignment="Stretch" Data="{StaticResource Report}" />
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
 
 
-                        <NavigationViewItem helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.HospitalsWithMedicineReportViewModel" Content="Hospitals with medicine">
+                        <NavigationViewItem helpers:NavigationHelper.NavigateTo="DB_app.ViewModels.HospitalsWithMedicineReportViewModel" x:Uid="Shell_Reports_HospitalsWithMedicine">
                             <NavigationViewItem.Icon>
                                 <PathIcon HorizontalAlignment="Stretch" Data="{StaticResource Report}" />
                             </NavigationViewItem.Icon>

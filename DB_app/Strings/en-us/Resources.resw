@@ -168,9 +168,6 @@
   <data name="Settings_AboutDescription.Text" xml:space="preserve">
     <value>Educational project dedicated to developing simple yet modern Windows applications using WinUI 3.0 and Windows App SDK</value>
   </data>
-  <data name="DB_app.ViewModels.MedicinesGridViewModel" xml:space="preserve">
-    <value>Medicines</value>
-  </data>
   <data name="Shell_AddressesGrid.Content" xml:space="preserve">
     <value>Addresses</value>
   </data>
@@ -266,5 +263,23 @@
   </data>
   <data name="NameHeader.Header" xml:space="preserve">
     <value>Name</value>
+  </data>
+  <data name="Shell_Reports.Content" xml:space="preserve">
+    <value>Reports</value>
+  </data>
+  <data name="Shell_Reports_HospitalsWithMedicine.Content" xml:space="preserve">
+    <value>Hospitals with medicine</value>
+  </data>
+  <data name="Shell_Reports_MedicineInHospital.Content" xml:space="preserve">
+    <value>Medicine in hospital</value>
+  </data>
+  <data name="Shell_Reports_MedicineInPharmacy.Content" xml:space="preserve">
+    <value>Medicine in pharmacy</value>
+  </data>
+  <data name="Shell_Reports_PharmacyBudget.Content" xml:space="preserve">
+    <value>Pharmacies budget</value>
+  </data>
+  <data name="Shell_Reports_PharmacyWithMedicine.Content" xml:space="preserve">
+    <value>Pharmacy with medicine</value>
   </data>
 </root>

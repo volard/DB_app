@@ -3,11 +3,12 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="using:DB_app.Behaviors"
+    xmlns:components="using:DB_app.Views.Components"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:DB_app.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModel="using:DB_app.ViewModels"
-    xmlns:helpers="using:DB_app.Helpers"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -20,9 +21,9 @@
         <DataTemplate x:DataType="viewModel:PharmacyWithMedicineReportViewModel">
             <RelativePanel HorizontalAlignment="Stretch" VerticalAlignment="Center">
                 <TextBlock
+                    x:Uid="PharmacyWithMedicine"
                     RelativePanel.AlignLeftWithPanel="True"
-                    Style="{ThemeResource TitleTextBlockStyle}"
-                    Text="Pharmacy with medicine" />
+                    Style="{ThemeResource TitleTextBlockStyle}" />
                 <CommandBar
                     VerticalContentAlignment="Center"
                     Background="Transparent"
@@ -50,11 +51,11 @@
 
                     <AppBarButton
                         x:Name="CommandBarExportButton"
+                        x:Uid="ExportButton"
                         Margin="20,0,0,0"
                         Background="Green"
-                        Icon="Manage"
                         Click="CommandBarExportButton_Click"
-                        Label="Export"
+                        Icon="Manage"
                         ToolTipService.ToolTip="Export" />
 
 
@@ -72,42 +73,25 @@
         VerticalAlignment="Stretch">
 
         <InfoBar
-            Title="Title"
-            Margin="0,0,0,20"
             x:Name="Description"
+            x:Uid="PharmacyWithMedicineDescription"
+            
+            Margin="0,0,0,20"
             IsClosable="False"
-            RelativePanel.AlignTopWithPanel="True"
             IsOpen="True"
-            Message="This report shows in which pharmacies provided medicine is available"
+            RelativePanel.AlignTopWithPanel="True"
             Severity="Informational" />
 
         <Grid HorizontalAlignment="Stretch" RelativePanel.Below="Description">
 
-            <StackPanel
-                x:Name="NotFoundBlock"
-                HorizontalAlignment="Stretch">
-                <Image
-                    Width="200"
-                    Height="200"
-                    Source="ms-appx:///Assets/not-found.svg" />
-                <TextBlock
-                    HorizontalAlignment="Center"
-                    CharacterSpacing="200"
-                    FontFamily="Arial"
-                    FontSize="24"
-                    FontStyle="Italic"
-                    Foreground="CornflowerBlue"
-                    HorizontalTextAlignment="Center"
-                    Text="Not found"
-                    TextWrapping="WrapWholeWords" />
-            </StackPanel>
+            <components:NotFoundBlock x:Name="NotFoundBlock" />
 
             <controls:DataGrid
                 x:Name="SourceDataGrid"
                 AutoGenerateColumns="False"
                 CanUserResizeColumns="True"
-                ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
-                IsReadOnly="True">
+                IsReadOnly="True"
+                ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}">
 
                 <controls:DataGrid.Resources>
                     <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
@@ -116,9 +100,9 @@
 
                 <controls:DataGrid.Columns>
 
-                    <controls:DataGridTextColumn Binding="{Binding Pharmacy.Name}" Header="Pharmacy name" />
-                    <controls:DataGridTextColumn Binding="{Binding Quantity}" Header="Quantity available" />
-                    <controls:DataGridTextColumn Binding="{Binding Price}" Header="Price" />
+                    <controls:DataGridTextColumn x:Uid="PharmacyHeader" Binding="{Binding Pharmacy.Name}" />
+                    <controls:DataGridTextColumn x:Uid="QuantityHeader" Binding="{Binding Quantity}" />
+                    <controls:DataGridTextColumn x:Uid="PriceHeader" Binding="{Binding Price}" />
 
                 </controls:DataGrid.Columns>
 
@@ -130,7 +114,7 @@
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Top"
                 IsIndeterminate="True"
-                Visibility="{x:Bind ViewModel.IsSourceLoading, Converter={StaticResource VisibleIf}, Mode=OneWay}"/>
+                Visibility="{x:Bind ViewModel.IsSourceLoading, Converter={StaticResource VisibleIf}, Mode=OneWay}" />
         </Grid>
 
         <controls:InAppNotification

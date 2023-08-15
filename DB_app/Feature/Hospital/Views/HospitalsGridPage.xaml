@@ -42,15 +42,13 @@
                     x:Name="CommandBarAddButton"
                     Click="Add_Click"
                     Icon="Add"
-                    Label="Add new"
-                    ToolTipService.ToolTip="Add new" />
+                    x:Uid="AddNewButton" />
 
                 <AppBarButton
                     x:Name="CommandBarViewButton"
                     Click="View_Click"
                     Icon="OpenLocal"
-                    Label="View"
-                    ToolTipService.ToolTip="View">
+                    x:Uid="ViewButton">
                     <AppBarButton.IsEnabled>
                         <Binding
                             Converter="{StaticResource IsNotNullConverter}"
@@ -63,8 +61,7 @@
                     x:Name="CommandBarEditButton"
                     Click="Edit_Click"
                     Icon="Edit"
-                    Label="Edit"
-                    ToolTipService.ToolTip="Edit">
+                    x:Uid="EditButton">
                     <AppBarButton.IsEnabled>
                         <Binding
                             Converter="{StaticResource IsNotNullConverter}"
@@ -77,8 +74,7 @@
                     x:Name="CommandBarDeleteButton"
                     Click="Delete_Click"
                     Icon="Delete"
-                    Label="Delete"
-                    ToolTipService.ToolTip="Delete">
+                    x:Uid="DeleteButton">
                     <AppBarButton.IsEnabled>
                         <Binding
                             Converter="{StaticResource IsNotNullConverter}"
@@ -136,15 +132,15 @@
                     <toolkit:DataGridTextColumn
                         Width="20*"
                         Binding="{Binding Surename_main_doctor}"
-                        Header="Surename" />
+                        x:Uid="DoctorSurename" />
                     <toolkit:DataGridTextColumn
                         Width="20*"
                         Binding="{Binding Name_main_doctor}"
-                        Header="Name" />
+                        x:Uid="DoctorName" />
                     <toolkit:DataGridTextColumn
                         Width="20*"
                         Binding="{Binding Middlename_main_doctor}"
-                        Header="Middlename" />
+                        x:Uid="DoctorMiddlename" />
 
 
                 </toolkit:DataGrid.Columns>

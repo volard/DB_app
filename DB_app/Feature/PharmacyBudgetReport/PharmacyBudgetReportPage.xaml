@@ -8,7 +8,7 @@
     xmlns:helpers="using:DB_app.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModel="using:DB_app.ViewModels"
-    xmlns:sys="using:System"
+    xmlns:sys="using:System" xmlns:components="using:DB_app.Views.Components"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -24,14 +24,14 @@
                 DefaultLabelPosition="Right">
 
                 <CommandBar.Content>
-                    <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="Pharmacies budget" />
+                    <TextBlock Style="{ThemeResource TitleTextBlockStyle}" x:Uid="PharmaciesBudget" />
                 </CommandBar.Content>
 
                 <AppBarButton
                     x:Name="CommandBarExportButton"
                     Background="Green"
                     Icon="Manage"
-                    Label="Export"
+                    x:Uid="ExportButton"
                     Click="CommandBarExportButton_Click"
                     ToolTipService.ToolTip="Export" />
 
@@ -48,34 +48,17 @@
 
         <InfoBar
             x:Name="Description"
-            Title="Title"
+            
             RelativePanel.AlignTopWithPanel="True"
             Margin="0,0,0,20"
             IsClosable="False"
             IsOpen="True"
-            Message="This report shows how much money each pharmacy got according to orders list"
+            x:Uid="PharmaciesBudgetDescription"
             Severity="Informational" />
 
         <Grid RelativePanel.Below="Description" HorizontalAlignment="Stretch">
 
-            <StackPanel
-                x:Name="NotFoundBlock"
-                HorizontalAlignment="Stretch">
-                <Image
-                    Width="200"
-                    Height="200"
-                    Source="ms-appx:///Assets/not-found.svg" />
-                <TextBlock
-                    HorizontalAlignment="Center"
-                    CharacterSpacing="200"
-                    FontFamily="Arial"
-                    FontSize="24"
-                    FontStyle="Italic"
-                    Foreground="CornflowerBlue"
-                    HorizontalTextAlignment="Center"
-                    Text="Not found"
-                    TextWrapping="WrapWholeWords" />
-            </StackPanel>
+            <components:NotFoundBlock x:Name="NotFoundBlock"/>
 
             <controls:DataGrid
                 x:Name="SourceDataGrid"
@@ -92,9 +75,9 @@
 
                 <controls:DataGrid.Columns>
 
-                    <controls:DataGridTextColumn Binding="{Binding mPharmacy}" Header="Pharmacy" />
+                    <controls:DataGridTextColumn Binding="{Binding mPharmacy}" x:Uid="PharmacyHeader" />
 
-                    <controls:DataGridTemplateColumn Header="Budget">
+                    <controls:DataGridTemplateColumn x:Uid="BudgetHeader">
                         <controls:DataGridTemplateColumn.CellTemplate>
                             <DataTemplate x:DataType="viewModel:BudgetPharmacyItem">
                                 <TextBlock

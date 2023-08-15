@@ -7,9 +7,9 @@
     xmlns:helpers="using:DB_app.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:sys="using:System"
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:vm="using:DB_app.ViewModels"
-    xmlns:sys="using:System"
     d:DataContext="{d:DesignInstance Type=vm:ProductsGridViewModel}"
     mc:Ignorable="d">
 
@@ -27,7 +27,7 @@
                 DefaultLabelPosition="Right">
 
                 <CommandBar.Content>
-                    <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="Products" />
+                    <TextBlock x:Uid="Products" Style="{ThemeResource TitleTextBlockStyle}" />
                 </CommandBar.Content>
 
                 <AppBarToggleButton
@@ -38,16 +38,14 @@
 
                 <AppBarButton
                     x:Name="CommandBarAddButton"
+                    x:Uid="AddNewButton"
                     Click="Add_Click"
-                    Icon="Add"
-                    Label="Add new"
-                    ToolTipService.ToolTip="Add new" />
+                    Icon="Add" />
                 <AppBarButton
                     x:Name="CommandBarViewButton"
+                    x:Uid="ViewButton"
                     Click="View_Click"
-                    Icon="OpenLocal"
-                    Label="View"
-                    ToolTipService.ToolTip="View">
+                    Icon="OpenLocal">
                     <AppBarButton.IsEnabled>
                         <Binding
                             Converter="{StaticResource IsNotNullConverter}"
@@ -58,10 +56,9 @@
 
                 <AppBarButton
                     x:Name="CommandBarEditButton"
+                    x:Uid="EditButton"
                     Click="Edit_Click"
-                    Icon="Edit"
-                    Label="Edit"
-                    ToolTipService.ToolTip="Edit">
+                    Icon="Edit">
                     <AppBarButton.IsEnabled>
                         <Binding
                             Converter="{StaticResource IsNotNullConverter}"
@@ -72,10 +69,9 @@
 
                 <AppBarButton
                     x:Name="CommandBarDeleteButton"
+                    x:Uid="DeleteButton"
                     Click="Delete_Click"
-                    Icon="Delete"
-                    Label="Delete"
-                    ToolTipService.ToolTip="Delete">
+                    Icon="Delete">
                     <AppBarButton.IsEnabled>
                         <Binding
                             Converter="{StaticResource IsNotNullConverter}"
@@ -118,21 +114,21 @@
 
 
                     <toolkit:DataGridTextColumn
+                        x:Uid="PharmacyHeader"
                         Width="30*"
-                        Binding="{Binding ProductPharmacy.Name}"
-                        Header="Pharmacy Name" />
+                        Binding="{Binding ProductPharmacy.Name}" />
                     <toolkit:DataGridTextColumn
+                        x:Uid="MedicineHeader"
                         Width="30*"
-                        Binding="{Binding ProductMedicine.Name}"
-                        Header="Medicine Name" />
+                        Binding="{Binding ProductMedicine.Name}" />
                     <toolkit:DataGridTextColumn
+                        x:Uid="Type"
                         Width="30*"
-                        Binding="{Binding ProductMedicine.Type}"
-                        Header="Medicine Type" />
-    
+                        Binding="{Binding ProductMedicine.Type}" />
 
 
-                    <toolkit:DataGridTemplateColumn Header="Price">
+
+                    <toolkit:DataGridTemplateColumn x:Uid="PriceHeader">
                         <toolkit:DataGridTemplateColumn.CellTemplate>
                             <DataTemplate x:DataType="vm:ProductWrapper">
                                 <TextBlock
@@ -145,9 +141,9 @@
 
 
                     <toolkit:DataGridTextColumn
+                        x:Uid="QuantityHeader"
                         Width="30*"
-                        Binding="{Binding Quantity}"
-                        Header="Quantity" />
+                        Binding="{Binding Quantity}" />
 
                 </toolkit:DataGrid.Columns>
             </toolkit:DataGrid>

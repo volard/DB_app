@@ -26,7 +26,7 @@
                 DefaultLabelPosition="Right">
 
                 <CommandBar.Content>
-                    <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="Pharmacies" />
+                    <TextBlock Style="{ThemeResource TitleTextBlockStyle}" x:Uid="Pharmacies" />
                 </CommandBar.Content>
 
                 <AppBarToggleButton
@@ -39,31 +39,27 @@
                     x:Name="CommandBarAddButton"
                     Click="Add_Click"
                     Icon="Add"
-                    Label="Add new"
-                    ToolTipService.ToolTip="Add new" />
+                    x:Uid="AddNewButton" />
                 <AppBarButton
                     x:Name="CommandBarViewButton"
                     Click="View_Click"
                     Icon="OpenLocal"
                     IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
-                    Label="View"
-                    ToolTipService.ToolTip="View" />
+                    x:Uid="ViewButton" />
 
                 <AppBarButton
                     x:Name="CommandBarEditButton"
                     Click="Edit_Click"
                     Icon="Edit"
                     IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
-                    Label="Edit"
-                    ToolTipService.ToolTip="Edit" />
+                    x:Uid="EditButton" />
 
                 <AppBarButton
                     x:Name="CommandBarDeleteButton"
                     Click="Delete_Click"
                     Icon="Delete"
                     IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
-                    Label="Delete"
-                    ToolTipService.ToolTip="Delete" />
+                    x:Uid="DeleteButton" />
 
             </CommandBar>
         </DataTemplate>
@@ -109,7 +105,7 @@
                     </toolkit:DataGridTemplateColumn>
 
 
-                    <toolkit:DataGridTextColumn Binding="{Binding Name}" Header="Name" />
+                    <toolkit:DataGridTextColumn Binding="{Binding Name}" x:Uid="NameHeader" />
 
 
                 </toolkit:DataGrid.Columns>

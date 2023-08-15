@@ -25,39 +25,35 @@
                 DefaultLabelPosition="Right">
 
                 <CommandBar.Content>
-                    <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="Addresses" />
+                    <TextBlock Style="{ThemeResource TitleTextBlockStyle}" x:Uid="Addresses" />
                 </CommandBar.Content>
 
                 <AppBarButton
                     x:Name="CommandBarAddButton"
                     Click="Add_Click"
                     Icon="Add"
-                    Label="Add new"
-                    ToolTipService.ToolTip="Add new" />
+                    x:Uid="AddNewButton" />
 
                 <AppBarButton
                     x:Name="CommandBarViewButton"
                     Click="View_Click"
                     Icon="OpenLocal"
                     IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
-                    Label="View"
-                    ToolTipService.ToolTip="View" />
+                    x:Uid="ViewButton" />
 
                 <AppBarButton
                     x:Name="CommandBarEditButton"
                     Click="Edit_Click"
                     Icon="Edit"
                     IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
-                    Label="Edit"
-                    ToolTipService.ToolTip="Edit" />
+                    x:Uid="EditButton" />
 
                 <AppBarButton
                     x:Name="CommandBarDeleteButton"
                     Click="Delete_Click"
                     Icon="Delete"
                     IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
-                    Label="Delete"
-                    ToolTipService.ToolTip="Delete" />
+                    x:Uid="DeleteButton" />
 
             </CommandBar>
         </DataTemplate>
@@ -92,9 +88,9 @@
                 <toolkit:DataGrid.Columns>
 
 
-                    <toolkit:DataGridTextColumn Binding="{Binding City}" Header="City" />
-                    <toolkit:DataGridTextColumn Binding="{Binding Street}" Header="Street" />
-                    <toolkit:DataGridTextColumn Binding="{Binding Building}" Header="Building" />
+                    <toolkit:DataGridTextColumn Binding="{Binding City}" x:Uid="City" />
+                    <toolkit:DataGridTextColumn Binding="{Binding Street}" x:Uid="Street" />
+                    <toolkit:DataGridTextColumn Binding="{Binding Building}" x:Uid="Building" />
 
                 </toolkit:DataGrid.Columns>
             </toolkit:DataGrid>

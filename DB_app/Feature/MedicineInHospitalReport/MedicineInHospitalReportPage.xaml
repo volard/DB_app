@@ -8,7 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
-    xmlns:viewModel="using:DB_app.ViewModels"
+    xmlns:viewModel="using:DB_app.ViewModels" xmlns:components="using:DB_app.Views.Components"
     mc:Ignorable="d">
 
 
@@ -24,7 +24,7 @@
                 <TextBlock
                     RelativePanel.AlignLeftWithPanel="True"
                     Style="{ThemeResource TitleTextBlockStyle}"
-                    Text="Medicine in hospital" />
+                    x:Uid="MedicineInHospital" />
                 <CommandBar
                     VerticalContentAlignment="Center"
                     Background="Transparent"
@@ -56,7 +56,7 @@
                         Background="Green"
                         Click="CommandBarExportButton_Click"
                         Icon="Manage"
-                        Label="Export"
+                        x:Uid="ExportButton"
                         ToolTipService.ToolTip="Export" />
 
 
@@ -74,32 +74,17 @@
         VerticalAlignment="Stretch">
 
         <InfoBar
-            Title="Title"
+            
             x:Name="Description"
             Margin="0,0,0,20"
             IsClosable="False"
             IsOpen="True"
-            Message="Essential app message for your users to be informed of, acknowledge, or take action on."
+            x:Uid="MedicineInHospitalDescription"
             Severity="Informational" />
 
         <Grid RelativePanel.Below="Description" HorizontalAlignment="Stretch">
 
-            <StackPanel x:Name="NotFoundBlock" HorizontalAlignment="Stretch">
-                <Image
-                    Width="200"
-                    Height="200"
-                    Source="ms-appx:///Assets/not-found.svg" />
-                <TextBlock
-                    HorizontalAlignment="Center"
-                    CharacterSpacing="200"
-                    FontFamily="Arial"
-                    FontSize="24"
-                    FontStyle="Italic"
-                    Foreground="CornflowerBlue"
-                    HorizontalTextAlignment="Center"
-                    Text="Not found"
-                    TextWrapping="WrapWholeWords" />
-            </StackPanel>
+            <components:NotFoundBlock x:Name="NotFoundBlock"/>
 
             <toolkit:DataGrid
                 x:Name="SourceDataGrid"
@@ -127,7 +112,7 @@
 
                 <toolkit:DataGrid.Columns>
 
-                    <toolkit:DataGridTextColumn Binding="{Binding Name}" Header="Medicine name" />
+                    <toolkit:DataGridTextColumn Binding="{Binding Name}" x:Uid="NameHeader" />
 
                 </toolkit:DataGrid.Columns>
 

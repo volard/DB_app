@@ -25,46 +25,41 @@
                 HorizontalAlignment="Stretch">
 
                 <CommandBar.Content>
-                    <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="Medicines" />
+                    <TextBlock Style="{ThemeResource TitleTextBlockStyle}" x:Uid="Medicines" />
                 </CommandBar.Content>
 
                 <AppBarButton
                     Background="Green"
                     Click="CommandBarExportButton_Click"
                     Icon="Manage"
-                    Label="Export"
-                    ToolTipService.ToolTip="Export"
+                    x:Uid="ExportButton"
                     x:Name="CommandBarExportButton" />
 
                 <AppBarButton
                     Click="Add_Click"
                     Icon="Add"
-                    Label="Add new"
-                    ToolTipService.ToolTip="Add new"
+                    x:Uid="AddNewButton"
                     x:Name="CommandBarAddButton" />
 
                 <AppBarButton
                     Click="View_Click"
                     Icon="OpenLocal"
                     IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
-                    Label="View"
-                    ToolTipService.ToolTip="View"
+                    x:Uid="ViewButton"
                     x:Name="CommandBarViewButton" />
 
                 <AppBarButton
                     Click="Edit_Click"
                     Icon="Edit"
                     IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
-                    Label="Edit"
-                    ToolTipService.ToolTip="Edit"
+                    x:Uid="EditButton"
                     x:Name="CommandBarEditButton" />
 
                 <AppBarButton
                     Click="Delete_Click"
                     Icon="Delete"
                     IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
-                    Label="Delete"
-                    ToolTipService.ToolTip="Delete"
+                    x:Uid="DeleteButton"
                     x:Name="CommandBarDeleteButton" />
 
             </CommandBar>

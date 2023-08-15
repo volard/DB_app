@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="using:DB_app.Behaviors"
+    xmlns:components="using:DB_app.Views.Components"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:DB_app.Helpers"
@@ -22,9 +23,9 @@
         <DataTemplate x:DataType="viewModel:HospitalsWithMedicineReportViewModel">
             <RelativePanel HorizontalAlignment="Stretch" VerticalAlignment="Center">
                 <TextBlock
+                    x:Uid="HospitalWithMedicine"
                     RelativePanel.AlignLeftWithPanel="True"
-                    Style="{ThemeResource TitleTextBlockStyle}"
-                    Text="Hospitals with medicine" />
+                    Style="{ThemeResource TitleTextBlockStyle}" />
                 <CommandBar
                     VerticalContentAlignment="Center"
                     Background="Transparent"
@@ -56,7 +57,7 @@
                         Background="Green"
                         Click="CommandBarExportButton_Click"
                         Icon="Manage"
-                        Label="Export"
+                        x:Uid="ExportButton"
                         ToolTipService.ToolTip="Export" />
 
 
@@ -74,36 +75,17 @@
         VerticalAlignment="Stretch">
 
         <InfoBar
-            Title="Title"
+            x:Name="Description"
+            
             Margin="0,0,0,20"
             IsClosable="False"
-            x:Name="Description"
             IsOpen="True"
-            Message="Here listed all available medicines in specified hospital"
+            x:Uid="HospitalsWithMedicineDescription"
             Severity="Informational" />
 
         <Grid HorizontalAlignment="Stretch" RelativePanel.Below="Description">
 
-            <StackPanel
-                x:Name="NotFoundBlock"
-                HorizontalAlignment="Stretch">
-                <Image
-                    Width="200"
-                    Height="200"
-                    Source="ms-appx:///Assets/not-found.svg" />
-                <TextBlock
-                    HorizontalAlignment="Center"
-                    CharacterSpacing="200"
-                    FontFamily="Arial"
-                    FontSize="24"
-                    FontStyle="Italic"
-                    Foreground="CornflowerBlue"
-                    HorizontalTextAlignment="Center"
-                    Text="Not found"
-                    TextWrapping="WrapWholeWords" />
-            </StackPanel>
-
-
+            <components:NotFoundBlock x:Name="NotFoundBlock"/>
 
             <controls:DataGrid
                 x:Name="SourceDataGrid"
@@ -119,9 +101,9 @@
 
                 <controls:DataGrid.Columns>
 
-                    <controls:DataGridTextColumn Binding="{Binding Hospital.Id}" Header="Hospital id" />
+                    <controls:DataGridTextColumn Binding="{Binding Hospital.Id}" Header="Id" />
 
-                    <controls:DataGridTemplateColumn Header="Main doctor">
+                    <controls:DataGridTemplateColumn x:Uid="Doctor">
                         <controls:DataGridTemplateColumn.CellTemplate>
                             <DataTemplate x:DataType="viewModel:StoringHospital">
                                 <TextBlock VerticalAlignment="Center">

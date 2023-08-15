@@ -96,9 +96,9 @@
                 </CommandBar.Content>
 
                 <AppBarButton
+                    x:Uid="SaveButton"
                     Click="SaveButton_Click"
-                    Icon="Save"
-                    Label="Save">
+                    Icon="Save">
                     <AppBarButton.Visibility>
                         <Binding
                             Converter="{StaticResource VisibleIf}"
@@ -114,21 +114,21 @@
                 </AppBarButton>
 
                 <AppBarButton
+                    x:Uid="EditButton"
                     Click="BeginEdit_Click"
                     Icon="Edit"
-                    Label="Edit"
                     Visibility="{x:Bind viewModel:Converters.CollapsedIfOneOfTwo(CurrentOrder.IsInEdit, CurrentOrder.IsNew), Mode=OneWay}" />
 
                 <AppBarButton
+                    x:Uid="CancelButton"
                     Click="{x:Bind CurrentOrder.CancelEdit}"
                     Icon="Cancel"
-                    Label="Cancel"
                     Visibility="{x:Bind viewModel:Converters.VisibleIfOneAndNotAnother(CurrentOrder.IsInEdit, CurrentOrder.IsNew), Mode=OneWay}" />
 
                 <AppBarButton
+                    x:Uid="DeleteButton"
                     Click="DeleteButton_Click"
-                    Icon="Delete"
-                    Label="Delete">
+                    Icon="Delete">
                     <AppBarButton.Visibility>
                         <Binding
                             Converter="{StaticResource CollapsedIf}"
@@ -138,15 +138,15 @@
                 </AppBarButton>
 
                 <AppBarButton
+                    x:Uid="AddNewButton"
                     Click="AddButton_Click"
                     Icon="Add"
-                    Label="Add new"
                     Visibility="{x:Bind viewModel:Converters.CollapsedIfOneOfTwo(CurrentOrder.IsInEdit, CurrentOrder.IsNew), Mode=OneWay}" />
 
                 <AppBarButton
+                    x:Uid="OpenWindowButton"
                     Click="Tabs_TabDroppedOutside"
-                    Icon="NewWindow"
-                    Label="Open in new window" />
+                    Icon="NewWindow" />
             </CommandBar>
         </DataTemplate>
     </behaviors:NavigationViewHeaderBehavior.HeaderTemplate>

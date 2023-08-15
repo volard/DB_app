@@ -60,6 +60,7 @@
     <None Remove="Styles\NotificationStyle.xaml" />
     <None Remove="Views\Address\AddressDetailsPage.xaml" />
     <None Remove="Views\Components\ContentDialogContent.xaml" />
+    <None Remove="Views\Components\NotFoundBlock.xaml" />
     <None Remove="Views\Components\ValidationTextBox.xaml" />
     <None Remove="Feature\Hospital\Views\Hospital\HospitalDetailsPage.xaml" />
     <None Remove="Views\MedicineDetailsPage.xaml" />
@@ -93,6 +94,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Page Update="Views\Components\NotFoundBlock.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Feature\PharmacyWithMedicineReport\PharmacyWithMedicineReportPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
