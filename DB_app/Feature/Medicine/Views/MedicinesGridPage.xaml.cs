@@ -64,18 +64,4 @@ public sealed partial class MedicinesGridPage
         ViewModel.SelectedItem!.IsInEdit = true;
         App.GetService<INavigationService>().NavigateTo(typeof(MedicineDetailsViewModel).FullName!, ViewModel.SelectedItem);
     }
-
-    private async void CommandBarExportButton_Click(object sender, RoutedEventArgs e)
-    {
-        await ExcelExtensions.ExportAsExcel(MedicineGrid, ViewModel.Source.Select<MedicineWrapper, List<string>>(item =>
-        {
-            return new List<string>
-            {
-                item.Name ?? " ",
-                item.Type ?? " "
-            };
-        }).ToList(), fileName: "MedicineReport");
-
-        ShowNotificationMessage(this, new("File saved successfully", NotificationHelper.SuccessStyle));
-    }
 }

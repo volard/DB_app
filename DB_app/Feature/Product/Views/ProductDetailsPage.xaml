@@ -129,12 +129,12 @@
                     <ComboBox
                         DataContext="{x:Bind ViewModel.CurrentProduct, Mode=OneWay}"
                         DataContextChanged="Element_DataContextChanged"
-                        Header="Pharmacy"
+                        x:Uid="PharmacyComboBox"
                         IsEnabled="{x:Bind ViewModel.CurrentProduct.IsInEdit, Mode=OneWay}"
                         ItemsSource="{x:Bind ViewModel.AvailablePharmacies, Mode=TwoWay}"
                         Margin="0,20,16,8"
                         MinWidth="380"
-                        PlaceholderText="Select pharmacy"
+                        
                         SelectedItem="{x:Bind ViewModel.CurrentProduct.ProductPharmacy, Mode=TwoWay}"
                         SelectionChanged="ComboBox_SelectionChanged"
                         VerticalAlignment="Stretch"
@@ -166,11 +166,11 @@
                     <ComboBox
                         DataContext="{x:Bind ViewModel.CurrentProduct, Mode=OneWay}"
                         DataContextChanged="Element_DataContextChanged"
-                        Header="Medicine"
+                        x:Uid="MedicineComboBox"
                         IsEnabled="{x:Bind ViewModel.CurrentProduct.IsInEdit, Mode=OneWay}"
                         ItemsSource="{x:Bind ViewModel.AvailableMedicines, Mode=TwoWay}"
                         Margin="0,20,16,8"
-                        PlaceholderText="Select medicine"
+                        
                         SelectedItem="{x:Bind ViewModel.CurrentProduct.ProductMedicine, Mode=TwoWay}"
                         SelectionChanged="ComboBox_SelectionChanged"
                         VerticalAlignment="Stretch"
@@ -198,11 +198,11 @@
                     <NumberBox
                         DataContext="{x:Bind ViewModel.CurrentProduct, Mode=OneWay}"
                         DataContextChanged="Element_DataContextChanged"
-                        Header="Price"
+                        x:Uid="PriceInput"
                         IsEnabled="{x:Bind ViewModel.CurrentProduct.IsInEdit, Mode=OneWay}"
                         Margin="0,20,16,8"
                         MinWidth="300"
-                        PlaceholderText="Input price"
+                        
                         Value="{x:Bind ViewModel.CurrentProduct.Price, Mode=TwoWay}"
                         ValueChanged="NumberBox_ValueChanged"
                         x:Name="PriceNumberBox" />
@@ -229,11 +229,11 @@
                     <NumberBox
                         DataContext="{x:Bind ViewModel.CurrentProduct, Mode=OneWay}"
                         DataContextChanged="Element_DataContextChanged"
-                        Header="Quantity"
+                        
                         IsEnabled="{x:Bind ViewModel.CurrentProduct.IsInEdit, Mode=OneWay}"
                         Margin="0,20,16,8"
                         MinWidth="300"
-                        PlaceholderText="Input quantity"
+                        x:Uid="QuantityInput"
                         Value="{x:Bind ViewModel.CurrentProduct.Quantity, Mode=TwoWay}"
                         ValueChanged="NumberBox_ValueChanged"
                         x:Name="QuantityNumberBox" />

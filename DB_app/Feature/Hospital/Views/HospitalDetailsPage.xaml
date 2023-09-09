@@ -108,7 +108,7 @@
                 <muxc:Expander ExpandDirection="Down" IsExpanded="True">
 
                     <muxc:Expander.Header>
-                        <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="FullName" />
+                        <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" x:Uid="DoctorText" />
                     </muxc:Expander.Header>
 
                     <muxc:Expander.Content>
@@ -117,7 +117,7 @@
                                 <Button
                                     Background="Red"
                                     Click="MakeInactiveButton_ButtonClicked"
-                                    Content="Make inactive"
+                                    x:Uid="MakeInactiveButton"
                                     IsEnabled="{x:Bind ViewModel.CurrentHospital.IsActive, Mode=OneWay}"
                                     RelativePanel.AlignRightWithPanel="True"
                                     RelativePanel.AlignVerticalCenterWith="Surename_main_doctor"
@@ -128,9 +128,9 @@
                                 <components:ValidationTextBox
                                     x:Name="Surename_main_doctor"
                                     DataContext="{x:Bind ViewModel.CurrentHospital}"
-                                    HeaderText="Main doctor's surename"
+                                    x:Uid="SurenameInput"
                                     IsReadOnly="{x:Bind ViewModel.CurrentHospital.IsInEdit, Converter={StaticResource NotConverter}, Mode=OneWay}"
-                                    PlaceholderText="Enter name"
+                                    
                                     PropertyName="Surename_main_doctor"
                                     Text="{x:Bind ViewModel.CurrentHospital.Surename_main_doctor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
@@ -140,9 +140,9 @@
                             <components:ValidationTextBox
                                 x:Name="Name_main_doctor"
                                 DataContext="{x:Bind ViewModel.CurrentHospital}"
-                                HeaderText="Main doctor's name"
+                                
                                 IsReadOnly="{x:Bind ViewModel.CurrentHospital.IsInEdit, Converter={StaticResource NotConverter}, Mode=OneWay}"
-                                PlaceholderText="Enter name"
+                                x:Uid="NameInput"
                                 PropertyName="Name_main_doctor"
                                 Text="{x:Bind ViewModel.CurrentHospital.Name_main_doctor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
@@ -150,9 +150,9 @@
                             <components:ValidationTextBox
                                 x:Name="Middlename_main_doctor"
                                 DataContext="{x:Bind ViewModel.CurrentHospital}"
-                                HeaderText="Main doctor's middlename"
+                                
                                 IsReadOnly="{x:Bind ViewModel.CurrentHospital.IsInEdit, Converter={StaticResource NotConverter}, Mode=OneWay}"
-                                PlaceholderText="Enter name"
+                                x:Uid="MiddlenameInput"
                                 PropertyName="Middlename_main_doctor"
                                 Text="{x:Bind ViewModel.CurrentHospital.Middlename_main_doctor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
@@ -170,7 +170,7 @@
 
                     <muxc:Expander.Header>
                         <Grid>
-                            <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="Addresses" />
+                            <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" x:Uid="Addresses" />
                             <TextBlock
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
@@ -201,7 +201,7 @@
                                             Foreground="DodgerBlue"
                                             Glyph="&#xE946;">
                                             <ToolTipService.ToolTip>
-                                                <ToolTip Content="At least one address have to be provided otherwise organisation becomes inactive" />
+                                                <ToolTip x:Uid="ZeroAddressesInfo" />
                                             </ToolTipService.ToolTip>
 
                                         </FontIcon>
@@ -209,7 +209,7 @@
                                         <ComboBox
                                             Width="380"
                                             ItemsSource="{x:Bind ViewModel.AvailableAddresses}"
-                                            PlaceholderText="Select new address"
+                                            x:Uid="NewAddressComboBox"
                                             SelectedItem="{x:Bind ViewModel.SelectedAddress, Mode=TwoWay}" />
                                     </StackPanel>
 
@@ -220,16 +220,16 @@
                                     Click="{x:Bind AddSelectedButton_Clicked}"
                                     Icon="Add"
                                     IsEnabled="{x:Bind ViewModel.SelectedAddress, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
-                                    Label="Add selected"
-                                    ToolTipService.ToolTip="Add selected" />
+                                    x:Uid="AddSelectedButton"
+                                     />
 
                                 <AppBarButton
                                     x:Name="AddressCommandBarDeleteButton"
                                     Click="{x:Bind DeleteSelectedButton_Clicked}"
                                     Icon="Delete"
                                     IsEnabled="{x:Bind ViewModel.SelectedExistingLocation, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
-                                    Label="Delete"
-                                    ToolTipService.ToolTip="Delete" />
+                                    x:Uid="DeleteButton"
+                                     />
 
                             </CommandBar>
 
@@ -255,15 +255,15 @@
                                         <toolkit:DataGridTextColumn
                                             Width="30*"
                                             Binding="{Binding Address.City}"
-                                            Header="City" />
+                                            x:Uid="City" />
                                         <toolkit:DataGridTextColumn
                                             Width="30*"
                                             Binding="{Binding Address.Street}"
-                                            Header="Street" />
+                                            x:Uid="Street" />
                                         <toolkit:DataGridTextColumn
                                             Width="30*"
                                             Binding="{Binding Address.Building}"
-                                            Header="Building" />
+                                            x:Uid="Building" />
                                     </toolkit:DataGrid.Columns>
 
                                 </toolkit:DataGrid>

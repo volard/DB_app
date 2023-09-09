@@ -82,7 +82,7 @@ public class Hospital
     #endregion
 
     public override string ToString()
-        => $"Hospital #{Id} - {Surename_main_doctor} {Name_main_doctor} {Middlename_main_doctor}";
+        => $"{Id} - {Surename_main_doctor} {Name_main_doctor} {Middlename_main_doctor}";
 
     public override bool Equals(object? obj)
     {

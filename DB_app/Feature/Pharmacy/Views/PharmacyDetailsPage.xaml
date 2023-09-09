@@ -129,7 +129,7 @@
                             <Button
                                 Background="Red"
                                 Click="MakeInactiveButton_ButtonClicked"
-                                Content="Make inactive"
+                                x:Uid="MakeInactiveButton"
                                 IsEnabled="{x:Bind ViewModel.CurrentPharmacy.IsActive, Mode=OneWay}"
                                 RelativePanel.AlignRightWithPanel="True"
                                 RelativePanel.AlignVerticalCenterWith="Name"
@@ -139,9 +139,9 @@
                             <components:ValidationTextBox
                                 x:Name="Name"
                                 DataContext="{x:Bind ViewModel.CurrentPharmacy}"
-                                HeaderText="Pharmacy name"
+                                
                                 IsReadOnly="{x:Bind ViewModel.CurrentPharmacy.IsInEdit, Converter={StaticResource NotConverter}, Mode=OneWay}"
-                                PlaceholderText="Enter name"
+                                x:Uid="PharmacyNameInput"
                                 PropertyName="Name"
                                 Text="{x:Bind ViewModel.CurrentPharmacy.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
@@ -162,7 +162,7 @@
 
                     <muxc:Expander.Header>
                         <Grid>
-                            <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="Addresses" />
+                            <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" x:Uid="Addresses" />
                             <TextBlock
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
@@ -194,7 +194,7 @@
                                             Foreground="DodgerBlue"
                                             Glyph="&#xE946;">
                                             <ToolTipService.ToolTip>
-                                                <ToolTip Content="At least one address have to be provided otherwise organisation becomes inactive" />
+                                                <ToolTip x:Uid="ZeroAddressesInfo" />
                                             </ToolTipService.ToolTip>
 
                                         </FontIcon>
@@ -203,7 +203,7 @@
                                             Width="380"
                                             VerticalAlignment="Stretch"
                                             ItemsSource="{x:Bind ViewModel.AvailableAddresses}"
-                                            PlaceholderText="Select new address"
+                                            x:Uid="NewAddressComboBox"
                                             SelectedItem="{x:Bind ViewModel.SelectedAddress, Mode=TwoWay}" />
                                     </StackPanel>
                                 </CommandBar.Content>
@@ -213,16 +213,14 @@
                                     Click="{x:Bind AddButton_Click}"
                                     Icon="Add"
                                     IsEnabled="{x:Bind ViewModel.SelectedAddress, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
-                                    Label="Add selected"
-                                    ToolTipService.ToolTip="Add selected" />
+                                    x:Uid="AddNewButton" />
 
                                 <AppBarButton
                                     x:Name="AddressCommandBarDeleteButton"
                                     Click="{x:Bind DeleteButton_Click}"
                                     Icon="Delete"
                                     IsEnabled="{x:Bind ViewModel.SelectedExistingLocation, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
-                                    Label="Delete"
-                                    ToolTipService.ToolTip="Delete" />
+                                    x:Uid="DeleteButton" />
 
                             </CommandBar>
 
@@ -251,15 +249,15 @@
                                         <toolkit:DataGridTextColumn
                                             Width="30*"
                                             Binding="{Binding Address.City}"
-                                            Header="City" />
+                                            x:Uid="City" />
                                         <toolkit:DataGridTextColumn
                                             Width="30*"
                                             Binding="{Binding Address.Street}"
-                                            Header="Street" />
+                                            x:Uid="Street" />
                                         <toolkit:DataGridTextColumn
                                             Width="30*"
                                             Binding="{Binding Address.Building}"
-                                            Header="Building" />
+                                            x:Uid="Building" />
                                     </toolkit:DataGrid.Columns>
 
                                 </toolkit:DataGrid>

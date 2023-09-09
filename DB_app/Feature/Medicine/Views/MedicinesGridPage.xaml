@@ -28,12 +28,7 @@
                     <TextBlock Style="{ThemeResource TitleTextBlockStyle}" x:Uid="Medicines" />
                 </CommandBar.Content>
 
-                <AppBarButton
-                    Background="Green"
-                    Click="CommandBarExportButton_Click"
-                    Icon="Manage"
-                    x:Uid="ExportButton"
-                    x:Name="CommandBarExportButton" />
+                
 
                 <AppBarButton
                     Click="Add_Click"

@@ -1,110 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
-    Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
-    associated with the data types.
-    
-    Example:
-    
-    ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microsoft-resx</resheader>
-    <resheader name="version">2.0</resheader>
-    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
-    </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-        <comment>This is a comment</comment>
-    </data>
-                
-    There are any number of "resheader" rows that contain simple 
-    name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
-    mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
-    extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
-    read any of the formats listed below.
-    
-    mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-            : and then encoded with base64 encoding.
-    
-    mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-            : and then encoded with base64 encoding.
-
-    mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
-            : using a System.ComponentModel.TypeConverter
-            : and then encoded with base64 encoding.
-    -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-    <xsd:element name="root" msdata:IsDataSet="true">
-      <xsd:complexType>
-        <xsd:choice maxOccurs="unbounded">
-          <xsd:element name="metadata">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
-              </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="assembly">
-            <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="data">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="resheader">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
-            </xsd:complexType>
-          </xsd:element>
-        </xsd:choice>
-      </xsd:complexType>
-    </xsd:element>
-  </xsd:schema>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
   </resheader>
@@ -195,6 +90,9 @@
   <data name="Settings.Text" xml:space="preserve">
     <value>Настройки</value>
   </data>
+  <data name="Edit.Text" xml:space="preserve">
+    <value>Изменить</value>
+  </data>
   <data name="New.Text" xml:space="preserve">
     <value>Создание</value>
   </data>
@@ -219,6 +117,12 @@
   <data name="Addresses.Text" xml:space="preserve">
     <value>Адреса</value>
   </data>
+  <data name="Medicines.Text" xml:space="preserve">
+    <value>Лекарства</value>
+  </data>
+  <data name="New_Pharmacy" xml:space="preserve">
+    <value>Новая аптека</value>
+  </data>
   <data name="Orders.Text" xml:space="preserve">
     <value>Заказы</value>
   </data>
@@ -228,59 +132,32 @@
   <data name="Products.Text" xml:space="preserve">
     <value>Продукты</value>
   </data>
+  <data name="SaveDialog.CloseButtonText" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="SaveDialog.SecondaryButtonText" xml:space="preserve">
+    <value>Не сохранять</value>
+  </data>
+  <data name="SaveDialog.PrimaryButtonText" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="SaveDialog.Title" xml:space="preserve">
+    <value>Сохранить изменения?</value>
+  </data>
+  <data name="SaveDialog.Content" xml:space="preserve">
+    <value>Несохраненные изменения будут удалены. Хотите их сохранить?</value>
+  </data>
   <data name="Warning.Header" xml:space="preserve">
-    <value>Предупреждение</value>
+    <value>Внимание</value>
   </data>
   <data name="Name.Text" xml:space="preserve">
     <value>Название</value>
   </data>
   <data name="Type.Header" xml:space="preserve">
-    <value>Вид</value>
+    <value>Тип</value>
   </data>
   <data name="NameHeader.Header" xml:space="preserve">
     <value>Название</value>
-  </data>
-  <data name="AddNewButton.Label" xml:space="preserve">
-    <value>Добавить</value>
-  </data>
-  <data name="CancelButton.Label" xml:space="preserve">
-    <value>Отмена</value>
-  </data>
-  <data name="Data.Content" xml:space="preserve">
-    <value>Данные</value>
-  </data>
-  <data name="DeleteButton.Label" xml:space="preserve">
-    <value>Удалить</value>
-  </data>
-  <data name="EditButton.Label" xml:space="preserve">
-    <value>Изменить</value>
-  </data>
-  <data name="ExportButton.Label" xml:space="preserve">
-    <value>Экспортировать</value>
-  </data>
-  <data name="HospitalWithMedicine.Text" xml:space="preserve">
-    <value>Больницы с лекарством</value>
-  </data>
-  <data name="MedicineInHospital.Text" xml:space="preserve">
-    <value>Лекартсва в больнице</value>
-  </data>
-  <data name="MedicineInPharmacy.Text" xml:space="preserve">
-    <value>Лекарства в аптеке</value>
-  </data>
-  <data name="Medicines.Text" xml:space="preserve">
-    <value>Медикаменты</value>
-  </data>
-  <data name="NotFound.Text" xml:space="preserve">
-    <value>Не найдено</value>
-  </data>
-  <data name="PharmaciesBudget.Text" xml:space="preserve">
-    <value>Бюджет аптек</value>
-  </data>
-  <data name="PharmacyWithMedicine.Text" xml:space="preserve">
-    <value>Аптеки с лекарством</value>
-  </data>
-  <data name="SaveButton.Label" xml:space="preserve">
-    <value>Сохранить</value>
   </data>
   <data name="Shell_Reports.Content" xml:space="preserve">
     <value>Отчеты</value>
@@ -300,8 +177,8 @@
   <data name="Shell_Reports_PharmacyWithMedicine.Content" xml:space="preserve">
     <value>Аптеки с лекарством</value>
   </data>
-  <data name="ViewButton.Label" xml:space="preserve">
-    <value>Посмотреть</value>
+  <data name="AddNewButton.Label" xml:space="preserve">
+    <value>Добавить</value>
   </data>
   <data name="BudgetHeader.Header" xml:space="preserve">
     <value>Бюджет</value>
@@ -309,17 +186,26 @@
   <data name="Building.Header" xml:space="preserve">
     <value>Здание</value>
   </data>
+  <data name="CancelButton.Label" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
   <data name="City.Header" xml:space="preserve">
     <value>Город</value>
   </data>
+  <data name="Data.Content" xml:space="preserve">
+    <value>Данные</value>
+  </data>
   <data name="DateHeader.Header" xml:space="preserve">
     <value>Дата</value>
+  </data>
+  <data name="DeleteButton.Label" xml:space="preserve">
+    <value>Удалить</value>
   </data>
   <data name="Doctor.Header" xml:space="preserve">
     <value>ГлавВрач</value>
   </data>
   <data name="DoctorMiddlename.Header" xml:space="preserve">
-    <value>Отчество</value>
+    <value>Отчетсво</value>
   </data>
   <data name="DoctorName.Header" xml:space="preserve">
     <value>Имя</value>
@@ -327,38 +213,56 @@
   <data name="DoctorSurename.Header" xml:space="preserve">
     <value>Фамилия</value>
   </data>
-  <data name="Edit.Text" xml:space="preserve">
+  <data name="EditButton.Label" xml:space="preserve">
     <value>Изменить</value>
+  </data>
+  <data name="ExportButton.Label" xml:space="preserve">
+    <value>Экспорт</value>
   </data>
   <data name="HospitalHeader.Header" xml:space="preserve">
     <value>Больница</value>
   </data>
   <data name="HospitalsWithMedicineDescription.Message" xml:space="preserve">
-    <value>Вывод всех больниц, где имеется указанное лекарство</value>
+    <value>Больницы, где имеется выбранное лекарство</value>
   </data>
   <data name="HospitalsWithMedicineDescription.Title" xml:space="preserve">
     <value>Описание</value>
   </data>
+  <data name="HospitalWithMedicine.Text" xml:space="preserve">
+    <value>Больницы с лекарством</value>
+  </data>
   <data name="MedicineHeader.Header" xml:space="preserve">
     <value>Лекарство</value>
   </data>
+  <data name="MedicineInHospital.Text" xml:space="preserve">
+    <value>Лекарства в больнице</value>
+  </data>
   <data name="MedicineInHospitalDescription.Message" xml:space="preserve">
-    <value>Вывод всех лекарств в указанной больнице</value>
+    <value>Список лекарств, купленных определенной больницей, упорядоченный по виду, с указанием общего количества упаковок каждого вида.  </value>
   </data>
   <data name="MedicineInHospitalDescription.Title" xml:space="preserve">
     <value>Описание</value>
   </data>
+  <data name="MedicineInPharmacy.Text" xml:space="preserve">
+    <value>Лекарства в аптеке</value>
+  </data>
   <data name="MedicineInPharmacyDescription.Message" xml:space="preserve">
-    <value>Вывод всех лекарств в указанной аптеке</value>
+    <value>Список лекарств, имеющихся в определенной аптеке, упорядоченный по их названиям</value>
   </data>
   <data name="MedicineInPharmacyDescription.Title" xml:space="preserve">
     <value>Описание</value>
   </data>
+  <data name="NotFound.Text" xml:space="preserve">
+    <value>Не найдено</value>
+  </data>
   <data name="OpenWindowButton.Label" xml:space="preserve">
     <value>Открыть в новом окне</value>
   </data>
+  <data name="PharmaciesBudget.Text" xml:space="preserve">
+    <value>Бюджет аптек</value>
+  </data>
   <data name="PharmaciesBudgetDescription.Message" xml:space="preserve">
-    <value>Вывод бюджета аптек</value>
+    <value>Бюджет аптек</value>
   </data>
   <data name="PharmaciesBudgetDescription.Title" xml:space="preserve">
     <value>Описание</value>
@@ -366,8 +270,11 @@
   <data name="PharmacyHeader.Header" xml:space="preserve">
     <value>Аптека</value>
   </data>
+  <data name="PharmacyWithMedicine.Text" xml:space="preserve">
+    <value>Аптеки с лекарством</value>
+  </data>
   <data name="PharmacyWithMedicineDescription.Message" xml:space="preserve">
-    <value>Вывод всех аптек, где имеется указанное лекарство</value>
+    <value>Аптеки, которые продают выбранное лекарство</value>
   </data>
   <data name="PharmacyWithMedicineDescription.Title" xml:space="preserve">
     <value>Описание</value>
@@ -377,6 +284,9 @@
   </data>
   <data name="QuantityHeader.Header" xml:space="preserve">
     <value>Количество</value>
+  </data>
+  <data name="SaveButton.Label" xml:space="preserve">
+    <value>Сохранить</value>
   </data>
   <data name="ShippingAddressHeader.Header" xml:space="preserve">
     <value>Адрес доставки</value>
@@ -389,5 +299,131 @@
   </data>
   <data name="TotalHeader.Header" xml:space="preserve">
     <value>Итого</value>
+  </data>
+  <data name="ViewButton.Label" xml:space="preserve">
+    <value>Подробнее</value>
+  </data>
+  <data name="AddSelectedButton.Label" xml:space="preserve">
+    <value>Добавить выбранное</value>
+  </data>
+  <data name="BuildingInput.HeaderText" xml:space="preserve">
+    <value>Здание</value>
+  </data>
+  <data name="BuildingInput.PlaceholderText" xml:space="preserve">
+    <value>Введите здание</value>
+  </data>
+  <data name="CityInput.HeaderText" xml:space="preserve">
+    <value>Город</value>
+  </data>
+  <data name="CityInput.PlaceholderText" xml:space="preserve">
+    <value>Введите город</value>
+  </data>
+  <data name="MakeInactiveButton.Content" xml:space="preserve">
+    <value>Деактивировать</value>
+  </data>
+  <data name="MiddlenameInput.HeaderText" xml:space="preserve">
+    <value>Отчество</value>
+  </data>
+  <data name="MiddlenameInput.PlaceholderText" xml:space="preserve">
+    <value>Введите отчество</value>
+  </data>
+  <data name="NameInput.HeaderText" xml:space="preserve">
+    <value>Имя</value>
+  </data>
+  <data name="NameInput.PlaceholderText" xml:space="preserve">
+    <value>Введите имя</value>
+  </data>
+  <data name="StreetInput.HeaderText" xml:space="preserve">
+    <value>Улица</value>
+  </data>
+  <data name="StreetInput.PlaceholderText" xml:space="preserve">
+    <value>Введите улицу</value>
+  </data>
+  <data name="SurenameInput.HeaderText" xml:space="preserve">
+    <value>Фамилия</value>
+  </data>
+  <data name="SurenameInput.PlaceholderText" xml:space="preserve">
+    <value>Введите фамилию</value>
+  </data>
+  <data name="ZeroAddressesInfo.Content" xml:space="preserve">
+    <value>Хотя бы один адрес должен быть добавлен, иначе организация будет деактивирована безвозвратно</value>
+  </data>
+  <data name="MedicineNameInput.HeaderText" xml:space="preserve">
+    <value>Название</value>
+  </data>
+  <data name="MedicineNameInput.PlaceholderText" xml:space="preserve">
+    <value>Введите название</value>
+  </data>
+  <data name="MedicineTypeInput.HeaderText" xml:space="preserve">
+    <value>Тип</value>
+  </data>
+  <data name="MedicineTypeInput.PlaceholderText" xml:space="preserve">
+    <value>Введите тип</value>
+  </data>
+  <data name="CustomerHeader.Header" xml:space="preserve">
+    <value>Покупатель</value>
+  </data>
+  <data name="DatePlacedText.Text" xml:space="preserve">
+    <value>Дата заказа</value>
+  </data>
+  <data name="HospitalCustomerComboBox.Header" xml:space="preserve">
+    <value>Покупатель</value>
+  </data>
+  <data name="HospitalCustomerComboBox.PlaceholderText" xml:space="preserve">
+    <value>Выберите больницу</value>
+  </data>
+  <data name="OrderItemsText.Text" xml:space="preserve">
+    <value>Детали заказа</value>
+  </data>
+  <data name="PriceText.Text" xml:space="preserve">
+    <value>Цена</value>
+  </data>
+  <data name="QuantityText.Text" xml:space="preserve">
+    <value>Количество</value>
+  </data>
+  <data name="ShippingAddressComboBox.Header" xml:space="preserve">
+    <value>Адрес доставки</value>
+  </data>
+  <data name="TotalText.Text" xml:space="preserve">
+    <value>Итого</value>
+  </data>
+  <data name="TypeText.Text" xml:space="preserve">
+    <value>Вид</value>
+  </data>
+  <data name="NewAddressComboBox.PlaceholderText" xml:space="preserve">
+    <value>Выберите новый адрес</value>
+  </data>
+  <data name="PharmacyNameInput.HeaderText" xml:space="preserve">
+    <value>Название аптеки</value>
+  </data>
+  <data name="PharmacyNameInput.PlaceholderText" xml:space="preserve">
+    <value>Введите название</value>
+  </data>
+  <data name="PriceInput.Header" xml:space="preserve">
+    <value>Цена</value>
+  </data>
+  <data name="PriceInput.PlaceholderText" xml:space="preserve">
+    <value>Введите значение цены</value>
+  </data>
+  <data name="QuantityInput.Header" xml:space="preserve">
+    <value>Количество</value>
+  </data>
+  <data name="QuantityInput.PlaceholderText" xml:space="preserve">
+    <value>Введите количество</value>
+  </data>
+  <data name="DoctorText.Text" xml:space="preserve">
+    <value>ГлавВрач</value>
+  </data>
+  <data name="MedicineComboBox.Header" xml:space="preserve">
+    <value>Лекарство</value>
+  </data>
+  <data name="MedicineComboBox.PlaceholderText" xml:space="preserve">
+    <value>Выберите лекарство</value>
+  </data>
+  <data name="PharmacyComboBox.Header" xml:space="preserve">
+    <value>Аптека</value>
+  </data>
+  <data name="PharmacyComboBox.PlaceholderText" xml:space="preserve">
+    <value>Выберите аптеку</value>
   </data>
 </root>

@@ -102,28 +102,28 @@
 
             <components:ValidationTextBox
                 DataContext="{x:Bind ViewModel.CurrentAddress}"
-                HeaderText="City"
+                x:Uid="CityInput"
                 IsReadOnly="{x:Bind ViewModel.CurrentAddress.IsInEdit, Converter={StaticResource NotConverter}, Mode=OneWay}"
                 PlaceholderText="Enter city"
-                PropertyName="City"
+                
                 Text="{x:Bind ViewModel.CurrentAddress.City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 x:Name="City" />
 
             <components:ValidationTextBox
                 DataContext="{x:Bind ViewModel.CurrentAddress}"
-                HeaderText="Street"
+                x:Uid="StreetInput"
                 IsReadOnly="{x:Bind ViewModel.CurrentAddress.IsInEdit, Converter={StaticResource NotConverter}, Mode=OneWay}"
                 PlaceholderText="Enter street"
-                PropertyName="Street"
+                
                 Text="{x:Bind ViewModel.CurrentAddress.Street, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 x:Name="Street" />
 
             <components:ValidationTextBox
                 DataContext="{x:Bind ViewModel.CurrentAddress}"
-                HeaderText="Building"
+                
                 IsReadOnly="{Binding IsInEdit, Converter={StaticResource NotConverter}, Mode=OneWay}"
                 PlaceholderText="Enter building"
-                PropertyName="Building"
+                x:Uid="BuildingInput"
                 Text="{x:Bind ViewModel.CurrentAddress.Building, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 x:Name="Building" />
 

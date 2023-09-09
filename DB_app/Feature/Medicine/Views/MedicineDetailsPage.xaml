@@ -100,9 +100,9 @@
             <!--  Name input  -->
             <components:ValidationTextBox
                 DataContext="{x:Bind ViewModel.CurrentMedicine}"
-                HeaderText="Medicine name"
+                
                 IsReadOnly="{x:Bind ViewModel.CurrentMedicine.IsInEdit, Converter={StaticResource NotConverter}, Mode=OneWay}"
-                PlaceholderText="Enter name"
+                x:Uid="MedicineNameInput"
                 PropertyName="Name"
                 Text="{x:Bind ViewModel.CurrentMedicine.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 x:Name="Name" />
@@ -110,9 +110,9 @@
             <!--  Type input  -->
             <components:ValidationTextBox
                 DataContext="{x:Bind ViewModel.CurrentMedicine}"
-                HeaderText="Medicine type"
+                
                 IsReadOnly="{x:Bind ViewModel.CurrentMedicine.IsInEdit, Converter={StaticResource NotConverter}, Mode=OneWay}"
-                PlaceholderText="Enter type"
+                x:Uid="MedicineTypeInput"
                 PropertyName="Type"
                 Text="{x:Bind ViewModel.CurrentMedicine.Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 x:Name="Type" />
