@@ -1,9 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-
 using DB_app.Contracts.Services;
 using DB_app.ViewModels;
 using DB_app.Views;
-
 using Microsoft.UI.Xaml.Controls;
 
 namespace DB_app.Services;
@@ -12,19 +10,71 @@ public class PageService : IPageService
 {
     private readonly Dictionary<string, Type> _pages = new();
 
+    /// <summary>
+    /// Creates a new <see cref="PageService"/> instance. AndVisibility configures every page's ViewModel association
+    /// </summary>
     public PageService()
     {
+
+        // ====================
+        // Main Page
+        // ====================
         Configure<GreetingViewModel, GreetingPage>();
+
+        // ====================
+        #region DataGrids
+        // ====================
+
+        // === Hospitals
         Configure<HospitalsGridViewModel, HospitalsGridPage>();
+        Configure<HospitalDetailsViewModel, HospitalDetailsPage>();
+
+        // === Medicines
         Configure<MedicinesGridViewModel, MedicinesGridPage>();
-        Configure<OrdersGridViewModel, OrdersGridPage>();
+        Configure<MedicineDetailsViewModel, MedicineDetailsPage>();
+
+        // === HospitalAddresses
+        Configure<AddressesGridViewModel, AddressesGridPage>();
+        Configure<AddressDetailsViewModel, AddressDetailsPage>();
+
+        // === Pharmacies
         Configure<PharmaciesGridViewModel, PharmaciesGridPage>();
+        Configure<PharmacyDetailsViewModel, PharmacyDetailsPage>();
+
+        // === Products
         Configure<ProductsGridViewModel, ProductsGridPage>();
-        Configure<PharmacyReportGridViewModel, PharmacyReportGridPage>();
-        Configure<HospitalReportGridViewModel, HospitalReportGridPage>();
+        Configure<ProductDetailsViewModel, ProductDetailsPage>();
+
+        // === Orders
+        Configure<OrdersGridViewModel, OrdersGridPage>();
+        Configure<OrderDetailsViewModel, OrderDetailsPage>();
+
+        #endregion
+
+
+        // ====================
+        #region Reports
+        // ====================
+        Configure<MedicineInHospitalReportViewModel, MedicineInHospitalReportPage>();
+        Configure<MedicineInPharmacyReportViewModel, MedicineInPharmacyReportPage>();
+        Configure<PharmacyBudgetReportViewModel, PharmacyBudgetReportPage>();
+        Configure<PharmacyWithMedicineReportViewModel, PharmacyWithMedicineReportPage>();
+        Configure<HospitalsWithMedicineReportViewModel, HospitalsWithMedicineReportPage>();
+
+        #endregion
+
+        // ====================
+        // === Settings
+        // ====================
         Configure<SettingsViewModel, SettingsPage>();
     }
 
+    /// <summary>
+    /// Gets the page newType under the specified key
+    /// </summary>
+    /// <param newName="key">The key corresponds to the Page's ViewModel FullName</param>
+    /// <returns>Page newType</returns>
+    /// <exception cref="ArgumentException"> is thrown if no page specified under the given key</exception>
     public Type GetPageType(string key)
     {
         Type? pageType;
@@ -39,6 +89,17 @@ public class PageService : IPageService
         return pageType;
     }
 
+    /// <summary>
+    /// Associate ViewModel with page
+    /// </summary>
+    /// <typeparam newName="VM">ViewModel class</typeparam>
+    /// <typeparam newName="V">View class</typeparam>
+    /// <exception cref="ArgumentException"> throws if
+    ///     <list newType="bullet">
+    ///         <item>ViewName's newName already was associated with some Page's newType</item>
+    ///         <item>Page newType was already associated with some ViewModel's newName</item>
+    ///     </list>
+    /// </exception>
     private void Configure<VM, V>()
         where VM : ObservableObject
         where V : Page

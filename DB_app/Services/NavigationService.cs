@@ -9,8 +9,9 @@ using Microsoft.UI.Xaml.Navigation;
 
 namespace DB_app.Services;
 
-// For more information on navigation between pages see
-// https://github.com/microsoft/TemplateStudio/blob/main/docs/WinUI/navigation.md
+/// <summary>
+/// It is in charge of handling the navigation between app pages
+/// </summary>
 public class NavigationService : INavigationService
 {
     private readonly IPageService _pageService;
@@ -64,6 +65,12 @@ public class NavigationService : INavigationService
         }
     }
 
+
+    /// <summary>
+    /// Wraps frame.GoBack() to call OnNavigationFrom() in apropriate ViewModel if the ViewModel
+    /// supports navigation awareness
+    /// </summary>
+    /// <returns>Result of navigation whether it succesfull or not</returns>
     public bool GoBack()
     {
         if (CanGoBack)
@@ -81,6 +88,14 @@ public class NavigationService : INavigationService
         return false;
     }
 
+
+    /// <summary>
+    /// Wrapper around frame.Navigate()
+    /// </summary>
+    /// <param name="pageKey"></param>
+    /// <param name="parameter"></param> // TODO wtf is that
+    /// <param name="clearNavigation"></param>
+    /// <returns>Result of navigation whether it succesfull or not</returns>
     public bool NavigateTo(string pageKey, object? parameter = null, bool clearNavigation = false)
     {
         var pageType = _pageService.GetPageType(pageKey);
@@ -105,6 +120,12 @@ public class NavigationService : INavigationService
         return false;
     }
 
+
+    /// <summary>
+    /// Initial navigation
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void OnNavigated(object sender, NavigationEventArgs e)
     {
         if (sender is Frame frame)

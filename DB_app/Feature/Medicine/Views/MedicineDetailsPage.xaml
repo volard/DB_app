@@ -1,0 +1,132 @@
+<Page
+    mc:Ignorable="d"
+    x:Class="DB_app.Views.MedicineDetailsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:behaviors="using:DB_app.Behaviors"
+    xmlns:components="using:DB_app.Views.Components"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:DB_app.Helpers"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:viewModel="using:DB_app.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Page.Resources>
+        <helpers:NotConverter x:Key="NotConverter" />
+        <helpers:VisibleIfConverter x:Key="VisibleIf" />
+        <helpers:CollapsedIf x:Key="CollapsedIf" />
+    </Page.Resources>
+
+    <!--#region Header-->
+    <behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
+        <DataTemplate x:DataType="viewModel:MedicineDetailsViewModel">
+            <CommandBar
+                Background="Transparent"
+                DefaultLabelPosition="Right"
+                HorizontalAlignment="Stretch">
+                <CommandBar.Content>
+                    <Grid>
+
+                        <TextBlock
+                            Margin="10,0,0,0"
+                            Style="{ThemeResource TitleTextBlockStyle}"
+                            Text="{x:Bind PageTitle, Mode=OneWay}"
+                            x:Name="Title" />
+
+                        <InfoBadge
+                            Height="11"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Visibility="{x:Bind CurrentMedicine.IsModified, Mode=OneWay}"
+                            Width="11">
+
+                            <InfoBadge.IconSource>
+                                <FontIconSource FontFamily="Segoe Fluent Icons" Glyph="&#xEB52;" />
+                            </InfoBadge.IconSource>
+
+                        </InfoBadge>
+                    </Grid>
+
+                </CommandBar.Content>
+
+
+                <AppBarButton
+                    Click="SaveButton_Click"
+                    Icon="Save"
+                    IsEnabled="{Binding CurrentMedicine.HasErrors, Converter={StaticResource NotConverter}, Mode=OneWay}"
+                    x:Uid="SaveButton"
+                    Visibility="{Binding CurrentMedicine.IsInEdit, Converter={StaticResource VisibleIf}, Mode=OneWay}" />
+
+                <AppBarButton
+                    Click="BeginEdit_Click"
+                    Icon="Edit"
+                    x:Uid="EditButton"
+                    Visibility="{x:Bind viewModel:Converters.CollapsedIfOneOfTwo(CurrentMedicine.IsInEdit, CurrentMedicine.IsNew), Mode=OneWay}" />
+
+                <AppBarButton
+                    Click="{x:Bind CurrentMedicine.CancelEdit}"
+                    Icon="Cancel"
+                    x:Uid="CancelButton"
+                    Visibility="{x:Bind viewModel:Converters.VisibleIfOneAndNotAnother(CurrentMedicine.IsInEdit, CurrentMedicine.IsNew), Mode=OneWay}" />
+
+                <AppBarButton
+                    Click="DeleteButton_Click"
+                    Icon="Delete"
+                    x:Uid="DeleteButton"
+                    Visibility="{Binding CurrentMedicine.IsNew, Converter={StaticResource CollapsedIf}, Mode=OneWay}" />
+
+                <AppBarButton
+                    Click="AddButton_Click"
+                    Icon="Add"
+                    x:Uid="AddNewButton"
+                    Visibility="{x:Bind viewModel:Converters.CollapsedIfOneOfTwo(CurrentMedicine.IsInEdit, CurrentMedicine.IsNew), Mode=OneWay}" />
+            </CommandBar>
+        </DataTemplate>
+    </behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
+    <!--#endregion-->
+
+
+    <!--#region  Content-->
+    <ScrollViewer
+        RelativePanel.AlignLeftWithPanel="True"
+        RelativePanel.AlignRightWithPanel="True"
+        RelativePanel.Below="MainCommandBar"
+        VerticalScrollBarVisibility="Auto"
+        VerticalScrollMode="Auto"
+        x:Name="DetailPanel">
+
+        <StackPanel Margin="8,0,0,12">
+
+            <!--  Name input  -->
+            <components:ValidationTextBox
+                DataContext="{x:Bind ViewModel.CurrentMedicine}"
+                
+                IsReadOnly="{x:Bind ViewModel.CurrentMedicine.IsInEdit, Converter={StaticResource NotConverter}, Mode=OneWay}"
+                x:Uid="MedicineNameInput"
+                PropertyName="Name"
+                Text="{x:Bind ViewModel.CurrentMedicine.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                x:Name="Name" />
+
+            <!--  Type input  -->
+            <components:ValidationTextBox
+                DataContext="{x:Bind ViewModel.CurrentMedicine}"
+                
+                IsReadOnly="{x:Bind ViewModel.CurrentMedicine.IsInEdit, Converter={StaticResource NotConverter}, Mode=OneWay}"
+                x:Uid="MedicineTypeInput"
+                PropertyName="Type"
+                Text="{x:Bind ViewModel.CurrentMedicine.Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                x:Name="Type" />
+
+            <!--  Notification  -->
+            <toolkit:InAppNotification
+                RelativePanel.AlignBottomWithPanel="True"
+                RelativePanel.AlignHorizontalCenterWithPanel="True"
+                StackMode="Replace"
+                x:Name="Notification" />
+        </StackPanel>
+
+
+    </ScrollViewer>
+    <!--#endregion-->
+
+</Page>

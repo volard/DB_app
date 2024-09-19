@@ -1,0 +1,165 @@
+﻿<Page
+    x:Class="DB_app.Views.OrdersGridPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="using:DB_app.Behaviors"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:DB_app.Helpers"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:sys="using:System"
+    xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:vm="using:DB_app.ViewModels"
+    d:DataContext="{d:DesignInstance Type=vm:OrdersGridViewModel}"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <helpers:IsNotNullConverter x:Key="IsNotNullConverter" />
+        <helpers:VisibleIfConverter x:Key="VisibleIfConverter" />
+    </Page.Resources>
+
+
+    <!--#region  Header-->
+    <behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
+        <DataTemplate x:DataType="vm:OrdersGridViewModel">
+            <CommandBar
+                HorizontalAlignment="Stretch"
+                Background="Transparent"
+                DefaultLabelPosition="Right">
+
+                <CommandBar.Content>
+                    <TextBlock x:Uid="Orders" Style="{ThemeResource TitleTextBlockStyle}" />
+                </CommandBar.Content>
+
+                <AppBarButton
+                    x:Name="CommandBarAddButton"
+                    x:Uid="AddNewButton"
+                    Click="AddButton_Click"
+                    Icon="Add" />
+
+                <AppBarButton
+                    x:Name="CommandBarViewButton"
+                    x:Uid="ViewButton"
+                    Click="ViewButton_Click"
+                    Icon="OpenLocal"
+                    IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}" />
+
+                <AppBarButton
+                    x:Name="CommandBarEditButton"
+                    x:Uid="EditButton"
+                    Click="EditButton_Click"
+                    Icon="Edit"
+                    IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}" />
+
+                <AppBarButton
+                    x:Name="CommandBarDeleteButton"
+                    x:Uid="DeleteButton"
+                    Click="DeleteButton_Click"
+                    Icon="Delete"
+                    IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}" />
+
+            </CommandBar>
+        </DataTemplate>
+    </behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
+    <!--#endregion-->
+
+    <Grid
+        Padding="0,0,0,10"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch">
+        <Grid Padding="0,0,0,50">
+
+            <toolkit:DataGrid
+                AutoGenerateColumns="False"
+                CanUserReorderColumns="False"
+                IsReadOnly="True"
+                ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
+                SelectedItem="{x:Bind ViewModel.SelectedItem, Mode=TwoWay}"
+                SelectionMode="Single"
+                Style="{StaticResource DataGridStyle1}"
+                VerticalScrollBarVisibility="Auto">
+
+
+                <toolkit:DataGrid.Resources>
+                    <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
+                </toolkit:DataGrid.Resources>
+
+                <toolkit:DataGrid.Columns>
+
+
+                    <toolkit:DataGridTextColumn x:Uid="HospitalHeader" Binding="{Binding OrderHospital.Id}" />
+
+
+                    <toolkit:DataGridTemplateColumn x:Uid="Doctor">
+                        <toolkit:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate x:DataType="vm:OrderWrapper">
+                                <TextBlock Margin="12,0" VerticalAlignment="Center">
+                                    <Run Text="{Binding OrderHospital.Surename_main_doctor}" />
+                                    <Run Text="{Binding OrderHospital.Name_main_doctor}" />
+                                    <Run Text="{Binding OrderHospital.Middlename_main_doctor}" />
+                                </TextBlock>
+                            </DataTemplate>
+                        </toolkit:DataGridTemplateColumn.CellTemplate>
+                    </toolkit:DataGridTemplateColumn>
+
+                    <toolkit:DataGridTextColumn x:Uid="ShippingAddressHeader" Binding="{Binding SelectedAddress}" />
+
+
+                    <toolkit:DataGridTemplateColumn x:Uid="DateHeader">
+                        <toolkit:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate x:DataType="vm:OrderWrapper">
+                                <TextBlock
+                                    Margin="12,0"
+                                    VerticalAlignment="Center"
+                                    Text="{x:Bind sys:String.Format('\{0:MM/dd/yy\}', DatePlaced)}" />
+                            </DataTemplate>
+                        </toolkit:DataGridTemplateColumn.CellTemplate>
+                    </toolkit:DataGridTemplateColumn>
+
+                    <toolkit:DataGridTemplateColumn x:Uid="TimeHeader">
+                        <toolkit:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate x:DataType="vm:OrderWrapper">
+                                <TextBlock
+                                    Margin="12,0"
+                                    VerticalAlignment="Center"
+                                    Text="{x:Bind sys:String.Format('\{0:H:mm:ss\}', DatePlaced)}" />
+                            </DataTemplate>
+                        </toolkit:DataGridTemplateColumn.CellTemplate>
+                    </toolkit:DataGridTemplateColumn>
+
+
+                    <toolkit:DataGridTemplateColumn x:Uid="TotalHeader">
+                        <toolkit:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate x:DataType="vm:OrderWrapper">
+                                <TextBlock
+                                    Margin="12,0"
+                                    VerticalAlignment="Center"
+                                    Text="{x:Bind sys:String.Format('\{0:c\}', Total)}" />
+                            </DataTemplate>
+                        </toolkit:DataGridTemplateColumn.CellTemplate>
+                    </toolkit:DataGridTemplateColumn>
+
+
+
+
+                </toolkit:DataGrid.Columns>
+
+            </toolkit:DataGrid>
+
+            <muxc:ProgressBar
+                Margin="0,0,0,0"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Top"
+                IsIndeterminate="True"
+                Visibility="{x:Bind ViewModel.IsLoading, Converter={StaticResource VisibleIfConverter}, Mode=OneWay}" />
+        </Grid>
+
+        <toolkit:InAppNotification
+            x:Name="Notification"
+            RelativePanel.AlignBottomWithPanel="True"
+            RelativePanel.AlignHorizontalCenterWithPanel="True"
+            StackMode="Replace" />
+
+    </Grid>
+
+</Page>

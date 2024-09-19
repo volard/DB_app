@@ -1,5 +1,64 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -59,34 +118,34 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AppDisplayName" xml:space="preserve">
-    <value>DB_app</value>
+    <value>Medicine management system</value>
   </data>
-	<data name="AppDescription" xml:space="preserve">
-		<value>DB_app</value>
-  	</data>
+  <data name="AppDescription" xml:space="preserve">
+    <value>Educational project dedicated to developing simple yet modern Windows applications using WinUI 3.0 and Windows App SDK</value>
+  </data>
   <data name="Shell_Greeting.Content" xml:space="preserve">
-    <value>Greeting</value>
+    <value>Main</value>
   </data>
   <data name="Shell_HospitalsGrid.Content" xml:space="preserve">
-    <value>HospitalsGrid</value>
+    <value>Hospitals</value>
   </data>
   <data name="Shell_MedicinesGrid.Content" xml:space="preserve">
-    <value>MedicinesGrid</value>
+    <value>Medicines</value>
   </data>
   <data name="Shell_OrdersGrid.Content" xml:space="preserve">
-    <value>OrdersGrid</value>
+    <value>Orders</value>
   </data>
   <data name="Shell_PharmaciesGrid.Content" xml:space="preserve">
-    <value>PharmaciesGrid</value>
+    <value>Pharmacies</value>
   </data>
   <data name="Shell_ProductsGrid.Content" xml:space="preserve">
-    <value>ProductsGrid</value>
+    <value>Products</value>
   </data>
   <data name="Shell_PharmacyReportGrid.Content" xml:space="preserve">
-    <value>PharmacyReportGrid</value>
+    <value>Pharmacies' report</value>
   </data>
   <data name="Shell_HospitalReportGrid.Content" xml:space="preserve">
-    <value>HospitalReportGrid</value>
+    <value>Hospitals' report</value>
   </data>
   <data name="Settings_Personalization.Text" xml:space="preserve">
     <value>Personalization</value>
@@ -101,18 +160,375 @@
     <value>Dark</value>
   </data>
   <data name="Settings_Theme_Default.Content" xml:space="preserve">
-    <value>Default</value>
+    <value>System</value>
   </data>
   <data name="Settings_About.Text" xml:space="preserve">
     <value>About this application</value>
   </data>
   <data name="Settings_AboutDescription.Text" xml:space="preserve">
-    <value>TODO: Replace with your app description.</value>
+    <value>Educational project dedicated to developing simple yet modern Windows applications using WinUI 3.0 and Windows App SDK</value>
   </data>
-  <data name="SettingsPage_PrivacyTermsLink.Content" xml:space="preserve">
-    <value>Privacy Statement</value>
+  <data name="Shell_AddressesGrid.Content" xml:space="preserve">
+    <value>Addresses</value>
   </data>
-  <data name="SettingsPage_PrivacyTermsLink.NavigateUri" xml:space="preserve">
-    <value>https://YourPrivacyUrlGoesHere/</value>
+  <data name="RecordForDeletionNotFoundException" xml:space="preserve">
+    <value>The record to deletion not found</value>
+  </data>
+  <data name="Address.Text" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="Hospital.Text" xml:space="preserve">
+    <value>Hospital</value>
+  </data>
+  <data name="Medicine.Text" xml:space="preserve">
+    <value>Medicine</value>
+  </data>
+  <data name="Order.Text" xml:space="preserve">
+    <value>Order</value>
+  </data>
+  <data name="Pharmacy.Text" xml:space="preserve">
+    <value>Pharmacy</value>
+  </data>
+  <data name="Product.Text" xml:space="preserve">
+    <value>Product</value>
+  </data>
+  <data name="Settings.Text" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Edit.Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="New.Text" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="New_Hospital" xml:space="preserve">
+    <value>New hospital</value>
+  </data>
+  <data name="Hospitals.Text" xml:space="preserve">
+    <value>Hospitals</value>
+  </data>
+  <data name="New_Order" xml:space="preserve">
+    <value>New order</value>
+  </data>
+  <data name="New_Address" xml:space="preserve">
+    <value>New address</value>
+  </data>
+  <data name="New_Medicine" xml:space="preserve">
+    <value>New medicine</value>
+  </data>
+  <data name="New_Product" xml:space="preserve">
+    <value>New product</value>
+  </data>
+  <data name="Addresses.Text" xml:space="preserve">
+    <value>Addresses</value>
+  </data>
+  <data name="Medicines.Text" xml:space="preserve">
+    <value>Medicines</value>
+  </data>
+  <data name="New_Pharmacy" xml:space="preserve">
+    <value>New pharmacy</value>
+  </data>
+  <data name="Orders.Text" xml:space="preserve">
+    <value>Orders</value>
+  </data>
+  <data name="Pharmacies.Text" xml:space="preserve">
+    <value>Pharmacies</value>
+  </data>
+  <data name="Products.Text" xml:space="preserve">
+    <value>Products</value>
+  </data>
+  <data name="Warning.Header" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="SaveDialog.CloseButtonText" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="SaveDialog.SecondaryButtonText" xml:space="preserve">
+    <value>Don't save</value>
+  </data>
+  <data name="SaveDialog.PrimaryButtonText" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="SaveDialog.Title" xml:space="preserve">
+    <value>Save changes?</value>
+  </data>
+  <data name="SaveDialog.Content" xml:space="preserve">
+    <value>You have unsaved changes that will be lost. Would you like to save your changes?</value>
+  </data>
+  <data name="Name.Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Type.Header" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="NameHeader.Header" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Shell_Reports.Content" xml:space="preserve">
+    <value>Reports</value>
+  </data>
+  <data name="Shell_Reports_HospitalsWithMedicine.Content" xml:space="preserve">
+    <value>Hospitals with medicine</value>
+  </data>
+  <data name="Shell_Reports_MedicineInHospital.Content" xml:space="preserve">
+    <value>Medicine in hospital</value>
+  </data>
+  <data name="Shell_Reports_MedicineInPharmacy.Content" xml:space="preserve">
+    <value>Medicine in pharmacy</value>
+  </data>
+  <data name="Shell_Reports_PharmacyBudget.Content" xml:space="preserve">
+    <value>Pharmacies budget</value>
+  </data>
+  <data name="Shell_Reports_PharmacyWithMedicine.Content" xml:space="preserve">
+    <value>Pharmacy with medicine</value>
+  </data>
+  <data name="AddNewButton.Label" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="BudgetHeader.Header" xml:space="preserve">
+    <value>Budget</value>
+  </data>
+  <data name="Building.Header" xml:space="preserve">
+    <value>Building</value>
+  </data>
+  <data name="CancelButton.Label" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="City.Header" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="Data.Content" xml:space="preserve">
+    <value>Data</value>
+  </data>
+  <data name="DateHeader.Header" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="DeleteButton.Label" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Doctor.Header" xml:space="preserve">
+    <value>Doctor</value>
+  </data>
+  <data name="DoctorMiddlename.Header" xml:space="preserve">
+    <value>Doctor middlename</value>
+  </data>
+  <data name="DoctorName.Header" xml:space="preserve">
+    <value>Doctor name</value>
+  </data>
+  <data name="DoctorSurename.Header" xml:space="preserve">
+    <value>Doctor surename</value>
+  </data>
+  <data name="EditButton.Label" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="ExportButton.Label" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="HospitalHeader.Header" xml:space="preserve">
+    <value>Hospital</value>
+  </data>
+  <data name="HospitalsWithMedicineDescription.Message" xml:space="preserve">
+    <value>All hospitals where selected medicine exists</value>
+  </data>
+  <data name="HospitalsWithMedicineDescription.Title" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="HospitalWithMedicine.Text" xml:space="preserve">
+    <value>Hospital with medicine</value>
+  </data>
+  <data name="MedicineHeader.Header" xml:space="preserve">
+    <value>Medicine</value>
+  </data>
+  <data name="MedicineInHospital.Text" xml:space="preserve">
+    <value>Medicine in hospital</value>
+  </data>
+  <data name="MedicineInHospitalDescription.Message" xml:space="preserve">
+    <value>All medicine in selected hospital</value>
+  </data>
+  <data name="MedicineInHospitalDescription.Title" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="MedicineInPharmacy.Text" xml:space="preserve">
+    <value>Medicine in pharmacy</value>
+  </data>
+  <data name="MedicineInPharmacyDescription.Message" xml:space="preserve">
+    <value>All medicine in selected pharmacy</value>
+  </data>
+  <data name="MedicineInPharmacyDescription.Title" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="NotFound.Text" xml:space="preserve">
+    <value>Not found</value>
+  </data>
+  <data name="OpenWindowButton.Label" xml:space="preserve">
+    <value>Open in new window</value>
+  </data>
+  <data name="PharmaciesBudget.Text" xml:space="preserve">
+    <value>Pharmacies budget</value>
+  </data>
+  <data name="PharmaciesBudgetDescription.Message" xml:space="preserve">
+    <value>Pharmacies' budget</value>
+  </data>
+  <data name="PharmaciesBudgetDescription.Title" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="PharmacyHeader.Header" xml:space="preserve">
+    <value>Pharmacy</value>
+  </data>
+  <data name="PharmacyWithMedicine.Text" xml:space="preserve">
+    <value>Pharmacy with medicine</value>
+  </data>
+  <data name="PharmacyWithMedicineDescription.Message" xml:space="preserve">
+    <value>Pharmacies, wich sell selected medicine</value>
+  </data>
+  <data name="PharmacyWithMedicineDescription.Title" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="PriceHeader.Header" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="QuantityHeader.Header" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
+  <data name="SaveButton.Label" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="ShippingAddressHeader.Header" xml:space="preserve">
+    <value>Shipping address</value>
+  </data>
+  <data name="Street.Header" xml:space="preserve">
+    <value>Street</value>
+  </data>
+  <data name="TimeHeader.Header" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="TotalHeader.Header" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="ViewButton.Label" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="AddSelectedButton.Label" xml:space="preserve">
+    <value>Add selected</value>
+  </data>
+  <data name="BuildingInput.HeaderText" xml:space="preserve">
+    <value>Building</value>
+  </data>
+  <data name="BuildingInput.PlaceholderText" xml:space="preserve">
+    <value>Enter building</value>
+  </data>
+  <data name="CityInput.HeaderText" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="CityInput.PlaceholderText" xml:space="preserve">
+    <value>Enter city</value>
+  </data>
+  <data name="CustomerHeader.Header" xml:space="preserve">
+    <value>Customer</value>
+  </data>
+  <data name="DatePlacedText.Text" xml:space="preserve">
+    <value>Date placed</value>
+  </data>
+  <data name="DoctorText.Text" xml:space="preserve">
+    <value>Doctor</value>
+  </data>
+  <data name="HospitalCustomerComboBox.Header" xml:space="preserve">
+    <value>Customer</value>
+  </data>
+  <data name="HospitalCustomerComboBox.PlaceholderText" xml:space="preserve">
+    <value>Select hospital</value>
+  </data>
+  <data name="MakeInactiveButton.Content" xml:space="preserve">
+    <value>Make inactive</value>
+  </data>
+  <data name="MedicineComboBox.Header" xml:space="preserve">
+    <value>Medicine</value>
+  </data>
+  <data name="MedicineComboBox.PlaceholderText" xml:space="preserve">
+    <value>Select medicine</value>
+  </data>
+  <data name="MedicineNameInput.HeaderText" xml:space="preserve">
+    <value>Medicine name</value>
+  </data>
+  <data name="MedicineNameInput.PlaceholderText" xml:space="preserve">
+    <value>Enter name</value>
+  </data>
+  <data name="MedicineTypeInput.HeaderText" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="MedicineTypeInput.PlaceholderText" xml:space="preserve">
+    <value>Enter type</value>
+  </data>
+  <data name="MiddlenameInput.HeaderText" xml:space="preserve">
+    <value>Maindoctor middlename</value>
+  </data>
+  <data name="MiddlenameInput.PlaceholderText" xml:space="preserve">
+    <value>Enter middlename</value>
+  </data>
+  <data name="NameInput.HeaderText" xml:space="preserve">
+    <value>Maindoctor name</value>
+  </data>
+  <data name="NameInput.PlaceholderText" xml:space="preserve">
+    <value>Enter name</value>
+  </data>
+  <data name="NewAddressComboBox.PlaceholderText" xml:space="preserve">
+    <value>Select new address</value>
+  </data>
+  <data name="OrderItemsText.Text" xml:space="preserve">
+    <value>Order items</value>
+  </data>
+  <data name="PharmacyComboBox.Header" xml:space="preserve">
+    <value>Pharmacy</value>
+  </data>
+  <data name="PharmacyComboBox.PlaceholderText" xml:space="preserve">
+    <value>Select pharmacy</value>
+  </data>
+  <data name="PharmacyNameInput.HeaderText" xml:space="preserve">
+    <value>Pharmacy name</value>
+  </data>
+  <data name="PharmacyNameInput.PlaceholderText" xml:space="preserve">
+    <value>Enter name</value>
+  </data>
+  <data name="PriceInput.Header" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="PriceInput.PlaceholderText" xml:space="preserve">
+    <value>Enter price value</value>
+  </data>
+  <data name="PriceText.Text" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="QuantityInput.Header" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
+  <data name="QuantityInput.PlaceholderText" xml:space="preserve">
+    <value>Enter quantity value</value>
+  </data>
+  <data name="QuantityText.Text" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
+  <data name="ShippingAddressComboBox.Header" xml:space="preserve">
+    <value>Shipping adderss</value>
+  </data>
+  <data name="StreetInput.HeaderText" xml:space="preserve">
+    <value>Street</value>
+  </data>
+  <data name="StreetInput.PlaceholderText" xml:space="preserve">
+    <value>Enter street</value>
+  </data>
+  <data name="SurenameInput.HeaderText" xml:space="preserve">
+    <value>Maindoctor surename</value>
+  </data>
+  <data name="SurenameInput.PlaceholderText" xml:space="preserve">
+    <value>Enter surename</value>
+  </data>
+  <data name="TotalText.Text" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="TypeText.Text" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="ZeroAddressesInfo.Content" xml:space="preserve">
+    <value>At least one address have to be provided otherwise organization becomes inactive</value>
   </data>
 </root>

@@ -1,0 +1,73 @@
+﻿{
+   "CodeGenerationMode": 3,
+   "ContextClassName": "MainContext",
+   "ContextNamespace": null,
+   "DefaultDacpacSchema": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "ModelNamespace": null,
+   "OutputContextPath": "Services2",
+   "OutputPath": "Models",
+   "PreserveCasingWithRegex": true,
+   "ProjectRootNamespace": "DB_app.Core",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 0,
+   "Tables": [
+      {
+         "Name": "public.ADDRESSES",
+         "ObjectType": 0
+      },
+      {
+         "Name": "public.HOSPITALS",
+         "ObjectType": 0
+      },
+      {
+         "Name": "public.HOSPITALS_LOCATIONS",
+         "ObjectType": 0
+      },
+      {
+         "Name": "public.MEDICINES",
+         "ObjectType": 0
+      },
+      {
+         "Name": "public.order_item",
+         "ObjectType": 0
+      },
+      {
+         "Name": "public.ORDERS",
+         "ObjectType": 0
+      },
+      {
+         "Name": "public.PHARMACIES",
+         "ObjectType": 0
+      },
+      {
+         "Name": "public.PHARMACIES_LOCATIONS",
+         "ObjectType": 0
+      },
+      {
+         "Name": "public.PRODUCTS",
+         "ObjectType": 0
+      }
+   ],
+   "UiHint": "MainDBConnection",
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": false,
+   "UseDbContextSplitting": false,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseHierarchyId": false,
+   "UseInflector": false,
+   "UseLegacyPluralizer": false,
+   "UseManyToManyEntity": false,
+   "UseNoConstructor": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UseSchemaFolders": false,
+   "UseSpatial": false,
+   "UseT4": false
+}

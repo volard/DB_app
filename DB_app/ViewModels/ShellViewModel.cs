@@ -9,25 +9,19 @@ namespace DB_app.ViewModels;
 
 public class ShellViewModel : ObservableRecipient
 {
+
+    public INavigationService NavigationService { get; }
+
+    public INavigationViewService NavigationViewService { get; }
+
     private bool _isBackEnabled;
-    private object? _selected;
-
-    public INavigationService NavigationService
-    {
-        get;
-    }
-
-    public INavigationViewService NavigationViewService
-    {
-        get;
-    }
-
     public bool IsBackEnabled
     {
         get => _isBackEnabled;
         set => SetProperty(ref _isBackEnabled, value);
     }
 
+    private object? _selected;
     public object? Selected
     {
         get => _selected;

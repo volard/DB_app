@@ -1,0 +1,130 @@
+﻿<Page
+    x:Class="DB_app.Views.MedicineInPharmacyReportPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="using:DB_app.Behaviors"
+    xmlns:components="using:DB_app.Views.Components"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:viewModel="using:DB_app.ViewModels"
+    mc:Ignorable="d">
+
+    <!--#region Header-->
+    <behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
+        <DataTemplate x:DataType="viewModel:MedicineInPharmacyReportViewModel">
+            <RelativePanel HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                <TextBlock
+                    x:Uid="MedicineInPharmacy"
+                    RelativePanel.AlignLeftWithPanel="True"
+                    Style="{ThemeResource TitleTextBlockStyle}" />
+                <CommandBar
+                    VerticalContentAlignment="Center"
+                    Background="Transparent"
+                    DefaultLabelPosition="Right"
+                    RelativePanel.AlignRightWithPanel="True">
+
+                    <CommandBar.Content>
+                        <StackPanel Orientation="Horizontal">
+
+                            <ProgressRing Margin="0,0,20,0" IsActive="{x:Bind IsPharmaciesLoading, Mode=OneWay}" />
+
+                            <ComboBox
+                                x:Name="PharmacyComboBox"
+                                Height="38"
+                                MinWidth="200"
+                                ItemsSource="{x:Bind AvailablePharmacies, Mode=OneWay}"
+                                SelectedItem="{x:Bind SelectedPharmacy, Mode=TwoWay}"
+                                SelectionChanged="PharmacyComboBox_SelectionChanged" />
+
+
+                        </StackPanel>
+
+                    </CommandBar.Content>
+
+
+                    <AppBarButton
+                        x:Name="CommandBarExportButton"
+                        x:Uid="ExportButton"
+                        Margin="20,0,0,0"
+                        Background="Green"
+                        Click="CommandBarExportButton_Click"
+                        Icon="Manage"
+                        ToolTipService.ToolTip="Export" />
+
+
+                </CommandBar>
+            </RelativePanel>
+
+
+        </DataTemplate>
+    </behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
+    <!--#endregion-->
+
+    <RelativePanel
+        Padding="0,0,0,20"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch">
+
+        <InfoBar
+            x:Name="Description"
+            
+            Margin="0,0,0,20"
+            HorizontalAlignment="Stretch"
+            IsClosable="False"
+            IsOpen="True"
+            x:Uid="MedicineInPharmacyDescription"
+            RelativePanel.AlignTopWithPanel="True"
+            Severity="Informational" />
+
+        <Grid HorizontalAlignment="Stretch" RelativePanel.Below="Description">
+
+            <components:NotFoundBlock x:Name="NotFoundBlock" />
+            <toolkit:DataGrid
+                x:Name="SourceDataGrid"
+                HorizontalAlignment="Stretch"
+                AutoGenerateColumns="False"
+                CanUserResizeColumns="True"
+                CanUserSortColumns="True"
+                IsReadOnly="True"
+                ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
+                Sorting="dg_Sorting">
+
+                <toolkit:DataGrid.Resources>
+                    <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
+                </toolkit:DataGrid.Resources>
+
+                <toolkit:DataGrid.Columns>
+                    <toolkit:DataGridTextColumn
+                        Binding="{Binding Medicine.Name}"
+                        x:Uid="NameHeader"
+                        SortDirection="Ascending"
+                        Tag="Name" />
+                    <toolkit:DataGridTextColumn
+                        Binding="{Binding Price}"
+                        x:Uid="PriceHeader"
+                        Tag="Price" />
+                    <toolkit:DataGridTextColumn
+                        Binding="{Binding Quantity}"
+                        x:Uid="QuantityHeader"
+                        Tag="Quantity" />
+                </toolkit:DataGrid.Columns>
+
+            </toolkit:DataGrid>
+
+            <muxc:ProgressBar
+                Margin="0,0,0,0"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Top"
+                IsIndeterminate="True"
+                Visibility="{x:Bind ViewModel.IsSourceLoading, Mode=OneWay}" />
+        </Grid>
+
+        <toolkit:InAppNotification
+            x:Name="Notification"
+            RelativePanel.AlignBottomWithPanel="True"
+            RelativePanel.AlignHorizontalCenterWithPanel="True"
+            StackMode="Replace" />
+    </RelativePanel>
+</Page>

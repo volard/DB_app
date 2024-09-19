@@ -1,0 +1,169 @@
+﻿<Page
+    x:Class="DB_app.Views.ProductsGridPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="using:DB_app.Behaviors"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:DB_app.Helpers"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:sys="using:System"
+    xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:vm="using:DB_app.ViewModels"
+    d:DataContext="{d:DesignInstance Type=vm:ProductsGridViewModel}"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <helpers:IsNotNullConverter x:Key="IsNotNullConverter" />
+    </Page.Resources>
+
+
+    <!--#region Header-->
+    <behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
+        <DataTemplate x:DataType="vm:ProductsGridViewModel">
+            <CommandBar
+                HorizontalAlignment="Stretch"
+                Background="Transparent"
+                DefaultLabelPosition="Right">
+
+                <CommandBar.Content>
+                    <TextBlock x:Uid="Products" Style="{ThemeResource TitleTextBlockStyle}" />
+                </CommandBar.Content>
+
+                <AppBarToggleButton
+                    x:Name="InactiveToggler"
+                    Click="Button_Click"
+                    Content="Show out of stock"
+                    Icon="ProtectedDocument" />
+
+                <AppBarButton
+                    x:Name="CommandBarAddButton"
+                    x:Uid="AddNewButton"
+                    Click="Add_Click"
+                    Icon="Add" />
+                <AppBarButton
+                    x:Name="CommandBarViewButton"
+                    x:Uid="ViewButton"
+                    Click="View_Click"
+                    Icon="OpenLocal">
+                    <AppBarButton.IsEnabled>
+                        <Binding
+                            Converter="{StaticResource IsNotNullConverter}"
+                            Mode="OneWay"
+                            Path="SelectedItem" />
+                    </AppBarButton.IsEnabled>
+                </AppBarButton>
+
+                <AppBarButton
+                    x:Name="CommandBarEditButton"
+                    x:Uid="EditButton"
+                    Click="Edit_Click"
+                    Icon="Edit">
+                    <AppBarButton.IsEnabled>
+                        <Binding
+                            Converter="{StaticResource IsNotNullConverter}"
+                            Mode="OneWay"
+                            Path="SelectedItem" />
+                    </AppBarButton.IsEnabled>
+                </AppBarButton>
+
+                <AppBarButton
+                    x:Name="CommandBarDeleteButton"
+                    x:Uid="DeleteButton"
+                    Click="Delete_Click"
+                    Icon="Delete">
+                    <AppBarButton.IsEnabled>
+                        <Binding
+                            Converter="{StaticResource IsNotNullConverter}"
+                            Mode="OneWay"
+                            Path="SelectedItem" />
+                    </AppBarButton.IsEnabled>
+                </AppBarButton>
+
+
+            </CommandBar>
+        </DataTemplate>
+    </behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
+    <!--#endregion-->
+
+    <Grid
+        Padding="0,0,0,10"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch">
+
+        <Grid Padding="0,0,0,50">
+
+            <toolkit:DataGrid
+                x:Name="ProductGrid"
+                AutoGenerateColumns="False"
+                CanUserReorderColumns="False"
+                IsReadOnly="True"
+                ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
+                SelectedItem="{x:Bind ViewModel.SelectedItem, Mode=TwoWay}"
+                SelectionMode="Single"
+                Style="{StaticResource DataGridStyle1}"
+                VerticalScrollBarVisibility="Auto"
+                VirtualizingStackPanel.VirtualizationMode="Recycling">
+
+
+                <toolkit:DataGrid.Resources>
+                    <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
+                </toolkit:DataGrid.Resources>
+
+                <toolkit:DataGrid.Columns>
+
+
+                    <toolkit:DataGridTextColumn
+                        x:Uid="PharmacyHeader"
+                        Width="30*"
+                        Binding="{Binding ProductPharmacy.Name}" />
+                    <toolkit:DataGridTextColumn
+                        x:Uid="MedicineHeader"
+                        Width="30*"
+                        Binding="{Binding ProductMedicine.Name}" />
+                    <toolkit:DataGridTextColumn
+                        x:Uid="Type"
+                        Width="30*"
+                        Binding="{Binding ProductMedicine.Type}" />
+
+
+
+                    <toolkit:DataGridTemplateColumn x:Uid="PriceHeader">
+                        <toolkit:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate x:DataType="vm:ProductWrapper">
+                                <TextBlock
+                                    Margin="12,0"
+                                    VerticalAlignment="Center"
+                                    Text="{x:Bind sys:String.Format('\{0:c\}', Price)}" />
+                            </DataTemplate>
+                        </toolkit:DataGridTemplateColumn.CellTemplate>
+                    </toolkit:DataGridTemplateColumn>
+
+
+                    <toolkit:DataGridTextColumn
+                        x:Uid="QuantityHeader"
+                        Width="30*"
+                        Binding="{Binding Quantity}" />
+
+                </toolkit:DataGrid.Columns>
+            </toolkit:DataGrid>
+
+            <muxc:ProgressBar
+                Margin="0,0,0,0"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Top"
+                IsIndeterminate="True"
+                Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
+        </Grid>
+
+        <toolkit:InAppNotification
+            x:Name="Notification"
+            RelativePanel.AlignBottomWithPanel="True"
+            RelativePanel.AlignHorizontalCenterWithPanel="True"
+            StackMode="Replace" />
+
+
+
+    </Grid>
+
+</Page>

@@ -1,4 +1,5 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows10.0.19041.0</TargetFramework>
@@ -9,39 +10,208 @@
     <Platforms>x86;x64;arm64</Platforms>
     <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
     <PublishProfile>Properties\PublishProfiles\win10-$(Platform).pubxml</PublishProfile>
-	<ImplicitUsings>enable</ImplicitUsings>
-	<Nullable>enable</Nullable>
-	<UseWinUI>true</UseWinUI>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
+    <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
+    <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
+    <PackageCertificateThumbprint>C657A8BDBDD7F9036C60F149DCAC6742F9763AE0</PackageCertificateThumbprint>
+    <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
+    <GenerateTestArtifacts>True</GenerateTestArtifacts>
+    <AppxBundle>Never</AppxBundle>
+    <AppxBundlePlatforms>x86|x64</AppxBundlePlatforms>
+    <AppInstallerUri>F:\Kirill\Projects\DB_app_solution\DB_app\bin\x64\Release\net6.0-windows10.0.19041.0\win10-x64\DB_app.exe</AppInstallerUri>
   </PropertyGroup>
-
+  <PropertyGroup Label="MultilingualAppToolkit">
+    <MultilingualAppToolkitVersion>4.0</MultilingualAppToolkitVersion>
+    <MultilingualFallbackLanguage>en-US</MultilingualFallbackLanguage>
+    <TranslationReport Condition="'$(Configuration)' == 'Release'">true</TranslationReport>
+    <SuppressPseudoWarning Condition="'$(Configuration)' == 'Debug'">true</SuppressPseudoWarning>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Feature\Address\NewFolder\**" />
+    <Compile Remove="Strings\ru-ru\**" />
+    <Compile Remove="Views\Medicine\**" />
+    <EmbeddedResource Remove="Feature\Address\NewFolder\**" />
+    <EmbeddedResource Remove="Strings\ru-ru\**" />
+    <EmbeddedResource Remove="Views\Medicine\**" />
+    <None Remove="Feature\Address\NewFolder\**" />
+    <None Remove="Strings\ru-ru\**" />
+    <None Remove="Views\Medicine\**" />
+    <Page Remove="Feature\Address\NewFolder\**" />
+    <Page Remove="Strings\ru-ru\**" />
+    <Page Remove="Views\Medicine\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="AddressesGridPage.xaml" />
+    <None Remove="Assets\not-found.svg" />
+    <None Remove="Assets\secret.mp4" />
+    <None Remove="Feature\HospitalsWithMedicineReport\HospitalsWithMedicineReportPage.xaml" />
+    <None Remove="Feature\MedicineInHospitalReport\MedicineInHospitalReportPage.xaml" />
+    <None Remove="Feature\PharmacyBudgetReport\PharmacyBudgetReportPage.xaml" />
+    <None Remove="Feature\PharmacyWithMedicineReport\PharmacyWithMedicineReportPage.xaml" />
+    <None Remove="Fonts\Segoe Fluent Icons.ttf" />
+    <None Remove="MediaWindow.xaml" />
+    <None Remove="MultilingualResources\DB_app.ru-RU.xlf" />
+    <None Remove="Styles\Icons.xaml" />
+    <None Remove="Styles\NotificationStyle.xaml" />
+    <None Remove="Views\Address\AddressDetailsPage.xaml" />
+    <None Remove="Views\Components\ContentDialogContent.xaml" />
+    <None Remove="Views\Components\NotFoundBlock.xaml" />
+    <None Remove="Views\Components\ValidationTextBox.xaml" />
+    <None Remove="Feature\Hospital\Views\Hospital\HospitalDetailsPage.xaml" />
+    <None Remove="Views\MedicineDetailsPage.xaml" />
+    <None Remove="Views\OrderDetailsWindow.xaml" />
+    <None Remove="Views\Order\OrderDetailsPage.xaml" />
+    <None Remove="Views\Pharmacy\PharmacyDetailsPage.xaml" />
+    <None Remove="Views\Product\ProductDetailsPage.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Remove="Views\SaveChangesDialog.xaml" />
+  </ItemGroup>
   <ItemGroup>
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
-
   <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="7.1.2" />
-    <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.1.3" />
-    <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.8" />
-    <PackageReference Include="WinUIEx" Version="1.8.0" />
+    <PackageReference Include="ClosedXML" Version="0.102.0" />
+    <PackageReference Include="CommunityToolkit.Labs.WinUI.SettingsControls" Version="0.0.18" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+    <PackageReference Include="CommunityToolkit.WinUI.UI.Animations" Version="7.1.2" />
+    <PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="7.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.9" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.3.230724000" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
+    <PackageReference Include="WinUIEx" Version="2.2.0" />
   </ItemGroup>
-
   <ItemGroup>
-    <ProjectReference Include="..\DB_app.Core\DB_app.Core.csproj" />
+    <ProjectReference Include="..\DB_app.Core\DB_app.Repository.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="appsettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Page Update="Views\Components\NotFoundBlock.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Feature\PharmacyWithMedicineReport\PharmacyWithMedicineReportPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Feature\HospitalsWithMedicineReport\HospitalsWithMedicineReportPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Feature\PharmacyBudgetReport\PharmacyBudgetReportPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Feature\MedicineInHospitalReport\MedicineInHospitalReportPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="MediaWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Styles\NotificationStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\Components\OrderItemDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\Components\ValidationTextBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\Components\ValidationTextBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Styles\Icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\OrderDetailsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\Order\OrderDetailsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\Product\ProductDetailsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\Pharmacy\PharmacyDetailsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\Hospital\HospitalDetailsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="AddressesGridPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <None Update="Views\Components\SaveChangesDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <Page Update="Views\Address\AddressDetailsPage.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Views\MedicineDetailsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
-
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <ProjectCapability Include="Msix" />
   </ItemGroup>
-  
+  <ItemGroup>
+    <Folder Include="Feature\Hospital\Views\" />
+    <Folder Include="Feature\Order\" />
+    <Folder Include="Feature\Pharmacy\" />
+    <Folder Include="Themes\" />
+  </ItemGroup>
   <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <NoWarn>CS0103</NoWarn>
+    <DefineConstants>$(DefineConstants);DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <NoWarn>CS0103</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <NoWarn>CS0103</NoWarn>
+    <DefineConstants>$(DefineConstants);DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <NoWarn>CS0103</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|arm64'">
+    <NoWarn>CS0103</NoWarn>
+    <DefineConstants>$(DefineConstants);DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|arm64'">
+    <NoWarn>CS0103</NoWarn>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\Microsoft.Multilingual.PriResources.targets" Label="MultilingualAppToolkit" Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\v$(MultilingualAppToolkitVersion)\Microsoft.Multilingual.PriResources.targets')" />
+  <Target Name="MATPrerequisite" BeforeTargets="PrepareForBuild" Condition="!Exists('$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\Microsoft.Multilingual.PriResources.targets')" Label="MultilingualAppToolkit">
+    <Warning Text="$(MSBuildProjectFile) is Multilingual build enabled, but the Multilingual App Toolkit is unavailable during the build. If building with Visual Studio, please check to ensure that toolkit is properly installed." />
+  </Target>
+  <ItemGroup>
+    <PRIResource Remove="Views\Medicine\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Remove="Feature\Address\NewFolder\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Fonts\Segoe Fluent Icons.ttf">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Strings\en-us\Resources.resw" />
+    <Content Include="Strings\LanguageList.resw" />
+    <Content Include="Strings\ru-RU\Resources.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <XliffResource Include="MultilingualResources\DB_app.ru-RU.xlf" />
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Remove="Strings\ru-ru\**" />
+  </ItemGroup>
 </Project>

@@ -4,7 +4,4 @@ namespace DB_app.ViewModels;
 
 public class GreetingViewModel : ObservableRecipient
 {
-    public GreetingViewModel()
-    {
-    }
 }

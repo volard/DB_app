@@ -4,8 +4,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DB_app", "DB_app\DB_app.csproj", "{222A75B5-68BC-46EE-8A3E-59BE979886C1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B1CE6863-23F1-4804-A32B-E1EAD24D266F} = {B1CE6863-23F1-4804-A32B-E1EAD24D266F}
+	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DB_app.Core", "DB_app.Core\DB_app.Core.csproj", "{6C7B2B0A-A011-46BA-B5E8-2F61498BEB20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DB_app.Repository", "DB_app.Core\DB_app.Repository.csproj", "{6C7B2B0A-A011-46BA-B5E8-2F61498BEB20}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B1CE6863-23F1-4804-A32B-E1EAD24D266F} = {B1CE6863-23F1-4804-A32B-E1EAD24D266F}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DB_app.Models", "DB_app.Models\DB_app.Models.csproj", "{B1CE6863-23F1-4804-A32B-E1EAD24D266F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +67,22 @@ Global
 		{6C7B2B0A-A011-46BA-B5E8-2F61498BEB20}.Release|x64.Build.0 = Release|x64
 		{6C7B2B0A-A011-46BA-B5E8-2F61498BEB20}.Release|x86.ActiveCfg = Release|x86
 		{6C7B2B0A-A011-46BA-B5E8-2F61498BEB20}.Release|x86.Build.0 = Release|x86
+		{B1CE6863-23F1-4804-A32B-E1EAD24D266F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1CE6863-23F1-4804-A32B-E1EAD24D266F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1CE6863-23F1-4804-A32B-E1EAD24D266F}.Debug|arm64.ActiveCfg = Debug|Any CPU
+		{B1CE6863-23F1-4804-A32B-E1EAD24D266F}.Debug|arm64.Build.0 = Debug|Any CPU
+		{B1CE6863-23F1-4804-A32B-E1EAD24D266F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B1CE6863-23F1-4804-A32B-E1EAD24D266F}.Debug|x64.Build.0 = Debug|Any CPU
+		{B1CE6863-23F1-4804-A32B-E1EAD24D266F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B1CE6863-23F1-4804-A32B-E1EAD24D266F}.Debug|x86.Build.0 = Debug|Any CPU
+		{B1CE6863-23F1-4804-A32B-E1EAD24D266F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1CE6863-23F1-4804-A32B-E1EAD24D266F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1CE6863-23F1-4804-A32B-E1EAD24D266F}.Release|arm64.ActiveCfg = Release|Any CPU
+		{B1CE6863-23F1-4804-A32B-E1EAD24D266F}.Release|arm64.Build.0 = Release|Any CPU
+		{B1CE6863-23F1-4804-A32B-E1EAD24D266F}.Release|x64.ActiveCfg = Release|Any CPU
+		{B1CE6863-23F1-4804-A32B-E1EAD24D266F}.Release|x64.Build.0 = Release|Any CPU
+		{B1CE6863-23F1-4804-A32B-E1EAD24D266F}.Release|x86.ActiveCfg = Release|Any CPU
+		{B1CE6863-23F1-4804-A32B-E1EAD24D266F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

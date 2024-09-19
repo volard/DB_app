@@ -1,0 +1,143 @@
+<Page
+    mc:Ignorable="d"
+    x:Class="DB_app.Views.AddressDetailsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:behaviors="using:DB_app.Behaviors"
+    xmlns:components="using:DB_app.Views.Components"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:DB_app.Helpers"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:viewModel="using:DB_app.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Page.Resources>
+        <helpers:NotConverter x:Key="NotConverter" />
+        <helpers:VisibleIfConverter x:Key="VisibleIf" />
+        <helpers:CollapsedIf x:Key="CollapsedIf" />
+    </Page.Resources>
+
+
+
+    <!--#region Page's header-->
+    <behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
+        <DataTemplate x:DataType="viewModel:AddressDetailsViewModel">
+            <CommandBar
+                Background="Transparent"
+                DefaultLabelPosition="Right"
+                HorizontalAlignment="Stretch">
+                <CommandBar.Content>
+                    <Grid>
+
+                        <TextBlock
+                            Margin="10,0,0,0"
+                            Style="{ThemeResource TitleTextBlockStyle}"
+                            Text="{x:Bind PageTitle, Mode=OneWay}"
+                            x:Name="Title" />
+
+                        <InfoBadge
+                            Height="11"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Visibility="{x:Bind CurrentAddress.IsModified, Mode=OneWay}"
+                            Width="11">
+
+                            <InfoBadge.IconSource>
+                                <FontIconSource FontFamily="Segoe Fluent Icons" Glyph="&#xEB52;" />
+                            </InfoBadge.IconSource>
+
+                        </InfoBadge>
+                    </Grid>
+
+                </CommandBar.Content>
+
+                <AppBarButton
+                    Click="SaveButton_Click"
+                    Icon="Save"
+                    IsEnabled="{Binding CurrentAddress.HasErrors, Converter={StaticResource NotConverter}, Mode=OneWay}"
+                    x:Uid="SaveButton"
+                    Visibility="{Binding CurrentAddress.IsInEdit, Converter={StaticResource VisibleIf}, Mode=OneWay}" />
+
+                <AppBarButton
+                    Click="BeginEdit_Click"
+                    Icon="Edit"
+                    x:Uid="EditButton"
+                    Visibility="{x:Bind viewModel:Converters.CollapsedIfOneOfTwo(CurrentAddress.IsInEdit, CurrentAddress.IsNew), Mode=OneWay}" />
+
+                <AppBarButton
+                    Click="{x:Bind CurrentAddress.CancelEdit}"
+                    x:Uid="CancelButton"
+                    Visibility="{x:Bind viewModel:Converters.VisibleIfOneAndNotAnother(CurrentAddress.IsInEdit, CurrentAddress.IsNew), Mode=OneWay}" />
+
+                <AppBarButton
+                    Click="DeleteButton_Click"
+                    Icon="Delete"
+                    x:Uid="DeleteButton"
+                    Visibility="{Binding CurrentAddress.IsNew, Converter={StaticResource CollapsedIf}, Mode=OneWay}" />
+
+                <AppBarButton
+                    Click="AddButton_Click"
+                    Icon="Add"
+                    x:Uid="AddButton"
+                    Visibility="{x:Bind viewModel:Converters.CollapsedIfOneOfTwo(CurrentAddress.IsInEdit, CurrentAddress.IsNew), Mode=OneWay}" />
+
+            </CommandBar>
+        </DataTemplate>
+    </behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
+
+    <!--#endregion-->
+
+
+    <!--#region Page's content-->
+    <ScrollViewer
+        RelativePanel.AlignLeftWithPanel="True"
+        RelativePanel.AlignRightWithPanel="True"
+        RelativePanel.Below="MainCommandBar"
+        VerticalScrollBarVisibility="Auto"
+        VerticalScrollMode="Auto"
+        x:Name="DetailPanel">
+
+        <StackPanel Margin="8,0,0,12">
+
+
+            <components:ValidationTextBox
+                DataContext="{x:Bind ViewModel.CurrentAddress}"
+                x:Uid="CityInput"
+                IsReadOnly="{x:Bind ViewModel.CurrentAddress.IsInEdit, Converter={StaticResource NotConverter}, Mode=OneWay}"
+                PlaceholderText="Enter city"
+                
+                Text="{x:Bind ViewModel.CurrentAddress.City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                x:Name="City" />
+
+            <components:ValidationTextBox
+                DataContext="{x:Bind ViewModel.CurrentAddress}"
+                x:Uid="StreetInput"
+                IsReadOnly="{x:Bind ViewModel.CurrentAddress.IsInEdit, Converter={StaticResource NotConverter}, Mode=OneWay}"
+                PlaceholderText="Enter street"
+                
+                Text="{x:Bind ViewModel.CurrentAddress.Street, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                x:Name="Street" />
+
+            <components:ValidationTextBox
+                DataContext="{x:Bind ViewModel.CurrentAddress}"
+                
+                IsReadOnly="{Binding IsInEdit, Converter={StaticResource NotConverter}, Mode=OneWay}"
+                PlaceholderText="Enter building"
+                x:Uid="BuildingInput"
+                Text="{x:Bind ViewModel.CurrentAddress.Building, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                x:Name="Building" />
+
+            <toolkit:InAppNotification
+                RelativePanel.AlignBottomWithPanel="True"
+                RelativePanel.AlignHorizontalCenterWithPanel="True"
+                StackMode="Replace"
+                x:Name="Notification" />
+
+
+        </StackPanel>
+
+
+
+    </ScrollViewer>
+
+</Page>

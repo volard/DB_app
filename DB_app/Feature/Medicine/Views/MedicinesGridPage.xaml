@@ -1,0 +1,116 @@
+﻿<Page
+    d:DataContext="{d:DesignInstance Type=vm:MedicinesGridViewModel}"
+    mc:Ignorable="d"
+    x:Class="DB_app.Views.MedicinesGridPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:behaviors="using:DB_app.Behaviors"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:DB_app.Helpers"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:vm="using:DB_app.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Page.Resources>
+        <helpers:IsNotNullConverter x:Key="IsNotNullConverter" />
+    </Page.Resources>
+
+    <!--#region Header-->
+    <behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
+        <DataTemplate x:DataType="vm:MedicinesGridViewModel">
+            <CommandBar
+                Background="Transparent"
+                DefaultLabelPosition="Right"
+                HorizontalAlignment="Stretch">
+
+                <CommandBar.Content>
+                    <TextBlock Style="{ThemeResource TitleTextBlockStyle}" x:Uid="Medicines" />
+                </CommandBar.Content>
+
+                
+
+                <AppBarButton
+                    Click="Add_Click"
+                    Icon="Add"
+                    x:Uid="AddNewButton"
+                    x:Name="CommandBarAddButton" />
+
+                <AppBarButton
+                    Click="View_Click"
+                    Icon="OpenLocal"
+                    IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
+                    x:Uid="ViewButton"
+                    x:Name="CommandBarViewButton" />
+
+                <AppBarButton
+                    Click="Edit_Click"
+                    Icon="Edit"
+                    IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
+                    x:Uid="EditButton"
+                    x:Name="CommandBarEditButton" />
+
+                <AppBarButton
+                    Click="Delete_Click"
+                    Icon="Delete"
+                    IsEnabled="{Binding SelectedItem, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
+                    x:Uid="DeleteButton"
+                    x:Name="CommandBarDeleteButton" />
+
+            </CommandBar>
+        </DataTemplate>
+    </behaviors:NavigationViewHeaderBehavior.HeaderTemplate>
+    <!--#endregion-->
+
+    <Grid
+        HorizontalAlignment="Stretch"
+        Padding="0,0,0,10"
+        VerticalAlignment="Stretch">
+        <Grid Padding="0,0,0,50">
+
+            <toolkit:DataGrid
+                AutoGenerateColumns="False"
+                CanUserReorderColumns="False"
+                IsReadOnly="True"
+                ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
+                SelectedItem="{x:Bind ViewModel.SelectedItem, Mode=TwoWay}"
+                SelectionMode="Single"
+                Style="{StaticResource DataGridStyle1}"
+                VerticalScrollBarVisibility="Auto"
+                VirtualizingStackPanel.VirtualizationMode="Recycling"
+                x:Name="MedicineGrid">
+
+
+                <toolkit:DataGrid.Resources>
+                    <SolidColorBrush Color="Transparent" x:Key="DataGridColumnHeaderBackgroundColor" />
+                </toolkit:DataGrid.Resources>
+
+                <toolkit:DataGrid.Columns>
+
+                    <toolkit:DataGridTextColumn Binding="{Binding Name}" x:Uid="NameHeader" />
+                    <toolkit:DataGridTextColumn Binding="{Binding Type}" x:Uid="Type" />
+
+                </toolkit:DataGrid.Columns>
+            </toolkit:DataGrid>
+
+            <muxc:ProgressBar
+                HorizontalAlignment="Stretch"
+                IsIndeterminate="True"
+                Margin="0,0,0,0"
+                VerticalAlignment="Top"
+                Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
+        </Grid>
+
+
+
+        <toolkit:InAppNotification
+            RelativePanel.AlignBottomWithPanel="True"
+            RelativePanel.AlignHorizontalCenterWithPanel="True"
+            StackMode="Replace"
+            x:Name="Notification" />
+
+
+
+    </Grid>
+
+</Page>

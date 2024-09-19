@@ -1,0 +1,564 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en-US" target-language="ru-RU" original="DB_APP/STRINGS/EN-US/RESOURCES.RESW" tool-id="MultilingualAppToolkit" product-name="n/a" product-version="n/a" build-num="n/a">
+    <header>
+      <tool tool-id="MultilingualAppToolkit" tool-name="Multilingual App Toolkit" tool-version="1.0.0.0" tool-company="Microsoft" />
+    </header>
+    <body>
+      <group id="DB_APP/STRINGS/EN-US/RESOURCES.RESW" datatype="resx">
+        <trans-unit id="AppDisplayName" translate="yes" xml:space="preserve">
+          <source>Medicine management system</source>
+          <target state="translated">MMS - Система менеджмента лекарств</target>
+        </trans-unit>
+        <trans-unit id="AppDescription" translate="yes" xml:space="preserve">
+          <source>Educational project dedicated to developing simple yet modern Windows applications using WinUI 3.0 and Windows App SDK</source>
+          <target state="translated">Образовательный проект, посвященный разработке простых, но современных Windows-приложений с использованием WinUI 3.0 и Windows App SDK</target>
+        </trans-unit>
+        <trans-unit id="Shell_Greeting.Content" translate="yes" xml:space="preserve">
+          <source>Main</source>
+          <target state="translated">Главная</target>
+        </trans-unit>
+        <trans-unit id="Shell_HospitalsGrid.Content" translate="yes" xml:space="preserve">
+          <source>Hospitals</source>
+          <target state="translated">Больницы</target>
+        </trans-unit>
+        <trans-unit id="Shell_MedicinesGrid.Content" translate="yes" xml:space="preserve">
+          <source>Medicines</source>
+          <target state="translated">Медикаманты</target>
+        </trans-unit>
+        <trans-unit id="Shell_OrdersGrid.Content" translate="yes" xml:space="preserve">
+          <source>Orders</source>
+          <target state="translated">Заказы</target>
+        </trans-unit>
+        <trans-unit id="Shell_PharmaciesGrid.Content" translate="yes" xml:space="preserve">
+          <source>Pharmacies</source>
+          <target state="translated">Аптеки</target>
+        </trans-unit>
+        <trans-unit id="Shell_ProductsGrid.Content" translate="yes" xml:space="preserve">
+          <source>Products</source>
+          <target state="translated">Продукты</target>
+        </trans-unit>
+        <trans-unit id="Shell_PharmacyReportGrid.Content" translate="yes" xml:space="preserve">
+          <source>Pharmacies' report</source>
+          <target state="translated">Отчет по аптекам</target>
+        </trans-unit>
+        <trans-unit id="Shell_HospitalReportGrid.Content" translate="yes" xml:space="preserve">
+          <source>Hospitals' report</source>
+          <target state="translated">Отчет по больницам</target>
+        </trans-unit>
+        <trans-unit id="Settings_Personalization.Text" translate="yes" xml:space="preserve">
+          <source>Personalization</source>
+          <target state="translated">Персонализация</target>
+        </trans-unit>
+        <trans-unit id="Settings_Theme.Text" translate="yes" xml:space="preserve">
+          <source>Theme</source>
+          <target state="translated">Тема</target>
+        </trans-unit>
+        <trans-unit id="Settings_Theme_Light.Content" translate="yes" xml:space="preserve">
+          <source>Light</source>
+          <target state="translated">Светлая</target>
+        </trans-unit>
+        <trans-unit id="Settings_Theme_Dark.Content" translate="yes" xml:space="preserve">
+          <source>Dark</source>
+          <target state="translated">Темная</target>
+        </trans-unit>
+        <trans-unit id="Settings_Theme_Default.Content" translate="yes" xml:space="preserve">
+          <source>System</source>
+          <target state="translated">Системная</target>
+        </trans-unit>
+        <trans-unit id="Settings_About.Text" translate="yes" xml:space="preserve">
+          <source>About this application</source>
+          <target state="translated">О приложении</target>
+        </trans-unit>
+        <trans-unit id="Settings_AboutDescription.Text" translate="yes" xml:space="preserve">
+          <source>Educational project dedicated to developing simple yet modern Windows applications using WinUI 3.0 and Windows App SDK</source>
+          <target state="translated">Учебное приложение, которое старается быть максимально enterprise</target>
+        </trans-unit>
+        <trans-unit id="Shell_AddressesGrid.Content" translate="yes" xml:space="preserve">
+          <source>Addresses</source>
+          <target state="translated">Адреса</target>
+        </trans-unit>
+        <trans-unit id="RecordForDeletionNotFoundException" translate="yes" xml:space="preserve">
+          <source>The record to deletion not found</source>
+          <target state="translated">Запись для удаления не найдена</target>
+        </trans-unit>
+        <trans-unit id="Address.Text" translate="yes" xml:space="preserve">
+          <source>Address</source>
+          <target state="translated">Адрес</target>
+        </trans-unit>
+        <trans-unit id="Hospital.Text" translate="yes" xml:space="preserve">
+          <source>Hospital</source>
+          <target state="translated">Больница</target>
+        </trans-unit>
+        <trans-unit id="Medicine.Text" translate="yes" xml:space="preserve">
+          <source>Medicine</source>
+          <target state="translated">Медикамент</target>
+        </trans-unit>
+        <trans-unit id="Order.Text" translate="yes" xml:space="preserve">
+          <source>Order</source>
+          <target state="translated">Заказ</target>
+        </trans-unit>
+        <trans-unit id="Pharmacy.Text" translate="yes" xml:space="preserve">
+          <source>Pharmacy</source>
+          <target state="translated">Аптека</target>
+        </trans-unit>
+        <trans-unit id="Product.Text" translate="yes" xml:space="preserve">
+          <source>Product</source>
+          <target state="translated">Продукт</target>
+        </trans-unit>
+        <trans-unit id="Settings.Text" translate="yes" xml:space="preserve">
+          <source>Settings</source>
+          <target state="translated">Настройки</target>
+        </trans-unit>
+        <trans-unit id="Edit.Text" translate="yes" xml:space="preserve">
+          <source>Edit</source>
+          <target state="translated" state-qualifier="tm-suggestion">Изменить</target>
+        </trans-unit>
+        <trans-unit id="New.Text" translate="yes" xml:space="preserve">
+          <source>New</source>
+          <target state="translated" state-qualifier="tm-suggestion">Создание</target>
+        </trans-unit>
+        <trans-unit id="New_Hospital" translate="yes" xml:space="preserve">
+          <source>New hospital</source>
+          <target state="translated">Новая больница</target>
+        </trans-unit>
+        <trans-unit id="Hospitals.Text" translate="yes" xml:space="preserve">
+          <source>Hospitals</source>
+          <target state="translated" state-qualifier="tm-suggestion">Больницы</target>
+        </trans-unit>
+        <trans-unit id="New_Order" translate="yes" xml:space="preserve">
+          <source>New order</source>
+          <target state="translated">Новый заказ</target>
+        </trans-unit>
+        <trans-unit id="New_Address" translate="yes" xml:space="preserve">
+          <source>New address</source>
+          <target state="translated">Новый адрес</target>
+        </trans-unit>
+        <trans-unit id="New_Medicine" translate="yes" xml:space="preserve">
+          <source>New medicine</source>
+          <target state="translated">Новый медикамент</target>
+        </trans-unit>
+        <trans-unit id="New_Product" translate="yes" xml:space="preserve">
+          <source>New product</source>
+          <target state="translated">Новый продукт</target>
+        </trans-unit>
+        <trans-unit id="Addresses.Text" translate="yes" xml:space="preserve">
+          <source>Addresses</source>
+          <target state="translated" state-qualifier="tm-suggestion">Адреса</target>
+        </trans-unit>
+        <trans-unit id="Medicines.Text" translate="yes" xml:space="preserve">
+          <source>Medicines</source>
+          <target state="translated">Лекарства</target>
+        </trans-unit>
+        <trans-unit id="New_Pharmacy" translate="yes" xml:space="preserve">
+          <source>New pharmacy</source>
+          <target state="translated">Новая аптека</target>
+        </trans-unit>
+        <trans-unit id="Orders.Text" translate="yes" xml:space="preserve">
+          <source>Orders</source>
+          <target state="translated" state-qualifier="tm-suggestion">Заказы</target>
+        </trans-unit>
+        <trans-unit id="Pharmacies.Text" translate="yes" xml:space="preserve">
+          <source>Pharmacies</source>
+          <target state="translated" state-qualifier="tm-suggestion">Аптеки</target>
+        </trans-unit>
+        <trans-unit id="Products.Text" translate="yes" xml:space="preserve">
+          <source>Products</source>
+          <target state="translated" state-qualifier="tm-suggestion">Продукты</target>
+        </trans-unit>
+        <trans-unit id="SaveDialog.CloseButtonText" translate="yes" xml:space="preserve">
+          <source>Cancel</source>
+          <target state="translated">Отмена</target>
+        </trans-unit>
+        <trans-unit id="SaveDialog.SecondaryButtonText" translate="yes" xml:space="preserve">
+          <source>Don't save</source>
+          <target state="translated">Не сохранять</target>
+        </trans-unit>
+        <trans-unit id="SaveDialog.PrimaryButtonText" translate="yes" xml:space="preserve">
+          <source>Save</source>
+          <target state="translated">Сохранить</target>
+        </trans-unit>
+        <trans-unit id="SaveDialog.Title" translate="yes" xml:space="preserve">
+          <source>Save changes?</source>
+          <target state="translated">Сохранить изменения?</target>
+        </trans-unit>
+        <trans-unit id="SaveDialog.Content" translate="yes" xml:space="preserve">
+          <source>You have unsaved changes that will be lost. Would you like to save your changes?</source>
+          <target state="translated">Несохраненные изменения будут удалены. Хотите их сохранить?</target>
+        </trans-unit>
+        <trans-unit id="Warning.Header" translate="yes" xml:space="preserve">
+          <source>Warning</source>
+          <target state="translated">Внимание</target>
+        </trans-unit>
+        <trans-unit id="Name.Text" translate="yes" xml:space="preserve">
+          <source>Name</source>
+          <target state="translated">Название</target>
+        </trans-unit>
+        <trans-unit id="Type.Header" translate="yes" xml:space="preserve">
+          <source>Type</source>
+          <target state="translated">Тип</target>
+        </trans-unit>
+        <trans-unit id="NameHeader.Header" translate="yes" xml:space="preserve">
+          <source>Name</source>
+          <target state="translated">Название</target>
+        </trans-unit>
+        <trans-unit id="Shell_Reports.Content" translate="yes" xml:space="preserve">
+          <source>Reports</source>
+          <target state="translated">Отчеты</target>
+        </trans-unit>
+        <trans-unit id="Shell_Reports_HospitalsWithMedicine.Content" translate="yes" xml:space="preserve">
+          <source>Hospitals with medicine</source>
+          <target state="translated">Больницы с лекарством</target>
+        </trans-unit>
+        <trans-unit id="Shell_Reports_MedicineInHospital.Content" translate="yes" xml:space="preserve">
+          <source>Medicine in hospital</source>
+          <target state="translated">Лекарства в больнице</target>
+        </trans-unit>
+        <trans-unit id="Shell_Reports_MedicineInPharmacy.Content" translate="yes" xml:space="preserve">
+          <source>Medicine in pharmacy</source>
+          <target state="translated">Лекарства в аптеке</target>
+        </trans-unit>
+        <trans-unit id="Shell_Reports_PharmacyBudget.Content" translate="yes" xml:space="preserve">
+          <source>Pharmacies budget</source>
+          <target state="translated">Бюджет аптек</target>
+        </trans-unit>
+        <trans-unit id="Shell_Reports_PharmacyWithMedicine.Content" translate="yes" xml:space="preserve">
+          <source>Pharmacy with medicine</source>
+          <target state="translated">Аптеки с лекарством</target>
+        </trans-unit>
+        <trans-unit id="AddNewButton.Label" translate="yes" xml:space="preserve">
+          <source>Add</source>
+          <target state="translated">Добавить</target>
+        </trans-unit>
+        <trans-unit id="BudgetHeader.Header" translate="yes" xml:space="preserve">
+          <source>Budget</source>
+          <target state="translated">Бюджет</target>
+        </trans-unit>
+        <trans-unit id="Building.Header" translate="yes" xml:space="preserve">
+          <source>Building</source>
+          <target state="translated">Здание</target>
+        </trans-unit>
+        <trans-unit id="CancelButton.Label" translate="yes" xml:space="preserve">
+          <source>Cancel</source>
+          <target state="translated">Отмена</target>
+        </trans-unit>
+        <trans-unit id="City.Header" translate="yes" xml:space="preserve">
+          <source>City</source>
+          <target state="translated">Город</target>
+        </trans-unit>
+        <trans-unit id="Data.Content" translate="yes" xml:space="preserve">
+          <source>Data</source>
+          <target state="translated">Данные</target>
+        </trans-unit>
+        <trans-unit id="DateHeader.Header" translate="yes" xml:space="preserve">
+          <source>Date</source>
+          <target state="translated">Дата</target>
+        </trans-unit>
+        <trans-unit id="DeleteButton.Label" translate="yes" xml:space="preserve">
+          <source>Delete</source>
+          <target state="translated">Удалить</target>
+        </trans-unit>
+        <trans-unit id="Doctor.Header" translate="yes" xml:space="preserve">
+          <source>Doctor</source>
+          <target state="translated">ГлавВрач</target>
+        </trans-unit>
+        <trans-unit id="DoctorMiddlename.Header" translate="yes" xml:space="preserve">
+          <source>Doctor middlename</source>
+          <target state="translated">Отчетсво</target>
+        </trans-unit>
+        <trans-unit id="DoctorName.Header" translate="yes" xml:space="preserve">
+          <source>Doctor name</source>
+          <target state="translated">Имя</target>
+        </trans-unit>
+        <trans-unit id="DoctorSurename.Header" translate="yes" xml:space="preserve">
+          <source>Doctor surename</source>
+          <target state="translated">Фамилия</target>
+        </trans-unit>
+        <trans-unit id="EditButton.Label" translate="yes" xml:space="preserve">
+          <source>Edit</source>
+          <target state="translated">Изменить</target>
+        </trans-unit>
+        <trans-unit id="ExportButton.Label" translate="yes" xml:space="preserve">
+          <source>Export</source>
+          <target state="translated">Экспорт</target>
+        </trans-unit>
+        <trans-unit id="HospitalHeader.Header" translate="yes" xml:space="preserve">
+          <source>Hospital</source>
+          <target state="translated">Больница</target>
+        </trans-unit>
+        <trans-unit id="HospitalsWithMedicineDescription.Message" translate="yes" xml:space="preserve">
+          <source>All hospitals where selected medicine exists</source>
+          <target state="translated">Больницы, где имеется выбранное лекарство</target>
+        </trans-unit>
+        <trans-unit id="HospitalsWithMedicineDescription.Title" translate="yes" xml:space="preserve">
+          <source>Description</source>
+          <target state="translated">Описание</target>
+        </trans-unit>
+        <trans-unit id="HospitalWithMedicine.Text" translate="yes" xml:space="preserve">
+          <source>Hospital with medicine</source>
+          <target state="translated">Больницы с лекарством</target>
+        </trans-unit>
+        <trans-unit id="MedicineHeader.Header" translate="yes" xml:space="preserve">
+          <source>Medicine</source>
+          <target state="translated">Лекарство</target>
+        </trans-unit>
+        <trans-unit id="MedicineInHospital.Text" translate="yes" xml:space="preserve">
+          <source>Medicine in hospital</source>
+          <target state="translated">Лекарства в больнице</target>
+        </trans-unit>
+        <trans-unit id="MedicineInHospitalDescription.Message" translate="yes" xml:space="preserve">
+          <source>All medicine in selected hospital</source>
+          <target state="translated">Список лекарств, купленных определенной больницей, упорядоченный по виду, с указанием общего количества упаковок каждого вида.  </target>
+        </trans-unit>
+        <trans-unit id="MedicineInHospitalDescription.Title" translate="yes" xml:space="preserve">
+          <source>Description</source>
+          <target state="translated">Описание</target>
+        </trans-unit>
+        <trans-unit id="MedicineInPharmacy.Text" translate="yes" xml:space="preserve">
+          <source>Medicine in pharmacy</source>
+          <target state="translated">Лекарства в аптеке</target>
+        </trans-unit>
+        <trans-unit id="MedicineInPharmacyDescription.Message" translate="yes" xml:space="preserve">
+          <source>All medicine in selected pharmacy</source>
+          <target state="translated">Список лекарств, имеющихся в определенной аптеке, упорядоченный по их названиям</target>
+        </trans-unit>
+        <trans-unit id="MedicineInPharmacyDescription.Title" translate="yes" xml:space="preserve">
+          <source>Description</source>
+          <target state="translated">Описание</target>
+        </trans-unit>
+        <trans-unit id="NotFound.Text" translate="yes" xml:space="preserve">
+          <source>Not found</source>
+          <target state="translated">Не найдено</target>
+        </trans-unit>
+        <trans-unit id="OpenWindowButton.Label" translate="yes" xml:space="preserve">
+          <source>Open in new window</source>
+          <target state="translated">Открыть в новом окне</target>
+        </trans-unit>
+        <trans-unit id="PharmaciesBudget.Text" translate="yes" xml:space="preserve">
+          <source>Pharmacies budget</source>
+          <target state="translated">Бюджет аптек</target>
+        </trans-unit>
+        <trans-unit id="PharmaciesBudgetDescription.Message" translate="yes" xml:space="preserve">
+          <source>Pharmacies' budget</source>
+          <target state="translated">Бюджет аптек</target>
+        </trans-unit>
+        <trans-unit id="PharmaciesBudgetDescription.Title" translate="yes" xml:space="preserve">
+          <source>Description</source>
+          <target state="translated">Описание</target>
+        </trans-unit>
+        <trans-unit id="PharmacyHeader.Header" translate="yes" xml:space="preserve">
+          <source>Pharmacy</source>
+          <target state="translated">Аптека</target>
+        </trans-unit>
+        <trans-unit id="PharmacyWithMedicine.Text" translate="yes" xml:space="preserve">
+          <source>Pharmacy with medicine</source>
+          <target state="translated">Аптеки с лекарством</target>
+        </trans-unit>
+        <trans-unit id="PharmacyWithMedicineDescription.Message" translate="yes" xml:space="preserve">
+          <source>Pharmacies, wich sell selected medicine</source>
+          <target state="translated">Аптеки, которые продают выбранное лекарство</target>
+        </trans-unit>
+        <trans-unit id="PharmacyWithMedicineDescription.Title" translate="yes" xml:space="preserve">
+          <source>Description</source>
+          <target state="translated">Описание</target>
+        </trans-unit>
+        <trans-unit id="PriceHeader.Header" translate="yes" xml:space="preserve">
+          <source>Price</source>
+          <target state="translated">Цена</target>
+        </trans-unit>
+        <trans-unit id="QuantityHeader.Header" translate="yes" xml:space="preserve">
+          <source>Quantity</source>
+          <target state="translated">Количество</target>
+        </trans-unit>
+        <trans-unit id="SaveButton.Label" translate="yes" xml:space="preserve">
+          <source>Save</source>
+          <target state="translated">Сохранить</target>
+        </trans-unit>
+        <trans-unit id="ShippingAddressHeader.Header" translate="yes" xml:space="preserve">
+          <source>Shipping address</source>
+          <target state="translated">Адрес доставки</target>
+        </trans-unit>
+        <trans-unit id="Street.Header" translate="yes" xml:space="preserve">
+          <source>Street</source>
+          <target state="translated">Улица</target>
+        </trans-unit>
+        <trans-unit id="TimeHeader.Header" translate="yes" xml:space="preserve">
+          <source>Time</source>
+          <target state="translated">Время</target>
+        </trans-unit>
+        <trans-unit id="TotalHeader.Header" translate="yes" xml:space="preserve">
+          <source>Total</source>
+          <target state="translated">Итого</target>
+        </trans-unit>
+        <trans-unit id="ViewButton.Label" translate="yes" xml:space="preserve">
+          <source>View</source>
+          <target state="translated">Подробнее</target>
+        </trans-unit>
+        <trans-unit id="AddSelectedButton.Label" translate="yes" xml:space="preserve">
+          <source>Add selected</source>
+          <target state="translated">Добавить выбранное</target>
+        </trans-unit>
+        <trans-unit id="BuildingInput.HeaderText" translate="yes" xml:space="preserve">
+          <source>Building</source>
+          <target state="translated">Здание</target>
+        </trans-unit>
+        <trans-unit id="BuildingInput.PlaceholderText" translate="yes" xml:space="preserve">
+          <source>Enter building</source>
+          <target state="translated">Введите здание</target>
+        </trans-unit>
+        <trans-unit id="CityInput.HeaderText" translate="yes" xml:space="preserve">
+          <source>City</source>
+          <target state="translated">Город</target>
+        </trans-unit>
+        <trans-unit id="CityInput.PlaceholderText" translate="yes" xml:space="preserve">
+          <source>Enter city</source>
+          <target state="translated">Введите город</target>
+        </trans-unit>
+        <trans-unit id="MakeInactiveButton.Content" translate="yes" xml:space="preserve">
+          <source>Make inactive</source>
+          <target state="translated">Деактивировать</target>
+        </trans-unit>
+        <trans-unit id="MiddlenameInput.HeaderText" translate="yes" xml:space="preserve">
+          <source>Maindoctor middlename</source>
+          <target state="translated">Отчество</target>
+        </trans-unit>
+        <trans-unit id="MiddlenameInput.PlaceholderText" translate="yes" xml:space="preserve">
+          <source>Enter middlename</source>
+          <target state="translated">Введите отчество</target>
+        </trans-unit>
+        <trans-unit id="NameInput.HeaderText" translate="yes" xml:space="preserve">
+          <source>Maindoctor name</source>
+          <target state="translated">Имя</target>
+        </trans-unit>
+        <trans-unit id="NameInput.PlaceholderText" translate="yes" xml:space="preserve">
+          <source>Enter name</source>
+          <target state="translated">Введите имя</target>
+        </trans-unit>
+        <trans-unit id="StreetInput.HeaderText" translate="yes" xml:space="preserve">
+          <source>Street</source>
+          <target state="translated">Улица</target>
+        </trans-unit>
+        <trans-unit id="StreetInput.PlaceholderText" translate="yes" xml:space="preserve">
+          <source>Enter street</source>
+          <target state="translated">Введите улицу</target>
+        </trans-unit>
+        <trans-unit id="SurenameInput.HeaderText" translate="yes" xml:space="preserve">
+          <source>Maindoctor surename</source>
+          <target state="translated">Фамилия</target>
+        </trans-unit>
+        <trans-unit id="SurenameInput.PlaceholderText" translate="yes" xml:space="preserve">
+          <source>Enter surename</source>
+          <target state="translated">Введите фамилию</target>
+        </trans-unit>
+        <trans-unit id="ZeroAddressesInfo.Content" translate="yes" xml:space="preserve">
+          <source>At least one address have to be provided otherwise organization becomes inactive</source>
+          <target state="translated">Хотя бы один адрес должен быть добавлен, иначе организация будет деактивирована безвозвратно</target>
+        </trans-unit>
+        <trans-unit id="MedicineNameInput.HeaderText" translate="yes" xml:space="preserve">
+          <source>Medicine name</source>
+          <target state="translated">Название</target>
+        </trans-unit>
+        <trans-unit id="MedicineNameInput.PlaceholderText" translate="yes" xml:space="preserve">
+          <source>Enter name</source>
+          <target state="translated">Введите название</target>
+        </trans-unit>
+        <trans-unit id="MedicineTypeInput.HeaderText" translate="yes" xml:space="preserve">
+          <source>Type</source>
+          <target state="translated">Тип</target>
+        </trans-unit>
+        <trans-unit id="MedicineTypeInput.PlaceholderText" translate="yes" xml:space="preserve">
+          <source>Enter type</source>
+          <target state="translated">Введите тип</target>
+        </trans-unit>
+        <trans-unit id="CustomerHeader.Header" translate="yes" xml:space="preserve">
+          <source>Customer</source>
+          <target state="translated">Покупатель</target>
+        </trans-unit>
+        <trans-unit id="DatePlacedText.Text" translate="yes" xml:space="preserve">
+          <source>Date placed</source>
+          <target state="translated">Дата заказа</target>
+        </trans-unit>
+        <trans-unit id="HospitalCustomerComboBox.Header" translate="yes" xml:space="preserve">
+          <source>Customer</source>
+          <target state="translated">Покупатель</target>
+        </trans-unit>
+        <trans-unit id="HospitalCustomerComboBox.PlaceholderText" translate="yes" xml:space="preserve">
+          <source>Select hospital</source>
+          <target state="translated">Выберите больницу</target>
+        </trans-unit>
+        <trans-unit id="OrderItemsText.Text" translate="yes" xml:space="preserve">
+          <source>Order items</source>
+          <target state="translated">Детали заказа</target>
+        </trans-unit>
+        <trans-unit id="PriceText.Text" translate="yes" xml:space="preserve">
+          <source>Price</source>
+          <target state="translated">Цена</target>
+        </trans-unit>
+        <trans-unit id="QuantityText.Text" translate="yes" xml:space="preserve">
+          <source>Quantity</source>
+          <target state="translated">Количество</target>
+        </trans-unit>
+        <trans-unit id="ShippingAddressComboBox.Header" translate="yes" xml:space="preserve">
+          <source>Shipping adderss</source>
+          <target state="translated">Адрес доставки</target>
+        </trans-unit>
+        <trans-unit id="TotalText.Text" translate="yes" xml:space="preserve">
+          <source>Total</source>
+          <target state="translated">Итого</target>
+        </trans-unit>
+        <trans-unit id="TypeText.Text" translate="yes" xml:space="preserve">
+          <source>Type</source>
+          <target state="translated">Вид</target>
+        </trans-unit>
+        <trans-unit id="NewAddressComboBox.PlaceholderText" translate="yes" xml:space="preserve">
+          <source>Select new address</source>
+          <target state="translated">Выберите новый адрес</target>
+        </trans-unit>
+        <trans-unit id="PharmacyNameInput.HeaderText" translate="yes" xml:space="preserve">
+          <source>Pharmacy name</source>
+          <target state="translated">Название аптеки</target>
+        </trans-unit>
+        <trans-unit id="PharmacyNameInput.PlaceholderText" translate="yes" xml:space="preserve">
+          <source>Enter name</source>
+          <target state="translated">Введите название</target>
+        </trans-unit>
+        <trans-unit id="PriceInput.Header" translate="yes" xml:space="preserve">
+          <source>Price</source>
+          <target state="translated">Цена</target>
+        </trans-unit>
+        <trans-unit id="PriceInput.PlaceholderText" translate="yes" xml:space="preserve">
+          <source>Enter price value</source>
+          <target state="translated">Введите значение цены</target>
+        </trans-unit>
+        <trans-unit id="QuantityInput.Header" translate="yes" xml:space="preserve">
+          <source>Quantity</source>
+          <target state="translated">Количество</target>
+        </trans-unit>
+        <trans-unit id="QuantityInput.PlaceholderText" translate="yes" xml:space="preserve">
+          <source>Enter quantity value</source>
+          <target state="translated">Введите количество</target>
+        </trans-unit>
+        <trans-unit id="DoctorText.Text" translate="yes" xml:space="preserve">
+          <source>Doctor</source>
+          <target state="translated">ГлавВрач</target>
+        </trans-unit>
+        <trans-unit id="MedicineComboBox.Header" translate="yes" xml:space="preserve">
+          <source>Medicine</source>
+          <target state="translated">Лекарство</target>
+        </trans-unit>
+        <trans-unit id="MedicineComboBox.PlaceholderText" translate="yes" xml:space="preserve">
+          <source>Select medicine</source>
+          <target state="translated">Выберите лекарство</target>
+        </trans-unit>
+        <trans-unit id="PharmacyComboBox.Header" translate="yes" xml:space="preserve">
+          <source>Pharmacy</source>
+          <target state="translated">Аптека</target>
+        </trans-unit>
+        <trans-unit id="PharmacyComboBox.PlaceholderText" translate="yes" xml:space="preserve">
+          <source>Select pharmacy</source>
+          <target state="translated">Выберите аптеку</target>
+        </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>

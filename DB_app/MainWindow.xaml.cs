@@ -1,4 +1,4 @@
-﻿using DB_app.Helpers;
+﻿using Microsoft.Windows.ApplicationModel.Resources;
 
 namespace DB_app;
 
@@ -8,8 +8,12 @@ public sealed partial class MainWindow : WindowEx
     {
         InitializeComponent();
 
-        AppWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/WindowIcon.ico"));
+        AppWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/Square44x44Logo.png"));
+        
         Content = null;
-        Title = "AppDisplayName".GetLocalized();
+
+        ResourceLoader _resourceLoader = new();
+
+        Title = _resourceLoader.GetString("AppDisplayName");
     }
 }

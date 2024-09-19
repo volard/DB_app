@@ -1,5 +1,7 @@
 ﻿namespace DB_app.Activation;
 
+
+
 public interface IActivationHandler
 {
     bool CanHandle(object args);
